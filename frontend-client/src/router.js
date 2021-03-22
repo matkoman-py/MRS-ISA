@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HelloWorld from "./components/HelloWorld";
 import Test from "./components/Test";
-
+import PatientOverview from "./views/PatientOverview"
 Vue.use(VueRouter)
 
 const routes = [
@@ -15,6 +15,12 @@ const routes = [
         path: '/test',
         name: "Test",
         component: Test
+    }
+    ,
+    {
+        path: '/patientoverview',
+        name: "PatientOverview",
+        component: PatientOverview
     }
 ];
 
