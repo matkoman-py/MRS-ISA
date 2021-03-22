@@ -8,10 +8,10 @@ public class Drug {
 	private String name;
 	private String form;
 	private boolean receipt;
-	private DrugType type;
+	private DrugType type; //dodaj neke predef
 	private Manufacturer manufatcuter;
-	private List<Drug> substitutions;
-	private List<Ingrediants> ingrediants;
+	private List<Drug> substitutions; //dodaj neke predef
+	private List<Ingrediants> ingrediants; //dodaj neke predef
 	private String description;
 	private int point;
 
