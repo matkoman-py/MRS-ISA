@@ -1,31 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld :msg="testData"/>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <div class="nav">
+      <router-link to="/">Hello World</router-link>
+      <br>
+      <router-link to="/test">Test</router-link>
+    </div>
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  },
-  data: function(){
-    return {
-      testData: {},
-    }
-  },
-  methods: {
-    testController : function(){
-      fetch('http://localhost:8081/test')
-      .then(response => response.json())
-      .then(response => this.testData = response);
-    }
-  },
-  created: function(){
-    this.testController();
-  }
 }
 </script>
 
