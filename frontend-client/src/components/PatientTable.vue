@@ -1,9 +1,8 @@
 <template>
-  <ul>
-      <li v-for="patient in patients" :key="patient.name">
-          <h1>Name: {{patient.name}} Surname: {{patient.surname}}</h1>
-      </li>
-  </ul>
+  <!-- <b-list-group>
+    <b-list-group-item v-for="patient in patients" :key="patient.name">Name: {{patient.name}} Surname: {{patient.surname}}</b-list-group-item>
+  </b-list-group> -->
+  <b-table id="tabela_pacijenata" striped hover :items="patients"></b-table>
 </template>
 
 <script>
