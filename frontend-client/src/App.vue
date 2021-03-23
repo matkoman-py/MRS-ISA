@@ -11,8 +11,9 @@
       <router-link to="/employeesOverview">Employees overview</router-link>
       <br>
       <router-link to="/register">Registration page</router-link>
+      <br>
+      <router-link to="/add-drug-form">Add drug form</router-link>
       <router-view/>
-
   </div>
 </template>
 
