@@ -1,22 +1,24 @@
 package pharmacyhub.domain;
 
-public class DrugType {
+public class Ingrediant {
 
 	private String id;
 	private String name;
-	private String description;
 
-	public DrugType() {
+	public Ingrediant() {
 		super();
 	}
 
-	public DrugType(String id, String name, String description) {
+	public Ingrediant(String name) {
+		super();
+		this.name = name;
+	}
+
+	public Ingrediant(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
 	}
-	
 
 	public String getId() {
 		return id;
@@ -33,13 +35,4 @@ public class DrugType {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 }

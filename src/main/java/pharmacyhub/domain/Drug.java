@@ -8,10 +8,10 @@ public class Drug {
 	private String name;
 	private String form;
 	private boolean receipt;
-	private DrugType type; //dodaj neke predef
-	private Manufacturer manufatcuter;
-	private List<Drug> substitutions; //dodaj neke predef
-	private List<Ingrediants> ingrediants; //dodaj neke predef
+	private DrugType type;
+	private Manufacturer manufacturer;
+	private List<Drug> substitutions;
+	private List<Ingrediant> ingrediants;
 	private String description;
 	private int point;
 
@@ -19,15 +19,15 @@ public class Drug {
 		super();
 	}
 
-	public Drug(String id, String name, String form, boolean receipt, DrugType type, Manufacturer manufatcuter,
-			List<Drug> substitutions, List<Ingrediants> ingrediants, String description, int point) {
+	public Drug(String id, String name, String form, boolean receipt, DrugType type, Manufacturer manufacturer,
+			List<Drug> substitutions, List<Ingrediant> ingrediants, String description, int point) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.form = form;
 		this.receipt = receipt;
 		this.type = type;
-		this.manufatcuter = manufatcuter;
+		this.manufacturer = manufacturer;
 		this.substitutions = substitutions;
 		this.ingrediants = ingrediants;
 		this.description = description;
@@ -74,12 +74,12 @@ public class Drug {
 		this.type = type;
 	}
 
-	public Manufacturer getManufatcuter() {
-		return manufatcuter;
+	public Manufacturer getManufacturer() {
+		return manufacturer;
 	}
 
-	public void setManufatcuter(Manufacturer manufatcuter) {
-		this.manufatcuter = manufatcuter;
+	public void setManufacturer(Manufacturer manufacturer) {
+		this.manufacturer = manufacturer;
 	}
 
 	public List<Drug> getSubstitutions() {
@@ -90,11 +90,11 @@ public class Drug {
 		this.substitutions = substitutions;
 	}
 
-	public List<Ingrediants> getIngrediants() {
+	public List<Ingrediant> getIngrediants() {
 		return ingrediants;
 	}
 
-	public void setIngrediants(List<Ingrediants> ingrediants) {
+	public void setIngrediants(List<Ingrediant> ingrediants) {
 		this.ingrediants = ingrediants;
 	}
 
