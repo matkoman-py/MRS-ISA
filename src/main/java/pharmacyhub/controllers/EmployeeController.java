@@ -14,7 +14,7 @@ import pharmacyhub.domain.users.Employee;
 import pharmacyhub.services.EmployeeService;
 
 @Controller
-@RequestMapping("/drugs")
+@RequestMapping("/employees")
 public class EmployeeController {
 	
 	@Autowired
