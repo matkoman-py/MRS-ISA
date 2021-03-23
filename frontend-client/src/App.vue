@@ -7,8 +7,10 @@
       <router-link to="/test">Test</router-link>
       <br>
       <router-link to="/patientoverview">Patient overview</router-link>
-    
+      <br>
+      <router-link to="/register">Registration page</router-link>
       <router-view/>
+
   </div>
 </template>
 
