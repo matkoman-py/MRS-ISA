@@ -13,7 +13,10 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
-    "vue-router": "^3.5.1"
+    "vue-country-region-select": "^2.0.14",
+    "vue-phone-number-input": "^1.1.10",
+    "vue-router": "^3.5.1",
+    "vue-tel-input": "^5.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

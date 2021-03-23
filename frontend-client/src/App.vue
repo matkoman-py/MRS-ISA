@@ -5,6 +5,8 @@
       <router-link to="/">Hello World</router-link>
       <br>
       <router-link to="/test">Test</router-link>
+      <br>
+      <router-link to="/register">Registration page</router-link>
     </div>
     <router-view/>
   </div>
