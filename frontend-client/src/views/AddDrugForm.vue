@@ -15,9 +15,9 @@
 
           <b-form-group label="Drug Type:" label-for="drug-type-select">
               <b-form-select id="drug-type-select" 
-                             v-model="form.drugType"
+                             v-model="form.type"
                              :options="drugTypeOptions"
-                             :required="form.drugType == null"></b-form-select>
+                             :required="form.type == null"></b-form-select>
           </b-form-group>
 
           <b-form-group label="Form:" label-for="form-input">
@@ -108,7 +108,7 @@ export default {
         substitutions: [],
         ingrediants: [],
         manufacturer: null,
-        drugType: null,
+        type: null,
         points: 0,
       },
       receiptOptions: [

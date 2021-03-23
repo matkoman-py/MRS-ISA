@@ -13,6 +13,8 @@
       <router-link to="/register">Registration page</router-link>
       <br>
       <router-link to="/add-drug-form">Add drug form</router-link>
+      <br>
+      <router-link to="/drugs-overview">Drugs overview</router-link>
       <router-view/>
   </div>
 </template>
