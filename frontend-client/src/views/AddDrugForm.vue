@@ -13,21 +13,18 @@
             ></b-form-input>
           </b-form-group>
 
+          <b-form-group label="Drug Type:" label-for="drug-type-select">
+              <b-form-select id="drug-type-select" 
+                             v-model="form.drugType"
+                             :options="drugTypeOptions"
+                             :required="form.drugType == null"></b-form-select>
+          </b-form-group>
+
           <b-form-group label="Form:" label-for="form-input">
             <b-form-input
               id="form-input"
               v-model="form.form"
               placeholder="Form name"
-              required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group label="Points:" label-for="point-input">
-            <b-form-input
-              id="point-input"
-              v-model="form.points"
-              placeholder="Number of points"
-              type="number"
               required
             ></b-form-input>
           </b-form-group>
@@ -39,13 +36,6 @@
                              :required="form.manufacturer == null"></b-form-select>
           </b-form-group>
 
-          <b-form-group label="Receipt:" label-for="receipt-select">
-              <b-form-select id="receipt-select"
-                             v-model="form.receipt"
-                             :options="receiptOptions"
-                             ></b-form-select>
-          </b-form-group>
-          
           <b-form-group label="Description:" label-for="description-textarea">
             <b-form-textarea
               id="description-textarea"
@@ -56,6 +46,24 @@
               required
             ></b-form-textarea>
           </b-form-group>
+
+          <b-form-group label="Receipt:" label-for="receipt-select">
+              <b-form-select id="receipt-select"
+                             v-model="form.receipt"
+                             :options="receiptOptions"
+                             ></b-form-select>
+          </b-form-group>
+
+          <b-form-group label="Points:" label-for="point-input">
+            <b-form-input
+              id="point-input"
+              v-model="form.points"
+              placeholder="Number of points"
+              type="number"
+              required
+            ></b-form-input>
+          </b-form-group>
+        
 
           <searchable-tags labelName="Ingrediants"
                             :updateValue="(data) => form.ingrediants = data"
@@ -100,6 +108,7 @@ export default {
         substitutions: [],
         ingrediants: [],
         manufacturer: null,
+        drugType: null,
         points: 0,
       },
       receiptOptions: [
@@ -107,6 +116,7 @@ export default {
         { value: true, text: "Needs receipt"}
       ],
       manufacturerOptions: [],
+      drugTypeOptions: [],
       ingrediants: [],
       substitutions: [],
     }
@@ -122,6 +132,19 @@ export default {
         })
         );
         this.manufacturerOptions.unshift({value: null, text: "Choose one"})
+      })
+      .catch(error => console.log(error));
+    },
+    getDrugTypes: function(){
+      axios.get("http://localhost:8081/drug-types")
+      .then(response => {
+        this.drugTypeOptions = response.data.map((drugType) => 
+        ({
+          value: drugType,
+          text: drugType.name
+        })
+        );
+        this.drugTypeOptions.unshift({value: null, text: "Choose one"})
       })
       .catch(error => console.log(error));
     },
@@ -153,6 +176,7 @@ export default {
     this.getManufacturers();
     this.getIngrediants();
     this.getSubstitutionDrugs();
+    this.getDrugTypes();
   }
 }
 </script>
