@@ -8,6 +8,8 @@
       <br>
       <router-link to="/patientoverview">Patient overview</router-link>
       <br>
+      <router-link to="/employeesOverview">Employees overview</router-link>
+      <br>
       <router-link to="/register">Registration page</router-link>
       <router-view/>
 
