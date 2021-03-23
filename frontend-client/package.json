@@ -19,7 +19,6 @@
     "vue-phone-number-input": "^1.1.10",
     "vue-router": "^3.5.1",
     "vue-tel-input": "^5.1.0"
-
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

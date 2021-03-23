@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HelloWorld from "./components/HelloWorld";
 import Test from "./components/Test";
+import EmployeesOverview from "./views/EmployeesOverview"
 
 import PatientOverview from "./views/PatientOverview"
 
@@ -38,7 +39,12 @@ const routes = [
         path: '/patientoverview',
         name: "PatientOverview",
         component: PatientOverview
-    }
+    },
+    {
+        path: '/employeesOverview',
+        name: "EmployeesOverview",
+        component: EmployeesOverview
+    },
 ];
 
 const router = new VueRouter({ 
