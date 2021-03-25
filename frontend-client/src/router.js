@@ -7,7 +7,7 @@ import PatientOverview from "./views/PatientOverview"
 import RegistrationPage from "./views/RegistrationPage"
 import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
-
+import DrugViewSearch from "./views/DrugViewSearch"
 
 Vue.use(VueRouter)
 
@@ -49,6 +49,11 @@ const routes = [
         name: "DrugOverview",
         component: DrugOverview
     },
+    {
+        path: '/drugSearch',
+        name: "DrugSearch",
+        component: DrugViewSearch
+    }
 ];
 
 const router = new VueRouter({ 
