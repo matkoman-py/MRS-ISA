@@ -15,6 +15,12 @@ public class DrugType extends BaseEntity {
 	public DrugType() {
 		super();
 	}
+	
+	public DrugType(String name, String description) {
+		super();
+		this.name = name;
+		this.description = description;
+	}
 
 	public DrugType(String id, String name, String description) {
 		super();

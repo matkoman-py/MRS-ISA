@@ -24,17 +24,16 @@ public class DrugController {
 	
 	@GetMapping(path ="/seed", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drug>> seedDrugs() {
-		drugService.seedDrugs();
-		return new ResponseEntity<>(drugService.readAll(), HttpStatus.OK);
+		return new ResponseEntity<>(drugService.findAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drug>> getDrugs() {
-		return new ResponseEntity<>(drugService.readAll(), HttpStatus.OK);
+		return new ResponseEntity<>(drugService.findAll(), HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drug> add(@RequestBody Drug drug) {
-		return new ResponseEntity<>(drugService.add(drug), HttpStatus.OK);
+		return new ResponseEntity<>(drugService.save(drug), HttpStatus.OK);
 	}
 }

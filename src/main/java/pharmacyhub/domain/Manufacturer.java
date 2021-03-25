@@ -21,6 +21,13 @@ public class Manufacturer extends BaseEntity {
 	public Manufacturer() {
 		super();
 	}
+	
+	public Manufacturer(String name, Location location, String phoneNumber) {
+		super();
+		this.name = name;
+		this.location = location;
+		this.phoneNumber = phoneNumber;
+	}
 
 	public Manufacturer(String id, String name, Location location, String phoneNumber) {
 		super();
