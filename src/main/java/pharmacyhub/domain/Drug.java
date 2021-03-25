@@ -2,17 +2,48 @@ package pharmacyhub.domain;
 
 import java.util.List;
 
-public class Drug {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
-	private String id;
+@Entity
+public class Drug extends BaseEntity {
+
+	@Column(nullable = false, unique=true)
 	private String name;
+	
+	@Column(nullable = false)
 	private String form;
+	
+	@Column(nullable = false)
 	private boolean receipt;
+	
+	@ManyToOne
+	@JoinColumn(name = "drug_type_fk", nullable = false)
 	private DrugType type;
+	
+	@ManyToOne
+	@JoinColumn(name = "manufacturer_fk", nullable = false)
 	private Manufacturer manufacturer;
+	
+	@Transient
+	//za sada, ovo ce se menjati
 	private List<Drug> substitutions;
-	private List<Ingrediant> ingrediants;
+	
+	@ManyToMany
+	@JoinTable(name = "drug_ingredients", 
+			   joinColumns = @JoinColumn(name = "drug_id"), 
+			   inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+	private List<Ingredient> ingredients;
+	
+	@Column(nullable = false)
 	private String description;
+	
+	@Column(nullable = false)
 	private int point;
 
 	public Drug() {
@@ -20,26 +51,17 @@ public class Drug {
 	}
 
 	public Drug(String id, String name, String form, boolean receipt, DrugType type, Manufacturer manufacturer,
-			List<Drug> substitutions, List<Ingrediant> ingrediants, String description, int point) {
+			List<Drug> substitutions, List<Ingredient> ingredients, String description, int point) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.form = form;
 		this.receipt = receipt;
 		this.type = type;
 		this.manufacturer = manufacturer;
 		this.substitutions = substitutions;
-		this.ingrediants = ingrediants;
+		this.ingredients = ingredients;
 		this.description = description;
 		this.point = point;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -90,12 +112,12 @@ public class Drug {
 		this.substitutions = substitutions;
 	}
 
-	public List<Ingrediant> getIngrediants() {
-		return ingrediants;
+	public List<Ingredient> getIngredients() {
+		return ingredients;
 	}
 
-	public void setIngrediants(List<Ingrediant> ingrediants) {
-		this.ingrediants = ingrediants;
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
 	}
 
 	public String getDescription() {

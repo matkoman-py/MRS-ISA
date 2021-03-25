@@ -1,6 +1,9 @@
 package pharmacyhub.domain;
 
-public class Location {
+import javax.persistence.Entity;
+
+@Entity
+public class Location extends BaseEntity{
 	
 	private String address;
 	private String city;
@@ -10,8 +13,9 @@ public class Location {
 	
 	}
 
-	public Location(String address, String city, String country) {
+	public Location(String id, String address, String city, String country) {
 		super();
+		this.id = id;
 		this.address = address;
 		this.city = city;
 		this.country = country;

@@ -1,19 +1,59 @@
 package pharmacyhub.domain.users;
 
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import pharmacyhub.domain.BaseEntity;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
-public abstract class User {
+@Entity
+@Table(name="users")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+public abstract class User extends BaseEntity{
 	
+	@Column(nullable = false, unique = true)
 	private String email;
+	
+	@Column(nullable = false)
 	private String password;
+	
+	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false)
 	private String surname;
+	
+	@Column(nullable = false)
 	private String phoneNumber;
-	private Location location;
+	
+	@ManyToOne
+	@JoinColumn(name="location_fk", nullable = false)
+	public Location location;
+	
+	@Enumerated(EnumType.STRING)
+    @Column(name = "USER_TYPE", insertable = false, updatable = false)
 	private UserType type;
 	
 	public User() {
+		
+	}
+	
+	public User(String id, String email, String password, String name, String surname, String phoneNumber, Location location,
+			UserType type) {
+		this(email, password, name, surname, phoneNumber, location, type);
+		this.id = id;
 		
 	}
 

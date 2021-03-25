@@ -1,22 +1,24 @@
 package pharmacyhub.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class Ingrediant extends BaseEntity{
+public class Ingredient extends BaseEntity {
 
+	@Column(nullable = false, unique=true)
 	private String name;
 
-	public Ingrediant() {
+	public Ingredient() {
 		super();
 	}
 
-	public Ingrediant(String name) {
+	public Ingredient(String name) {
 		super();
 		this.name = name;
 	}
 
-	public Ingrediant(String id, String name) {
+	public Ingredient(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

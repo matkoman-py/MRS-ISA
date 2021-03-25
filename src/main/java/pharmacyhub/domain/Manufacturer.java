@@ -1,10 +1,21 @@
 package pharmacyhub.domain;
 
-public class Manufacturer {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-	private String id;
+@Entity
+public class Manufacturer extends BaseEntity {
+
+	@Column(nullable = false, unique=true)
 	private String name;
+	
+	@ManyToOne
+	@JoinColumn(name="location_fk", nullable = false)
 	private Location location;
+	
+	@Column(nullable = false)
 	private String phoneNumber;
 
 	public Manufacturer() {
@@ -17,14 +28,6 @@ public class Manufacturer {
 		this.name = name;
 		this.location = location;
 		this.phoneNumber = phoneNumber;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
