@@ -1,8 +1,10 @@
 package pharmacyhub.domain;
 
-public class Ingrediant {
+import javax.persistence.Entity;
 
-	private String id;
+@Entity
+public class Ingrediant extends BaseEntity{
+
 	private String name;
 
 	public Ingrediant() {
@@ -20,13 +22,6 @@ public class Ingrediant {
 		this.name = name;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
