@@ -37,7 +37,7 @@ public class DrugService{
 		
 		ingrediants.add(ingredient);
 		drugRepository.add(new Drug("id1", "Gentamicin", "cream", true, drugTypeRepository.read("id1"), 
-				manufacturerRepository.read("id1"), null, ingrediantRepository.readAll(), "mast 0,1%, 15g", 10));
+				manufacturerRepository.read("id1"), null, ingrediantRepository.findAll(), "mast 0,1%, 15g", 10));
 	}
 
 	

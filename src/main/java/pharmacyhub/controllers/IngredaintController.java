@@ -22,7 +22,13 @@ public class IngredaintController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Ingrediant>> getIngredaints() {
-		return new ResponseEntity<>(ingrediantService.readAll(), HttpStatus.OK);
+		return new ResponseEntity<>(ingrediantService.findAll(), HttpStatus.OK);
 	}
+	
+	@GetMapping(path ="/seed", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Ingrediant>> seedIngredaints() {
+		return new ResponseEntity<>(ingrediantService.seedIngrediants(), HttpStatus.OK);
+	}
+	
 	
 }
