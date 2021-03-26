@@ -9,20 +9,17 @@ import pharmacyhub.domain.Drug;
 import pharmacyhub.repositories.DrugRepository;
 
 @Service
-public class DrugService{
-	
+public class DrugService {
+
 	@Autowired
 	private DrugRepository drugRepository;
-	
-	public List<Drug> findAll()
-	{
+
+	public List<Drug> findAll() {
 		return drugRepository.findAll();
 	}
-	
-	public Drug save(Drug drug)
-	{
+
+	public Drug save(Drug drug) {
 		return drugRepository.save(drug);
 	}
-	
 
 }

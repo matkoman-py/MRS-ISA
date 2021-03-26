@@ -35,11 +35,13 @@ public abstract class User extends BaseEntity{
 	@Column(nullable = false)
 	private String surname;
 	
-	@Column(nullable = false)
+	//@Column(nullable = false)
+	@Column
 	private String phoneNumber;
 	
+	//treba nullable false mozda?
 	@ManyToOne
-	@JoinColumn(name="location_fk", nullable = false)
+	@JoinColumn(name="location_fk")
 	public Location location;
 	
 	@Enumerated(EnumType.STRING)

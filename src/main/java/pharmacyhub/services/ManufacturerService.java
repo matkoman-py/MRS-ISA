@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pharmacyhub.domain.Location;
 import pharmacyhub.domain.Manufacturer;
-import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.ManufacturerRepository;
 
 @Service

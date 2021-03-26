@@ -16,13 +16,17 @@ import pharmacyhub.services.EmployeeService;
 @Controller
 @RequestMapping("/employees")
 public class EmployeeController {
-	
+
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Employee>> getGreetings() {
-		return new ResponseEntity<>(employeeService.readAll(), HttpStatus.OK);
+		return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "fill", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Employee>> fill() {
+		return new ResponseEntity<>(employeeService.setDummyData(), HttpStatus.OK);
 	}
 }
-

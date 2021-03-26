@@ -19,15 +19,10 @@ public class DrugTypeController {
 
 	@Autowired
 	private DrugTypeService drugTypeService;
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugType>> getDrugTypes() {
 		return new ResponseEntity<>(drugTypeService.findAll(), HttpStatus.OK);
 	}
-	
-	@GetMapping(path ="/seed", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<DrugType>> seed() {
-		return new ResponseEntity<>(drugTypeService.seed(), HttpStatus.OK);
-	}
-	
+
 }

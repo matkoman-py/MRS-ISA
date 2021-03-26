@@ -13,18 +13,9 @@ public class IngredientService {
 
 	@Autowired
 	private IngredientRepository ingrediantRepository;
-	
-	public List<Ingredient> findAll()
-	{
+
+	public List<Ingredient> findAll() {
 		return ingrediantRepository.findAll();
 	}
-	
-	public List<Ingredient> seedIngrediants() {
-		ingrediantRepository.save(new Ingredient("id1", "cellulose"));
-		ingrediantRepository.save(new Ingredient("id2", "lactose monohydrate"));
-		ingrediantRepository.save(new Ingredient("id3", "colloidal anhydrous silica"));
-		ingrediantRepository.save(new Ingredient("id4", "magnesium stearate"));
-		return findAll();
-	}
-	
+
 }
