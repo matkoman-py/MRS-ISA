@@ -45,7 +45,7 @@ public abstract class User extends BaseEntity{
 	public Location location;
 	
 	@Enumerated(EnumType.STRING)
-    @Column(name = "USER_TYPE", insertable = false, updatable = false)
+    @Column(name = "type", insertable = false, updatable = false)
 	private UserType type;
 	
 	public User() {

@@ -34,6 +34,7 @@ public class Drug extends BaseEntity {
 	//za sada, ovo ce se menjati
 	private List<Drug> substitutions;
 	
+	//popravi ovo
 	@ManyToMany
 	@JoinTable(name = "drug_ingredients", 
 			   joinColumns = @JoinColumn(name = "drug_id"), 
