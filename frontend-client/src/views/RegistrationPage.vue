@@ -86,6 +86,8 @@
                 </b-form-row>
 
                 <b-button type="submit" variant="primary">Submit</b-button>
+                <br>
+                <br>
             </b-form>
         </b-container>
 
