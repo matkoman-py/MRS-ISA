@@ -1,13 +1,19 @@
 package pharmacyhub.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Ingredient extends BaseEntity {
 
 	@Column(nullable = false, unique=true)
 	private String name;
+	
+	@ManyToMany(mappedBy="ingredients")
+	private List<Drug> drugs;
 
 	public Ingredient() {
 		super();

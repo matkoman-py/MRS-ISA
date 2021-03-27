@@ -65,9 +65,9 @@
           </b-form-group>
         
 
-          <searchable-tags labelName="Ingrediants"
-                            :updateValue="(data) => form.ingrediants = data"
-                            :data="ingrediants"
+          <searchable-tags labelName="Ingredients"
+                            :updateValue="(data) => form.ingredients = data"
+                            :data="ingredients"
                             >
           </searchable-tags>
 
@@ -106,7 +106,7 @@ export default {
         receipt: false,
         description: "",
         substitutions: [],
-        ingrediants: [],
+        ingredients: [],
         manufacturer: null,
         type: null,
         points: 0,
@@ -117,7 +117,7 @@ export default {
       ],
       manufacturerOptions: [],
       drugTypeOptions: [],
-      ingrediants: [],
+      ingredients: [],
       substitutions: [],
     }
   },
@@ -148,10 +148,10 @@ export default {
       })
       .catch(error => console.log(error));
     },
-    getIngrediants: function(){
-      axios.get("http://localhost:8081/ingrediants")
+    getIngredients: function(){
+      axios.get("http://localhost:8081/ingredients")
       .then(response => {
-        this.ingrediants = response.data;
+        this.ingredients = response.data;
       })
       .catch(error => console.log(error));
     },
@@ -174,7 +174,7 @@ export default {
   },
   mounted: function(){
     this.getManufacturers();
-    this.getIngrediants();
+    this.getIngredients();
     this.getSubstitutionDrugs();
     this.getDrugTypes();
   }

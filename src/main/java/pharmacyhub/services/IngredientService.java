@@ -17,5 +17,9 @@ public class IngredientService {
 	public List<Ingredient> findAll() {
 		return ingrediantRepository.findAll();
 	}
+	
+	public Ingredient findById(String id) {
+		return ingrediantRepository.findById(id).orElse(null);
+	}
 
 }

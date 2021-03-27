@@ -14,8 +14,8 @@ import pharmacyhub.domain.Ingredient;
 import pharmacyhub.services.IngredientService;
 
 @Controller
-@RequestMapping("/ingrediants")
-public class IngredaintController {
+@RequestMapping("/ingredients")
+public class IngredeintController {
 
 	@Autowired
 	private IngredientService ingrediantService;
