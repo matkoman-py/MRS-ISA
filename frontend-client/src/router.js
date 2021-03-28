@@ -7,6 +7,8 @@ import PatientOverview from "./views/PatientOverview"
 import RegistrationPage from "./views/RegistrationPage"
 import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
+import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate"
+import AddPharmacistForm from "./views/AddPharmacistForm"
 
 
 Vue.use(VueRouter)
@@ -48,6 +50,16 @@ const routes = [
         path: '/drugs-overview',
         name: "DrugOverview",
         component: DrugOverview
+    },
+    {
+        path: '/drugstoreUpdate',
+        name: "drugstoreUpdate",
+        component: DrugstoreUpdate
+    },
+    {
+        path: '/addPharmacistForm',
+        name: "addPharmacistForm",
+        component: AddPharmacistForm
     },
 ];
 

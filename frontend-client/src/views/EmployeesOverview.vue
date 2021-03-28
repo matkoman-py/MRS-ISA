@@ -27,6 +27,8 @@
 </template>
 
 <script>
+  import axios from "axios";
+
   export default {
     data: function() {
       return {
@@ -42,9 +44,21 @@
     },
     methods: {
         getEmployees : function(){
-            fetch('http://localhost:8081/employees')
-            .then(response => response.json())
-            .then(response => this.employees = response);
+            axios.get('http://localhost:8081/employees')
+            .then(response => {
+            this.employees = response.data.map(employee => 
+            (
+                    {
+                        name: employee.name,
+                        surname: employee.surname,
+                        email: employee.email, 
+                        phoneNumber: employee.phoneNumber,
+                        location: employee.location,
+                        type: employee.type,
+                    }
+                ));
+            })
+            .catch(error => console.log(error));
         },
         onSubmit(event) {
             event.preventDefault()

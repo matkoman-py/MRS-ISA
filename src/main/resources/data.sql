@@ -25,3 +25,12 @@ INSERT INTO public.location VALUES ('9c7face6-d759-46bd-839a-6469ae471067', 'Beo
 --
 INSERT INTO public.manufacturer VALUES ('b137c265-6e12-4b59-947e-ab5504335dc4', 'Galenika', '+381 11 307 1000', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
 INSERT INTO public.manufacturer VALUES ('d9a1b6b2-df11-4071-88c6-887411477a48', 'Hemofarm', '+381 13 803 100', '9c7face6-d759-46bd-839a-6469ae471067');
+
+--
+-- Data for Name: Employee;
+--
+INSERT INTO public.users VALUES ('Pharmacist', 'ccb953a7-d244-48bb-8627-4b2437491dc1', 'pera@peric.com', 'Pera', '123', NULL, 'Peric', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', 'mika@mikic.com', 'Mika', '123', NULL, 'Mikic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Pharmacist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', 'zika@zikic.com', 'Zika', '123', NULL, 'Zikic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', 'djoka@djokic.com', 'Djoka', '123', NULL, 'Djokic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', 'steva@stevic.com', 'Steva', '123', NULL, 'Stevic', NULL, NULL, NULL);
