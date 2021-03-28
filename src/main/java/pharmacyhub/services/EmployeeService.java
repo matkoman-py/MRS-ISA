@@ -89,4 +89,20 @@ public class EmployeeService {
 		//fale provere
 		return dermatologistRepository.save(dermatologist);
 	}
+	
+	public List<Employee> addEmployee(Employee employee) throws Exception{
+		if(employee.getType().equals(UserType.Dermatologist)) {
+			//deo za dodavanje dermatologa
+			if (dermatologistRepository.findByEmail(employee.getEmail()) != null) {
+				throw new Exception("This dermatologist with this email already exist!");
+			}
+			dermatologistRepository.save(new Dermatologist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
+		}else {
+			if (pharmacistRepository.findByEmail(employee.getEmail()) != null) {
+				throw new Exception("This pharmacist with this email already exist!");
+			}
+			pharmacistRepository.save(new Pharmacist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
+		}
+		return findAll();
+	}
 }

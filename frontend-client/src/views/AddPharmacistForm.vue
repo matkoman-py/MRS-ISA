@@ -2,12 +2,12 @@
   <b-container style="width: 40%" align-h="center">
     <b-row>
       <b-col>
-        <b-form @submit="addPharmacist">
+        <b-form @submit="onSubmit">
 
           <b-form-group label="Name:" label-for="name-input">
             <b-form-input
               id="name-input"
-              v-model="name"
+              v-model="form.name"
               placeholder="Enter name"
               required
             ></b-form-input>
@@ -16,7 +16,7 @@
           <b-form-group label="Surname:" label-for="surname-input">
             <b-form-input
               id="surname-input"
-              v-model="surname"
+              v-model="form.surname"
               placeholder="Enter surname"
               required
             ></b-form-input>
@@ -25,7 +25,7 @@
           <b-form-group label="Email:" label-for="email-input">
             <b-form-input
               id="email-input"
-              v-model="email"
+              v-model="form.email"
               placeholder="Enter email address"
               required
             ></b-form-input>
@@ -34,7 +34,7 @@
           <b-form-group label="Password:" label-for="password-input">
             <b-form-input
               id="password-input"
-              v-model="password"
+              v-model="form.password"
               placeholder="Enter password"
               type="password"
               required
@@ -44,7 +44,7 @@
           <b-form-group label="Phone Number:" label-for="phoneNumber-input">
             <b-form-input
               id="phoneNumber-input"
-              v-model="phoneNumber"
+              v-model="form.phoneNumber"
               placeholder="Enter phone number"
               required
             ></b-form-input>
@@ -54,7 +54,7 @@
           <b-form-group label="Address:" label-for="address-input">
             <b-form-input
               id="address-input"
-              v-model="address"
+              v-model="form.address"
               placeholder="Enter address"
             ></b-form-input>
           </b-form-group>
@@ -62,7 +62,7 @@
           <b-form-group label="City:" label-for="city-input">
             <b-form-input
               id="city-input"
-              v-model="city"
+              v-model="form.city"
               placeholder="Enter city"
             ></b-form-input>
           </b-form-group>
@@ -70,7 +70,7 @@
           <b-form-group label="Country:" label-for="country-input">
             <b-form-input
               id="country-input"
-              v-model="country"
+              v-model="form.country"
               placeholder="Enter country"
             ></b-form-input>
           </b-form-group>
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import axios from "axios"
 
 export default {
   name: 'AddPharmacistForm',
@@ -96,6 +97,7 @@ export default {
   },
   data: function(){
     return {
+      form : {
         name: "",
         surname: "",
         email: "",
@@ -103,8 +105,20 @@ export default {
         phoneNumber: "",
         address: "",
         city: "",
-        country: ""
+        country: "",
+        type: "Pharmacist"
+      }
     }
+  },
+  methods : {
+    onSubmit(event){
+          event.preventDefault();
+          axios.post("http://localhost:8081/employees/addEmployee", JSON.parse(JSON.stringify(this.form)))
+              .then(response => {
+              console.log(response);
+              })
+              .catch(error => console.log(error));
+      }
   }
 }
 </script>

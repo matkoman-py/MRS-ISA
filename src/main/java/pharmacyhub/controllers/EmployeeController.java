@@ -34,8 +34,8 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.setDummyData(), HttpStatus.OK);
 	}
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Employee> addPharmacist(@RequestBody Pharmacist pharmacist) throws Exception {
-		return new ResponseEntity<>(employeeService.savePharmacist(pharmacist), HttpStatus.OK);
+	@PostMapping(path = "addEmployee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Employee>> addEmployee(@RequestBody Employee employee) throws Exception {
+		return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.OK);
 	}
 }
