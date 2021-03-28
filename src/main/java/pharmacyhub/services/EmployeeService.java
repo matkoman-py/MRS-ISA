@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Employee;
@@ -77,4 +78,15 @@ public class EmployeeService {
 
 	}
 
+	public Pharmacist savePharmacist(Pharmacist pharmacist) throws Exception {
+
+		//fale provere
+		return pharmacistRepository.save(pharmacist);
+	}
+	
+	public Dermatologist saveDermatologist(Dermatologist dermatologist) throws Exception {
+
+		//fale provere
+		return dermatologistRepository.save(dermatologist);
+	}
 }
