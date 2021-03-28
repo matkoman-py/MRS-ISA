@@ -8,6 +8,7 @@ import RegistrationPage from "./views/RegistrationPage"
 import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
 import DrugViewSearch from "./views/DrugViewSearch"
+import DrugstoreSearch from "./views/DrugstoreSearch"
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,11 @@ const routes = [
         path: '/drugSearch',
         name: "DrugSearch",
         component: DrugViewSearch
+    },
+    {
+        path: '/drugstoreSearch',
+        name: "DrugstoreSearch",
+        component: DrugstoreSearch
     }
 ];
 

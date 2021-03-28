@@ -1,10 +1,24 @@
 package pharmacyhub.domain;
 
-public class Drugstore {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Entity
+public class Drugstore extends BaseEntity {
+
+	@Column(nullable = false)
 	public String name;
+	
+	@ManyToOne
+	@JoinColumn(name="location_fk", nullable = false)
 	public Location location;
+	
+	@Column(nullable = false)
 	public String decription;
+	
+	@Column(name = "average_rating")
 	public double averageRating;
 
 	public Drugstore() {
