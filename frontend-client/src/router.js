@@ -7,7 +7,7 @@ import PatientOverview from "./views/PatientOverview"
 import RegistrationPage from "./views/RegistrationPage"
 import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
-
+import EmployeeTable from "./components/EmployeeTable"
 
 Vue.use(VueRouter)
 
@@ -48,6 +48,11 @@ const routes = [
         path: '/drugs-overview',
         name: "DrugOverview",
         component: DrugOverview
+    },
+    {
+        path: '/employeeprofiles',
+        name: "EmployeeProfiles",
+        component: EmployeeTable
     },
 ];
 
