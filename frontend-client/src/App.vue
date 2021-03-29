@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+
     <b-navbar type="dark" variant="dark" fixed="top">
       <b-navbar-brand tag="h3">
         <router-link to="/test">Test</router-link>
@@ -24,6 +25,12 @@
       </b-navbar-brand>
       <b-navbar-brand tag="h3">
         <router-link to="/drugstoreSearch">Drug search</router-link>
+      </b-navbar-brand>
+      <b-navbar-brand tag="h3">
+        <router-link to="/employeeprofiles">Employee profiles</router-link>
+      </b-navbar-brand>
+      <b-navbar-brand tag="h3">
+        <router-link to="/drugstoreUpdate">Drugstore update</router-link>
       </b-navbar-brand>
     </b-navbar>
 

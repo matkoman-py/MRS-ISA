@@ -46,6 +46,7 @@ public class EmployeeService {
 		p1.setSurname("Peric");
 		p1.setPassword("123");
 		p1.setEmail("pera@peric.com");
+		p1.setPhoneNumber("0603045657");
 		p1.setType(UserType.Pharmacist);
 		
 		p2.setName("Mika");
@@ -82,6 +83,7 @@ public class EmployeeService {
 
 	}
 
+
 	public Pharmacist savePharmacist(Pharmacist pharmacist) throws Exception {
 
 		//fale provere
@@ -110,6 +112,40 @@ public class EmployeeService {
 			}
 			locationRepository.save(employee.getLocation());
 			pharmacistRepository.save(new Pharmacist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
+		}
+		return findAll();
+	}
+	
+	public List<Employee> update(Employee employee) throws Exception{
+		if(employee.getType().equals(UserType.Dermatologist)) {
+			Dermatologist derm = dermatologistRepository.findById(employee.getId()).orElse(null);
+			if(derm.equals(null)) {
+				throw new Exception("This dermatologist does not exist!");
+			}
+			derm.setEmail(employee.getEmail());
+			derm.setLocation(employee.getLocation());
+			derm.setName(employee.getName());
+			derm.setPassword(employee.getPassword());
+			derm.setPhoneNumber(employee.getPhoneNumber());
+			derm.setSurname(employee.getSurname());
+			dermatologistRepository.save(derm);
+				
+			System.out.println(dermatologistRepository.findById(employee.getId()));
+		}else {
+			Pharmacist pharm = pharmacistRepository.findById(employee.getId()).orElse(null);
+			if(pharm.equals(null)) {
+				throw new Exception("This pharmacist does not exist!");
+			}
+			
+			pharm.setEmail(employee.getEmail());
+			pharm.setLocation(employee.getLocation());
+			pharm.setName(employee.getName());
+			pharm.setPassword(employee.getPassword());
+			pharm.setPhoneNumber(employee.getPhoneNumber());
+			pharm.setSurname(employee.getSurname());
+			pharmacistRepository.save(pharm);
+			
+			
 		}
 		return findAll();
 	}

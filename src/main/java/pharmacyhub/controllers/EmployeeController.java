@@ -9,10 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pharmacyhub.domain.Drugstore;
+
+import org.springframework.web.bind.annotation.PutMapping;
+
+
+import pharmacyhub.domain.Drug;
+
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.services.EmployeeService;
@@ -34,8 +41,15 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.setDummyData(), HttpStatus.OK);
 	}
 	
+
 	@PostMapping(path = "addEmployee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Employee>> addEmployee(@RequestBody Employee employee) throws Exception {
 		return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.OK);
+	}
+	
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Employee>> update(@RequestBody Employee employee) throws Exception {
+		return new ResponseEntity<>(employeeService.update(employee), HttpStatus.OK);
+
 	}
 }
