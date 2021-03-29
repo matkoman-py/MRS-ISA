@@ -7,14 +7,11 @@ import PatientOverview from "./views/PatientOverview"
 import RegistrationPage from "./views/RegistrationPage"
 import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
-<<<<<<< HEAD
 import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate"
 import AddPharmacistForm from "./views/AddPharmacistForm"
 import DrugViewSearch from "./views/DrugViewSearch"
 import DrugstoreSearch from "./views/DrugstoreSearch"
-=======
 import EmployeeTable from "./components/EmployeeTable"
->>>>>>> e3734a5fc1a36937dc6773c1e0f719d8b582f357
 
 Vue.use(VueRouter)
 
@@ -57,7 +54,6 @@ const routes = [
         component: DrugOverview
     },
     {
-<<<<<<< HEAD
         path: '/drugstoreUpdate',
         name: "drugstoreUpdate",
         component: DrugstoreUpdate
@@ -76,14 +72,12 @@ const routes = [
         path: '/drugstoreSearch',
         name: "DrugstoreSearch",
         component: DrugstoreSearch
-    }
-
-=======
+    },
+    {
         path: '/employeeprofiles',
         name: "EmployeeProfiles",
         component: EmployeeTable
     },
->>>>>>> e3734a5fc1a36937dc6773c1e0f719d8b582f357
 ];
 
 const router = new VueRouter({ 
