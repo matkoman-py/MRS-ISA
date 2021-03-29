@@ -9,7 +9,8 @@ import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
 import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate"
 import AddPharmacistForm from "./views/AddPharmacistForm"
-
+import DrugViewSearch from "./views/DrugViewSearch"
+import DrugstoreSearch from "./views/DrugstoreSearch"
 
 Vue.use(VueRouter)
 
@@ -61,6 +62,17 @@ const routes = [
         name: "addPharmacistForm",
         component: AddPharmacistForm
     },
+    {
+        path:'/drugSearch',
+        name: "DrugSearch",
+        component: DrugViewSearch
+    },
+    {
+        path: '/drugstoreSearch',
+        name: "DrugstoreSearch",
+        component: DrugstoreSearch
+    }
+
 ];
 
 const router = new VueRouter({ 
