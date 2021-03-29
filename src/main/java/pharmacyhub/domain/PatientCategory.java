@@ -1,9 +1,18 @@
 package pharmacyhub.domain;
 
-public class PatientCategory {
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
+public class PatientCategory extends BaseEntity{
+
+	@Column(nullable = false, unique = true)
 	private String name;
+	
+	@Column(nullable = false)
 	private int requieredPoints;
+	
+	@Column(nullable = false)
 	private int discount;
 
 	public PatientCategory() {

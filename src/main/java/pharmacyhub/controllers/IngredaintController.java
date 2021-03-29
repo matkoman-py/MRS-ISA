@@ -10,25 +10,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import pharmacyhub.domain.Ingrediant;
-import pharmacyhub.services.IngrediantService;
+import pharmacyhub.domain.Ingredient;
+import pharmacyhub.services.IngredientService;
 
 @Controller
-@RequestMapping("/ingrediants")
+@RequestMapping("/ingredients")
 public class IngredaintController {
 
 	@Autowired
-	private IngrediantService ingrediantService;
-	
+	private IngredientService ingrediantService;
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Ingrediant>> getIngredaints() {
+	public ResponseEntity<Collection<Ingredient>> getIngredaints() {
 		return new ResponseEntity<>(ingrediantService.findAll(), HttpStatus.OK);
 	}
-	
-	@GetMapping(path ="/seed", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Ingrediant>> seedIngredaints() {
-		return new ResponseEntity<>(ingrediantService.seedIngrediants(), HttpStatus.OK);
-	}
-	
-	
+
 }

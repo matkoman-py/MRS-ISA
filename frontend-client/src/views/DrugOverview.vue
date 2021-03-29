@@ -20,6 +20,7 @@
         getDrugs : function(){
             axios.get('http://localhost:8081/drugs')
             .then(response => {
+		console.log(response);
                 this.drugs = response.data.map(drug => 
                 (
                     {
@@ -32,7 +33,7 @@
                             (!drug.substitutions || drug.substitutions.length == 0) 
                             ? "No substitute"
                             : drug.substitutions.map(sub => sub.name).join(", "),
-                        ingrediants: drug.ingrediants.map(ingrediant => ingrediant.name).join(", "),
+                        ingredients: drug.ingredients.map(ingredient => ingredient.name).join(", "),
                     }
                 ));
             })

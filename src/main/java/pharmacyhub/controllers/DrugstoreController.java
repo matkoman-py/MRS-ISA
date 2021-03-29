@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
+import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.services.DrugstoreService;
 
 @Controller
 @RequestMapping("/drugstores")
 public class DrugstoreController {
+	
+	@Autowired
+	private LocationRepository locationRepository;
 	
 	@Autowired
 	private DrugstoreService drugstoreService;
@@ -29,17 +33,18 @@ public class DrugstoreController {
 	}
 	
 	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drugstore>> test(@RequestParam(value = "drugStoreNameParam", required=false,  defaultValue = "0") String drugStoreName
+	public ResponseEntity<Collection<Drugstore>> test(@RequestParam(value = "drugStoreNameParam", required=false,  defaultValue = "0") String drugStoreName,
+													  @RequestParam(value = "drugStoreCityParam", required=false,  defaultValue = "0") String drugStoreCity,
+													  @RequestParam(value = "drugStoreCountryParam", required=false,  defaultValue = "0") String drugStoreCountry
 												) throws Exception {
 		
-		drugstoreService.save(new Drugstore("Ime apoteke",new Location("grad","adresa","mesto"),"Description",10));
-		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugStoreName), HttpStatus.OK);
+		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugStoreName,drugStoreCity,drugStoreCountry), HttpStatus.OK);
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drugstore>> get(@RequestParam(value = "drugStoreNameParam", required=false,  defaultValue = "0") String drugStoreName
 												) throws Exception {
-		drugstoreService.save(new Drugstore("Ime apoteke",new Location("grad","adresa","mesto"),"Description",10));
+		
 		return new ResponseEntity<>(drugstoreService.findAll(), HttpStatus.OK);
 	}
 }

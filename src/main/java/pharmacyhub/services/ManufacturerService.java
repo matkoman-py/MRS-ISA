@@ -1,6 +1,6 @@
 package pharmacyhub.services;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ public class ManufacturerService {
 	@Autowired
 	private ManufacturerRepository manufacturerRepository;
 
-	public ArrayList<Manufacturer> readAll() {
-		return manufacturerRepository.readAll();
+	public List<Manufacturer> findAll() {
+		return manufacturerRepository.findAll();
 	}
 
 }

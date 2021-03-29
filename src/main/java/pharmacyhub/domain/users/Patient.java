@@ -1,14 +1,31 @@
 package pharmacyhub.domain.users;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.PatientCategory;
 import pharmacyhub.domain.enums.UserType;
 
+@Entity
+@DiscriminatorValue("Patient")
 public class Patient extends User {
 
 	// TODO add allergens
+	@Column
 	private int points;
+	
+	@Column
 	private int penaltyCounter;
+	
+	@ManyToOne
+	@JoinTable(name = "patient_patientCategory", 
+			   joinColumns = @JoinColumn(name = "patient_id"), 
+			   inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private PatientCategory category;
 
 	public Patient() {

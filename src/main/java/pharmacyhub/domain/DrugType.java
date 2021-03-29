@@ -1,13 +1,25 @@
 package pharmacyhub.domain;
 
-public class DrugType {
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
-	private String id;
+@Entity
+public class DrugType extends BaseEntity {
+
+	@Column(nullable = false, unique=true)
 	private String name;
+
+	@Column(nullable = false)
 	private String description;
 
 	public DrugType() {
 		super();
+	}
+	
+	public DrugType(String name, String description) {
+		super();
+		this.name = name;
+		this.description = description;
 	}
 
 	public DrugType(String id, String name, String description) {
@@ -15,15 +27,6 @@ public class DrugType {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-	}
-	
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {

@@ -16,13 +16,13 @@ import pharmacyhub.services.ManufacturerService;
 @Controller
 @RequestMapping("/manufacturers")
 public class ManufacturerController {
-	
+
 	@Autowired
 	private ManufacturerService manufacturerService;
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Manufacturer>> getManufacturers() {
-		return new ResponseEntity<>(manufacturerService.readAll(), HttpStatus.OK);
+		return new ResponseEntity<>(manufacturerService.findAll(), HttpStatus.OK);
 	}
-	
+
 }

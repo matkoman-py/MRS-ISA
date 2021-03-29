@@ -2,47 +2,32 @@ package pharmacyhub.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
-import pharmacyhub.domain.DrugType;
-import pharmacyhub.domain.Ingrediant;
-import pharmacyhub.domain.Manufacturer;
+import pharmacyhub.domain.Ingredient;
 import pharmacyhub.repositories.DrugRepository;
-import pharmacyhub.repositories.DrugTypeRepository;
-import pharmacyhub.repositories.IngrediantRepository;
-import pharmacyhub.repositories.ManufacturerRepository;
+import pharmacyhub.repositories.IngredientRepository;
 
 @Service
-public class DrugService{
-	
+public class DrugService {
+
 	@Autowired
 	private DrugRepository drugRepository;
-	
+
 	@Autowired
-	private DrugTypeRepository drugTypeRepository;
-	
-	@Autowired
-	private IngrediantRepository ingrediantRepository;
-	
-	@Autowired
-	private ManufacturerRepository manufacturerRepository;
-		
-	public void seedDrugs() {
-		DrugType drugType = new DrugType();
-		Manufacturer manufacturer = new Manufacturer();
-		Ingrediant ingredient = new Ingrediant();
-		ArrayList<Ingrediant> ingrediants = new ArrayList<>();
-		
-		ingrediants.add(ingredient);
-		drugRepository.add(new Drug("id1", "Gentamicin", "cream", true, drugTypeRepository.read("id1"), 
-				manufacturerRepository.read("id1"), null, ingrediantRepository.findAll(), "mast 0,1%, 15g", 10));
+	private IngredientRepository ingredientRepository;
+
+	public List<Drug> findAll() {
+		return drugRepository.findAll();
 	}
 	
 	public Collection<Drug> returnDrugs(String drugName,String drugType,String drugForm,String drugManufacturer,String drugReceipt){
-		Collection<Drug> allDrugs = readAll();
+		Collection<Drug> allDrugs = findAll();
 		Collection<Drug> wantedDrugs = new ArrayList<>();
 		//String sta = "";
 		for(Drug medicine:allDrugs) {
@@ -59,14 +44,28 @@ public class DrugService{
 		return wantedDrugs;
 	}
 	
-	public ArrayList<Drug> readAll()
-	{
-		return drugRepository.readAll();
+	public Drug save(Drug drug) throws Exception {
+
+		if (drug.getIngredients().isEmpty()) {
+			throw new Exception("Empty ingredients list!");
+		}
+
+		if (!areIngredientsValid(drug.getIngredients())) {
+			throw new Exception("This ingrediant does not exist");
+		}
+
+		return drugRepository.save(drug);
 	}
-	
-	public Drug add(Drug drug)
-	{
-		return drugRepository.add(drug);
+
+	private boolean areIngredientsValid(List<Ingredient> sentIngredients) throws Exception {
+		for (Ingredient ingredient : sentIngredients) {
+			Optional<Ingredient> ingredientEntity = ingredientRepository.findById(ingredient.getId());
+			if (!ingredientEntity.isPresent()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

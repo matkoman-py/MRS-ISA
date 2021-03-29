@@ -3,8 +3,10 @@ package pharmacyhub.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+
 @Entity
-public class Location extends BaseEntity {
+public class Location extends BaseEntity{
+
 	
 	@Column(nullable = false)
 	private String address;
@@ -16,9 +18,17 @@ public class Location extends BaseEntity {
 	public Location() {
 	
 	}
-
+	
 	public Location(String address, String city, String country) {
 		super();
+		this.address = address;
+		this.city = city;
+		this.country = country;
+	}
+
+	public Location(String id, String address, String city, String country) {
+		super();
+		this.id = id;
 		this.address = address;
 		this.city = city;
 		this.country = country;

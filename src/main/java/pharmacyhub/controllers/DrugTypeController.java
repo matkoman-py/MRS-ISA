@@ -19,10 +19,10 @@ public class DrugTypeController {
 
 	@Autowired
 	private DrugTypeService drugTypeService;
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugType>> getDrugTypes() {
-		return new ResponseEntity<>(drugTypeService.readAll(), HttpStatus.OK);
+		return new ResponseEntity<>(drugTypeService.findAll(), HttpStatus.OK);
 	}
-	
+
 }
