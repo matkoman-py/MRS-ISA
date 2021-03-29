@@ -27,6 +27,7 @@
               id="email-input"
               v-model="form.email"
               placeholder="Enter email address"
+              type="email"
               required
             ></b-form-input>
           </b-form-group>
@@ -54,7 +55,7 @@
           <b-form-group label="Address:" label-for="address-input">
             <b-form-input
               id="address-input"
-              v-model="form.address"
+              v-model="form.location.address"
               placeholder="Enter address"
             ></b-form-input>
           </b-form-group>
@@ -62,7 +63,7 @@
           <b-form-group label="City:" label-for="city-input">
             <b-form-input
               id="city-input"
-              v-model="form.city"
+              v-model="form.location.city"
               placeholder="Enter city"
             ></b-form-input>
           </b-form-group>
@@ -70,7 +71,7 @@
           <b-form-group label="Country:" label-for="country-input">
             <b-form-input
               id="country-input"
-              v-model="form.country"
+              v-model="form.location.country"
               placeholder="Enter country"
             ></b-form-input>
           </b-form-group>
@@ -103,9 +104,11 @@ export default {
         email: "",
         password: "",
         phoneNumber: "",
-        address: "",
-        city: "",
-        country: "",
+        location: {
+          address: "",
+          city: "",
+          country: ""
+        },
         type: "Pharmacist"
       }
     }
@@ -116,6 +119,7 @@ export default {
           axios.post("http://localhost:8081/employees/addEmployee", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
+              alert("New pharmacist successfully added.");
               })
               .catch(error => console.log(error));
       }

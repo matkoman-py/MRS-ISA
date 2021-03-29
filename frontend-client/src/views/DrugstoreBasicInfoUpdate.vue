@@ -61,7 +61,7 @@
         },
          onSubmit(event) {
             event.preventDefault()
-            alert("Searched text is " + this.description)
+            alert("Update saved.")
         }
     },
     mounted: function(){

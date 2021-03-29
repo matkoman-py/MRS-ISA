@@ -13,6 +13,7 @@ import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Pharmacist;
+import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
@@ -24,7 +25,10 @@ public class EmployeeService {
 	
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
-
+	
+	@Autowired
+	private LocationRepository locationRepository;
+	
 	public List<Employee> findAll() {
 		List<Employee> pharmacists = new ArrayList<Employee>(pharmacistRepository.findAll());
 		List<Employee> dermatologists = new ArrayList<Employee>(dermatologistRepository.findAll());
@@ -96,11 +100,13 @@ public class EmployeeService {
 			if (dermatologistRepository.findByEmail(employee.getEmail()) != null) {
 				throw new Exception("This dermatologist with this email already exist!");
 			}
+			locationRepository.save(employee.getLocation());
 			dermatologistRepository.save(new Dermatologist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
 		}else {
 			if (pharmacistRepository.findByEmail(employee.getEmail()) != null) {
 				throw new Exception("This pharmacist with this email already exist!");
 			}
+			locationRepository.save(employee.getLocation());
 			pharmacistRepository.save(new Pharmacist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
 		}
 		return findAll();
