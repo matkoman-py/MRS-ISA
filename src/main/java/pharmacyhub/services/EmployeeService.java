@@ -103,6 +103,8 @@ public class EmployeeService {
 			locationRepository.save(employee.getLocation());
 			dermatologistRepository.save(new Dermatologist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
 		}else {
+			//deo za dodavanje farmaceuta
+			//TODO: treba dodati drugstore key kod dodavanja farmaceuta
 			if (pharmacistRepository.findByEmail(employee.getEmail()) != null) {
 				throw new Exception("This pharmacist with this email already exist!");
 			}

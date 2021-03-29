@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import pharmacyhub.domain.BaseEntity;
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
@@ -47,6 +48,10 @@ public abstract class User extends BaseEntity{
 	@Enumerated(EnumType.STRING)
     @Column(name = "type", insertable = false, updatable = false)
 	private UserType type;
+	
+	@ManyToOne
+	@JoinColumn(name="drugstore_fk")
+	public Drugstore drugstore;
 	
 	public User() {
 		

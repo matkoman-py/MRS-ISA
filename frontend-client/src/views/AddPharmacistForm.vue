@@ -120,6 +120,7 @@ export default {
               .then(response => {
               console.log(response);
               alert("New pharmacist successfully added.");
+              this.$router.push('employeesOverview');
               })
               .catch(error => console.log(error));
       }

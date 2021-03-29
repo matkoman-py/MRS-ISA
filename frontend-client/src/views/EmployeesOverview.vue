@@ -5,7 +5,9 @@
         <b-table striped hover :items="employees"></b-table>
     </div>
     <div>
-        <b-button style="margin-right:50px" variant="success">Add pharmacist</b-button>
+        <router-link to="/addPharmacistForm">
+           <b-button style="margin-right:50px" variant="success">Add pharmacist</b-button>
+        </router-link>
         <b-button style="margin-left:50px; margin-right:50px" variant="success">Add dermatologist</b-button>
         <b-button style="margin-left:50px" variant="danger">Delete employee</b-button>
     </div>
@@ -53,7 +55,9 @@
                         surname: employee.surname,
                         email: employee.email, 
                         phoneNumber: employee.phoneNumber,
-                        location: employee.location,
+                        address: employee.location ? employee.location.address : null,
+                        city: employee.location ? employee.location.city : null,
+                        country: employee.location ? employee.location.country : null,
                         type: employee.type,
                     }
                 ));
@@ -68,7 +72,7 @@
             event.preventDefault()
             this.searchText = ''
             this.selected = 'All_Employees'
-        }
+        },
     },
     mounted: function(){
         this.getEmployees();
