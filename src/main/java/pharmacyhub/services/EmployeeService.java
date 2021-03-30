@@ -103,7 +103,7 @@ public class EmployeeService {
 				throw new Exception("This dermatologist with this email already exist!");
 			}
 			locationRepository.save(employee.getLocation());
-			dermatologistRepository.save(new Dermatologist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
+			dermatologistRepository.save(new Dermatologist(employee.getEmail(), "lozinka", employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType(), employee.getWorkingHoursFrom(), employee.getWorkingHoursTo()));
 		}else {
 			//deo za dodavanje farmaceuta
 			//TODO: treba dodati drugstore key kod dodavanja farmaceuta
@@ -111,7 +111,7 @@ public class EmployeeService {
 				throw new Exception("This pharmacist with this email already exist!");
 			}
 			locationRepository.save(employee.getLocation());
-			pharmacistRepository.save(new Pharmacist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
+			pharmacistRepository.save(new Pharmacist(employee.getEmail(), "lozinka", employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType(), employee.getWorkingHoursFrom(), employee.getWorkingHoursTo()));
 		}
 		return findAll();
 	}

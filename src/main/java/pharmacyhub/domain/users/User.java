@@ -40,6 +40,11 @@ public abstract class User extends BaseEntity{
 	@Column
 	private String phoneNumber;
 	
+	@Column
+	private String workingHoursFrom;
+	@Column
+	private String workingHoursTo;
+	
 	//treba nullable false mozda?
 	@ManyToOne
 	@JoinColumn(name="location_fk")
@@ -59,13 +64,13 @@ public abstract class User extends BaseEntity{
 	
 	public User(String id, String email, String password, String name, String surname, String phoneNumber, Location location,
 			UserType type) {
-		this(email, password, name, surname, phoneNumber, location, type);
+		this(email, password, name, surname, phoneNumber, location, type, null, null);
 		this.id = id;
 		
 	}
 
 	public User(String email, String password, String name, String surname, String phoneNumber, Location location,
-			UserType type) {
+			UserType type, String workingHoursFrom, String workingHoursTo) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -74,6 +79,8 @@ public abstract class User extends BaseEntity{
 		this.phoneNumber = phoneNumber;
 		this.location = location;
 		this.type = type;
+		this.workingHoursFrom = workingHoursFrom;
+		this.workingHoursTo = workingHoursTo;
 	}
 
 	public String getEmail() {
@@ -132,5 +139,20 @@ public abstract class User extends BaseEntity{
 		this.type = type;
 	}
 	
+	public String getWorkingHoursFrom() {
+		return workingHoursFrom;
+	}
+
+	public void setWorkingHoursFrom(String workingHoursFrom) {
+		this.workingHoursFrom = workingHoursFrom;
+	}
+
+	public String getWorkingHoursTo() {
+		return workingHoursTo;
+	}
+
+	public void setWorkingHoursTo(String workingHoursTo) {
+		this.workingHoursTo = workingHoursTo;
+	}
 	
 }

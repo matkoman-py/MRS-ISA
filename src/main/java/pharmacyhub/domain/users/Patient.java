@@ -34,7 +34,7 @@ public class Patient extends User {
 
 	public Patient(String email, String password, String name, String surname, String phoneNumber, Location location,
 			UserType type, int points, int penaltyCounter, PatientCategory category) {
-		super(email, password, name, surname, phoneNumber, location, type);
+		super(email, password, name, surname, phoneNumber, location, type, null, null);
 		this.points = points;
 		this.penaltyCounter = penaltyCounter;
 		this.category = category;

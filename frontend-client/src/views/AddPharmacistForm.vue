@@ -1,5 +1,6 @@
 <template>
   <b-container style="width: 40%" align-h="center">
+      <h1> Add pharmacist form </h1>
     <b-row>
       <b-col>
         <b-form @submit="onSubmit">
@@ -28,16 +29,6 @@
               v-model="form.email"
               placeholder="Enter email address"
               type="email"
-              required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group label="Password:" label-for="password-input">
-            <b-form-input
-              id="password-input"
-              v-model="form.password"
-              placeholder="Enter password"
-              type="password"
               required
             ></b-form-input>
           </b-form-group>
@@ -76,13 +67,21 @@
             ></b-form-input>
           </b-form-group>
             </div>
-
+          <b-form-group style="display:inline-block;" label="Working hours:" label-for="workingHours-input">
+            <div style="float:left;margin:20px">
+              <b style="clear: right;">From:</b>
+            <b-form-timepicker v-model="form.workingHoursFrom" locale="en"></b-form-timepicker>
+            </div>
+            <div style="float:left;margin:20px">
+              <b>To:</b>
+            <b-form-timepicker v-model="form.workingHoursTo" locale="en"></b-form-timepicker>
+            </div>
+          </b-form-group>
+          <div style="margin:25px">
           <b-button type="submit" variant="primary">Submit</b-button>
           <b-button type="reset" variant="danger">Reset</b-button>
+          </div>  
         </b-form>
-        <b-card class="mt-3" header="Form Data Result">
-          <pre class="m-0">{{ form }}</pre>
-        </b-card>
       </b-col>
     </b-row>
     
@@ -102,13 +101,14 @@ export default {
         name: "",
         surname: "",
         email: "",
-        password: "",
         phoneNumber: "",
         location: {
           address: "",
           city: "",
           country: ""
         },
+        workingHoursFrom: "",
+        workingHoursTo: "",
         type: "Pharmacist"
       }
     }
