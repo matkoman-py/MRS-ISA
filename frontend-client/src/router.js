@@ -12,6 +12,7 @@ import AddPharmacistForm from "./views/AddPharmacistForm"
 import DrugViewSearch from "./views/DrugViewSearch"
 import DrugstoreSearch from "./views/DrugstoreSearch"
 import EmployeeTable from "./components/EmployeeTable"
+import AddDrugstoreForm from "./views/AddDrugstoreForm"
 
 Vue.use(VueRouter)
 
@@ -77,6 +78,11 @@ const routes = [
         path: '/employeeprofiles',
         name: "EmployeeProfiles",
         component: EmployeeTable
+    },
+    {
+        path: '/add-drugstore-form',
+        name: "AddDrugstoreForm",
+        component: AddDrugstoreForm
     },
 ];
 

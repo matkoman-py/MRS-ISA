@@ -1,17 +1,21 @@
 package pharmacyhub.services;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.Location;
 import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.LocationRepository;
 
 @Service
 public class DrugstoreService {
+	
+	@Autowired
+	private LocationRepository locationRepository;
 
 	@Autowired
 	private DrugstoreRepository drugstoreRepository;
@@ -22,7 +26,11 @@ public class DrugstoreService {
 
 	public Drugstore save(Drugstore drugstore) throws Exception {
 
-		//treba proveriti da li je validno
+		if(drugstore.getLocation() != null) {
+			Location location = drugstore.getLocation();
+			locationRepository.save(location);
+		}
+		
 		return drugstoreRepository.save(drugstore);
 	}
 

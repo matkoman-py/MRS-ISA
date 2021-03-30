@@ -16,7 +16,7 @@ public class Drugstore extends BaseEntity {
 	public Location location;
 	
 	@Column(nullable = false)
-	public String decription;
+	public String description;
 	
 	@Column(name = "average_rating")
 	public double averageRating;
@@ -29,7 +29,7 @@ public class Drugstore extends BaseEntity {
 		super();
 		this.name = name;
 		this.location = location;
-		this.decription = decription;
+		this.description = decription;
 		this.averageRating = averageRating;
 	}
 
@@ -50,11 +50,11 @@ public class Drugstore extends BaseEntity {
 	}
 
 	public String getDecription() {
-		return decription;
+		return description;
 	}
 
 	public void setDecription(String decription) {
-		this.decription = decription;
+		this.description = decription;
 	}
 
 	public double getAverageRating() {
