@@ -41,11 +41,11 @@ INSERT INTO public.drug VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', 'a', 'va
 --
 -- Data for Name: Employee;
 --
-INSERT INTO public.users VALUES ('Pharmacist', 'ccb953a7-d244-48bb-8627-4b2437491dc1', 'pera@peric.com', 'Pera', '123', NULL, 'Peric', NULL, NULL, NULL);
-INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', 'mika@mikic.com', 'Mika', '123', NULL, 'Mikic', NULL, NULL, NULL);
-INSERT INTO public.users VALUES ('Pharmacist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', 'zika@zikic.com', 'Zika', '123', NULL, 'Zikic', NULL, NULL, NULL);
-INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', 'djoka@djokic.com', 'Djoka', '123', NULL, 'Djokic', NULL, NULL, NULL);
-INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', 'steva@stevic.com', 'Steva', '123', NULL, 'Stevic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Pharmacist','ccb953a7-d244-48bb-8627-4b2437491dc1', '', 'pera@peric.com', 'Pera', '123', NULL, TRUE, 'Peric', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', '', 'mika@mikic.com', 'Mika', '123', NULL, TRUE, 'Mikic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Pharmacist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '', 'zika@zikic.com', 'Zika', '123', NULL, TRUE, 'Zikic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '', 'djoka@djokic.com', 'Djoka', '123', NULL, TRUE, 'Djokic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '', 'steva@stevic.com', 'Steva', '123', NULL, TRUE, 'Stevic', NULL, NULL, NULL);
 
 --
 -- Data for Name: Drugstore;

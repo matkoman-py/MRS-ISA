@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Employee;
@@ -103,7 +102,17 @@ public class EmployeeService {
 				throw new Exception("This dermatologist with this email already exist!");
 			}
 			locationRepository.save(employee.getLocation());
-			dermatologistRepository.save(new Dermatologist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
+			dermatologistRepository.save(
+					new Dermatologist(
+							employee.getEmail(), 
+							employee.getPassword(), 
+							employee.getName(), 
+							employee.getSurname(), 
+							employee.getPhoneNumber(), 
+							employee.getLocation(), 
+							false,
+							null
+							));
 		}else {
 			//deo za dodavanje farmaceuta
 			//TODO: treba dodati drugstore key kod dodavanja farmaceuta
@@ -111,7 +120,17 @@ public class EmployeeService {
 				throw new Exception("This pharmacist with this email already exist!");
 			}
 			locationRepository.save(employee.getLocation());
-			pharmacistRepository.save(new Pharmacist(employee.getEmail(), employee.getPassword(), employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), employee.getType()));
+			pharmacistRepository.save(
+					new Pharmacist(
+							employee.getEmail(), 
+							employee.getPassword(), 
+							employee.getName(), 
+							employee.getSurname(), 
+							employee.getPhoneNumber(), 
+							employee.getLocation(), 
+							false,
+							null
+							));
 		}
 		return findAll();
 	}

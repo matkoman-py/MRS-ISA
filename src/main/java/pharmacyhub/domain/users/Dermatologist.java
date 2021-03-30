@@ -14,9 +14,9 @@ public class Dermatologist extends Employee{
 		super();
 	}
 	
-	public Dermatologist(String email, String password, String name, String surname, String phoneNumber, Location location,
-			UserType type) {
-		super(email, password, name, surname, phoneNumber, location, type);
+	public Dermatologist(String email, String password, String name, String surname, String phoneNumber, Location location, boolean status, String activationCode) {
+		super(email, password, name, surname, phoneNumber, location, UserType.Dermatologist, status, activationCode);
 	}
+	
 	
 }

@@ -33,8 +33,8 @@ public class Patient extends User {
 	}
 
 	public Patient(String email, String password, String name, String surname, String phoneNumber, Location location,
-			UserType type, int points, int penaltyCounter, PatientCategory category) {
-		super(email, password, name, surname, phoneNumber, location, type);
+			boolean status, String activationCode, int points, int penaltyCounter, PatientCategory category) {
+		super(email, password, name, surname, phoneNumber, location, UserType.Patient, status, activationCode);
 		this.points = points;
 		this.penaltyCounter = penaltyCounter;
 		this.category = category;
