@@ -7,5 +7,8 @@ import pharmacyhub.domain.users.User;
 
 @NoRepositoryBean
 public interface AbstractUserRepository<T extends User> extends JpaRepository<T, String> {
+	
 	User findByEmail(String email);
+	
+	User findByActivationCode(String activationCode);
 }

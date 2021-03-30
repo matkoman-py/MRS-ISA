@@ -73,4 +73,19 @@ public class RegistrationService {
 		}
 		return sb.toString();
 	}
+	
+	public boolean verifyActivationCodeAndActivateUser(String activationCode) {
+		
+		User userWithActivationCode = userRepository.findByActivationCode(activationCode);
+		
+		if (userWithActivationCode == null) {
+			return false;
+		}
+		
+		userWithActivationCode.setActivationCode("");
+		userWithActivationCode.setStatus(true);
+		userRepository.save(userWithActivationCode);
+		
+		return true;
+	}
 }
