@@ -2,8 +2,8 @@
     <b-container>
         <b-row>
             <b-col>
-                <h1>Drug Table</h1>
-                <DrugTable/>
+                <h1>Drugstore Table</h1>
+                <DrugstoreTable/>
             </b-col>
         </b-row>    
     </b-container>    
@@ -11,11 +11,11 @@
 
 <script>
 
-import DrugTable from "@/components/DrugTable"
+import DrugstoreTable from "@/components/DrugstoreTable"
 
 export default {
     components:{
-        DrugTable,
+        DrugstoreTable,
     }
 }
 

@@ -5,7 +5,9 @@
         <b-table striped hover :items="employees"></b-table>
     </div>
     <div>
-        <b-button style="margin-right:50px" variant="success">Add pharmacist</b-button>
+        <router-link to="/addPharmacistForm">
+           <b-button style="margin-right:50px" variant="success">Add pharmacist</b-button>
+        </router-link>
         <b-button style="margin-left:50px; margin-right:50px" variant="success">Add dermatologist</b-button>
         <b-button style="margin-left:50px" variant="danger">Delete employee</b-button>
     </div>
@@ -27,6 +29,8 @@
 </template>
 
 <script>
+  import axios from "axios";
+
   export default {
     data: function() {
       return {
@@ -42,9 +46,23 @@
     },
     methods: {
         getEmployees : function(){
-            fetch('http://localhost:8081/employees')
-            .then(response => response.json())
-            .then(response => this.employees = response);
+            axios.get('http://localhost:8081/employees')
+            .then(response => {
+            this.employees = response.data.map(employee => 
+            (
+                    {
+                        name: employee.name,
+                        surname: employee.surname,
+                        email: employee.email, 
+                        phoneNumber: employee.phoneNumber,
+                        address: employee.location ? employee.location.address : null,
+                        city: employee.location ? employee.location.city : null,
+                        country: employee.location ? employee.location.country : null,
+                        type: employee.type,
+                    }
+                ));
+            })
+            .catch(error => console.log(error));
         },
         onSubmit(event) {
             event.preventDefault()
@@ -54,7 +72,7 @@
             event.preventDefault()
             this.searchText = ''
             this.selected = 'All_Employees'
-        }
+        },
     },
     mounted: function(){
         this.getEmployees();

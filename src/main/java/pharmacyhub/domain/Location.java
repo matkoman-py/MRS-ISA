@@ -1,12 +1,18 @@
 package pharmacyhub.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+
 
 @Entity
 public class Location extends BaseEntity{
+
 	
+	@Column(nullable = false)
 	private String address;
+	@Column(name = "city")
 	private String city;
+	@Column(name = "country")
 	private String country;
 	
 	public Location() {
