@@ -6,6 +6,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ public class UserNotificationService {
     @Autowired
 	private JavaMailSender javaMailSender;
 	
+    @Async
 	public void sendActivationCode(String email, String activationCode) throws MessagingException {
 				
 		MimeMessage message = javaMailSender.createMimeMessage();
@@ -24,6 +26,23 @@ public class UserNotificationService {
 		helper.setFrom("notification@pharmacyhub.com");
 		helper.setTo(email);
 		helper.setSubject("Activate your account");
+		helper.setText(emailContent, true);
+
+		javaMailSender.send(message);
+	}
+	
+    @Async
+	public void sendEmployeeInitialPassword(String email, String password) throws MessagingException {
+		
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		String emailContent = "Good luck, here is your initial password, please use this to login and then change your password"
+				+ "<br>password: " + password + "<br>";
+
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setTo(email);
+		helper.setSubject("Account details");
 		helper.setText(emailContent, true);
 
 		javaMailSender.send(message);

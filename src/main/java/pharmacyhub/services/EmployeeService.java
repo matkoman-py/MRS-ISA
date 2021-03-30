@@ -15,130 +15,64 @@ import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
+import pharmacyhub.repositories.users.UserRepository;
 
 @Service
 public class EmployeeService {
 
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
-	
+
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
-	
+
+	@Autowired
+	private UserRepository userRepository;
+
 	@Autowired
 	private LocationRepository locationRepository;
-	
+
 	public List<Employee> findAll() {
 		List<Employee> pharmacists = new ArrayList<Employee>(pharmacistRepository.findAll());
 		List<Employee> dermatologists = new ArrayList<Employee>(dermatologistRepository.findAll());
 		return Stream.concat(pharmacists.stream(), dermatologists.stream()).collect(Collectors.toList());
 	}
-	
-	public List<Employee> setDummyData() {
-		Pharmacist p1 = new Pharmacist();
-		Pharmacist p2 = new Pharmacist();
-		Dermatologist d1 = new Dermatologist();
-		Dermatologist d2 = new Dermatologist();
-		Pharmacist p3 = new Pharmacist();
-		
-		p1.setName("Pera");
-		p1.setSurname("Peric");
-		p1.setPassword("123");
-		p1.setEmail("pera@peric.com");
-		p1.setPhoneNumber("0603045657");
-		p1.setType(UserType.Pharmacist);
-		
-		p2.setName("Mika");
-		p2.setSurname("Mikic");
-		p2.setPassword("123");
-		p2.setEmail("mika@mikic.com");
-		p2.setType(UserType.Pharmacist);
-		
-		d1.setName("Djoka");
-		d1.setSurname("Djokic");
-		d1.setPassword("123");
-		d1.setEmail("djoka@djokic.com");
-		d1.setType(UserType.Dermatologist);
-		
-		d2.setName("Steva");
-		d2.setSurname("Stevic");
-		d2.setPassword("123");
-		d2.setEmail("steva@stevic.com");
-		d2.setType(UserType.Dermatologist);
-		
-		p3.setName("Zika");
-		p3.setSurname("Zikic");
-		p3.setPassword("123");
-		p3.setEmail("zika@zikic.com");
-		p3.setType(UserType.Pharmacist);
-		
-		pharmacistRepository.save(p1);
-		pharmacistRepository.save(p2);
-		pharmacistRepository.save(p3);
-		dermatologistRepository.save(d1);
-		dermatologistRepository.save(d2);
-		
-		return findAll();
-
-	}
-
 
 	public Pharmacist savePharmacist(Pharmacist pharmacist) throws Exception {
 
-		//fale provere
+		// fale provere
 		return pharmacistRepository.save(pharmacist);
 	}
-	
+
 	public Dermatologist saveDermatologist(Dermatologist dermatologist) throws Exception {
 
-		//fale provere
+		// fale provere
 		return dermatologistRepository.save(dermatologist);
 	}
-	
-	public List<Employee> addEmployee(Employee employee) throws Exception{
-		if(employee.getType().equals(UserType.Dermatologist)) {
-			//deo za dodavanje dermatologa
-			if (dermatologistRepository.findByEmail(employee.getEmail()) != null) {
-				throw new Exception("This dermatologist with this email already exist!");
-			}
+
+	public List<Employee> addEmployee(Employee employee) throws Exception {
+
+		if (userRepository.findByEmail(employee.getEmail()) != null) {
+			throw new Exception("A user with this email already exist!");
+		}
+
+		if (employee.getType().equals(UserType.Dermatologist)) {
 			locationRepository.save(employee.getLocation());
-			dermatologistRepository.save(
-					new Dermatologist(
-							employee.getEmail(), 
-							employee.getPassword(), 
-							employee.getName(), 
-							employee.getSurname(), 
-							employee.getPhoneNumber(), 
-							employee.getLocation(), 
-							false,
-							null
-							));
-		}else {
-			//deo za dodavanje farmaceuta
-			//TODO: treba dodati drugstore key kod dodavanja farmaceuta
-			if (pharmacistRepository.findByEmail(employee.getEmail()) != null) {
-				throw new Exception("This pharmacist with this email already exist!");
-			}
+			dermatologistRepository
+					.save(new Dermatologist(employee.getEmail(), employee.getPassword(), employee.getName(),
+							employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), false, null));
+		} else {
 			locationRepository.save(employee.getLocation());
-			pharmacistRepository.save(
-					new Pharmacist(
-							employee.getEmail(), 
-							employee.getPassword(), 
-							employee.getName(), 
-							employee.getSurname(), 
-							employee.getPhoneNumber(), 
-							employee.getLocation(), 
-							false,
-							null
-							));
+			pharmacistRepository.save(new Pharmacist(employee.getEmail(), employee.getPassword(), employee.getName(),
+					employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), false, null));
 		}
 		return findAll();
 	}
-	
-	public List<Employee> update(Employee employee) throws Exception{
-		if(employee.getType().equals(UserType.Dermatologist)) {
+
+	public List<Employee> update(Employee employee) throws Exception {
+		if (employee.getType().equals(UserType.Dermatologist)) {
 			Dermatologist derm = dermatologistRepository.findById(employee.getId()).orElse(null);
-			if(derm.equals(null)) {
+			if (derm.equals(null)) {
 				throw new Exception("This dermatologist does not exist!");
 			}
 			derm.setEmail(employee.getEmail());
@@ -148,14 +82,14 @@ public class EmployeeService {
 			derm.setPhoneNumber(employee.getPhoneNumber());
 			derm.setSurname(employee.getSurname());
 			dermatologistRepository.save(derm);
-				
+
 			System.out.println(dermatologistRepository.findById(employee.getId()));
-		}else {
+		} else {
 			Pharmacist pharm = pharmacistRepository.findById(employee.getId()).orElse(null);
-			if(pharm.equals(null)) {
+			if (pharm.equals(null)) {
 				throw new Exception("This pharmacist does not exist!");
 			}
-			
+
 			pharm.setEmail(employee.getEmail());
 			pharm.setLocation(employee.getLocation());
 			pharm.setName(employee.getName());
@@ -163,8 +97,7 @@ public class EmployeeService {
 			pharm.setPhoneNumber(employee.getPhoneNumber());
 			pharm.setSurname(employee.getSurname());
 			pharmacistRepository.save(pharm);
-			
-			
+
 		}
 		return findAll();
 	}

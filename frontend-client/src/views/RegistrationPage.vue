@@ -127,7 +127,11 @@ import axios from 'axios'
                 this.$root.$emit('bv::hide::popover', 'pop')
                 if (!this.validatePhoneNumber()) {
                     this.$root.$emit('bv::show::popover', 'pop')
-                    return
+                    return;
+                }
+                if(!this.validatePassword()){
+                    alert("Passwords aren't matching!")
+                    return;
                 }
                 event.preventDefault();
                 this.registerUser();
@@ -144,7 +148,7 @@ import axios from 'axios'
                 return this.form.phoneNumber.length > 6;
             },
             validatePassword: function(){
-                return this.form.password != this.form.repeatedPassword;
+                return this.form.password == this.form.repeatedPassword;
             }
         }
     }

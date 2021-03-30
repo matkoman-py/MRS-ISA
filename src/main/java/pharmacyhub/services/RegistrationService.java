@@ -1,7 +1,5 @@
 package pharmacyhub.services;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +9,7 @@ import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.UserRegistrationDto;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.users.UserRepository;
+import pharmacyhub.utils.RadnomGeneratorUtil;
 
 @Service
 public class RegistrationService {
@@ -23,7 +22,7 @@ public class RegistrationService {
 	@Autowired
 	private UserNotificationService userNotificationService;
 
-	public User registerUser(UserRegistrationDto requestUser) throws Exception {
+	public boolean registerUser(UserRegistrationDto requestUser) throws Exception {
 
 		User user = userRepository.findByEmail(requestUser.getEmail());
 		
@@ -32,22 +31,27 @@ public class RegistrationService {
 			throw new Exception("Email already taken!");
 		}
 		
+		
+		if (requestUser.getType() == UserType.Patient) {
+			savePatient(requestUser);
+		}
+		
+		return true;
+
+	}
+	
+	private void savePatient(UserRegistrationDto requestUser) throws Exception {
+		String activationCode = RadnomGeneratorUtil.generateActivationCode();
+		
+		Patient patient = userRepository.save(getPatientFromUserRegistrationDto(requestUser));
+		patient.setActivationCode(activationCode);
+		patient.setStatus(false);
+		
 		if (!requestUser.getPassword().equals(requestUser.getRepeatedPassword())) {
 			throw new Exception("Passwords do not match");
 		}
 		
-		String activationCode = generateActivationCode();
-		
-		if (requestUser.getType() == UserType.Patient) {
-			Patient patient = userRepository.save(getPatientFromUserRegistrationDto(requestUser));
-			patient.setActivationCode(activationCode);
-			patient.setStatus(false);
-			user = userRepository.save(patient);
-		}
-		
-		userNotificationService.sendActivationCode(user.getEmail(), activationCode);
-
-		return user;
+		userNotificationService.sendActivationCode(patient.getEmail(), activationCode);
 	}
 
 	private Patient getPatientFromUserRegistrationDto(UserRegistrationDto requestUser) {
@@ -63,16 +67,6 @@ public class RegistrationService {
 		return patient;
 	}
 	
-	private String generateActivationCode() {
-		char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-		StringBuilder sb = new StringBuilder();
-		Random random = new Random();
-		for (int i = 0; i < 60; i++) {
-			char c = chars[random.nextInt(chars.length)];
-			sb.append(c);
-		}
-		return sb.toString();
-	}
 	
 	public boolean verifyActivationCodeAndActivateUser(String activationCode) {
 		

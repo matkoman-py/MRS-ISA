@@ -26,12 +26,6 @@ public class EmployeeController {
 	public ResponseEntity<Collection<Employee>> getGreetings() {
 		return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
 	}
-	
-	@GetMapping(path = "fill", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Employee>> fill() {
-		return new ResponseEntity<>(employeeService.setDummyData(), HttpStatus.OK);
-	}
-	
 
 	@PostMapping(path = "addEmployee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Employee>> addEmployee(@RequestBody Employee employee) throws Exception {
