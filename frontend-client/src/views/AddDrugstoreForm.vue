@@ -1,6 +1,6 @@
 <template>
     <b-container>
-        <drugstore-basic-info :form="form" :submitHandler="submitHandler"></drugstore-basic-info>
+        <drugstore-basic-info :form="form" :submitHandler="submitHandler" mode="add"></drugstore-basic-info>
     </b-container>
 </template>
 
