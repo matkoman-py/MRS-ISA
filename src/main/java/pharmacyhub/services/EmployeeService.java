@@ -16,6 +16,7 @@ import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.repositories.users.UserRepository;
+import pharmacyhub.utils.RadnomGeneratorUtil;
 
 @Service
 public class EmployeeService {
@@ -31,6 +32,9 @@ public class EmployeeService {
 
 	@Autowired
 	private LocationRepository locationRepository;
+	
+	@Autowired
+	private UserNotificationService userNotificationService;
 
 	public List<Employee> findAll() {
 		List<Employee> pharmacists = new ArrayList<Employee>(pharmacistRepository.findAll());
@@ -57,14 +61,26 @@ public class EmployeeService {
 		}
 
 		if (employee.getType().equals(UserType.Dermatologist)) {
+
 			locationRepository.save(employee.getLocation());
-			dermatologistRepository
-					.save(new Dermatologist(employee.getEmail(), employee.getPassword(), employee.getName(),
-							employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), false, null));
+			Dermatologist dermatologist = new Dermatologist(employee.getEmail(),
+					RadnomGeneratorUtil.generateEmployeePassword(), employee.getName(), employee.getSurname(),
+					employee.getPhoneNumber(), employee.getLocation(),
+					employee.getWorkingHoursFrom(), employee.getWorkingHoursTo());
+			
+			dermatologistRepository.save(dermatologist);
+			userNotificationService.sendEmployeeInitialPassword(dermatologist.getEmail(), dermatologist.getPassword());
+
 		} else {
 			locationRepository.save(employee.getLocation());
-			pharmacistRepository.save(new Pharmacist(employee.getEmail(), employee.getPassword(), employee.getName(),
-					employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(), false, null));
+			Pharmacist pharmacist = new Pharmacist(employee.getEmail(),
+					RadnomGeneratorUtil.generateEmployeePassword(), employee.getName(), employee.getSurname(),
+					employee.getPhoneNumber(), employee.getLocation(),
+					employee.getWorkingHoursFrom(), employee.getWorkingHoursTo());
+			
+			pharmacistRepository.save(pharmacist);
+			userNotificationService.sendEmployeeInitialPassword(pharmacist.getEmail(), pharmacist.getPassword());
+
 		}
 		return findAll();
 	}

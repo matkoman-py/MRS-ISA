@@ -8,7 +8,9 @@
         <router-link to="/addPharmacistForm">
            <b-button style="margin-right:50px" variant="success">Add pharmacist</b-button>
         </router-link>
-        <b-button style="margin-left:50px; margin-right:50px" variant="success">Add dermatologist</b-button>
+        <router-link to="/addDermatologistForm">
+                <b-button style="margin-left:50px; margin-right:50px" variant="success">Add dermatologist</b-button>
+        </router-link>
         <b-button style="margin-left:50px" variant="danger">Delete employee</b-button>
     </div>
     <b-container style="margin:15px">

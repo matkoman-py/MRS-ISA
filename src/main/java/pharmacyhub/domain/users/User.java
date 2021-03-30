@@ -38,8 +38,13 @@ public abstract class User extends BaseEntity {
 	// @Column(nullable = false)
 	@Column
 	private String phoneNumber;
-
-	// treba nullable false mozda?
+	
+	@Column
+	private String workingHoursFrom;
+	@Column
+	private String workingHoursTo;
+	
+	//treba nullable false mozda?
 	@ManyToOne
 	@JoinColumn(name = "location_fk")
 	public Location location;
@@ -62,15 +67,8 @@ public abstract class User extends BaseEntity {
 
 	}
 
-	public User(String id, String email, String password, String name, String surname, String phoneNumber,
-			Location location, UserType type, boolean status, String activationCode) {
-		this(email, password, name, surname, phoneNumber, location, type, status, activationCode);
-		this.id = id;
-
-	}
-
 	public User(String email, String password, String name, String surname, String phoneNumber, Location location,
-			UserType type, boolean status, String activationCode) {
+			UserType type, boolean status, String activationCode, String workingHoursFrom, String workingHoursTo) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -81,6 +79,8 @@ public abstract class User extends BaseEntity {
 		this.type = type;
 		this.status = status;
 		this.activationCode = activationCode;
+		this.workingHoursFrom = workingHoursFrom;
+		this.workingHoursTo = workingHoursTo;
 	}
 
 	public String getEmail() {
@@ -162,5 +162,21 @@ public abstract class User extends BaseEntity {
 	public void setActivationCode(String activationCode) {
 		this.activationCode = activationCode;
 	}
+	
+	public String getWorkingHoursFrom() {
+		return workingHoursFrom;
+	}
 
+	public void setWorkingHoursFrom(String workingHoursFrom) {
+		this.workingHoursFrom = workingHoursFrom;
+	}
+
+	public String getWorkingHoursTo() {
+		return workingHoursTo;
+	}
+
+	public void setWorkingHoursTo(String workingHoursTo) {
+		this.workingHoursTo = workingHoursTo;
+	}
+	
 }

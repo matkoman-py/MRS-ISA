@@ -1,6 +1,6 @@
 <template>
   <b-container style="width: 40%" align-h="center">
-      <h1> Add pharmacist form </h1>
+      <h1> Add dermatologist form </h1>
     <b-row>
       <b-col>
         <b-form @submit="onSubmit">
@@ -92,7 +92,7 @@
 import axios from "axios"
 
 export default {
-  name: 'AddPharmacistForm',
+  name: 'AddDermatologistForm',
   components: {
   },
   data: function(){
@@ -109,7 +109,7 @@ export default {
         },
         workingHoursFrom: "",
         workingHoursTo: "",
-        type: "Pharmacist"
+        type: "Dermatologist"
       }
     }
   },
@@ -119,7 +119,7 @@ export default {
           axios.post("http://localhost:8081/employees/addEmployee", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
-              alert("New pharmacist successfully added.");
+              alert("New dermatologist successfully added.");
               this.$router.push('employeesOverview');
               })
               .catch(error => console.log(error));

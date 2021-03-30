@@ -12,7 +12,7 @@ public class Employee extends User {
 	}
 
 	public Employee(String email, String password, String name, String surname, String phoneNumber, Location location,
-			UserType type, boolean status, String activationCode) {
-		super(email, password, name, surname, phoneNumber, location, type, status, activationCode);
+			UserType type, boolean status, String activationCode, String workingHoursFrom, String workingHoursTo) {
+		super(email, password, name, surname, phoneNumber, location, type, status, activationCode, workingHoursFrom, workingHoursTo);
 	}
 }

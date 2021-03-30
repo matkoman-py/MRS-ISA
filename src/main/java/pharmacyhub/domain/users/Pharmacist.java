@@ -8,14 +8,14 @@ import pharmacyhub.domain.enums.UserType;
 
 @Entity
 @DiscriminatorValue("Pharmacist")
-public class Pharmacist extends Employee{
-	
+public class Pharmacist extends Employee {
+
 	public Pharmacist() {
 		super();
 	}
-	
-	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, boolean status, String activationCode) {
-		super(email, password, name, surname, phoneNumber, location, UserType.Pharmacist, status, activationCode);
+
+	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, String workingHoursFrom, String workingHoursTo) {
+		super(email, password, name, surname, phoneNumber, location, UserType.Pharmacist, true, null, workingHoursFrom, workingHoursTo);
 	}
 	
 }
