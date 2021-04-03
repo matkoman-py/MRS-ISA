@@ -14,7 +14,7 @@ export default {
     },
     methods: {
         getPatients : function(){
-            fetch('http://localhost:8081/get_patients')
+            fetch('http://localhost:8081/patients')
             .then(response => response.json())
             .then(response => this.patients = response);
         }

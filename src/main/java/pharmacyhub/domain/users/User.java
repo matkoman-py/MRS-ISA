@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import pharmacyhub.domain.BaseEntity;
-import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
@@ -38,13 +37,8 @@ public abstract class User extends BaseEntity {
 	// @Column(nullable = false)
 	@Column
 	private String phoneNumber;
-	
-	@Column
-	private String workingHoursFrom;
-	@Column
-	private String workingHoursTo;
-	
-	//treba nullable false mozda?
+
+	// treba nullable false mozda?
 	@ManyToOne
 	@JoinColumn(name = "location_fk")
 	public Location location;
@@ -52,10 +46,6 @@ public abstract class User extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type", insertable = false, updatable = false)
 	private UserType type;
-
-	@ManyToOne
-	@JoinColumn(name = "drugstore_fk")
-	private Drugstore drugstore;
 
 	@Column(nullable = true)
 	private boolean status;
@@ -68,7 +58,7 @@ public abstract class User extends BaseEntity {
 	}
 
 	public User(String email, String password, String name, String surname, String phoneNumber, Location location,
-			UserType type, boolean status, String activationCode, String workingHoursFrom, String workingHoursTo) {
+			UserType type, boolean status, String activationCode) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -79,8 +69,7 @@ public abstract class User extends BaseEntity {
 		this.type = type;
 		this.status = status;
 		this.activationCode = activationCode;
-		this.workingHoursFrom = workingHoursFrom;
-		this.workingHoursTo = workingHoursTo;
+
 	}
 
 	public String getEmail() {
@@ -139,14 +128,6 @@ public abstract class User extends BaseEntity {
 		this.type = type;
 	}
 
-	public Drugstore getDrugstore() {
-		return drugstore;
-	}
-
-	public void setDrugstore(Drugstore drugstore) {
-		this.drugstore = drugstore;
-	}
-
 	public boolean isStatus() {
 		return status;
 	}
@@ -162,21 +143,5 @@ public abstract class User extends BaseEntity {
 	public void setActivationCode(String activationCode) {
 		this.activationCode = activationCode;
 	}
-	
-	public String getWorkingHoursFrom() {
-		return workingHoursFrom;
-	}
 
-	public void setWorkingHoursFrom(String workingHoursFrom) {
-		this.workingHoursFrom = workingHoursFrom;
-	}
-
-	public String getWorkingHoursTo() {
-		return workingHoursTo;
-	}
-
-	public void setWorkingHoursTo(String workingHoursTo) {
-		this.workingHoursTo = workingHoursTo;
-	}
-	
 }

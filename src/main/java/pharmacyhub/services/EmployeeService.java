@@ -32,7 +32,7 @@ public class EmployeeService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-	
+
 	@Autowired
 	private UserNotificationService userNotificationService;
 
@@ -42,15 +42,30 @@ public class EmployeeService {
 		return Stream.concat(pharmacists.stream(), dermatologists.stream()).collect(Collectors.toList());
 	}
 
-	public Pharmacist savePharmacist(Pharmacist pharmacist) throws Exception {
+	public Pharmacist savePharmacist(Employee employee) throws Exception {
 
-		// fale provere
+		locationRepository.save(employee.getLocation());
+		Pharmacist pharmacist = new Pharmacist(employee.getEmail(), RadnomGeneratorUtil.generateEmployeePassword(),
+				employee.getName(), employee.getSurname(), employee.getPhoneNumber(), employee.getLocation(),
+				employee.getWorkingHoursFrom(), employee.getWorkingHoursTo());
+
+		pharmacistRepository.save(pharmacist);
+		userNotificationService.sendEmployeeInitialPassword(pharmacist.getEmail(), pharmacist.getPassword());
+
 		return pharmacistRepository.save(pharmacist);
 	}
 
-	public Dermatologist saveDermatologist(Dermatologist dermatologist) throws Exception {
+	public Dermatologist saveDermatologist(Employee employee) throws Exception {
 
-		// fale provere
+		locationRepository.save(employee.getLocation());
+		Dermatologist dermatologist = new Dermatologist(employee.getEmail(),
+				RadnomGeneratorUtil.generateEmployeePassword(), employee.getName(), employee.getSurname(),
+				employee.getPhoneNumber(), employee.getLocation(), employee.getWorkingHoursFrom(),
+				employee.getWorkingHoursTo());
+
+		dermatologistRepository.save(dermatologist);
+		userNotificationService.sendEmployeeInitialPassword(dermatologist.getEmail(), dermatologist.getPassword());
+
 		return dermatologistRepository.save(dermatologist);
 	}
 
@@ -61,31 +76,15 @@ public class EmployeeService {
 		}
 
 		if (employee.getType().equals(UserType.Dermatologist)) {
-
-			locationRepository.save(employee.getLocation());
-			Dermatologist dermatologist = new Dermatologist(employee.getEmail(),
-					RadnomGeneratorUtil.generateEmployeePassword(), employee.getName(), employee.getSurname(),
-					employee.getPhoneNumber(), employee.getLocation(),
-					employee.getWorkingHoursFrom(), employee.getWorkingHoursTo());
-			
-			dermatologistRepository.save(dermatologist);
-			userNotificationService.sendEmployeeInitialPassword(dermatologist.getEmail(), dermatologist.getPassword());
-
+			saveDermatologist(employee);
 		} else {
-			locationRepository.save(employee.getLocation());
-			Pharmacist pharmacist = new Pharmacist(employee.getEmail(),
-					RadnomGeneratorUtil.generateEmployeePassword(), employee.getName(), employee.getSurname(),
-					employee.getPhoneNumber(), employee.getLocation(),
-					employee.getWorkingHoursFrom(), employee.getWorkingHoursTo());
-			
-			pharmacistRepository.save(pharmacist);
-			userNotificationService.sendEmployeeInitialPassword(pharmacist.getEmail(), pharmacist.getPassword());
-
+			savePharmacist(employee);
 		}
 		return findAll();
 	}
 
 	public List<Employee> update(Employee employee) throws Exception {
+
 		if (employee.getType().equals(UserType.Dermatologist)) {
 			Dermatologist derm = dermatologistRepository.findById(employee.getId()).orElse(null);
 			if (derm.equals(null)) {
@@ -113,6 +112,8 @@ public class EmployeeService {
 			pharm.setPhoneNumber(employee.getPhoneNumber());
 			pharm.setSurname(employee.getSurname());
 			pharmacistRepository.save(pharm);
+
+			System.out.println(pharmacistRepository.findById(employee.getId()));
 
 		}
 		return findAll();

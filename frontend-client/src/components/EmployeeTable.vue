@@ -129,9 +129,11 @@ export default {
             this.modified.password = this.selected.password;
             this.modified.phoneNumber = this.selected.phoneNumber;
             this.$root.$emit('bv::hide::modal', 'my-modal');
-            axios.post("http://localhost:8081/employees", this.modified)
+            console.log(this.modified);
+            axios.put("http://localhost:8081/employees", this.modified)
                 .then(response => {
                 console.log(response);
+                console.log("ovde");
                 })
                 .catch(error => console.log(error));
         },

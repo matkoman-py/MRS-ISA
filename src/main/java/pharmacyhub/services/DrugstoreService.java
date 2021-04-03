@@ -40,9 +40,9 @@ public class DrugstoreService {
 		List<Drugstore> wantedDrugStores = new ArrayList<>();
 		
 		for(Drugstore drs:allDrugStores) {
-			if( (drs.getName().equals(drugStoreName) || drugStoreName.equals("0")) && 
-				(drs.getLocation().getCity().equals(drugStoreCity) || drugStoreCity.equals("0")) && 
-				(drs.getLocation().getCountry().equals(drugStoreCountry) || drugStoreCountry.equals("0"))) {
+			if( (drs.getName().toLowerCase().contains(drugStoreName.toLowerCase()) || drugStoreName.equals("0")) && 
+				(drs.getLocation().getCity().toLowerCase().contains(drugStoreCity.toLowerCase()) || drugStoreCity.equals("0")) && 
+				(drs.getLocation().getCountry().toLowerCase().contains(drugStoreCountry.toLowerCase()) || drugStoreCountry.equals("0"))) {
 				wantedDrugStores.add(drs);
 			}
 		}

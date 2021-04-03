@@ -14,7 +14,7 @@ import pharmacyhub.domain.users.Patient;
 import pharmacyhub.services.PatientService;
 
 @Controller
-@RequestMapping("/get_patients")
+@RequestMapping("/patients")
 public class PatientController {
 	@Autowired
 	private PatientService patientService;
@@ -22,10 +22,5 @@ public class PatientController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Patient>> getGreetings() {
 		return new ResponseEntity<>(patientService.findAll(), HttpStatus.OK);
-	}
-	
-	@GetMapping(path = "fill", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Patient>> fill() {
-		return new ResponseEntity<>(patientService.fill(), HttpStatus.OK);
 	}
 }

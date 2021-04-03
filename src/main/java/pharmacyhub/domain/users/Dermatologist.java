@@ -1,8 +1,14 @@
 package pharmacyhub.domain.users;
 
+import java.util.List;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
@@ -10,6 +16,12 @@ import pharmacyhub.domain.enums.UserType;
 @DiscriminatorValue("Dermatologist")
 public class Dermatologist extends Employee{
 
+	@ManyToMany
+	@JoinTable(name = "dermatologist_drugstore", 
+	   joinColumns = @JoinColumn(name = "dermatologist_id"), 
+	   inverseJoinColumns = @JoinColumn(name = "drugstore_id"))
+	private List<Drugstore> drugstore;
+	
 	public Dermatologist() {
 		super();
 	}

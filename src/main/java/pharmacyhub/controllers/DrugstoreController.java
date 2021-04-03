@@ -30,7 +30,7 @@ public class DrugstoreController {
 
 	
 	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drugstore>> test(@RequestParam(value = "drugStoreNameParam", required=false,  defaultValue = "0") String drugStoreName,
+	public ResponseEntity<Collection<Drugstore>> search(@RequestParam(value = "drugStoreNameParam", required=false,  defaultValue = "0") String drugStoreName,
 													  @RequestParam(value = "drugStoreCityParam", required=false,  defaultValue = "0") String drugStoreCity,
 													  @RequestParam(value = "drugStoreCountryParam", required=false,  defaultValue = "0") String drugStoreCountry
 												) throws Exception {

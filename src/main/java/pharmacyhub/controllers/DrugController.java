@@ -22,13 +22,9 @@ public class DrugController {
 	@Autowired
 	private DrugService drugService;
 
-	@GetMapping(path = "/seed", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drug>> seedDrugs() {
-		return new ResponseEntity<>(drugService.findAll(), HttpStatus.OK);
-	}
 	
 	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drug>> test(@RequestParam(value = "drugNameParam", required=false,  defaultValue = "0") String drugName,
+	public ResponseEntity<Collection<Drug>> search(@RequestParam(value = "drugNameParam", required=false,  defaultValue = "0") String drugName,
 												 @RequestParam(value = "drugTypeParam", required=false,  defaultValue = "0") String drugType,
 												 @RequestParam(value = "drugFormParam", required=false,  defaultValue = "0") String drugForm,
 												 @RequestParam(value = "drugManufacturerParam", required=false,  defaultValue = "0") String drugManufacturer,
