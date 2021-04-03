@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HelloWorld from "./components/HelloWorld";
+import HomePage from "./views/HomePage";
 import Test from "./components/Test";
 import EmployeesOverview from "./views/EmployeesOverview"
 import PatientOverview from "./views/PatientOverview"
@@ -20,8 +20,8 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        name: "HelloWorld",
-        component: HelloWorld
+        name: "HomePage",
+        component: HomePage
     },
     {
         path: '/test',
