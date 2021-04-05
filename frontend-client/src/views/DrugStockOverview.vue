@@ -1,0 +1,160 @@
+<template>
+  <b-container>
+    <h1> Drugs on stock </h1>
+    <div style="margin:40px; border-style:solid;">
+        <b-table striped hover :items="drugStocks" selectable select-mode='single' @row-selected="onRowSelected"></b-table>
+    </div>
+    <div>
+        <router-link to="/drug-stock-create-order">
+          <b-button style="margin-right:50px" variant="success">Create order</b-button>
+        </router-link>
+        <router-link to="/drug-stock-check-offers">
+          <b-button style="margin-left:50px; margin-right:50px" variant="success">Check offers</b-button>
+        </router-link>
+          <b-button style="margin-left:50px; margin-right:50px" @click="newPriceAssign" variant="success">Assign new price</b-button>
+        <router-link to="/drug-stock-create-promotion">
+          <b-button style="margin-left:50px" variant="success">Create promotion</b-button>
+        </router-link>
+    </div>
+    <b-container style="margin:15px">
+        <b-row align-h="center">
+            <b-form style="width:40%" @submit="search">
+                <p style="margin-top:20px">Search text:</p>
+                <b-form-input v-model="searchText" placeholder="Enter text for search"></b-form-input>
+                <div>
+                <b-button type="button" style="margin:40px" variant="outline-primary" size="lg" @click="search">Search</b-button>
+                </div>
+            </b-form>
+        </b-row>
+    </b-container>
+
+    <b-modal id="my-modal" title="Create new price" hide-footer>
+      <b-form @submit="addNewPrice">
+        <b-form-group
+          label="New price"
+          label-for="price-input"
+          invalid-feedback="Price is required">
+          <b-form-input
+            id="price-input"
+            v-model="inputValues.price" 
+            required
+            type="number"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          label="Expiration date"
+          label-for="date-input"
+          invalid-feedback="Expiration date is required">
+          <b-form-datepicker
+            id="date-input"
+            v-model="inputValues.endDate"
+            :min="minDate"
+            required >
+          </b-form-datepicker>
+        </b-form-group>
+
+        <b-button type="button" variant="primary" @click="addNewPrice">Save</b-button>
+        <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
+
+      </b-form>
+    </b-modal>
+
+  </b-container>
+  
+</template>
+
+<script>
+  import axios from "axios";
+
+  export default {
+    data: function() {
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const minDate = new Date(today)
+      return {
+        drugStocks: [],
+        searchText: '',
+        selected: [],
+        minDate: minDate,
+        inputValues: {
+          price: '',
+          drugName: '',
+          drugStoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
+          startDate: minDate,
+          endDate: ''
+        }
+      }
+    },
+    methods: {
+        getDrugStockForDrugstore : function(){
+            axios.get('http://localhost:8081/drug-stock', {
+            params: {
+                            drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+                        }})
+            .then(response => {
+            this.drugStocks = response.data.map(drugStockDto => 
+            (
+                    {
+                        drug: drugStockDto.drugName,
+                        amount: drugStockDto.drugAmount,
+                        price: drugStockDto.drugPrice,
+                        priceExpirationDate: drugStockDto.priceExpirationDate.slice(0,10)             
+                    }
+                ));
+            })
+            .catch(error => console.log(error));
+        },
+        onRowSelected(item) {
+            this.selected = item
+        },
+        search(event) {
+            event.preventDefault()
+            axios.get('http://localhost:8081/drug-stock/search', {
+            params: {
+              searchedText: this.searchText,
+              drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+            }
+          })
+          .then(response => {
+            this.drugStocks = response.data.map(drugStockDto => 
+            (
+                    {
+                        drug: drugStockDto.drugName,
+                        amount: drugStockDto.drugAmount,
+                        price: drugStockDto.drugPrice,
+                        priceExpirationDate: drugStockDto.priceExpirationDate.slice(0,10)             
+                    }
+                ));
+            })
+          .catch(error => console.log(error));
+        },
+        newPriceAssign(event) {
+          event.preventDefault()
+          if (this.selected.length == 0) {
+            alert("You need to select drug for which you want to assign new price.")
+          } else {
+            this.$root.$emit('bv::show::modal', 'my-modal');
+          }
+        },
+        addNewPrice(event) {
+          event.preventDefault();
+          this.inputValues.drugName = this.selected[0].drug
+          axios.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValues)))
+              .then(response => {
+              console.log(response);
+              alert("New price for " + this.selected[0].drug + " is successfully added.");
+              })
+              .catch(error => console.log(error));
+          this.getDrugStockForDrugstore();
+          this.$root.$emit('bv::hide::modal', 'my-modal');
+        },
+        handleClose(){
+            this.$root.$emit('bv::hide::modal', 'my-modal');
+        }
+        },
+    mounted: function(){
+        this.getDrugStockForDrugstore();
+    }
+  }
+</script>
