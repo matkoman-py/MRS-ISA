@@ -14,6 +14,7 @@ export default {
     },
     methods: {
         getPatients : function(){
+            //PROMENI NA AXIOS I NE PRIKAZUJ SIFRU 
             fetch('http://localhost:8081/patients')
             .then(response => response.json())
             .then(response => this.patients = response);
