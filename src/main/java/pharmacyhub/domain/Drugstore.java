@@ -1,25 +1,37 @@
 package pharmacyhub.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Drugstore extends BaseEntity {
 
 	@Column(nullable = false)
 	public String name;
-	
+
 	@ManyToOne
-	@JoinColumn(name="location_fk", nullable = false)
+	@JoinColumn(name = "location_fk", nullable = false)
 	public Location location;
-	
+
 	@Column(nullable = false)
 	public String description;
-	
+
 	@Column(name = "average_rating")
 	public double averageRating;
+
+	@OneToMany(mappedBy = "drugstore")
+	private List<Employement> employements;
+	
+	@Column
+	private String workingHoursFrom;
+
+	@Column
+	private String workingHoursTo;
 
 	public Drugstore() {
 		super();
@@ -64,5 +76,39 @@ public class Drugstore extends BaseEntity {
 	public void setAverageRating(double averageRating) {
 		this.averageRating = averageRating;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<Employement> getEmployements() {
+		return employements;
+	}
+
+	public void setEmployements(List<Employement> employements) {
+		this.employements = employements;
+	}
+
+	public String getWorkingHoursFrom() {
+		return workingHoursFrom;
+	}
+
+	public void setWorkingHoursFrom(String workingHoursFrom) {
+		this.workingHoursFrom = workingHoursFrom;
+	}
+
+	public String getWorkingHoursTo() {
+		return workingHoursTo;
+	}
+
+	public void setWorkingHoursTo(String workingHoursTo) {
+		this.workingHoursTo = workingHoursTo;
+	}
+	
+	
 
 }

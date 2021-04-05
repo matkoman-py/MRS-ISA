@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pharmacyhub.domain.users.Employee;
+import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
+import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.services.EmployeeService;
 
 @Controller
@@ -32,10 +34,17 @@ public class EmployeeController {
 	public ResponseEntity<Collection<Employee>> addEmployee(@RequestBody Employee employee) throws Exception {
 		return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.OK);
 	}
-	
+
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Employee>> update(@RequestBody Employee employee) throws Exception {
 		return new ResponseEntity<>(employeeService.update(employee), HttpStatus.OK);
+
+	}
+
+	@PutMapping(path="employement", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<DermatologistDto> addDermatologistToDrugstore(
+			@RequestBody AddDermatologistToDrugstoreDto requestDto) throws Exception {
+		return new ResponseEntity<>(employeeService.addDermatologistToDrugstore(requestDto), HttpStatus.OK);
 
 	}
 }
