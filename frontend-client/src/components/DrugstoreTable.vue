@@ -26,19 +26,17 @@
                 </b-form>
             </b-col>
         </b-row>
-        <b-row>
+        <b-row align-h="center">
             <b-col>
-                <!-- <b-card-group v-for="n in getNumberOfRows()" :key="n">
-                                                                                                                                             
-                    <drugstore-card  v-for="drugstore in getCardDrugstores()" :key="drugstore.id" :drugstore="drugstore"></drugstore-card>
                 
-                </b-card-group> -->
-                <b-card-group columns>
-                                                                                                                                             
-                    <drugstore-card  v-for="drugstore in drugstores" :key="drugstore.id" :drugstore="drugstore"></drugstore-card>
-                
-                </b-card-group>
-                <!-- <b-table head-variant="dark" striped hover :items="drugstores" sticky-header="400px"></b-table> -->
+                <template v-for="chunk in getCardDrugstores()">
+                    <b-row  cols-lg="4" :key="chunk">
+                        <b-col style="padding:20px; text-align:center" v-for="drugstore in chunk" :key="drugstore.id">
+                            <drugstore-card :drugstore="drugstore"></drugstore-card>
+                        </b-col>
+                    </b-row>
+                </template>
+            
                 <h1 v-if="drugstores.length == 0"> There are no drugstores that fit the search parameters</h1>
 
             </b-col>
@@ -102,23 +100,13 @@
                     .catch(error => console.log(error));
             },
             getCardDrugstores: function(){
-                let nesto = this.cardCounter+3;
-               
-                if(this.cardCounter+3>this.drugstores.length){
-                    nesto = this.drugstores.length
+                let chunkArray=[];
+                for(var i=0; i<this.drugstores.length; i+=4){
+                    chunkArray.push(this.drugstores.slice(i, i+4));
                 }
-                this.threeDrugstores = this.drugstores.slice(this.cardCounter,nesto)
-                
-                if(this.cardCounter+3<this.drugstores.length){
-                    this.cardCounter+=3
-                }
-                return this.threeDrugstores
+                return chunkArray
                 
             },
-            getNumberOfRows: function(){
-                
-                return Math.ceil(this.drugstores.length/3)
-            }
         },
         mounted: function () {
             this.getAllDrugstores();

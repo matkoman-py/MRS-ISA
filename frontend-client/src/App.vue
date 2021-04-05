@@ -1,9 +1,10 @@
 <template>
-  <div id="app" style="margin-top: 0px">
-    
+  <div id="app" style="margin: 0px">
+    <div id="page-container">
     <navbar></navbar>
     <router-view />
-    <footer class="bg-light text-center text-lg-start">
+    </div>
+    <footer class="bg-light text-center text-lg-start footer">
 
     <div class="text-center p-3">
       © 2021 Copyright:
