@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.services.PatientService;
 
@@ -22,5 +24,13 @@ public class PatientController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Patient>> getGreetings() {
 		return new ResponseEntity<>(patientService.findAll(), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Patient>> search(@RequestParam(value = "patientNameParam", required=false,  defaultValue = "0") String patientName,
+													  @RequestParam(value = "patientSurnameParam", required=false,  defaultValue = "0") String patientSurname
+												) throws Exception {
+		
+		return new ResponseEntity<>(patientService.returnPatients(patientName,patientSurname), HttpStatus.OK);
 	}
 }
