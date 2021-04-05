@@ -48,6 +48,12 @@ INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34
 INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '', 'steva@stevic.com', 'Steva', '123', NULL, TRUE, 'Stevic', NULL, NULL, NULL);
 
 --
+-- Data for Name: Drugstore Admin;
+--
+INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a1', '', 'kata@ketamin.com', 'Kata', '123', NULL, TRUE, 'Ketamin', NULL);
+
+
+--
 -- Data for Name: Drugstore;
 --
 INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-ded43ad63843', 10, 'Description', 'Lav', '08:00', '18:00', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
