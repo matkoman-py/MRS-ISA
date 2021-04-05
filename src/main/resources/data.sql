@@ -48,12 +48,6 @@ INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34
 INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '', 'steva@stevic.com', 'Steva', '123', NULL, TRUE, 'Stevic', NULL, NULL, NULL);
 
 --
--- Data for Name: Drugstore Admin;
---
-INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a1', '', 'kata@ketamin.com', 'Kata', '123', NULL, TRUE, 'Ketamin', NULL);
-
-
---
 -- Data for Name: Drugstore;
 --
 INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-ded43ad63843', 10, 'Description', 'Lav', '08:00', '18:00', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
@@ -61,4 +55,27 @@ INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-dedascs63843', 9, 
 INSERT INTO public.drugstore VALUES ('2b7933e9-6as3-463a-974b-ded43ad63843', 8, 'Description', 'Belgrade Health', '09:00', '19:00','9c7face6-d759-46bd-439a-6469ae471067');
 INSERT INTO public.drugstore VALUES ('2bas33e9-6523-463a-974b-ded43ad63843', 7, 'Description', 'Pejin medicine', '12:00', '21:00','9c7face6-d759-412d-839a-6469ae471067');
 INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', 6, 'Description', 'Prirodnjacka medicina', '14:00', '22:00','71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
+
+--
+-- Data for Name: Drugstore Admin;
+--
+INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a2', '', 'kata@ketamin.com', 'Kata', '123', NULL, TRUE, 'Ketamin', '2b7933e9-6as3-463a-974b-ded43ad63843');
+
+--
+-- Data for Name: Drugstock;
+--
+INSERT INTO public.drugstock VALUES ('0', 55, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drugstock VALUES ('1', 922, 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drugstock VALUES ('2', 82, 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drugstock VALUES ('3', 27, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.drugstock VALUES ('4', 25, 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+
+--
+-- Data for Name: DrugPrice;
+--
+INSERT INTO public.drug_price VALUES ('0', '2021-01-22', 200, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('1', '2021-01-22', 300, '2021-01-22', 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('2', '2021-01-22', 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('3', '2021-01-25', 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('4', '2021-01-22', 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
