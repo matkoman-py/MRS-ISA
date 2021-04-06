@@ -15,6 +15,8 @@ import AddDrugstoreForm from "./views/AddDrugstoreForm"
 import AddDermatologistForm from "./views/AddDermatologistForm"
 import DrugStockOverview from "./views/DrugStockOverview"
 import AppointmentsOverview from "./views/AppointmentsOverview"
+import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
+import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
 
 Vue.use(VueRouter)
 
@@ -67,6 +69,11 @@ const routes = [
         component: AddDermatologistForm
     },
     {
+        path: '/SelectDermatologistForm',
+        name: "SelectDermatologistForm",
+        component: SelectDermatologistForm
+    },
+    {
         path:'/drugSearch',
         name: "DrugSearch",
         component: DrugViewSearch
@@ -95,6 +102,11 @@ const routes = [
         path: '/appointments-overview',
         name: "AppointmentsOverview",
         component: AppointmentsOverview
+    },
+    {
+        path: '/admin-drugstore-table',
+        name: "AdminDrugstoreTable",
+        component: AdminDrugstoreTable
     },
 ];
 

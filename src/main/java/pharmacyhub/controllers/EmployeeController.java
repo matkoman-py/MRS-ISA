@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
+import pharmacyhub.dto.SearchDermatologistDto;
 import pharmacyhub.services.EmployeeService;
 
 @Controller
@@ -40,8 +41,13 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.update(employee), HttpStatus.OK);
 
 	}
+	
+	@PostMapping(path ="/search/dermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistDto>> searchDermatologist(@RequestBody SearchDermatologistDto searchDermatologistDto) {
+		return new ResponseEntity<>(employeeService.searchDermatologist(searchDermatologistDto), HttpStatus.OK);
+	}
 
-	@PutMapping(path="employement", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="employement", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DermatologistDto> addDermatologistToDrugstore(
 			@RequestBody AddDermatologistToDrugstoreDto requestDto) throws Exception {
 		return new ResponseEntity<>(employeeService.addDermatologistToDrugstore(requestDto), HttpStatus.OK);

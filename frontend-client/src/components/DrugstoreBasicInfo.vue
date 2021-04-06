@@ -1,7 +1,7 @@
 <template>
   <b-container>
 
-    <b-form @submit="submitHandler">
+    <b-form>
     <b-row align-h="center">
     <div style="margin-top:40px; margin-bottom:40px; width:75%">
     <b-input-group prepend="Name" class="mt-3">
@@ -26,14 +26,18 @@
     <b-input-group style="margin-top:45px;" prepend="Country" class="mt-3">
     <b-form-input v-model="form.location.country" :required="mode == 'add'"></b-form-input>
     </b-input-group>
+
+    <b-input-group style="margin-top:45px;" prepend="From" class="mt-3">
+    <b-form-input v-model="form.workingHoursFrom" :required="mode == 'add'"></b-form-input>
+    </b-input-group>
+
+    <b-input-group style="margin-top:45px;" prepend="To" class="mt-3">
+    <b-form-input v-model="form.workingHoursTo" :required="mode == 'add'"></b-form-input>
+    </b-input-group>
     </div>
 
     <div style="float:right; width:48%; height:300px; border-style:solid">
     </div>
-
-    <b-container>
-    <b-button type="submit" style="margin:30px; width:25%" variant="outline-primary" size="lg">Save</b-button>
-    </b-container>
 
     </b-form>
 
@@ -42,7 +46,7 @@
 
 <script>
   export default {
-    props: ["form", "submitHandler", "mode"],
+    props: ["form", "mode"],
     name: "DrugstoreBasicInfo",
     data: function() {
       return {};

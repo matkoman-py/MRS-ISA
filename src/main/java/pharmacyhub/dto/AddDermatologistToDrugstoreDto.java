@@ -1,16 +1,16 @@
 package pharmacyhub.dto;
 
 public class AddDermatologistToDrugstoreDto {
-	
-	private String dermatologistId;
+
+	private String dermatologistEmail;
 	private String drugstoreId;
 
-	public String getDermatologistId() {
-		return dermatologistId;
+	public String getDermatologistEmail() {
+		return dermatologistEmail;
 	}
 
-	public void setDermatologistId(String dermatologistId) {
-		this.dermatologistId = dermatologistId;
+	public void setDermatologistEmail(String dermatologistEmail) {
+		this.dermatologistEmail = dermatologistEmail;
 	}
 
 	public String getDrugstoreId() {

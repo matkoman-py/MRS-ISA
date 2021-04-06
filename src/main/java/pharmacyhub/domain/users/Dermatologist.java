@@ -4,9 +4,10 @@ import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import pharmacyhub.domain.Employement;
 import pharmacyhub.domain.Location;
@@ -16,8 +17,8 @@ import pharmacyhub.domain.enums.UserType;
 @DiscriminatorValue("Dermatologist")
 public class Dermatologist extends Employee {
 
-	@OneToMany(mappedBy = "dermatologist")
-	@JsonManagedReference
+	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<Employement> employements;
 
 	public Dermatologist() {

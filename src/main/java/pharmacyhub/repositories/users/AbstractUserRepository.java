@@ -11,4 +11,9 @@ public interface AbstractUserRepository<T extends User> extends JpaRepository<T,
 	User findByEmail(String email);
 	
 	User findByActivationCode(String activationCode);
+	
+	User findByNameIgnoreCaseContaining(String name);
+	
+	User findBySurnameIgnoreCaseContaining(String surname);
+
 }
