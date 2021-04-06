@@ -1,4 +1,4 @@
---
+﻿--
 -- Data for Name: location;
 --
 INSERT INTO public.location VALUES ('71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', 'Batajnički drum b.b.', 'Beograd', 'Serbia');
@@ -55,6 +55,13 @@ INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-dedascs63843', 9, 
 INSERT INTO public.drugstore VALUES ('2b7933e9-6as3-463a-974b-ded43ad63843', 8, 'Description', 'Belgrade Health', '09:00', '19:00','9c7face6-d759-46bd-439a-6469ae471067');
 INSERT INTO public.drugstore VALUES ('2bas33e9-6523-463a-974b-ded43ad63843', 7, 'Description', 'Pejin medicine', '12:00', '21:00','9c7face6-d759-412d-839a-6469ae471067');
 INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', 6, 'Description', 'Prirodnjacka medicina', '14:00', '22:00','71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
+--
+-- Data for Name: Patient;
+--
+INSERT INTO public.users (type, id, activation_code, email, name, password, phone_number, status, surname, working_hours_from, working_hours_to, penalty_counter, points, location_fk, drugstore_fk) VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', NULL, 'marko@markoviccc.com', 'Marko', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users (type, id, activation_code, email, name, password, phone_number, status, surname, working_hours_from, working_hours_to, penalty_counter, points, location_fk, drugstore_fk) VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', NULL, 'mirko@mirkovic.com', 'Mirko', 'pass', NULL, false, 'Mirkovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users (type, id, activation_code, email, name, password, phone_number, status, surname, working_hours_from, working_hours_to, penalty_counter, points, location_fk, drugstore_fk) VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', NULL, 'petar@markovic.com', 'Petar', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
+
 
 --
 -- Data for Name: Drugstore Admin;
