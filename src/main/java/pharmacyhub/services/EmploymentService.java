@@ -28,13 +28,9 @@ public class EmploymentService {
 	private DermatologistRepository dermatologistRepository;	
 	
 	public List<Dermatologist> getAllDermatologistsForDrugstore(String drugstoreId) {
-		//Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
 		List<Employment> employments = employmentRepository.findByDrugstoreId(drugstoreId);
 		List<Dermatologist> dermatologists = new ArrayList<Dermatologist>();
 		for (Employment e : employments) {
-			System.out.println();
-			System.out.println(e.getDermatologist().getName());
-			System.out.println();
 			dermatologists.add(e.getDermatologist());
 		}
 		return dermatologists;
