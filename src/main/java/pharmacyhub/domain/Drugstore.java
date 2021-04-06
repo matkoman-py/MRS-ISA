@@ -65,14 +65,6 @@ public class Drugstore extends BaseEntity {
 		this.location = location;
 	}
 
-	public String getDecription() {
-		return description;
-	}
-
-	public void setDecription(String decription) {
-		this.description = decription;
-	}
-
 	public double getAverageRating() {
 		return averageRating;
 	}

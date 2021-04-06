@@ -23,6 +23,16 @@ public class DrugstoreService {
 	public List<Drugstore> findAll() {
 		return drugstoreRepository.findAll();
 	}
+	
+	public Drugstore update(Drugstore drugstore) throws Exception {
+		
+		if(drugstoreRepository.findById(drugstore.getId()) == null) {
+			throw new Exception("No such drugstore");
+		}
+		
+		return save(drugstore);
+	}
+	
 
 	public Drugstore save(Drugstore drugstore) throws Exception {
 

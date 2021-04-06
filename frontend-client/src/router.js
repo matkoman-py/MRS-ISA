@@ -14,6 +14,7 @@ import EmployeeTable from "./components/EmployeeTable"
 import AddDrugstoreForm from "./views/AddDrugstoreForm"
 import AddDermatologistForm from "./views/AddDermatologistForm"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
+import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
 
 Vue.use(VueRouter)
 
@@ -89,6 +90,11 @@ const routes = [
         path: '/add-drugstore-form',
         name: "AddDrugstoreForm",
         component: AddDrugstoreForm
+    },
+    {
+        path: '/admin-drugstore-table',
+        name: "AdminDrugstoreTable",
+        component: AdminDrugstoreTable
     },
 ];
 

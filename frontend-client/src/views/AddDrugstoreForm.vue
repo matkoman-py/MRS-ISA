@@ -1,6 +1,7 @@
 <template>
     <b-container>
-        <drugstore-basic-info :form="form" :submitHandler="submitHandler" mode="add"></drugstore-basic-info>
+        <drugstore-basic-info :form="form" mode="add"></drugstore-basic-info>
+        <b-button type="submit" style="margin:30px; width:25%" variant="outline-primary" size="lg" v-on:click="submitHandler">Save</b-button>
     </b-container>
 </template>
 

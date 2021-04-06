@@ -1,7 +1,7 @@
 <template>
   <b-container>
 
-    <b-form @submit="submitHandler">
+    <b-form>
     <b-row align-h="center">
     <div style="margin-top:40px; margin-bottom:40px; width:75%">
     <b-input-group prepend="Name" class="mt-3">
@@ -31,10 +31,6 @@
     <div style="float:right; width:48%; height:300px; border-style:solid">
     </div>
 
-    <b-container>
-    <b-button type="submit" style="margin:30px; width:25%" variant="outline-primary" size="lg">Save</b-button>
-    </b-container>
-
     </b-form>
 
   </b-container>
@@ -42,7 +38,7 @@
 
 <script>
   export default {
-    props: ["form", "submitHandler", "mode"],
+    props: ["form", "mode"],
     name: "DrugstoreBasicInfo",
     data: function() {
       return {};
