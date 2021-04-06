@@ -29,7 +29,7 @@
     </b-container>
 
     <b-modal id="my-modal" title="Create new price" hide-footer>
-      <b-form @submit="addNewPrice">
+      <b-form>
         <b-form-group
           label="New price"
           label-for="price-input"
