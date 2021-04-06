@@ -26,6 +26,14 @@
     <b-input-group style="margin-top:45px;" prepend="Country" class="mt-3">
     <b-form-input v-model="form.location.country" :required="mode == 'add'"></b-form-input>
     </b-input-group>
+
+    <b-input-group style="margin-top:45px;" prepend="From" class="mt-3">
+    <b-form-input v-model="form.workingHoursFrom" :required="mode == 'add'"></b-form-input>
+    </b-input-group>
+
+    <b-input-group style="margin-top:45px;" prepend="To" class="mt-3">
+    <b-form-input v-model="form.workingHoursTo" :required="mode == 'add'"></b-form-input>
+    </b-input-group>
     </div>
 
     <div style="float:right; width:48%; height:300px; border-style:solid">

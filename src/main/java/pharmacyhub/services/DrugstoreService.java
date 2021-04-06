@@ -26,6 +26,8 @@ public class DrugstoreService {
 	
 	public Drugstore update(Drugstore drugstore) throws Exception {
 		
+		//TODO: odraditi provere za vreme
+		
 		if(drugstoreRepository.findById(drugstore.getId()) == null) {
 			throw new Exception("No such drugstore");
 		}

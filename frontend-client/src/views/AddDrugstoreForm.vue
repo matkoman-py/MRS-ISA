@@ -20,7 +20,9 @@ import DrugstoreBasicInfo from '../components/DrugstoreBasicInfo.vue'
             address: "",
             city: "",
             country: ""
-          }
+          },
+          workingHoursFrom: "",
+          workingHoursTo: "",
         }
       };
     },
