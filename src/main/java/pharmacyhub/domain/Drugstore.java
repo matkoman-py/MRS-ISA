@@ -29,7 +29,7 @@ public class Drugstore extends BaseEntity {
 
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Employement> employements;
+	private List<Employment> employements;
 	
 	@Column
 	private String workingHoursFrom;
@@ -81,11 +81,11 @@ public class Drugstore extends BaseEntity {
 		this.description = description;
 	}
 
-	public List<Employement> getEmployements() {
+	public List<Employment> getEmployements() {
 		return employements;
 	}
 
-	public void setEmployements(List<Employement> employements) {
+	public void setEmployements(List<Employment> employements) {
 		this.employements = employements;
 	}
 

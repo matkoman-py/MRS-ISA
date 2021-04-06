@@ -2,7 +2,7 @@ package pharmacyhub.dto;
 
 import java.util.List;
 
-import pharmacyhub.domain.Employement;
+import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
@@ -14,7 +14,7 @@ public class DermatologistDto {
 	private String phoneNumber;
 	private Location location;
 	private UserType type;
-	private List<Employement> employements;
+	private List<Employment> employements;
 
 
 	public DermatologistDto(Dermatologist dermatologist) {
@@ -76,11 +76,11 @@ public class DermatologistDto {
 		this.type = type;
 	}
 
-	public List<Employement> getDrugstores() {
+	public List<Employment> getDrugstores() {
 		return employements;
 	}
 
-	public void setDrugstores(List<Employement> drugstores) {
+	public void setDrugstores(List<Employment> drugstores) {
 		this.employements = drugstores;
 	}
 

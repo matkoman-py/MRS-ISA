@@ -116,7 +116,7 @@ export default {
   methods : {
     onSubmit(event){
           event.preventDefault();
-          axios.post("http://localhost:8081/employees/", JSON.parse(JSON.stringify(this.form)))
+          axios.post("http://localhost:8081/employment/dermatologist/", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
               alert("New dermatologist successfully added.");

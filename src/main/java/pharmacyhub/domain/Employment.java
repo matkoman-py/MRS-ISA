@@ -11,15 +11,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import pharmacyhub.domain.users.Dermatologist;
 
 @Entity
-public class Employement extends BaseEntity {
+public class Employment extends BaseEntity {
 
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "drugstore_id")
 	private Drugstore drugstore;
 
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "dermatologist_id")
 	private Dermatologist dermatologist;
 
@@ -29,11 +29,11 @@ public class Employement extends BaseEntity {
 	@Column
 	private String workingHoursTo;
 	
-	public Employement() {
+	public Employment() {
 		
 	}
 
-	public Employement(Drugstore drugstore, Dermatologist dermatologist, String workingHoursFrom,
+	public Employment(Drugstore drugstore, Dermatologist dermatologist, String workingHoursFrom,
 			String workingHoursTo) {
 		super();
 		this.drugstore = drugstore;

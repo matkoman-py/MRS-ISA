@@ -82,6 +82,6 @@ INSERT INTO public.drug_price VALUES ('4', '2021-01-22', 5500, '2021-01-22', 'a3
 --
 -- Data for Name: DermatologistEmployment
 --
-INSERT INTO public.dermatologist_employment VALUES ('0', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.dermatologist_employment VALUES ('1', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.dermatologist_employment VALUES ('2', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.employment VALUES ('0', '10:00', '12:00', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.employment VALUES ('1', '10:00', '12:00', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.employment VALUES ('2', '10:00', '12:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843');

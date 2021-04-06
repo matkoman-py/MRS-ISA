@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
-import pharmacyhub.repositories.DermatologistEmploymentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 
 @Service

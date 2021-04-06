@@ -78,7 +78,7 @@
         availableDermatologists: [],
         inputValues: {
           dermatologist: '',
-          drugStoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
+          drugstoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
           date: '',
           time: '',
           duration: '',
@@ -90,7 +90,7 @@
 
         },
         getAllDermatologistForThisDrugstore : function() {
-            axios.get("http://localhost:8081/dermatologist-employment", {
+            axios.get("http://localhost:8081/employment/dermatologists", {
                 params: {
                             drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
                         }})

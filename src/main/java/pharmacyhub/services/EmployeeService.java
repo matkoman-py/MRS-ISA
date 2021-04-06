@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
-import pharmacyhub.domain.Employement;
+import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Employee;
@@ -19,7 +19,7 @@ import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.SearchDermatologistDto;
 import pharmacyhub.repositories.DrugstoreRepository;
-import pharmacyhub.repositories.EmployementRepository;
+import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
@@ -40,12 +40,6 @@ public class EmployeeService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-
-	@Autowired
-	private EmployementRepository employementRepository;
-
-	@Autowired
-	private DrugstoreRepository drugstoreRepository;
 
 	@Autowired
 	private UserNotificationService userNotificationService;
@@ -69,44 +63,6 @@ public class EmployeeService {
 
 	private boolean isNullOrEmptyString(String string) {
 		return string == null || string.equals("");
-	}
-
-	public DermatologistDto addDermatologistToDrugstore(AddDermatologistToDrugstoreDto requestDto) throws Exception {
-
-		// TODO: dodati proveru za duplikate
-		Employement employement = new Employement();
-
-		Dermatologist dermatologist = (Dermatologist) dermatologistRepository
-				.findByEmail(requestDto.getDermatologistEmail());
-		if (dermatologist == null) {
-			throw new Exception("No such dermatologist");
-		}
-
-		Drugstore drugstore = drugstoreRepository.findById(requestDto.getDrugstoreId()).orElse(null);
-		if (drugstore == null) {
-			throw new Exception("No such drugstore");
-		}
-
-		Employement duplicateEmployement = employementRepository
-				.findByDermatologistIdAndDrugstoreId(dermatologist.getId(), drugstore.getId());
-		
-		if (duplicateEmployement != null) {
-			throw new Exception("Dermatologist already works for pharmacy");
-		}
-
-		employement.setDermatologist(dermatologist);
-		employement.setDrugstore(drugstore);
-		drugstore.getEmployements().add(employement);
-		dermatologist.getEmployements().add(employement);
-		employement.setWorkingHoursFrom(drugstore.getWorkingHoursFrom());
-		employement.setWorkingHoursTo(drugstore.getWorkingHoursTo());
-
-		employementRepository.save(employement);
-		dermatologistRepository.save(dermatologist);
-		drugstoreRepository.save(drugstore);
-
-		return new DermatologistDto(dermatologist);
-
 	}
 
 	public List<Employee> findAll() {

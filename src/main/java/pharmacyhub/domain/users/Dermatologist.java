@@ -8,8 +8,9 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import pharmacyhub.domain.Employement;
+import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
@@ -17,9 +18,10 @@ import pharmacyhub.domain.enums.UserType;
 @DiscriminatorValue("Dermatologist")
 public class Dermatologist extends Employee {
 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Employement> employements;
+	private List<Employment> employements;
 
 	public Dermatologist() {
 		super();
@@ -31,11 +33,11 @@ public class Dermatologist extends Employee {
 				workingHoursTo);
 	}
 
-	public List<Employement> getEmployements() {
+	public List<Employment> getEmployements() {
 		return employements;
 	}
 
-	public void setEmployements(List<Employement> employements) {
+	public void setEmployements(List<Employment> employements) {
 		this.employements = employements;
 	}
 
