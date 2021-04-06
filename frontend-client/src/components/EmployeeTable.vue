@@ -51,12 +51,24 @@
         <b-form-group
           label="Password"
           label-for="password-input"
-          
         >
           <b-form-input
             id="password-input"
             type="password"
             v-model="selected.password"
+            
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          label="Repeat password"
+          label-for="repeatpassword-input"
+          
+        >
+          <b-form-input
+            id="repeatpassword-input"
+            type="password"
+            v-model="selected.repeatPassword"
             
           ></b-form-input>
         </b-form-group>
@@ -119,10 +131,15 @@ export default {
         showModal(item){
             this.$root.$emit('bv::show::modal', 'my-modal');
             this.selected = JSON.parse(JSON.stringify(item));
+            this.selected.repeatPassword = "";
             this.modified = item;
         },
         onSubmit(event){
             event.preventDefault();
+            if(!this.validatePassword()){
+                    alert("Passwords aren't matching!")
+                    return;
+            }
             this.modified.name = this.selected.name;
             this.modified.surname = this.selected.surname;
             this.modified.email = this.selected.email;
@@ -136,6 +153,12 @@ export default {
                 console.log("ovde");
                 })
                 .catch(error => console.log(error));
+        },
+        validatePassword: function(){
+            if(this.selected.repeatPassword == ""){
+              return true;
+            }
+            return this.selected.password == this.selected.repeatPassword;
         },
         handleClose(){
             this.$root.$emit('bv::hide::modal', 'my-modal');
