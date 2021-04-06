@@ -43,7 +43,7 @@ INSERT INTO public.drug VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', 'a', 'va
 --
 INSERT INTO public.users VALUES ('Pharmacist','ccb953a7-d244-48bb-8627-4b2437491dc1', '', 'pera@peric.com', 'Pera', '123', NULL, TRUE, 'Peric', NULL, NULL, NULL);
 INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', '', 'mika@mikic.com', 'Mika', '123', NULL, TRUE, 'Mikic', NULL, NULL, NULL);
-INSERT INTO public.users VALUES ('Pharmacist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '', 'zika@zikic.com', 'Zika', '123', NULL, TRUE, 'Zikic', NULL, NULL, NULL);
+INSERT INTO public.users VALUES ('Dermatologist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '', 'zika@zikic.com', 'Zika', '123', NULL, TRUE, 'Zikic', NULL, NULL, NULL);
 INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '', 'djoka@djokic.com', 'Djoka', '123', NULL, TRUE, 'Djokic', NULL, NULL, NULL);
 INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '', 'steva@stevic.com', 'Steva', '123', NULL, TRUE, 'Stevic', NULL, NULL, NULL);
 
@@ -79,3 +79,9 @@ INSERT INTO public.drug_price VALUES ('2', '2021-01-22', 400, '2021-01-22', 'd7d
 INSERT INTO public.drug_price VALUES ('3', '2021-01-25', 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.drug_price VALUES ('4', '2021-01-22', 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
+--
+-- Data for Name: DermatologistEmployment
+--
+INSERT INTO public.dermatologist_employment VALUES ('0', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.dermatologist_employment VALUES ('1', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.dermatologist_employment VALUES ('2', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843');

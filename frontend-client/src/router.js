@@ -14,6 +14,7 @@ import EmployeeTable from "./components/EmployeeTable"
 import AddDrugstoreForm from "./views/AddDrugstoreForm"
 import AddDermatologistForm from "./views/AddDermatologistForm"
 import DrugStockOverview from "./views/DrugStockOverview"
+import AppointmentsOverview from "./views/AppointmentsOverview"
 
 Vue.use(VueRouter)
 
@@ -89,6 +90,11 @@ const routes = [
         path: '/drug-stock-overview',
         name: "DrugStockOverview",
         component: DrugStockOverview
+    },
+    {
+        path: '/appointments-overview',
+        name: "AppointmentsOverview",
+        component: AppointmentsOverview
     },
 ];
 
