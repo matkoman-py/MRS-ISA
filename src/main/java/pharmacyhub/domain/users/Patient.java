@@ -1,12 +1,17 @@
 package pharmacyhub.domain.users;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import pharmacyhub.domain.Drug;
+import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.PatientCategory;
 import pharmacyhub.domain.enums.UserType;
@@ -16,6 +21,12 @@ import pharmacyhub.domain.enums.UserType;
 public class Patient extends User {
 
 	// TODO add allergens
+	@ManyToMany
+	@JoinTable(name = "patient_allergens", 
+			   joinColumns = @JoinColumn(name = "patient_id"), 
+			   inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+	private List<Ingredient> allergens;
+	
 	@Column
 	private int points;
 	
@@ -33,11 +44,12 @@ public class Patient extends User {
 	}
 
 	public Patient(String email, String password, String name, String surname, String phoneNumber, Location location,
-			boolean status, String activationCode, int points, int penaltyCounter, PatientCategory category) {
+			boolean status, String activationCode, int points, int penaltyCounter, PatientCategory category, List<Ingredient> allergens) {
 		super(email, password, name, surname, phoneNumber, location, UserType.Patient, status, activationCode);
 		this.points = points;
 		this.penaltyCounter = penaltyCounter;
 		this.category = category;
+		this.allergens = allergens;
 	}
 
 	public int getPoints() {
@@ -62,6 +74,14 @@ public class Patient extends User {
 
 	public void setCategory(PatientCategory category) {
 		this.category = category;
+	}
+
+	public List<Ingredient> getAllergens() {
+		return allergens;
+	}
+
+	public void setAllergens(List<Ingredient> allergens) {
+		this.allergens = allergens;
 	}
 
 }

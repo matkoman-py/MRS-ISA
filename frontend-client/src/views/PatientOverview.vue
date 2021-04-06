@@ -19,7 +19,7 @@
                     <b-form-input id="phonenumber-input" v-model="selected.phoneNumber"></b-form-input>
                 </b-form-group>
                 
-               <searchable-tags labelName="Add alergens" :updateValue="(data) => form.substitutions = data"
+               <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
                     :data="substitutions" v-model="selected.substitutions">
                 </searchable-tags>
 
@@ -133,7 +133,7 @@
                 this.modified.surname = this.selected.surname;
                 this.modified.email = this.selected.email;
                 this.modified.phoneNumber = this.selected.phoneNumber;
-                this.modified.substitutions = this.selected.substitutions;
+                this.modified.allergens = this.selected.substitutions;
                 this.$root.$emit('bv::hide::modal', 'my-modal');
                 console.log(this.modified);
                 axios.put("http://localhost:8081/patients", this.modified)
@@ -153,7 +153,7 @@
                 this.getDrugs();
             },
             getDrugs: function () {
-                axios.get("http://localhost:8081/drugs")
+                axios.get("http://localhost:8081/ingredients")
                     .then(response => {
                         this.substitutions = response.data;
                     })

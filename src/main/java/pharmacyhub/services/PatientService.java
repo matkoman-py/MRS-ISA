@@ -52,6 +52,7 @@ public class PatientService {
 			if(patient.getPassword() != null) pat.setPassword(patient.getPassword());
 			if(patient.getPhoneNumber() != null) pat.setPhoneNumber(patient.getPhoneNumber());
 			if(patient.getSurname() != null) pat.setSurname(patient.getSurname());
+			if(patient.getAllergens() != null) pat.setAllergens(patient.getAllergens());
 
 			patientRepository.save(pat);
 		return findAll();
