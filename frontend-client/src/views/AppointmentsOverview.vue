@@ -15,7 +15,7 @@
         label-for="dermatologist-picker"
         invalid-feedback="Dermatologist is required">
             <b-form-select
-                v-model="selectedDermatologist"
+                v-model="inputValues.dermatologist"
                 :options="availableDermatologists">
             </b-form-select>
         </b-form-group>
@@ -26,7 +26,7 @@
         invalid-feedback="Appointment date is required">
             <b-form-datepicker
             id="date-input"
-            v-model="inputValues.endDate"
+            v-model="inputValues.date"
             :min="minDate"
             required >
             </b-form-datepicker>
@@ -37,7 +37,7 @@
         label-for="time-picker"
         invalid-feedback="Appointment time is required">
             <b-form-timepicker
-            v-model="value"
+            v-model="inputValues.time"
             locale="en">
             </b-form-timepicker>
         </b-form-group>
@@ -48,13 +48,13 @@
         invalid-feedback="Appointment duration is required">
             <b-form-input
             id="duration-input"
-            v-model="inputValues.endDate"
+            v-model="inputValues.duration"
             type="number"
             required >
             </b-form-input>
         </b-form-group>
 
-        <b-button type="button" variant="primary" @click="addNewPrice">Save</b-button>
+        <b-button type="button" variant="primary" @click="addNewApointment">Save</b-button>
         <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
 
       </b-form>
@@ -76,13 +76,12 @@
         appointments: [],
         minDate: minDate,
         availableDermatologists: [],
-        selectedDermatologist: '',
         inputValues: {
-          price: '',
-          drugName: '',
+          dermatologist: '',
           drugStoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
-          startDate: minDate,
-          endDate: ''
+          date: '',
+          time: '',
+          duration: '',
         }
       }
     },
@@ -111,14 +110,12 @@
         },
         addNewApointment(event) {
           event.preventDefault();
-          this.inputValues.drugName = this.selected[0].drug
-          axios.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValues)))
+          axios.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
-              alert("New price for " + this.selected[0].drug + " is successfully added.");
+              alert("New appointment is successfully created.");
               })
               .catch(error => console.log(error));
-          this.getDrugStockForDrugstore();
           this.$root.$emit('bv::hide::modal', 'my-modal');
         },
         handleClose(){
