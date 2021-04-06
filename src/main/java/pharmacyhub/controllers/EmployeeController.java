@@ -36,6 +36,5 @@ public class EmployeeController {
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Employee>> update(@RequestBody Employee employee) throws Exception {
 		return new ResponseEntity<>(employeeService.update(employee), HttpStatus.OK);
-
 	}
 }

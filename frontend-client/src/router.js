@@ -27,7 +27,6 @@ const routes = [
         name: "RegistrationPage",
         component: RegistrationPage
     },
-
     {
         path: '/add-drug-form',
         name: "Add drug",

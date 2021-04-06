@@ -53,7 +53,6 @@ public class PatientService {
 			if(patient.getPhoneNumber() != null) pat.setPhoneNumber(patient.getPhoneNumber());
 			if(patient.getSurname() != null) pat.setSurname(patient.getSurname());
 
-
 			patientRepository.save(pat);
 		return findAll();
 	}

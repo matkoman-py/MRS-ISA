@@ -16,13 +16,18 @@
 
                 <b-form-group label="Phone number" label-for="phonenumber-input"
                     invalid-feedback="Phone number is required">
-                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber" ></b-form-input>
+                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber"></b-form-input>
                 </b-form-group>
+                
+               <searchable-tags labelName="Add alergens" :updateValue="(data) => form.substitutions = data"
+                    :data="substitutions" v-model="selected.substitutions">
+                </searchable-tags>
+
                 <b-button type="submit" variant="primary">Save</b-button>
                 <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
             </b-form>
         </b-modal>
-
+ 
         <b-row>
             <b-col>
                 <b-table id="tabela_pacijenata" striped hover :items="patients" @row-clicked="showModal"></b-table>
@@ -51,11 +56,16 @@
 </template>
 
 <script>
+    import SearchableTags from "../components/SearchableTags"
     import axios from "axios";
-    export default {
 
+    export default {
+        components: {
+            SearchableTags
+        },
         data: function () {
             return {
+                substitutions: [],
                 selected: {},
                 modified: {},
                 patients: [],
@@ -63,7 +73,8 @@
                     email: '',
                     name: '',
                     surname: '',
-                    food: null
+                    food: null,
+                    substitutions: [],
                 },
                 foods: [{
                     text: 'Select One',
@@ -72,6 +83,7 @@
                 show: true
             }
         },
+        
         methods: {
             search: function () {
                 axios.get('http://localhost:8081/patients/search', {
@@ -121,6 +133,7 @@
                 this.modified.surname = this.selected.surname;
                 this.modified.email = this.selected.email;
                 this.modified.phoneNumber = this.selected.phoneNumber;
+                this.modified.substitutions = this.selected.substitutions;
                 this.$root.$emit('bv::hide::modal', 'my-modal');
                 console.log(this.modified);
                 axios.put("http://localhost:8081/patients", this.modified)
@@ -137,9 +150,16 @@
                 this.$root.$emit('bv::show::modal', 'my-modal');
                 this.selected = JSON.parse(JSON.stringify(item));
                 this.modified = item;
-            }
+                this.getDrugs();
+            },
+            getDrugs: function () {
+                axios.get("http://localhost:8081/drugs")
+                    .then(response => {
+                        this.substitutions = response.data;
+                    })
+                    .catch(error => console.log(error));
+            },
         },
-
         mounted: function () {
             this.getAllPatients();
         }
