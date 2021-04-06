@@ -4,9 +4,12 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Drugstore extends BaseEntity {
@@ -24,7 +27,8 @@ public class Drugstore extends BaseEntity {
 	@Column(name = "average_rating")
 	public double averageRating;
 
-	@OneToMany(mappedBy = "drugstore")
+	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<Employement> employements;
 	
 	@Column

@@ -13,6 +13,7 @@ import DrugstoreSearch from "./views/DrugstoreSearch"
 import EmployeeTable from "./components/EmployeeTable"
 import AddDrugstoreForm from "./views/AddDrugstoreForm"
 import AddDermatologistForm from "./views/AddDermatologistForm"
+import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,11 @@ const routes = [
         path: '/AddDermatologistForm',
         name: "AddDermatologistForm",
         component: AddDermatologistForm
+    },
+    {
+        path: '/SelectDermatologistForm',
+        name: "SelectDermatologistForm",
+        component: SelectDermatologistForm
     },
     {
         path:'/drugSearch',
