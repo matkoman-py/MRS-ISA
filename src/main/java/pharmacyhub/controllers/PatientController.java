@@ -8,10 +8,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.services.PatientService;
 
@@ -32,5 +35,11 @@ public class PatientController {
 												) throws Exception {
 		
 		return new ResponseEntity<>(patientService.returnPatients(patientName,patientSurname), HttpStatus.OK);
+	}
+	
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Patient>> update(@RequestBody Patient patient) throws Exception {
+		return new ResponseEntity<>(patientService.update(patient), HttpStatus.OK);
+
 	}
 }
