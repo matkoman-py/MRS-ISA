@@ -1,4 +1,4 @@
-﻿--
+--
 -- Data for Name: location;
 --
 INSERT INTO public.location VALUES ('71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', 'Batajnički drum b.b.', 'Beograd', 'Serbia');
@@ -9,16 +9,20 @@ INSERT INTO public.location VALUES ('9c7face6-d759-412d-839a-6469ae471067', 'Mit
 --
 -- Data for Name: drug_type;
 --
+
 INSERT INTO public.drug_type VALUES ('5fa27c02-d6b4-431b-b3ce-9dc66588b918', 'They help to improve your sleep, energy, appetite, mood and negative thoughts about yourself.', 'antidepressant');
 INSERT INTO public.drug_type VALUES ('cb22173a-4b0b-4f98-9c03-e19682520ff2', 'They help with hallucinations and delusions, anxiety, agitation and problems with mood, thinking and socialising.', 'antipsychotic');
 INSERT INTO public.drug_type VALUES ('ea278714-5c0e-41d6-9028-51db5f4a9645', 'Benzodiazepines are sometimes used to treat anxiety and insomnia.', 'benzodiazepines');
 INSERT INTO public.drug_type VALUES ('75d0c11c-e1e1-49ae-bd60-5cb175bbece7', 'They help to improve attention, concentration and alertness.', 'stimulant');
+
 
 --
 -- Data for Name: manufacturer;
 --
 INSERT INTO public.manufacturer VALUES ('b137c265-6e12-4b59-947e-ab5504335dc4', 'Galenika', '+381 11 307 1000', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
 INSERT INTO public.manufacturer VALUES ('d9a1b6b2-df11-4071-88c6-887411477a48', 'Hemofarm', '+381 13 803 100', '9c7face6-d759-46bd-839a-6469ae471067');
+
+
 
 --
 -- Data for Name: ingredient;
@@ -55,12 +59,13 @@ INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-dedascs63843', 9, 
 INSERT INTO public.drugstore VALUES ('2b7933e9-6as3-463a-974b-ded43ad63843', 8, 'Description', 'Belgrade Health', '09:00', '19:00','9c7face6-d759-46bd-439a-6469ae471067');
 INSERT INTO public.drugstore VALUES ('2bas33e9-6523-463a-974b-ded43ad63843', 7, 'Description', 'Pejin medicine', '12:00', '21:00','9c7face6-d759-412d-839a-6469ae471067');
 INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', 6, 'Description', 'Prirodnjacka medicina', '14:00', '22:00','71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
+
 --
 -- Data for Name: Patient;
 --
-INSERT INTO public.users (type, id, activation_code, email, name, password, phone_number, status, surname, working_hours_from, working_hours_to, penalty_counter, points, location_fk, drugstore_fk) VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', NULL, 'marko@markoviccc.com', 'Marko', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
-INSERT INTO public.users (type, id, activation_code, email, name, password, phone_number, status, surname, working_hours_from, working_hours_to, penalty_counter, points, location_fk, drugstore_fk) VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', NULL, 'mirko@mirkovic.com', 'Mirko', 'pass', NULL, false, 'Mirkovic', NULL, NULL, 0, 0, NULL, NULL);
-INSERT INTO public.users (type, id, activation_code, email, name, password, phone_number, status, surname, working_hours_from, working_hours_to, penalty_counter, points, location_fk, drugstore_fk) VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', NULL, 'petar@markovic.com', 'Petar', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', NULL, 'marko@markoviccc.com', 'Marko', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', NULL, 'mirko@mirkovic.com', 'Mirko', 'pass', NULL, false, 'Mirkovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', NULL, 'petar@markovic.com', 'Petar', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
 
 
 --
