@@ -22,6 +22,7 @@
     </b-card-body>
    
    <b-list-group flush>
+     <b-list-group-item>Address: {{drugstore.id}}</b-list-group-item>
       <b-list-group-item>Address: {{drugstore.adress}}</b-list-group-item>
       <b-list-group-item>City: {{drugstore.city}}</b-list-group-item>
       <b-list-group-item>Country: {{drugstore.country}}</b-list-group-item>
