@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pharmacyhub.domain.Drugstore;
-import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.services.PatientService;
 
