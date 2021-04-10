@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DermatologistAppointment;
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.services.DermatologistAppointmentService;
@@ -29,5 +30,10 @@ public class DermatologistAppointmentController {
 	public ResponseEntity<DermatologistAppointment> getAllDermatologistsForDrugstore(@RequestBody DermatologistAppointmentDto dermatologistAppointmentDto) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.save(dermatologistAppointmentDto), HttpStatus.OK);
 	}
-
+	
+	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> getAllDermatologistAppointments(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId) throws Exception {
+		return new ResponseEntity<>(dermatologistAppointmentService.findAvailable(drugstoreId), HttpStatus.OK);
+		//return new ResponseEntity<>(dermatologistAppointmentService.findAll(), HttpStatus.OK);
+	}
 }

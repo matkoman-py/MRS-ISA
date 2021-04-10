@@ -103,8 +103,4 @@ public class DermatologistAppointment extends BaseEntity{
 		this.appointmentReport = appointmentReport;
 	}
 	
-	
-	
-	
-	
 }
