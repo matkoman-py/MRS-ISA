@@ -4,7 +4,6 @@ import HomePage from "./views/HomePage";
 import EmployeesOverview from "./views/EmployeesOverview"
 import PatientOverview from "./views/PatientOverview"
 import RegistrationPage from "./views/RegistrationPage"
-import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
 import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate"
 import AddPharmacistForm from "./views/AddPharmacistForm"
@@ -32,12 +31,6 @@ const routes = [
         name: "RegistrationPage",
         component: RegistrationPage
     },
-    {
-        path: '/add-drug-form',
-        name: "Add drug",
-        component: AddDrugForm
-    }
-    ,
     {
         path: '/patientoverview',
         name: "PatientOverview",

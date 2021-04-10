@@ -11,8 +11,15 @@
                 </b-button>
             </template>
         </b-table>
+        <b-button size="sm" @click="showAddModal($event.target)" class="mr-1">
+                    Add
+        </b-button>
     </b-container>
+    <b-modal :id="addModal.id" :title="addModal.title" ok-only v-on:ok='addDrug' @hide="resetAddModal" size="xl">
+        <add-drug-form ref='add-drug-form'></add-drug-form>
+    </b-modal>
     <b-modal :id="editModal.id" :title="editModal.title" ok-only v-on:ok='edit' @hide="resetEditModal" size="xl">
+        <edit-drug-form ref='edit-drug-form' :form="this.editModal.drug"></edit-drug-form>
     </b-modal>
     <b-modal :id="deleteModal.id" :title="deleteModal.title" ok-only v-on:ok='deleteDrug' @hide="resetDeleteModal" size="xl">
         Are you sure that you want to delete this drug?
@@ -22,11 +29,18 @@
 
 <script>
 import axios from 'axios'
+import AddDrugForm from '../forms/drug/AddDrugForm';
+import EditDrugForm from '../forms/drug/EditDrugForm';
 
 export default {
-    name: "AdmindrugTable",
+    name: "AdminDrugTable",
+    components: {
+        AddDrugForm,
+        EditDrugForm
+        },
     data: function() {
-      return {
+
+        return {
           fields:[
               { key: 'name', label: 'Name' },
               { key: 'form', label: 'Form' },
@@ -35,6 +49,10 @@ export default {
               { key: 'description', label: 'Description' },
               { key: 'actions', label: 'Actions'}
         ], 
+        addModal: {
+            id: 'add-modal',
+            title: 'Add Drug',
+        },
         editModal: {
             id: 'edit-modal',
             title: '',
@@ -49,23 +67,25 @@ export default {
       };
     },
     methods:{
+      showAddModal: function(button){
+            this.$root.$emit('bv::show::modal', this.addModal.id, button);
+      },
+      resetAddModal: function(){
+          
+      },
+      addDrug: function(event){
+          this.$refs['add-drug-form'].addDrug(event);
+      },
       showEditModal: function(rowItem, button){
             this.editModal.title = `drug: ${rowItem.name}`;
             this.editModal.drug = JSON.parse(JSON.stringify(rowItem));
-            console.log(this.editModal.drug);
             this.$root.$emit('bv::show::modal', this.editModal.id, button);
       },
       resetEditModal: function() {
             this.editModal.title = '';
       },
-      edit: function(){
-          axios.put('http://localhost:8081/drugs', this.editModal.drug)
-            .then(response => {
-                let index = this.drugs.findIndex(drug => drug.id == response.data.id);
-                this.drugs.splice(index, 1, response.data);
-                alert("success");
-            })
-            .catch(error => console.log(error));
+      edit: function(event){
+          this.$refs['edit-drug-form'].editDrug(event);
       },
       showDeleteModal: function(rowItem, button){
             this.deleteModal.title = `drug: ${rowItem.name}`;
