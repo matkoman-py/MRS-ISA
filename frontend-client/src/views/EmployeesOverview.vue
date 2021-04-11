@@ -48,7 +48,11 @@
     },
     methods: {
         getEmployees : function(){
-            axios.get('http://localhost:8081/employees')
+            axios.get('http://localhost:8081/employees', {
+              params: {
+                drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+            }
+            })
             .then(response => {
             this.employees = response.data.map(employee => 
             (
