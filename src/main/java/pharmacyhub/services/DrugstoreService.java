@@ -60,5 +60,10 @@ public class DrugstoreService {
 		}
 		return wantedDrugStores;
 	}
+	
+	public Drugstore findDrugstore(String drugstoreId) throws Exception {
+		
+		return drugstoreRepository.findById(drugstoreId).orElse(null);
+	}
 }
 

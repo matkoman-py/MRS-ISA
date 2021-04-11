@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +50,10 @@ public class DrugstoreController {
 												) throws Exception {
 		
 		return new ResponseEntity<>(drugstoreService.findAll(), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Drugstore> getDrugstore(@PathVariable("id") String id) throws Exception {
+			return new ResponseEntity<>(drugstoreService.findDrugstore(id), HttpStatus.OK);
 	}
 }

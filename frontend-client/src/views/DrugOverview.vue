@@ -41,7 +41,6 @@
         }
     },
     mounted: function(){
-        console.log("koj ")
         this.getDrugs();
     }
   }

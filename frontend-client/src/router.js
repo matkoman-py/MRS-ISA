@@ -17,6 +17,7 @@ import DrugStockOverview from "./views/DrugStockOverview"
 import AppointmentsOverview from "./views/AppointmentsOverview"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
+import DrugstoreView from "./views/DrugstoreView"
 
 Vue.use(VueRouter)
 
@@ -107,6 +108,12 @@ const routes = [
         name: "AdminDrugstoreTable",
         component: AdminDrugstoreTable
     },
+    {
+        path: '/drugstores/:id',
+        name: "DrugstoreView",
+        component: DrugstoreView
+    },
+    
 ];
 
 const router = new VueRouter({ 
