@@ -97,3 +97,8 @@ INSERT INTO public.drug_price VALUES ('4', '2021-01-22', 5500, '2021-01-22', 'a3
 INSERT INTO public.employment VALUES ('0', '10:00', '12:00', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.employment VALUES ('1', '10:00', '12:00', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.employment VALUES ('2', '10:00', '12:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843');
+--
+-- Data for Name: dermatologist_appointment; 
+--
+INSERT INTO public.dermatologist_appointment VALUES ('4a73ae19-2001-450a-a050-85f51717ab76', NULL, '2021-04-13 02:00:00', 8, '23:59:00', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
+INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b6a802bce2b', NULL, '2021-04-19 02:00:00', 10, '23:59:00', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');

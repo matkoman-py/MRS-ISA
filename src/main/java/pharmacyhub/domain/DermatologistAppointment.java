@@ -29,7 +29,7 @@ public class DermatologistAppointment extends BaseEntity{
 	private Time time;
 	@Column(nullable = false)
 	private int duration;	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id",nullable = true)
 	private Patient patient; //bice patient objekat
 	@Column(nullable = true)
