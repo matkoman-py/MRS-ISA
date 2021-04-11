@@ -2,20 +2,20 @@
     <b-container>
         <b-row style="margin:20px">
             <b-col> <b-img left src="https://cdn.sanity.io/images/0vv8moc6/mhe/35d3654e121cea13826925b77336d022384fcb78-1000x667.png?auto=format" alt="Left image" fluid></b-img> </b-col>
-            <b-col style="padding-left:25px;padding-top:40px;">
-                <div align="left">
-                 <p><b>Name</b>: {{drugstore.name}}</p>
-                 <p><b>Address</b>: {{drugstore.location.address}}, {{drugstore.location.city}}, {{drugstore.location.country}}</p>
-                 <p><b>Description</b>: {{drugstore.description}}</p>
-                 <p><b>Average rating</b>: {{drugstore.averageRating}}</p>
-                 <p><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
+            <b-col style="padding-left:25px;">
+                <div align="left" style="margin-top:50px">
+                 <p style="margin:20px"><b>Name</b>: {{drugstore.name}}</p>
+                 <p style="margin:20px"><b>Address</b>: {{drugstore.location.address}}, {{drugstore.location.city}}, {{drugstore.location.country}}</p>
+                 <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
+                 <p style="margin:20px"><b>Average rating</b>: {{drugstore.averageRating}}</p>
+                 <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
                 </div>
             </b-col>
         </b-row>
-        <b-row style="margin:10px"><b-col><b>Pregled zaposlenih</b></b-col></b-row>
+        <b-row style="margin:10px"><b-col><b>Employees overview</b></b-col></b-row>
         <b-row>
-            <b-col>Dermatolozi:</b-col>
-            <b-col>Farmaceuti:</b-col>
+            <b-col>Dermatologists:</b-col>
+            <b-col>Pharmacists:</b-col>
         </b-row>
         <b-row>
             <b-col> 
@@ -23,20 +23,24 @@
                     <b-table :items="dermatologists">
 
                     </b-table>
+                    <p v-if="dermatologists.length == 0"><b>There are no dermatologists employed in this drugstore.</b></p>
                 </div>
             </b-col>
 
             <b-col>
                 <div style="margin-top:20px; margin-left:20px; margin-right:20px; border-style:solid;">
-                    <b-table>
-
+                    <b-table :items="pharmacists">
                     </b-table>
+                    <p v-if="pharmacists.length == 0"><b>There are no pharmacists employed in this drugstore.</b></p>
                 </div>
             </b-col>
         </b-row>
         <b-row>
-            <b-col>
-            <b-button variant="outline-primary" style="margin:30px">Zakazi sastanak</b-button>
+            <b-col style="margin:20px;">
+                <b-button variant="outline-primary" style="margin:30px">Make appointment with dermatologist</b-button>
+            </b-col>
+            <b-col style="margin:20px">
+                <b-button variant="outline-primary" style="margin:30px">Make appointment with pharmacist</b-button>
             </b-col>
         </b-row>
     </b-container>
