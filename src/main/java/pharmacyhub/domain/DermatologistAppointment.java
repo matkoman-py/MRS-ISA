@@ -2,11 +2,14 @@ package pharmacyhub.domain;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Patient;
@@ -25,9 +28,10 @@ public class DermatologistAppointment extends BaseEntity{
 	@Column(nullable = false)
 	private Time time;
 	@Column(nullable = false)
-	private int duration;
-	@Column(nullable = true)
-	private String patient; //bice patient objekat
+	private int duration;	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id",nullable = true)
+	private Patient patient; //bice patient objekat
 	@Column(nullable = true)
 	private String appointmentReport; //bice appointmentReport objekat
 	
@@ -36,7 +40,7 @@ public class DermatologistAppointment extends BaseEntity{
 	}
 	
 	public DermatologistAppointment(Dermatologist dermatologist, Drugstore drugstore, Date date, Time time,
-			int duration, String patient, String appointmentReport) {
+			int duration, Patient patient, String appointmentReport) {
 		super();
 		this.dermatologist = dermatologist;
 		this.drugstore = drugstore;
@@ -87,12 +91,12 @@ public class DermatologistAppointment extends BaseEntity{
 		this.duration = duration;
 	}
 
-	public String getPatient() {
+	public Patient getPatient() {
 		return patient;
 	}
 
-	public void setPatient(String patient) {
-		this.patient = patient;
+	public void setPatient(Patient patient2) {
+		this.patient = patient2;
 	}
 
 	public String getAppointmentReport() {
@@ -102,9 +106,5 @@ public class DermatologistAppointment extends BaseEntity{
 	public void setAppointmentReport(String appointmentReport) {
 		this.appointmentReport = appointmentReport;
 	}
-	
-	
-	
-	
 	
 }
