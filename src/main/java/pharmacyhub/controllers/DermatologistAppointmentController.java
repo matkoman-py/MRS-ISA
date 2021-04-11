@@ -36,4 +36,12 @@ public class DermatologistAppointmentController {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAvailable(drugstoreId), HttpStatus.OK);
 		//return new ResponseEntity<>(dermatologistAppointmentService.findAll(), HttpStatus.OK);
 	}
+	
+	@GetMapping(path ="/createReserrvation", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> createReservation(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
+			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
+			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String DRUGSTOREID) throws Exception {
+		return new ResponseEntity<>(dermatologistAppointmentService.createReservation(patientId, drugstoreId,DRUGSTOREID), HttpStatus.OK);
+		//return new ResponseEntity<>("ok", HttpStatus.OK);
+	}
 }

@@ -2,14 +2,17 @@ package pharmacyhub.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.users.PatientRepository;
 
 @Service
 public class DermatologistAppointmentService {
@@ -19,6 +22,9 @@ public class DermatologistAppointmentService {
 	
 	@Autowired 
 	private DrugstoreRepository drugstoreRepository;
+	
+	@Autowired 
+	private PatientRepository patientRepository;
 	
 	public List<DermatologistAppointment> findAll(){
 		return dermatologistAppointmentRepository.findAll();
@@ -36,9 +42,27 @@ public class DermatologistAppointmentService {
 		String str = ""; 
 		for(DermatologistAppointment appointment : allAppointments) {
 			str += appointment.getDrugstore().getId() + "    " +  drugstoreId + "\n";
-			if(appointment.getDrugstore().getId().equals(drugstoreId))
+			System.out.println(str);
+			if(appointment.getDrugstore().getId().equals(drugstoreId) && (appointment.getPatient() == null))
 				wantedAppontments.add(appointment);
 		}
+		return wantedAppontments;
+	}
+
+	public List<DermatologistAppointment> createReservation(String patientId,String drugstoreId,String DRUGSTOREID) {
+		List<DermatologistAppointment> allAppointments = findAll();
+		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
+		
+		for(DermatologistAppointment appointment : allAppointments) {
+			//str += appointment.getDrugstore().getId() + "    " +  drugstoreId + "\n";
+			if(appointment.getId().equals(drugstoreId)) {
+				Patient patient = patientRepository.findById(patientId).orElse(null);;
+				appointment.setPatient(patient);
+				dermatologistAppointmentRepository.save(appointment);
+			}
+
+		}
+		wantedAppontments = findAvailable(DRUGSTOREID);
 		return wantedAppontments;
 	}
 	

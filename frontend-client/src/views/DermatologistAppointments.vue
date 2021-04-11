@@ -2,7 +2,7 @@
     <b-container>
         <b-table v-if="appointments.length > 0" :items="appointments" :fields="fields">
             <template #cell(actions)="row">
-                <b-button variant="outline-info" v-if="row.item" size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+                <b-button variant="outline-info" v-if="row.item" size="sm" @click="createReservation(row.item, row.index, $event.target)" class="mr-1">
                     Reserve
                 </b-button>
             </template>
@@ -67,7 +67,29 @@
                                 patient: appointment.patient ? appointment.patient.name : "Available",
                             }));
                     })
-            }
+            },
+            createReservation :function(item){
+                axios.get('http://localhost:8081/dermatologist-appointment/createReserrvation', {
+                        params: {
+                            drugstoreId : item.appointmentId,
+                            patientId: '8128d806-c29b-4086-aae6-877d17eeb6fa',
+                            DRUGSTOREID: this.drugstoreId,
+                        }
+                    })
+                    .then(response => {
+                        this.appointments = response.data.map(appointment =>
+                            ({
+                                appointmentId: appointment.id,
+                                dermatologist: appointment.dermatologist.name,
+                                drugstore: appointment.drugstore.name,
+                                date: appointment.date.substring(0, 10),
+                                time: appointment.time,
+                                duration: appointment.duration,
+                                patient: appointment.patient ? appointment.patient.name : "Available",
+                            }));
+                            this.getAllAppointments();
+                    })
+            },
         },
         mounted: function () {
             this.getAllAppointments();
