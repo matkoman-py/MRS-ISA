@@ -97,7 +97,7 @@
 <script>
 import axios from "axios";
 export default {
-    name: "Appointment",
+    name: "AppointmentDermatologist",
     
     data: function () {
             return {
