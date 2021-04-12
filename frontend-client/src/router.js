@@ -16,6 +16,11 @@ import DrugStockOverview from "./views/DrugStockOverview"
 import AppointmentsOverview from "./views/AppointmentsOverview"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
+
+import AppointmentDermatologist from "./views/AppointmentDermatologist"
+import AppointmentPharmacist from "./views/AppointmentPharmacist"
+import PharmDermProfile from "./views/PharmDermProfile"
+
 import DrugstoreView from "./views/DrugstoreView"
 import DermatologistAppointments from "./views/DermatologistAppointments"
 import PatientProfile from "./views/PatientProfile"
@@ -105,6 +110,11 @@ const routes = [
         component: AdminDrugstoreTable
     },
     {
+        path: '/appointment-dermatologist',
+        name: "AppointmentDermatologist",
+        component: AppointmentDermatologist
+    },
+    {
         path: '/drugstores/:id',
         name: "DrugstoreView",
         component: DrugstoreView
@@ -113,6 +123,16 @@ const routes = [
         path: '/dermatologist-appointments/:id',
         name: "DeramtologistAppointments",
         component: DermatologistAppointments 
+    },
+    {
+        path: '/appointment-pharmacist',
+        name: "AppointmentPharmacist",
+        component: AppointmentPharmacist
+    },
+    {
+        path: '/pharm-derm-profile',
+        name: "PharmDermProfile",
+        component: PharmDermProfile
     },
     {
         path: '/patient/:id',

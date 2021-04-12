@@ -122,7 +122,8 @@ public class EmployeeService {
 				throw new Exception("This dermatologist does not exist!");
 			}
 			derm.setEmail(employee.getEmail());
-			derm.setLocation(employee.getLocation());
+			
+			derm.setLocation(locationRepository.save(employee.getLocation()));
 			derm.setName(employee.getName());
 			derm.setPassword(employee.getPassword());
 			derm.setPhoneNumber(employee.getPhoneNumber());
@@ -137,7 +138,7 @@ public class EmployeeService {
 			}
 
 			pharm.setEmail(employee.getEmail());
-			pharm.setLocation(employee.getLocation());
+			pharm.setLocation(locationRepository.save(employee.getLocation()));
 			pharm.setName(employee.getName());
 			pharm.setPassword(employee.getPassword());
 			pharm.setPhoneNumber(employee.getPhoneNumber());
@@ -150,6 +151,16 @@ public class EmployeeService {
 		return findAll();
 	}
 	
+
+	public Employee findOne(String employeeId) {
+		if(pharmacistRepository.findById(employeeId).orElse(null) == null) {
+			  Employee employee = dermatologistRepository.findById(employeeId).orElse(null);
+			  return employee;
+		}
+		Employee employee =  pharmacistRepository.findById(employeeId).orElse(null);
+		return employee;
+  }
+  
 	public List<Employee> getAllEmployeesOfDrugstore(String drugstoreId) {
 		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));	
 		List<Employment> dermatologistEmployments = employmentRepository.findByDrugstoreId(drugstoreId);		
@@ -162,4 +173,5 @@ public class EmployeeService {
 		}
 		return employees;
 	}
+  
 }
