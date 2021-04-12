@@ -17,4 +17,6 @@ public interface DrugPriceRepository extends JpaRepository<DrugPrice, String> {
 	
 	@Transactional
 	long deleteByDrug(Drug drug);
+
+	void deleteByDrugstore(Drugstore drugstoreToDelete);
 }

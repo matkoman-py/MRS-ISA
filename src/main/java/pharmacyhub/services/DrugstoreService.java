@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
+import pharmacyhub.repositories.DrugPriceRepository;
+import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
+import pharmacyhub.repositories.users.DrugstoreAdminRepository;
+import pharmacyhub.repositories.users.PharmacistRepository;
 
 @Service
 public class DrugstoreService {
@@ -19,6 +23,19 @@ public class DrugstoreService {
 
 	@Autowired
 	private DrugstoreRepository drugstoreRepository;
+	
+	@Autowired
+	private DrugStockRepository drugStockRepository;
+	
+	@Autowired
+	private DrugPriceRepository drugPriceRepository;
+	
+	@Autowired
+	private PharmacistRepository pharmacistRepository;
+	
+	@Autowired
+	private DrugstoreAdminRepository drugstoreAdminRepository;
+	
 	
 	public List<Drugstore> findAll() {
 		return drugstoreRepository.findAll();
@@ -44,6 +61,20 @@ public class DrugstoreService {
 		}
 		
 		return drugstoreRepository.save(drugstore);
+	}
+	
+	public void delete(String id) throws Exception {
+		Drugstore drugstoreToDelete = drugstoreRepository.findById(id).orElse(null);
+		if(drugstoreToDelete == null) {
+			throw new Exception("No such drugstore");
+		}
+		
+		drugStockRepository.deleteByDrugstore(drugstoreToDelete);
+		drugPriceRepository.deleteByDrugstore(drugstoreToDelete);
+		drugstoreAdminRepository.deleteByDrugstore(drugstoreToDelete);
+		pharmacistRepository.deleteByDrugstore(drugstoreToDelete);
+		
+		drugstoreRepository.delete(drugstoreToDelete);
 	}
 
 	public List<Drugstore> returnDrugStores(String drugStoreName,String drugStoreCity,String drugStoreCountry) {
