@@ -66,14 +66,14 @@
                                 duration: appointment.duration,
                                 patient: appointment.patient ? appointment.patient.name : "Available",
                             }));
-                    })
+                    }).catch(error => console.log(error));
             },
             createReservation :function(item){
                 axios.get('http://localhost:8081/dermatologist-appointment/createReserrvation', {
                         params: {
-                            drugstoreId : item.appointmentId,
+                            appointmentId : item.appointmentId,
                             patientId: '8128d806-c29b-4086-aae6-877d17eeb6fa',
-                            DRUGSTOREID: this.drugstoreId,
+                            drugstoreId: this.drugstoreId,
                         }
                     })
                     .then(response => {
@@ -87,8 +87,8 @@
                                 duration: appointment.duration,
                                 patient: appointment.patient ? appointment.patient.name : "Available",
                             }));
-                            this.getAllAppointments();
-                    })
+                            //this.getAllAppointments();
+                    }).catch(error => console.log(error));
             },
         },
         mounted: function () {

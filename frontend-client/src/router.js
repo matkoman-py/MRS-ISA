@@ -18,6 +18,7 @@ import AppointmentsOverview from "./views/AppointmentsOverview"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
 import DermatologistAppointments from "./views/DermatologistAppointments"
+import PatientProfile from "./views/PatientProfile"
 
 Vue.use(VueRouter)
 
@@ -112,6 +113,11 @@ const routes = [
         path: '/drugstore/:id',
         name: "DeramtologistAppointments",
         component: DermatologistAppointments 
+    },
+    {
+        path: '/patient/:id',
+        name: "PatientProfile",
+        component: PatientProfile 
     },
 ];
 

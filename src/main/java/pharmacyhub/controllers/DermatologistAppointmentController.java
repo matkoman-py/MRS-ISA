@@ -39,9 +39,9 @@ public class DermatologistAppointmentController {
 	
 	@GetMapping(path ="/createReserrvation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> createReservation(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
-			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
-			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String DRUGSTOREID) throws Exception {
-		return new ResponseEntity<>(dermatologistAppointmentService.createReservation(patientId, drugstoreId,DRUGSTOREID), HttpStatus.OK);
+			@RequestParam (value = "appointmentId", required=false,  defaultValue = "0") String appointmentId,
+			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId) throws Exception {
+		return new ResponseEntity<>(dermatologistAppointmentService.createReservation(patientId, appointmentId,drugstoreId), HttpStatus.OK);
 		//return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 }
