@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.dto.DermatologistDto;
@@ -45,4 +46,8 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.searchDermatologist(searchDermatologistDto), HttpStatus.OK);
 	}
 	
+	@GetMapping(path ="/id",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Employee> findOne(@RequestParam (value = "employeeId", required=false,  defaultValue = "0") String employeeId) throws Exception {
+		return new ResponseEntity<>(employeeService.findOne(employeeId), HttpStatus.OK);
+	}
 }

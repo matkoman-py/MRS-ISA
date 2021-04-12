@@ -19,6 +19,7 @@ import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
 import AppointmentDermatologist from "./views/AppointmentDermatologist"
 import AppointmentPharmacist from "./views/AppointmentPharmacist"
+import PharmDermProfile from "./views/PharmDermProfile"
 import DermatologistAppointments from "./views/DermatologistAppointments"
 
 Vue.use(VueRouter)
@@ -124,6 +125,11 @@ const routes = [
         path: '/appointment-pharmacist',
         name: "AppointmentPharmacist",
         component: AppointmentPharmacist
+    },
+    {
+        path: '/pharm-derm-profile',
+        name: "PharmDermProfile",
+        component: PharmDermProfile
     },
 ];
 

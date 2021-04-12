@@ -147,4 +147,17 @@ public class EmployeeService {
 		}
 		return findAll();
 	}
+	
+	public Employee findOne(String employeeId) {
+		System.out.println(employeeId);
+		System.out.println(pharmacistRepository.findById(employeeId).orElse(null));
+		System.out.println(dermatologistRepository.findById(employeeId).orElse(null).getName());
+		if(pharmacistRepository.findById(employeeId).orElse(null) == null) {
+			Employee employee = dermatologistRepository.findById(employeeId).orElse(null);
+			return employee;
+			
+		}
+		Employee employee =  pharmacistRepository.findById(employeeId).orElse(null);
+		return employee;
+	}
 }
