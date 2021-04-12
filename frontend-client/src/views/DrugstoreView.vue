@@ -3,12 +3,13 @@
         <b-row style="margin:20px">
             <b-col> <b-img left src="https://cdn.sanity.io/images/0vv8moc6/mhe/35d3654e121cea13826925b77336d022384fcb78-1000x667.png?auto=format" alt="Left image" fluid></b-img> </b-col>
             <b-col style="padding-left:25px;">
-                <div align="left" style="margin-top:50px">
+                <div align="left" style="margin-top:30px">
                  <p style="margin:20px"><b>Name</b>: {{drugstore.name}}</p>
                  <p style="margin:20px"><b>Address</b>: {{drugstore.location.address}}, {{drugstore.location.city}}, {{drugstore.location.country}}</p>
                  <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
                  <p style="margin:20px"><b>Average rating</b>: {{drugstore.averageRating}}</p>
                  <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
+                 <b-button variant="outline-primary" style="margin:20px">Subscribe</b-button>
                 </div>
             </b-col>
         </b-row>
@@ -37,23 +38,44 @@
         </b-row>
         <b-row>
             <b-col style="margin:20px;">
-                <b-button variant="outline-primary" style="margin:30px">Make appointment with dermatologist</b-button>
+                <router-link :to="'/dermatologist-appointments/'+currentDrugstoreId">
+                    <b-button variant="outline-primary" style="margin:30px">Make appointment with dermatologist</b-button>
+                </router-link>
             </b-col>
             <b-col style="margin:20px">
-                <b-button variant="outline-primary" style="margin:30px">Make appointment with pharmacist</b-button>
+                <router-link :to="'/pharmacist-appointments/'+currentDrugstoreId">
+                    <b-button variant="outline-primary" style="margin:30px">Make appointment with pharmacist</b-button>
+                </router-link>
             </b-col>
         </b-row>
+                <b-row style="margin:10px"><b-col><b>Drug stock overview</b></b-col></b-row>
+        <div style="margin-top:30px">
+        <b-card no-body>
+            <b-tabs card>
+            <b-tab title="All available drugs" active>
+                <DrugInDrugstoreTable/>
+            </b-tab>
+            <b-tab title="From my e-receipt only">
+                <DrugInDrugstoreTable/>
+            </b-tab>
+            </b-tabs>
+        </b-card>
+        </div>
     </b-container>
 </template>
 
 <script>
 import axios from "axios";
+import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable"
 
 export default {
+    components:{
+        DrugInDrugstoreTable,
+    },
     
     data: function() {
       return {
-        path: '',
+        currentDrugstoreId: '',
         drugstore: {},
         dermatologists: [],
         pharmacists: []
@@ -61,10 +83,10 @@ export default {
     },
     methods: {
         getDrugstoreId() {
-        this.path =  this.$route.path.slice(12, this.$route.path.length);
+        this.currentDrugstoreId =  this.$route.path.slice(12, this.$route.path.length);
     },
         getCurrentDrugstore() {
-            axios.get('http://localhost:8081/drugstores/' + this.path, {
+            axios.get('http://localhost:8081/drugstores/' + this.currentDrugstoreId, {
                     })
                     .then(response => {
                         this.drugstore = response.data;
@@ -73,7 +95,7 @@ export default {
         }, getAllDermatologists() {
         axios.get("http://localhost:8081/employment/dermatologist-employments", {
                 params: {
-                            drugstoreId: this.path
+                            drugstoreId: this.currentDrugstoreId
                         }})
             .then(response => {
             this.dermatologists = response.data.map(employment => 
@@ -90,7 +112,7 @@ export default {
     }, getAllPharmacists() {
         axios.get("http://localhost:8081/employment/pharmacist-employments", {
                 params: {
-                            drugstoreId: this.path
+                            drugstoreId: this.currentDrugstoreId
                         }})
             .then(response => {
             this.pharmacists = response.data.map(employment => 

@@ -115,7 +115,7 @@ const routes = [
         component: DrugstoreView
     },
     {
-        path: '/drugstore/:id',
+        path: '/dermatologist-appointments/:id',
         name: "DeramtologistAppointments",
         component: DermatologistAppointments 
     },
