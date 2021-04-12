@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pharmacyhub.domain.Drugstore;
-import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.services.PatientService;
 
@@ -41,5 +39,11 @@ public class PatientController {
 	public ResponseEntity<Collection<Patient>> update(@RequestBody Patient patient) throws Exception {
 		return new ResponseEntity<>(patientService.update(patient), HttpStatus.OK);
 
+	}
+	
+	@GetMapping(path ="/id", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Patient> profile(@RequestParam(value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		
+		return new ResponseEntity<>(patientService.returnPatient(patientId), HttpStatus.OK);
 	}
 }

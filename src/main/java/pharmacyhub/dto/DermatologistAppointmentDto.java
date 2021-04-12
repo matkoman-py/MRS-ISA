@@ -3,10 +3,7 @@ package pharmacyhub.dto;
 import java.sql.Time;
 import java.util.Date;
 
-import pharmacyhub.domain.AppointmentReport;
-import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Dermatologist;
-import pharmacyhub.domain.users.Patient;
 
 public class DermatologistAppointmentDto {
 	

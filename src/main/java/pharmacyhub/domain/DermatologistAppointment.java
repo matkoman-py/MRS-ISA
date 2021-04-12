@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import pharmacyhub.domain.users.Dermatologist;
-import pharmacyhub.domain.users.Patient;
 
 @Entity
 public class DermatologistAppointment extends BaseEntity{

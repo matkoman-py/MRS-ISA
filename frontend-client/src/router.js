@@ -4,7 +4,6 @@ import HomePage from "./views/HomePage";
 import EmployeesOverview from "./views/EmployeesOverview"
 import PatientOverview from "./views/PatientOverview"
 import RegistrationPage from "./views/RegistrationPage"
-import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
 import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate"
 import AddPharmacistForm from "./views/AddPharmacistForm"
@@ -19,6 +18,8 @@ import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
 import DrugstoreView from "./views/DrugstoreView"
 import DermatologistAppointments from "./views/DermatologistAppointments"
+import PatientProfile from "./views/PatientProfile"
+import AdminDrugTable from "./components/tables/AdminDrugTable"
 
 Vue.use(VueRouter)
 
@@ -33,12 +34,6 @@ const routes = [
         name: "RegistrationPage",
         component: RegistrationPage
     },
-    {
-        path: '/add-drug-form',
-        name: "Add drug",
-        component: AddDrugForm
-    }
-    ,
     {
         path: '/patientoverview',
         name: "PatientOverview",
@@ -118,6 +113,16 @@ const routes = [
         path: '/dermatologist-appointments/:id',
         name: "DeramtologistAppointments",
         component: DermatologistAppointments 
+    },
+    {
+        path: '/patient/:id',
+        name: "PatientProfile",
+        component: PatientProfile 
+    },
+    {  
+        path: '/admin-drug-table',
+        name: "AdminDrugTable",
+        component: AdminDrugTable
     },
 ];
 
