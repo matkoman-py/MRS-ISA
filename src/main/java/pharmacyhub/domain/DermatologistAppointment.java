@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import pharmacyhub.domain.users.Dermatologist;
-import pharmacyhub.domain.users.Patient;
 
 @Entity
 public class DermatologistAppointment extends BaseEntity{
