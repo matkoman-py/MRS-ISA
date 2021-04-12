@@ -54,6 +54,7 @@
         name: "DrugstoreTable",
         data: function () {
             return {
+                id: '',
                 name: '',
                 city: '',
                 country: '',
@@ -74,6 +75,7 @@
                     .then(response => {
                         this.drugstores = response.data.map(drugstore =>
                             ({
+                                id: drugstore.id,
                                 name: drugstore.name,
                                 adress: drugstore.location.address,
                                 country: drugstore.location.country,

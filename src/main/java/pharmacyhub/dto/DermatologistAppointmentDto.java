@@ -12,19 +12,29 @@ public class DermatologistAppointmentDto {
 	private Date date;
 	private Time time;
 	private int duration;
+	private int price;
 	
 	public DermatologistAppointmentDto() {
 		
 	}
 	
 	public DermatologistAppointmentDto(Dermatologist dermatologist, String drugstoreId, Date date, Time time,
-			int duration) {
+			int duratin, int price) {
 		super();
 		this.dermatologist = dermatologist;
 		this.drugstoreId = drugstoreId;
 		this.date = date;
 		this.time = time;
 		this.duration = duration;
+		this.price = price;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public Dermatologist getDermatologist() {

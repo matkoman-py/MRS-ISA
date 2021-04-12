@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.Drug;
+import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.services.DrugService;
 
 @Controller
@@ -47,6 +48,10 @@ public class DrugController {
 		return new ResponseEntity<>(drugService.save(drug), HttpStatus.OK);
 	}
 	
+	@GetMapping(path="/in-drugstore/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DrugInDrugstoreDto>> getDrugsInDrugstore(@PathVariable("id") String drugstoreId) {
+		return new ResponseEntity<>(drugService.getDrugsInDrugstore(drugstoreId), HttpStatus.OK);
+  }
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drug> update(@RequestBody Drug drug) throws Exception {
 		return new ResponseEntity<>(drugService.update(drug), HttpStatus.OK);

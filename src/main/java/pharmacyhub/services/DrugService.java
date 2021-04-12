@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
+import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Ingredient;
-import pharmacyhub.repositories.DrugPriceRepository;
+import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugStockRepository;
+import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.IngredientRepository;
 
 @Service
@@ -24,8 +27,11 @@ public class DrugService {
 	@Autowired
 	private IngredientRepository ingredientRepository;
 	
-	@Autowired 
+	@Autowired
 	private DrugStockRepository drugStockRepository;
+	
+	@Autowired
+	private DrugstoreRepository drugstoreRepository;
 	
 	@Autowired
 	private DrugPriceRepository drugPriceRepository;
@@ -73,7 +79,16 @@ public class DrugService {
 		return true;
 	}
 
-	public boolean delete(String id) throws Exception {
+	public List<DrugInDrugstoreDto> getDrugsInDrugstore(String drugstoreId) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
+		List<DrugInDrugstoreDto> drugsInDrugstore = new ArrayList<DrugInDrugstoreDto>();
+		for (DrugStock ds : drugsOnStock) {
+			drugsInDrugstore.add(new DrugInDrugstoreDto(ds.getDrug().getName(), ds.getDrug().getForm(), ds.getDrug().isReceipt(), ds.getDrug().getType(), ds.getDrug().getManufacturer(), ds.getAmount()));
+		}
+		return drugsInDrugstore;
+  }
+
+ public boolean delete(String id) throws Exception {
 		Drug drug = drugRepository.findById(id).orElse(null);
 		if(drug == null) {
 			throw new Exception("No such drug");

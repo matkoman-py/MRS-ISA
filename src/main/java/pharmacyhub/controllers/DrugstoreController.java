@@ -65,4 +65,9 @@ public class DrugstoreController {
 		
 		return new ResponseEntity<>(drugstoreService.findAll(), HttpStatus.OK);
 	}
+	
+	@GetMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Drugstore> getDrugstore(@PathVariable("id") String id) throws Exception {
+			return new ResponseEntity<>(drugstoreService.findDrugstore(id), HttpStatus.OK);
+	}
 }

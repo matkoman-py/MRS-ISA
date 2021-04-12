@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.users.Dermatologist;
+import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
+import pharmacyhub.dto.EmploymentDto;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
+import pharmacyhub.repositories.users.PharmacistRepository;
 
 @Service
 public class EmploymentService {
@@ -26,6 +29,9 @@ public class EmploymentService {
 	
 	@Autowired
 	private DermatologistRepository dermatologistRepository;	
+	
+	@Autowired
+	private PharmacistRepository pharmacistRepository;
 	
 	public List<Dermatologist> getAllDermatologistsForDrugstore(String drugstoreId) {
 		List<Employment> employments = employmentRepository.findByDrugstoreId(drugstoreId);
@@ -72,6 +78,24 @@ public class EmploymentService {
 
 		return new DermatologistDto(dermatologist);
 
+	}
+
+	public List<EmploymentDto> getAllDermatologistsEmploymentsForDrugstore(String drugstoreId) {
+		List<Employment> employments = employmentRepository.findByDrugstoreId(drugstoreId);
+		List<EmploymentDto> employmentInfo = new ArrayList<EmploymentDto>();
+		for (Employment e : employments) {
+			employmentInfo.add(new EmploymentDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getWorkingHoursFrom(), e.getWorkingHoursTo()));
+		}
+		return employmentInfo;
+	}
+	
+	public List<EmploymentDto> getAllPharmacistsEmploymentsForDrugstore(String drugstoreId) {
+		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
+		List<EmploymentDto> employmentInfo = new ArrayList<EmploymentDto>();
+		for (Pharmacist p : pharmacists) {
+			employmentInfo.add(new EmploymentDto(p.getName(), p.getSurname(), p.getWorkingHoursFrom(), p.getWorkingHoursTo()));
+		}
+		return employmentInfo;
 	}
 	
 }
