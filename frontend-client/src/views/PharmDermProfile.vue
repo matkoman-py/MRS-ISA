@@ -1,5 +1,5 @@
 <template>
-<div class="container emp-profile">
+<div class="container emp-profile"  v-if="employee && Object.keys(employee).length !== 0">
             <form @submit="handleSubmit">
                 <div class="row">
                     <div class="col-md-4">
@@ -22,10 +22,10 @@
                                     <p class="proile-rating">RANKING : <span>8/10</span></p>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#about" role="tab" aria-controls="home" aria-selected="true">About</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Work schedule</a>
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#schedule" role="tab" aria-controls="profile" aria-selected="false">Work schedule</a>
                                 </li>
                             </ul>
                         </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Name</label>
@@ -126,45 +126,47 @@
                                                 ></b-form-input>
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Adress</label>
+                                        
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Adress</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <b-form-input :disabled="editEnabled"
+                                                    id="address-input"
+                                                    v-model="employee.location.address"
+                                                    
+                                                    required
+                                                    ></b-form-input>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.address"
-                                                
-                                                required
-                                                ></b-form-input>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>City</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <b-form-input :disabled="editEnabled"
+                                                    id="city-input"
+                                                    v-model="employee.location.city"
+                                                    
+                                                    required
+                                                    ></b-form-input>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>City</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Country</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <b-form-input :disabled="editEnabled"
+                                                    id="country-input"
+                                                    v-model="employee.location.country"
+        
+                                                    required
+                                                    ></b-form-input>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.city"
-                                                
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Country</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.country"
-    
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>-->
+                                        
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <b-button class="dugme" type="button" variant="secondary" :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
@@ -176,7 +178,7 @@
                                             
                                         </div> 
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="profile-tab">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Experience</label>
@@ -236,7 +238,7 @@ import axios from "axios";
 export default {
     data: function(){
         return{
-            employee:{},
+            employee: {},
             editEnabled: true,
             validationPassword:'',
             name:'',
@@ -244,15 +246,15 @@ export default {
     },
     methods: {
         getEmployee : function(){
-            this.employee.id = "68eec890-3bc5-47e3-8a5b-d3544ebbfeb3";
             
             axios.get('http://localhost:8081/employees/id', {
                         params: {
-                            employeeId: this.employee.id
+                            employeeId: "68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
                         }
                     })
                     .then(response => {
                         this.employee = response.data;
+                        console.log(response.data)
                         this.name = this.employee.name;
                         //this.employee.location = {};
                     })
@@ -280,7 +282,8 @@ export default {
             return this.employee.password == this.validationPassword;
         },
     },
-    mounted: function(){
+    created: function(){
+        console.log(this.employee);
         this.getEmployee();
     },
     computed:{
