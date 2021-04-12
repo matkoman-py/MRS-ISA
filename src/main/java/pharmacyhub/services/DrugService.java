@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.Ingredient;
+import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.DrugRepository;
+import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.IngredientRepository;
 
 @Service
@@ -21,6 +23,12 @@ public class DrugService {
 
 	@Autowired
 	private IngredientRepository ingredientRepository;
+	
+	@Autowired 
+	private DrugStockRepository drugStockRepository;
+	
+	@Autowired
+	private DrugPriceRepository drugPriceRepository;
 
 	public List<Drug> findAll() {
 		return drugRepository.findAll();
@@ -63,6 +71,27 @@ public class DrugService {
 		}
 
 		return true;
+	}
+
+	public boolean delete(String id) throws Exception {
+		Drug drug = drugRepository.findById(id).orElse(null);
+		if(drug == null) {
+			throw new Exception("No such drug");
+		}
+		
+		drugPriceRepository.deleteByDrug(drug);
+		drugStockRepository.deleteByDrug(drug);		
+		drugRepository.deleteById(id);
+		
+		return true;
+	}
+
+	public Drug update(Drug drug) throws Exception {
+		// TODO Auto-generated method stub
+		if (drugRepository.findById(drug.getId()) == null) {
+			throw new Exception("Drug doesn't exists");
+		}
+		return save(drug);
 	}
 
 }

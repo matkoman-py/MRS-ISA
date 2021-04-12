@@ -1,13 +1,10 @@
 package pharmacyhub.services;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugPrice;
 import pharmacyhub.dto.CreateNewPriceForDrugDto;
 import pharmacyhub.repositories.DrugPriceRepository;
