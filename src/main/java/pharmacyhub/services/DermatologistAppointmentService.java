@@ -2,7 +2,6 @@ package pharmacyhub.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.mail.MessagingException;
 
@@ -48,7 +47,7 @@ public class DermatologistAppointmentService {
 	
 	public DermatologistAppointment saveWithPatient(DermatologistAppointmentPatientDto dermatologistAppointmentPatientDto) throws Exception {
 		//treba provera da li je dermatolog u datom periodu slobodan
-		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistRepository.findById(dermatologistAppointmentPatientDto.getDermatologistId()).orElse(null), drugstoreRepository.findById(dermatologistAppointmentPatientDto.getDrugstoreId()).orElse(null), dermatologistAppointmentPatientDto.getDate(), dermatologistAppointmentPatientDto.getTime(), dermatologistAppointmentPatientDto.getDuration(), patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null), null));
+		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistRepository.findById(dermatologistAppointmentPatientDto.getDermatologistId()).orElse(null), drugstoreRepository.findById(dermatologistAppointmentPatientDto.getDrugstoreId()).orElse(null), dermatologistAppointmentPatientDto.getDate(), dermatologistAppointmentPatientDto.getTime(), dermatologistAppointmentPatientDto.getDuration(), patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null), null, dermatologistAppointmentPatientDto.getPrice()));
 	}
 	
 	//List<DermatologistAppointment>

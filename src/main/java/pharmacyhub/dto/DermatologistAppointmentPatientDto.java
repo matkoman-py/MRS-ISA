@@ -13,8 +13,10 @@ public class DermatologistAppointmentPatientDto {
 	private Time time;
 	private int duration;
 	private String patientId;
+	private int price;
+	
 	public DermatologistAppointmentPatientDto(String dermatologistId, String drugstoreId, Date date, Time time,
-			int duration, String patientId) {
+			int duration, String patientId, int price) {
 		super();
 		this.dermatologistId = dermatologistId;
 		this.drugstoreId = drugstoreId;
@@ -22,6 +24,7 @@ public class DermatologistAppointmentPatientDto {
 		this.time = time;
 		this.duration = duration;
 		this.patientId = patientId;
+		this.price = price;
 	}
 	public String getDermatologistId() {
 		return dermatologistId;
@@ -59,4 +62,11 @@ public class DermatologistAppointmentPatientDto {
 	public void setPatientId(String patientId) {
 		this.patientId = patientId;
 	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	
 }

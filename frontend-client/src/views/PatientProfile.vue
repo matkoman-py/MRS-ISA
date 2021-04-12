@@ -303,15 +303,13 @@ export default {
 </script>
 
 <style>
-body{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-}
+
 .emp-profile{
     padding: 3%;
     margin-top: 3%;
     margin-bottom: 3%;
     border-radius: 0.5rem;
-    background: #fff;
+    background: rgb(188, 212, 231);
 }
 .profile-img{
     text-align: center;

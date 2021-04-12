@@ -2,7 +2,6 @@ package pharmacyhub.domain;
 
 import java.sql.Time;
 import java.util.Date;
-import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import pharmacyhub.domain.users.Dermatologist;
+import pharmacyhub.domain.users.Patient;
 
 @Entity
 public class DermatologistAppointment extends BaseEntity{

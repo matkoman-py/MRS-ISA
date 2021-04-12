@@ -16,6 +16,8 @@ import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.SearchDermatologistDto;
+import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
