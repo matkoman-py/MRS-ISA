@@ -9,17 +9,13 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Pharmacist;
-import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.SearchDermatologistDto;
-import pharmacyhub.repositories.DrugstoreRepository;
-import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
@@ -43,6 +39,12 @@ public class EmployeeService {
 
 	@Autowired
 	private UserNotificationService userNotificationService;
+	
+	@Autowired
+	private DrugstoreRepository drugstoreRepository;
+	
+	@Autowired
+	private EmploymentRepository employmentRepository;
 
 	public Collection<DermatologistDto> searchDermatologist(SearchDermatologistDto searchDermatologistDto) {
 		System.out.println("Name: " + searchDermatologistDto.getName());
@@ -149,16 +151,27 @@ public class EmployeeService {
 		return findAll();
 	}
 	
+
 	public Employee findOne(String employeeId) {
-		System.out.println(employeeId);
-		System.out.println(pharmacistRepository.findById(employeeId).orElse(null));
-		System.out.println(dermatologistRepository.findById(employeeId).orElse(null).getName());
 		if(pharmacistRepository.findById(employeeId).orElse(null) == null) {
-			Employee employee = dermatologistRepository.findById(employeeId).orElse(null);
-			return employee;
-			
+			  Employee employee = dermatologistRepository.findById(employeeId).orElse(null);
+			  return employee;
 		}
 		Employee employee =  pharmacistRepository.findById(employeeId).orElse(null);
 		return employee;
+  }
+  
+	public List<Employee> getAllEmployeesOfDrugstore(String drugstoreId) {
+		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));	
+		List<Employment> dermatologistEmployments = employmentRepository.findByDrugstoreId(drugstoreId);		
+		List<Employee> employees = new ArrayList<Employee>();
+		
+		for (Employee e : pharmacists)
+			employees.add(e);
+		for (Employment e : dermatologistEmployments) {
+			employees.add(e.getDermatologist());
+		}
+		return employees;
 	}
+  
 }

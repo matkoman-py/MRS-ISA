@@ -6,11 +6,25 @@
                 <b-button size="sm" @click="showEditModal(row.item, $event.target)" class="mr-1">
                     Edit
                 </b-button>
+                <b-button size="sm" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
+                    Delete
+                </b-button>
             </template>
         </b-table>
     </b-container>
     <b-modal :id="editModal.id" :title="editModal.title" ok-only v-on:ok='edit' @hide="resetEditModal" size="xl">
       <pre><drugstore-basic-info-update :form="editModal.drugstore" submitHandle="null"></drugstore-basic-info-update></pre>
+    </b-modal>
+     <b-modal :id="deleteModal.id" :title="deleteModal.title" v-on:ok='deleteDrugstore' @hide="resetDeleteModal" size="xl">
+      <pre>Are you sure you want to delete this Drugstore?</pre>
+        <template #modal-footer="{ ok, hide }">
+        <b-button size="sm" @click="ok()">
+          Yes
+        </b-button>
+        <b-button size="sm" @click="hide()">
+          Cancel
+        </b-button>
+    </template>
     </b-modal>
   </div>
 </template>
@@ -34,6 +48,11 @@ export default {
             title: '',
             drugstore: {}
         },
+        deleteModal: {
+            id: 'delete-modal',
+            title: '',
+            drugstore: {}
+        },
         drugstores: [],
       };
     },
@@ -53,6 +72,24 @@ export default {
                 let index = this.drugstores.findIndex(drugstore => drugstore.id == response.data.id);
                 this.drugstores.splice(index, 1, response.data);
                 alert("success");
+            })
+            .catch(error => console.log(error));
+      },
+      showDeleteModal: function(rowItem, button){
+            this.deleteModal.title = `drug: ${rowItem.name}`;
+            this.deleteModal.drugstore = JSON.parse(JSON.stringify(rowItem));
+            console.log(this.deleteModal.drugstore);
+            this.$root.$emit('bv::show::modal', this.deleteModal.id, button);
+      },
+      resetDeleteModal: function() {
+            this.deleteModal.title = '';
+      },
+      deleteDrugstore: function(){
+          axios.delete(`http://localhost:8081/drugstores/${this.deleteModal.drugstore.id}`)
+            .then(response => {
+                let index = this.drugstores.findIndex(drugstore => drugstore.id == this.deleteModal.drugstore.id);
+                this.drugstores.splice(index, 1);
+                alert("success", response);
             })
             .catch(error => console.log(error));
       },

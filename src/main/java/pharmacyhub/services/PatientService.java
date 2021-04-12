@@ -58,4 +58,8 @@ public class PatientService {
 		return findAll();
 	}
 
+	public Patient returnPatient(String patientId) {
+		return patientRepository.findById(patientId).orElse(null);
+	}
+
 }

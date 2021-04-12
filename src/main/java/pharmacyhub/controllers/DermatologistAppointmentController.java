@@ -1,18 +1,13 @@
 package pharmacyhub.controllers;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Dermatologist;
@@ -31,6 +26,7 @@ public class DermatologistAppointmentController {
 	public ResponseEntity<DermatologistAppointment> getAllDermatologistsForDrugstore(@RequestBody DermatologistAppointmentDto dermatologistAppointmentDto) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.save(dermatologistAppointmentDto), HttpStatus.OK);
 	}
+
 	
 	@PostMapping(path ="/with-patient",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DermatologistAppointment> getAllDermatologistsForDrugstore(@RequestBody DermatologistAppointmentPatientDto dermatologistAppointmentDto) throws Exception {
@@ -44,15 +40,14 @@ public class DermatologistAppointmentController {
 	
 	@GetMapping(path ="/createReserrvation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> createReservation(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
-			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
-			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String DRUGSTOREID) throws Exception {
-		return new ResponseEntity<>(dermatologistAppointmentService.createReservation(patientId, drugstoreId,DRUGSTOREID), HttpStatus.OK);
+      @RequestParam (value = "appointmentId", required=false,  defaultValue = "0") String appointmentId,
+			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId) throws Exception {
+		  return new ResponseEntity<>(dermatologistAppointmentService.createReservation(patientId, appointmentId,drugstoreId), HttpStatus.OK);	
 	}
 	
 	@GetMapping(path ="/begin-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DermatologistAppointment> getDermatologistAppointment(@RequestParam (value = "dermatologistAppointmentId", required=false,  defaultValue = "0") String dermatologistAppointmentId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAppointment(dermatologistAppointmentId), HttpStatus.OK);
-		//return new ResponseEntity<>("Vratio",HttpStatus.OK);
 	}
 	
 	@GetMapping(path ="/available", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,6 +60,6 @@ public class DermatologistAppointmentController {
 	public ResponseEntity<Collection<DermatologistAppointment>> reserveAppointment(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
 			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
 			@RequestParam (value = "appointmentId", required=false,  defaultValue = "0") String appointmentId) throws Exception {
-		return new ResponseEntity<>(dermatologistAppointmentService.reserveAppointment( drugstoreId,patientId,appointmentId), HttpStatus.OK);
+		  return new ResponseEntity<>(dermatologistAppointmentService.reserveAppointment( drugstoreId,patientId,appointmentId), HttpStatus.OK);
 	}
 }

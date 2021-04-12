@@ -27,8 +27,8 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Employee>> findAll() {
-		return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
+	public ResponseEntity<Collection<Employee>> getAllEmployeesOfDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
+		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstore(drugstoreId), HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,8 +46,10 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.searchDermatologist(searchDermatologistDto), HttpStatus.OK);
 	}
 	
+
 	@GetMapping(path ="/id",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Employee> findOne(@RequestParam (value = "employeeId", required=false,  defaultValue = "0") String employeeId) throws Exception {
 		return new ResponseEntity<>(employeeService.findOne(employeeId), HttpStatus.OK);
 	}
+
 }

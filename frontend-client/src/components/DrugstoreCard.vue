@@ -17,19 +17,19 @@
       <b-card-sub-title class="mb-2">Description:</b-card-sub-title>
       <b-card-text>
         {{drugstore.description}}
-      
       </b-card-text>
     </b-card-body>
    
    <b-list-group flush>
-     <b-list-group-item>Address: {{drugstore.id}}</b-list-group-item>
       <b-list-group-item>Address: {{drugstore.adress}}</b-list-group-item>
       <b-list-group-item>City: {{drugstore.city}}</b-list-group-item>
       <b-list-group-item>Country: {{drugstore.country}}</b-list-group-item>
       <b-list-group-item>Rating: {{drugstore.rating}}</b-list-group-item>
     </b-list-group>
     <div style="text-align:center;padding:0.5rem;">
-      <b-button href="#" variant="primary" style="width:50%;">Visit</b-button>
+      <router-link :to="'drugstores/'+drugstore.id">
+        <b-button variant="primary" style="width:50%;">Visit</b-button>
+      </router-link>
     </div>
     
   </b-card>

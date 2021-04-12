@@ -10,7 +10,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
+@SQLDelete(sql = "UPDATE drug SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Drug extends BaseEntity {
 
 	@Column(nullable = false, unique=true)

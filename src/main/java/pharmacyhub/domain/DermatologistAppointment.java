@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import pharmacyhub.domain.users.Dermatologist;
-import pharmacyhub.domain.users.Patient;
 
 @Entity
 public class DermatologistAppointment extends BaseEntity{
@@ -34,13 +33,15 @@ public class DermatologistAppointment extends BaseEntity{
 	private Patient patient; //bice patient objekat
 	@Column(nullable = true)
 	private String appointmentReport; //bice appointmentReport objekat
+	@Column(nullable = false)
+	private int price;
 	
 	public DermatologistAppointment() {
 		
 	}
 	
 	public DermatologistAppointment(Dermatologist dermatologist, Drugstore drugstore, Date date, Time time,
-			int duration, Patient patient, String appointmentReport) {
+			int duration, Patient patient, String appointmentReport, int price) {
 		super();
 		this.dermatologist = dermatologist;
 		this.drugstore = drugstore;
@@ -49,6 +50,15 @@ public class DermatologistAppointment extends BaseEntity{
 		this.duration = duration;
 		this.patient = patient;
 		this.appointmentReport = appointmentReport;
+		this.price = price;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public Dermatologist getDermatologist() {

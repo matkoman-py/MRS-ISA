@@ -4,7 +4,6 @@ import HomePage from "./views/HomePage";
 import EmployeesOverview from "./views/EmployeesOverview"
 import PatientOverview from "./views/PatientOverview"
 import RegistrationPage from "./views/RegistrationPage"
-import AddDrugForm from "./views/AddDrugForm"
 import DrugOverview from "./views/DrugOverview"
 import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate"
 import AddPharmacistForm from "./views/AddPharmacistForm"
@@ -17,10 +16,15 @@ import DrugStockOverview from "./views/DrugStockOverview"
 import AppointmentsOverview from "./views/AppointmentsOverview"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
+
 import AppointmentDermatologist from "./views/AppointmentDermatologist"
 import AppointmentPharmacist from "./views/AppointmentPharmacist"
 import PharmDermProfile from "./views/PharmDermProfile"
+
+import DrugstoreView from "./views/DrugstoreView"
 import DermatologistAppointments from "./views/DermatologistAppointments"
+import PatientProfile from "./views/PatientProfile"
+import AdminDrugTable from "./components/tables/AdminDrugTable"
 
 Vue.use(VueRouter)
 
@@ -35,12 +39,6 @@ const routes = [
         name: "RegistrationPage",
         component: RegistrationPage
     },
-    {
-        path: '/add-drug-form',
-        name: "Add drug",
-        component: AddDrugForm
-    }
-    ,
     {
         path: '/patientoverview',
         name: "PatientOverview",
@@ -117,7 +115,12 @@ const routes = [
         component: AppointmentDermatologist
     },
     {
-        path: '/drugstore/:id',
+        path: '/drugstores/:id',
+        name: "DrugstoreView",
+        component: DrugstoreView
+    },
+    {
+        path: '/dermatologist-appointments/:id',
         name: "DeramtologistAppointments",
         component: DermatologistAppointments 
     },
@@ -130,6 +133,16 @@ const routes = [
         path: '/pharm-derm-profile',
         name: "PharmDermProfile",
         component: PharmDermProfile
+    },
+    {
+        path: '/patient/:id',
+        name: "PatientProfile",
+        component: PatientProfile 
+    },
+    {  
+        path: '/admin-drug-table',
+        name: "AdminDrugTable",
+        component: AdminDrugTable
     },
 ];
 

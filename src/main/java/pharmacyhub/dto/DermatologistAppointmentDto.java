@@ -3,10 +3,7 @@ package pharmacyhub.dto;
 import java.sql.Time;
 import java.util.Date;
 
-import pharmacyhub.domain.AppointmentReport;
-import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Dermatologist;
-import pharmacyhub.domain.users.Patient;
 
 public class DermatologistAppointmentDto {
 	
@@ -15,29 +12,28 @@ public class DermatologistAppointmentDto {
 	private Date date;
 	private Time time;
 	private int duration;
-	private Patient patient;
+	private int price;
 	
 	public DermatologistAppointmentDto() {
 		
 	}
 	
-	public DermatologistAppointmentDto(Dermatologist dermatologist, String drugstoreId, Date date, Time time,
-			int duration, Patient patient) {
+	public DermatologistAppointmentDto(Dermatologist dermatologist, String drugstoreId, Date date, Time time, int duration, int price) {
 		super();
 		this.dermatologist = dermatologist;
 		this.drugstoreId = drugstoreId;
 		this.date = date;
 		this.time = time;
 		this.duration = duration;
-		this.patient = patient;
+    this.price = price;
+	}
+  
+	public int getPrice() {
+		return price;
 	}
 
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public Dermatologist getDermatologist() {

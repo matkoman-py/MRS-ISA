@@ -6,8 +6,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+
 @Entity
 @Table(name = "drugstock")
+@SQLDelete(sql = "UPDATE drugstock SET deleted = true WHERE id = ?")
 public class DrugStock extends BaseEntity{
 	
 	@ManyToOne
