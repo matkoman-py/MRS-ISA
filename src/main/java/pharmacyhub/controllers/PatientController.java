@@ -40,4 +40,10 @@ public class PatientController {
 		return new ResponseEntity<>(patientService.update(patient), HttpStatus.OK);
 
 	}
+	
+	@GetMapping(path ="/id", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Patient> profile(@RequestParam(value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		
+		return new ResponseEntity<>(patientService.returnPatient(patientId), HttpStatus.OK);
+	}
 }

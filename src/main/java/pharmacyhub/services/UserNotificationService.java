@@ -47,4 +47,19 @@ public class UserNotificationService {
 
 		javaMailSender.send(message);
 	}
+
+    @Async
+	public void sendReservationConfirmation(String email) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		String emailContent = "You have succesfully reserved a dermatologist appointment";
+
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setTo(email);
+		helper.setSubject("Account details");
+		helper.setText(emailContent, true);
+
+		javaMailSender.send(message);	
+	}
 }
