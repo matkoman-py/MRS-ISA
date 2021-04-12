@@ -54,6 +54,18 @@
             </b-form-input>
         </b-form-group>
 
+        <b-form-group
+        label="Appointment price(in RSD)"
+        label-for="price-picker"
+        invalid-feedback="Appointment price is required">
+            <b-form-input
+            id="price-input"
+            v-model="inputValues.price"
+            type="number"
+            required >
+            </b-form-input>
+        </b-form-group>
+
         <b-button type="button" variant="primary" @click="addNewApointment">Save</b-button>
         <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
 
@@ -82,6 +94,7 @@
           date: '',
           time: '',
           duration: '',
+          price: ''
         }
       }
     },
