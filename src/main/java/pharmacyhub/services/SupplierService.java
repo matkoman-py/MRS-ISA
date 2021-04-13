@@ -29,5 +29,16 @@ public class SupplierService {
 		return supplierRepository.save(supplier);
 	}
 
+	public void delete(String id) throws Exception {
+		
+		Supplier supplier = supplierRepository.findById(id).orElse(null);
+		
+		if (supplier == null) {
+			throw new Exception("Supplier doesn't exits");
+		}
+		
+		supplierRepository.deleteById(id);
+	}
+
 
 }

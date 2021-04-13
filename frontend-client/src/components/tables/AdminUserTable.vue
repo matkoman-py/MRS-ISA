@@ -1,0 +1,98 @@
+<template>
+  <div>
+    <b-container>
+        <b-table id="user-table" striped hover :items="users" :fields="fields">
+            <template #cell(actions)="row">
+                <b-button size="sm" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
+                    Delete
+                </b-button>
+            </template>
+        </b-table>
+        <b-button size="sm" @click="showAddModal($event.target, 'Supplier')" class="mr-1">
+                    Add Supplier
+        </b-button>
+        <b-button size="sm" @click="showAddModal($event.target, 'DrugstoreAdmin')" class="mr-1">
+                    Add Drugstore Admin
+        </b-button>
+    </b-container>
+    <b-modal :id="addModal.id" :title="addModal.title" ok-only v-on:ok='addUser' size="xl">
+        <add-user-form :type="addModal.type" v-on:added-user="handleSuccess" ref='add-user-form'></add-user-form>
+    </b-modal>
+    <b-modal :id="deleteModal.id" :title="deleteModal.title" ok-only v-on:ok='deleteUser' @hide="resetDeleteModal" size="xl">
+        Are you sure that you want to delete this user?
+    </b-modal>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+import AddUserForm from '../forms/user/AddUserForm';
+
+export default {
+    name: "AdminuserTable",
+    components: {
+        AddUserForm,
+        },
+    data: function() {
+
+        return {
+          fields:[
+              { key: 'name', label: 'Name' },
+              { key: 'surname', label: 'Surname' },
+              { key: 'type', label: 'User Type' },
+        ], 
+        addModal: {
+            id: 'add-modal',
+            title: 'Add user',
+            type: "",
+        },
+        deleteModal: {
+            id: 'delete-modal',
+            title: '',
+            user: {}
+        },
+        users: [],
+      };
+    },
+    methods:{
+      handleSuccess: function(user){
+          this.users.push(user);
+      },
+      showAddModal: function(button, userType){
+            this.addModal.type = userType;
+            this.$root.$emit('bv::show::modal', this.addModal.id, button);
+      },
+      addUser: function(event){
+            this.$refs['add-user-form'].addUser(event);
+      },
+      showDeleteModal: function(rowItem, button){
+            this.deleteModal.title = `user: ${rowItem.name}`;
+            this.deleteModal.user = JSON.parse(JSON.stringify(rowItem));
+            console.log(this.deleteModal.user);
+            this.$root.$emit('bv::show::modal', this.deleteModal.id, button);
+      },
+      resetDeleteModal: function() {
+            this.deleteModal.title = '';
+      },
+      deleteUser: function(){
+          axios.delete(`http://localhost:8081/users/${this.deleteModal.user.id}`)
+            .then(response => {
+                let index = this.users.findIndex(user => user.id == this.deleteModal.user.id);
+                this.users.splice(index, 1);
+                alert("success", response);
+            })
+            .catch(error => console.log(error));
+      },
+      getUsers: function () {
+            axios.get('http://localhost:8081/suppliers-and-admins')
+            .then(response => {
+                this.users = response.data;
+            })
+            .catch(error => console.log(error));
+       },
+    },
+    mounted: function(){
+        this.getUsers();
+    }
+}
+</script>
