@@ -1,6 +1,5 @@
 package pharmacyhub.dto;
 
-import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
@@ -14,8 +13,8 @@ public class UserRegistrationDto {
 	private String phoneNumber;
 	public Location location;
 	private UserType type;
-	private Drugstore drugstore;
-
+	private String drugstoreId;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -72,12 +71,13 @@ public class UserRegistrationDto {
 		this.type = type;
 	}
 
-	public Drugstore getDrugstore() {
-		return drugstore;
+
+	public String getDrugstoreId() {
+		return drugstoreId;
 	}
 
-	public void setDrugstore(Drugstore drugstore) {
-		this.drugstore = drugstore;
+	public void setDrugstoreId(String drugstoreId) {
+		this.drugstoreId = drugstoreId;
 	}
 
 	public String getRepeatedPassword() {
