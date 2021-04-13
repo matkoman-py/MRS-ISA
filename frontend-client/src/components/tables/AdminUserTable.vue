@@ -40,6 +40,8 @@ export default {
               { key: 'name', label: 'Name' },
               { key: 'surname', label: 'Surname' },
               { key: 'type', label: 'User Type' },
+              { key: 'actions', label: 'Actions'}
+
         ], 
         addModal: {
             id: 'add-modal',
@@ -75,7 +77,16 @@ export default {
             this.deleteModal.title = '';
       },
       deleteUser: function(){
-          axios.delete(`http://localhost:8081/users/${this.deleteModal.user.id}`)
+          let userTypes = ""
+          if (this.deleteModal.user.type == "Supplier"){
+              userTypes = "suppliers"
+          }
+          else{
+              alert("Not yet supported");
+              return;
+          }
+          console.log(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`);
+          axios.delete(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`)
             .then(response => {
                 let index = this.users.findIndex(user => user.id == this.deleteModal.user.id);
                 this.users.splice(index, 1);

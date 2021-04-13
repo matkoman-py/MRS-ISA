@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pharmacyhub.services.SupplierService;
 
 @Controller
-@RequestMapping("/supplier")
+@RequestMapping("/suppliers")
 public class SupplierController {
 	
 	@Autowired
