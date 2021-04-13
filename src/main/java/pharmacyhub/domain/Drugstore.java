@@ -30,7 +30,7 @@ public class Drugstore extends BaseEntity {
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Employment> employements;
-	
+
 	@Column
 	private String workingHoursFrom;
 
@@ -104,7 +104,5 @@ public class Drugstore extends BaseEntity {
 	public void setWorkingHoursTo(String workingHoursTo) {
 		this.workingHoursTo = workingHoursTo;
 	}
-	
-	
 
 }

@@ -10,7 +10,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.PatientCategory;

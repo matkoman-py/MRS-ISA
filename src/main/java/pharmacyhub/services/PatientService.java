@@ -6,12 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pharmacyhub.domain.Drugstore;
-import pharmacyhub.domain.enums.UserType;
-import pharmacyhub.domain.users.Dermatologist;
-import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Patient;
-import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.repositories.users.PatientRepository;
 
 @Service
@@ -56,6 +51,10 @@ public class PatientService {
 
 			patientRepository.save(pat);
 		return findAll();
+	}
+
+	public Patient returnPatient(String patientId) {
+		return patientRepository.findById(patientId).orElse(null);
 	}
 
 }
