@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
+import pharmacyhub.dto.EmploymentDrugstoreDto;
 import pharmacyhub.dto.EmploymentDto;
 import pharmacyhub.services.EmploymentService;
 
@@ -46,6 +47,11 @@ public class EmploymentController {
 	@GetMapping(path="/pharmacist-employments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<EmploymentDto>> getAllPharmacistEmploymentsForDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
 		return new ResponseEntity<>(employmentService.getAllPharmacistsEmploymentsForDrugstore(drugstoreId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/employment-for-derm", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<EmploymentDrugstoreDto>> getAllDermatologistEmployments(@RequestParam(value = "dermatologistId") String dermatologistId) {
+		return new ResponseEntity<>(employmentService.getAllDermatologistEmployments(dermatologistId), HttpStatus.OK);
 	}
 	
 }

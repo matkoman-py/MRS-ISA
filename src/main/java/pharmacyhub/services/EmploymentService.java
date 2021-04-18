@@ -12,6 +12,7 @@ import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
+import pharmacyhub.dto.EmploymentDrugstoreDto;
 import pharmacyhub.dto.EmploymentDto;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
@@ -98,4 +99,15 @@ public class EmploymentService {
 		return employmentInfo;
 	}
 	
+	public List<EmploymentDrugstoreDto> getAllDermatologistEmployments(String dermatologistId) {
+		
+		List<Employment> employments = employmentRepository.findByDermatologistId(dermatologistId);
+		List<EmploymentDrugstoreDto> employmentInfo = new ArrayList<EmploymentDrugstoreDto>();
+		for (Employment e : employments) {
+			employmentInfo.add(new EmploymentDrugstoreDto(e.getDrugstore().getName(),e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getWorkingHoursFrom(), e.getWorkingHoursTo()));
+			System.out.println(e.getDermatologist().getName()+" "+ e.getDrugstore().getName());
+		}
+		
+		return employmentInfo;
+	}
 }

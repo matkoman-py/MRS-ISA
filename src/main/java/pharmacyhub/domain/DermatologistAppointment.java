@@ -35,7 +35,8 @@ public class DermatologistAppointment extends BaseEntity{
 	private String appointmentReport; //bice appointmentReport objekat
 	@Column(nullable = false)
 	private int price;
-	
+	@Column(nullable = true)
+	private Time timeEnd;
 	public DermatologistAppointment() {
 		
 	}
@@ -51,6 +52,8 @@ public class DermatologistAppointment extends BaseEntity{
 		this.patient = patient;
 		this.appointmentReport = appointmentReport;
 		this.price = price;
+		this.timeEnd = new Time(time.getTime()+(60000*this.duration));
+		System.out.println(this.timeEnd);
 	}
 
 	public int getPrice() {
@@ -116,5 +119,14 @@ public class DermatologistAppointment extends BaseEntity{
 	public void setAppointmentReport(String appointmentReport) {
 		this.appointmentReport = appointmentReport;
 	}
+
+	public Time getTimeEnd() {
+		return timeEnd;
+	}
+
+	public void setTimeEnd(Time timeEnd) {
+		this.timeEnd = timeEnd;
+	}
+	
 	
 }
