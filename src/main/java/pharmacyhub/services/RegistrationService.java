@@ -3,6 +3,7 @@ package pharmacyhub.services;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
@@ -26,6 +27,9 @@ public class RegistrationService {
 	
 	@Autowired
 	private DrugstoreRepository drugstoreRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private UserNotificationService userNotificationService;
@@ -64,7 +68,9 @@ public class RegistrationService {
 	private DrugstoreAdmin getDrugstoreAdminFromUserRegistrationDto(UserRegistrationDto requestUser) throws Exception {
 		DrugstoreAdmin drugstoreAdmin = new DrugstoreAdmin();
 		drugstoreAdmin.setEmail(requestUser.getEmail());
-		drugstoreAdmin.setPassword(RadnomGeneratorUtil.generateEmployeePassword());
+		String initialPassword = RadnomGeneratorUtil.generateEmployeePassword();
+		String encodedInitialPassword = passwordEncoder.encode(initialPassword);
+		drugstoreAdmin.setPassword(encodedInitialPassword);
 		drugstoreAdmin.setName(requestUser.getName());
 		drugstoreAdmin.setSurname(requestUser.getSurname());
 		drugstoreAdmin.setLocation(requestUser.getLocation());
@@ -87,7 +93,9 @@ public class RegistrationService {
 	private Supplier getSupplierFromUserRegistrationDto(UserRegistrationDto requestUser) {
 		Supplier supplier = new Supplier();
 		supplier.setEmail(requestUser.getEmail());
-		supplier.setPassword(RadnomGeneratorUtil.generateEmployeePassword());
+		String initialPassword = RadnomGeneratorUtil.generateEmployeePassword();
+		String encodedInitialPassword = passwordEncoder.encode(initialPassword);
+		supplier.setPassword(encodedInitialPassword);
 		supplier.setName(requestUser.getName());
 		supplier.setSurname(requestUser.getSurname());
 		supplier.setLocation(requestUser.getLocation());
@@ -100,9 +108,11 @@ public class RegistrationService {
 	private void savePatient(UserRegistrationDto requestUser) throws Exception {
 		String activationCode = RadnomGeneratorUtil.generateActivationCode();
 		
-		Patient patient = userRepository.save(getPatientFromUserRegistrationDto(requestUser));
+		Patient patient = getPatientFromUserRegistrationDto(requestUser);
+		patient.setPassword(passwordEncoder.encode(patient.getPassword()));
 		patient.setActivationCode(activationCode);
 		patient.setStatus(false);
+		patient = userRepository.save(patient);
 		
 		if (!requestUser.getPassword().equals(requestUser.getRepeatedPassword())) {
 			throw new Exception("Passwords do not match");

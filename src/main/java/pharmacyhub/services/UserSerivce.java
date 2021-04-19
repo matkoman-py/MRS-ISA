@@ -15,7 +15,6 @@ public class UserSerivce {
 	UserRepository userRepository;
 
 	public List<User> getSuppliersAndAdmins() {
-		// TODO Auto-generated method stub
 		return userRepository.findSuppliersAndAdmins();
 	}
 	

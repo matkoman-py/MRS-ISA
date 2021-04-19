@@ -60,10 +60,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    
 	    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 		.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-		.authorizeRequests().antMatchers("/").permitAll()
+		.authorizeRequests()
+		.antMatchers(HttpMethod.POST, "/register").permitAll()
+		.antMatchers(HttpMethod.GET, "/register/activate/**").permitAll()
+		.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+		.antMatchers(HttpMethod.GET, "/drugstores").permitAll()
 		.anyRequest().authenticated().and()
-		
-	    
 	    .cors().configurationSource(request ->
 	    {
 	    	CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
@@ -72,8 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    	corsConfig.setAllowCredentials(false);
 	    	return corsConfig;
 	    }
-	    ).and().csrf().disable()
-	    .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class);;
+	    )
+	    .and().addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class)
+	    .csrf().disable();
 		
 	}
 	

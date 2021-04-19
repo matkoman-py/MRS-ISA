@@ -67,7 +67,7 @@ public class TokenUtils {
 		return username;
 	}
 
-	private Claims getAllClaimsFromToken(String token) {
+	public Claims getAllClaimsFromToken(String token) {
 		Claims claims;
 		try {
 			claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
@@ -78,6 +78,10 @@ public class TokenUtils {
 		}
 
 		return claims;
+	}
+	
+	public int getExpiresIn() {
+		return EXPIRES_IN;
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
