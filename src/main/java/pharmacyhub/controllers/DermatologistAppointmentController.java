@@ -65,4 +65,10 @@ public class DermatologistAppointmentController {
 			@RequestParam (value = "appointmentId", required=false,  defaultValue = "0") String appointmentId) throws Exception {
 		  return new ResponseEntity<>(dermatologistAppointmentService.reserveAppointment( drugstoreId,patientId,appointmentId), HttpStatus.OK);
 	}
+	
+	@GetMapping(path ="/all-derm-app", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointments(
+			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointments(dermatologistId), HttpStatus.OK);
+	}
 }

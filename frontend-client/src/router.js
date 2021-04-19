@@ -20,7 +20,8 @@ import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
 import AppointmentDermatologist from "./views/AppointmentDermatologist"
 import AppointmentPharmacist from "./views/AppointmentPharmacist"
 import PharmDermProfile from "./views/PharmDermProfile"
-
+import Schedule from "./views/Schedule"
+import SchedulePharmacist from "./views/SchedulePharmacist"
 import DrugstoreView from "./views/DrugstoreView"
 import DermatologistAppointments from "./views/DermatologistAppointments"
 import PatientProfile from "./views/PatientProfile"
@@ -149,6 +150,16 @@ const routes = [
         path: '/admin-user-table',
         name: "AdminUserTable",
         component: AdminUserTable
+    },
+    {
+        path: '/schedule',
+        name: "Schedule",
+        component: Schedule
+    },
+    {
+        path: '/schedule-pharm',
+        name: "SchedulePharmacist",
+        component: SchedulePharmacist
     },
 ];
 

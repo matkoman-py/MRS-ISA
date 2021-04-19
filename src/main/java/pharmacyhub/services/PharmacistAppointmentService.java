@@ -1,5 +1,8 @@
 package pharmacyhub.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +39,17 @@ public class PharmacistAppointmentService {
 	public PharmacistAppointment findAppointment(String pharmacistAppointmentId) {
 		PharmacistAppointment pa = pharmacistAppointmentRepository.findById(pharmacistAppointmentId).orElse(null);
 		return pa;
+	}
+
+	public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {
+		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
+		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
+		String str = ""; 
+		for(PharmacistAppointment appointment : allAppointments) {
+			if(appointment.getPharmacist().getId().equals(pharmacistId))
+				wantedAppontments.add(appointment);
+		}
+		System.out.println(wantedAppontments);
+		return wantedAppontments;
 	}
 }
