@@ -1,7 +1,5 @@
 package pharmacyhub.config;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import pharmacyhub.security.RestAuthenticationEntryPoint;
 import pharmacyhub.security.TokenAuthenticationFilter;
@@ -54,6 +54,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private TokenUtils tokenUtils;
 	
+	@Bean
+	public CorsFilter corsFilter() {
+	  UrlBasedCorsConfigurationSource source = new 
+	  UrlBasedCorsConfigurationSource();
+	  CorsConfiguration config = new CorsConfiguration();
+	  config.setAllowCredentials(false);
+	  config.addAllowedOrigin("*");
+	  config.addAllowedHeader("*");
+	  config.addAllowedMethod("*");
+	  source.registerCorsConfiguration("/**", config);
+	  return new CorsFilter(source);
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	    http
@@ -64,17 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, "/register").permitAll()
 		.antMatchers(HttpMethod.GET, "/register/activate/**").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-		.antMatchers(HttpMethod.GET, "/drugstores").permitAll()
+		.antMatchers(HttpMethod.GET, "/*").permitAll()
 		.anyRequest().authenticated().and()
-	    .cors().configurationSource(request ->
-	    {
-	    	CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
-	    	corsConfig.setAllowedMethods(Arrays.asList("*"));
-	    	corsConfig.setAllowedHeaders(Arrays.asList("*"));
-	    	corsConfig.setAllowCredentials(false);
-	    	return corsConfig;
-	    }
-	    )
+	    .cors()
 	    .and().addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class)
 	    .csrf().disable();
 		

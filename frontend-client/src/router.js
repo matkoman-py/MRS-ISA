@@ -27,6 +27,8 @@ import PatientProfile from "./views/PatientProfile"
 import AdminDrugTable from "./components/tables/AdminDrugTable"
 import AdminUserTable from "./components/tables/AdminUserTable"
 
+import LoginPage from "./views/LoginPage"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -149,6 +151,11 @@ const routes = [
         path: '/admin-user-table',
         name: "AdminUserTable",
         component: AdminUserTable
+    },
+    {
+        path: '/login',
+        name: "LoginPage",
+        component: LoginPage
     },
 ];
 

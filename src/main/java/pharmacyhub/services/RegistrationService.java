@@ -1,5 +1,7 @@
 package pharmacyhub.services;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.Patient;
+import pharmacyhub.domain.users.Role;
 import pharmacyhub.domain.users.Supplier;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.UserRegistrationDto;
@@ -30,6 +33,9 @@ public class RegistrationService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@Autowired
 	private UserNotificationService userNotificationService;
@@ -81,7 +87,8 @@ public class RegistrationService {
 			throw new Exception("Drugstore with that id doesn't exist.");
 		}
 		drugstoreAdmin.setDrugstore(drugstore);
-		
+		List<Role> roles = roleService.findByName("DrugstoreAdmin");
+		drugstoreAdmin.setRoles(roles);
 		return drugstoreAdmin;
 	}
 
@@ -101,7 +108,8 @@ public class RegistrationService {
 		supplier.setLocation(requestUser.getLocation());
 		supplier.setPhoneNumber(requestUser.getPhoneNumber());
 		supplier.setLocation(locationRepository.save(requestUser.getLocation()));
-
+		List<Role> roles = roleService.findByName("Supplier");
+		supplier.setRoles(roles);
 		return supplier;
 	}
 
@@ -130,7 +138,8 @@ public class RegistrationService {
 		patient.setLocation(requestUser.getLocation());
 		patient.setPhoneNumber(requestUser.getPhoneNumber());
 		patient.setLocation(locationRepository.save(requestUser.getLocation()));
-
+		List<Role> roles = roleService.findByName("Supplier");
+		patient.setRoles(roles);
 		return patient;
 	}
 	

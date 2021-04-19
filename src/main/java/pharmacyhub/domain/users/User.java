@@ -165,6 +165,10 @@ public class User extends BaseEntity implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles;
 	}
+	
+	public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
 	@Override
 	public String getUsername() {

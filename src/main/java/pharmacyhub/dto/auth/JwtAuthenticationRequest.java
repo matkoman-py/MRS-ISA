@@ -1,7 +1,10 @@
 package pharmacyhub.dto.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class JwtAuthenticationRequest {
 	
+	@JsonProperty("email")
     private String username;
     private String password;
 
