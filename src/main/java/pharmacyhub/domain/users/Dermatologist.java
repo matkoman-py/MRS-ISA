@@ -18,6 +18,10 @@ import pharmacyhub.domain.enums.UserType;
 @DiscriminatorValue("Dermatologist")
 public class Dermatologist extends Employee {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY)
 	@JsonIgnore

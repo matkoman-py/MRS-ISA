@@ -16,6 +16,10 @@ import pharmacyhub.domain.enums.UserType;
 @SQLDelete(sql = "UPDATE drug_price SET deleted = true WHERE id = ?")
 public class Pharmacist extends Employee {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@ManyToOne
 	@JoinColumn(name = "drugstore_fk")
 	private Drugstore drugstore;

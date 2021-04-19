@@ -19,6 +19,11 @@ import pharmacyhub.domain.enums.UserType;
 @DiscriminatorValue("Patient")
 public class Patient extends User {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// TODO add allergens
 	@ManyToMany
 	@JoinTable(name = "patient_allergens", 
