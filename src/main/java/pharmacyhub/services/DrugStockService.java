@@ -3,6 +3,7 @@ package pharmacyhub.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,21 @@ public class DrugStockService {
 		return drugsStockPriceDto;
 	}
 	
-	public DrugPrice getLastPrice(List<DrugPrice> dsList) {
-		return Collections.max(dsList, Comparator.comparing(ds -> ds.getEndDate()));
+	public DrugPrice getLastPrice(List<DrugPrice> dpList) {
+		int currentPrice = Integer.MAX_VALUE;
+		DrugPrice promotion = null;
+		Date today = new Date();
+		for (DrugPrice dp : dpList) {
+			if (dp.isPromotion() && dp.getEndDate().after(today)) {
+				if (currentPrice > dp.getPrice()) {
+					currentPrice = dp.getPrice();
+					promotion = dp;
+				}
+			}
+		}
+		if (promotion != null)
+			return promotion;
+		return Collections.max(dpList, Comparator.comparing(ds -> ds.getEndDate()));
 	}
 	
 	public List<DrugStockPriceDto> search(String searchedText, String drugstoreId) {
