@@ -12,8 +12,8 @@
           <b-button style="margin-left:50px; margin-right:50px" variant="success">Check offers</b-button>
         </router-link>
           <b-button style="margin-left:50px; margin-right:50px" @click="newPriceAssign" variant="success">Assign new price</b-button>
-        <router-link to="/drug-stock-create-promotion">
-          <b-button style="margin-left:50px" variant="success">Create promotion</b-button>
+        <router-link to="#">
+          <b-button style="margin-left:50px" @click="newPromotion" variant="success">Create promotion</b-button>
         </router-link>
     </div>
     <b-container style="margin:15px">
@@ -28,7 +28,40 @@
         </b-row>
     </b-container>
 
-    <b-modal id="my-modal" title="Create new price" hide-footer>
+    <b-modal id="newPriceModal" title="Create new price" hide-footer>
+      <b-form>
+        <b-form-group
+          label="Promotion price"
+          label-for="price-input"
+          invalid-feedback="Price is required">
+          <b-form-input
+            id="price-input"
+            v-model="inputValuesForNewPrice.price" 
+            required
+            :min=0
+            type="number"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          label="Promotion expiration date"
+          label-for="date-input"
+          invalid-feedback="Expiration date is required">
+          <b-form-datepicker
+            id="date-input"
+            v-model="inputValuesForNewPrice.endDate"
+            :min="minDate"
+            required >
+          </b-form-datepicker>
+        </b-form-group>
+
+        <b-button type="button" variant="primary" @click="addNewPrice">Save</b-button>
+        <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
+
+      </b-form>
+    </b-modal>
+
+    <b-modal id="newPromotionModal" title="Create new promotion" hide-footer>
       <b-form>
         <b-form-group
           label="New price"
@@ -36,8 +69,9 @@
           invalid-feedback="Price is required">
           <b-form-input
             id="price-input"
-            v-model="inputValues.price" 
+            v-model="inputValuesForNewPromotion.price" 
             required
+            :min=0
             type="number"
           ></b-form-input>
         </b-form-group>
@@ -48,14 +82,14 @@
           invalid-feedback="Expiration date is required">
           <b-form-datepicker
             id="date-input"
-            v-model="inputValues.endDate"
+            v-model="inputValuesForNewPromotion.endDate"
             :min="minDate"
             required >
           </b-form-datepicker>
         </b-form-group>
 
-        <b-button type="button" variant="primary" @click="addNewPrice">Save</b-button>
-        <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
+        <b-button type="button" variant="primary" @click="createNewPromotion">Save</b-button>
+        <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
 
       </b-form>
     </b-modal>
@@ -77,7 +111,14 @@
         searchText: '',
         selected: [],
         minDate: minDate,
-        inputValues: {
+        inputValuesForNewPrice: {
+          price: '',
+          drugName: '',
+          drugStoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
+          startDate: minDate,
+          endDate: ''
+        },
+        inputValuesForNewPromotion: {
           price: '',
           drugName: '',
           drugStoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
@@ -90,8 +131,8 @@
         getDrugStockForDrugstore : function(){
             axios.get('http://localhost:8081/drug-stock', {
             params: {
-                            drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
-                        }})
+              drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+            }})
             .then(response => {
             this.drugStocks = response.data.map(drugStockDto => 
             (
@@ -134,23 +175,42 @@
           if (this.selected.length == 0) {
             alert("You need to select drug for which you want to assign new price.")
           } else {
-            this.$root.$emit('bv::show::modal', 'my-modal');
+            this.$root.$emit('bv::show::modal', 'newPriceModal');
           }
         },
+        newPromotion(event) {
+            event.preventDefault()
+            if (this.selected.length == 0) {
+              alert("You need to select drug for which you want to create promotion.")
+            } else {
+              this.$root.$emit('bv::show::modal', 'newPromotionModal');
+            }        
+          },
         addNewPrice(event) {
           event.preventDefault();
-          this.inputValues.drugName = this.selected[0].drug
-          axios.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValues)))
-              .then(response => {
-              console.log(response);
-              alert("New price for " + this.selected[0].drug + " is successfully added.");
+          this.inputValuesForNewPrice.drugName = this.selected[0].drug
+          axios.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValuesForNewPrice)))
+              .then(() => {
+                alert("New price for " + this.selected[0].drug + " is successfully added.");
+                this.getDrugStockForDrugstore();
               })
               .catch(error => console.log(error));
-          this.getDrugStockForDrugstore();
-          this.$root.$emit('bv::hide::modal', 'my-modal');
+          this.$root.$emit('bv::hide::modal', 'newPriceModal');
+        },
+        createNewPromotion(event) {
+          event.preventDefault();
+          this.inputValuesForNewPromotion.drugName = this.selected[0].drug
+          axios.post("http://localhost:8081/drug-price/promotion", JSON.parse(JSON.stringify(this.inputValuesForNewPromotion)))
+              .then(() => {
+                alert("New promotion for " + this.selected[0].drug + " is successfully added.");
+                this.getDrugStockForDrugstore();
+              })
+              .catch(error => console.log(error));
+          this.$root.$emit('bv::hide::modal', 'newPromotionModal');
         },
         handleClose(){
-            this.$root.$emit('bv::hide::modal', 'my-modal');
+            this.$root.$emit('bv::hide::modal', 'newPriceModal');
+            this.$root.$emit('bv::hide::modal', 'newPromotionModal');
         }
         },
     mounted: function(){

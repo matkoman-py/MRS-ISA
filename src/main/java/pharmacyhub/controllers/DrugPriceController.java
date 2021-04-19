@@ -22,8 +22,12 @@ public class DrugPriceController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DrugPrice> add(@RequestBody CreateNewPriceForDrugDto drugPrice) throws Exception {
-	System.out.println(drugPrice.getPrice() + " " +  drugPrice.getDrugName() + " " + drugPrice.getDrugStoreId() + " " + drugPrice.getEndDate() + " " + drugPrice.getStartDate());	
 		return new ResponseEntity<>(drugPriceService.save(drugPrice), HttpStatus.OK);
+	}
+	
+	@PostMapping(path="/promotion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<DrugPrice> createPromotion(@RequestBody CreateNewPriceForDrugDto drugPromotion) throws Exception {
+		return new ResponseEntity<>(drugPriceService.savePromotion(drugPromotion), HttpStatus.OK);
 	}
 	
 }

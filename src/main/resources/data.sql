@@ -85,11 +85,11 @@ INSERT INTO public.drugstock VALUES ('4', false, 25, 'a3ew071d-b38c-4014-9fa3-2e
 --
 -- Data for Name: DrugPrice;
 --
-INSERT INTO public.drug_price VALUES ('0', false, '2021-01-22', 200, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('1', false, '2021-01-22', 300, '2021-01-22', 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('2', false, '2021-01-22', 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('3', false, '2021-01-25', 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('4', false, '2021-01-22', 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('0', false, '2021-01-22', true, 200, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('1', false, '2021-01-22', false, 300, '2021-01-22', 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('2', false, '2021-01-22', false, 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('3', false, '2021-01-25', false, 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('4', false, '2021-01-22', false, 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
 --
 -- Data for Name: DermatologistEmployment

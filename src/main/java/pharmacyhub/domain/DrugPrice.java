@@ -25,18 +25,29 @@ public class DrugPrice extends BaseEntity {
 	private Date startDate;
 	@Column(nullable = false)
 	private Date endDate;
-	
+	@Column(nullable = false)
+	private boolean isPromotion;
+
 	public DrugPrice() {
 		
 	}
 	
-	public DrugPrice(Drug drug, Drugstore drugstore, int price, Date startDate, Date endDate) {
+	public DrugPrice(Drug drug, Drugstore drugstore, int price, Date startDate, Date endDate, boolean isPromotion) {
 		super();
 		this.drug = drug;
 		this.drugstore = drugstore;
 		this.price = price;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.isPromotion = isPromotion;
+	}
+	
+	public boolean isPromotion() {
+		return isPromotion;
+	}
+
+	public void setPromotion(boolean isPromotion) {
+		this.isPromotion = isPromotion;
 	}
 
 	public Drug getDrug() {
