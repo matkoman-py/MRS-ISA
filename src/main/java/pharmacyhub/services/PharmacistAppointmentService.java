@@ -4,12 +4,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.mail.MessagingException;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
@@ -54,7 +53,7 @@ public class PharmacistAppointmentService {
 		return pa;
 	}
 
-	public List<Drugstore>  /*int*/ findDrugstores(String pharmacistAppointmentTime, String pharmacistAppointmentDate) {
+	public List<Drugstore> findDrugstores(String pharmacistAppointmentTime, String pharmacistAppointmentDate) {
 		List<Pharmacist> allPharmacists = pharmacistRepository.findAll();
 		List<Drugstore>  wantedDrugstores = new ArrayList<>();
 		
@@ -62,8 +61,6 @@ public class PharmacistAppointmentService {
 		int inputTime = Integer.parseInt(hours) * 3600;
 		String minutes = pharmacistAppointmentTime.substring(3,5);
 		inputTime += Integer.parseInt(minutes) * 60;
-		
-		//return secs;
 		
 		for(Pharmacist ph : allPharmacists) {
 			String hours1 = ph.getWorkingHoursFrom().substring(0,2);
@@ -83,7 +80,6 @@ public class PharmacistAppointmentService {
 				}
 			}
 		}
-		
 		return wantedDrugstores;
 	}
 
@@ -108,9 +104,6 @@ public class PharmacistAppointmentService {
 					busyFrom += Integer.parseInt(minutes1) * 60;
 					
 					int busyTo = busyFrom + Appointment.getDuration()*60;
-					//System.out.println(inputTime);
-					//System.out.println(busyFrom);
-					//System.out.println(busyTo);
 					if(inputTime >= busyFrom && inputTime <= busyTo) {
 						free = false;
 					}
@@ -119,5 +112,16 @@ public class PharmacistAppointmentService {
 			if(free == true) wantedPharmacist.add(ph);
 		}
 		return wantedPharmacist; 
+  }
+   
+  public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {
+		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
+		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
+    
+		for(PharmacistAppointment appointment : allAppointments) {
+			if(appointment.getPharmacist().getId().equals(pharmacistId))
+				wantedAppontments.add(appointment);
+		}
+		return wantedAppontments;
 	}
 }

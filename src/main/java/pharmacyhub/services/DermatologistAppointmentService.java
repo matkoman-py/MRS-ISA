@@ -93,8 +93,6 @@ public class DermatologistAppointmentService {
 		List<DermatologistAppointment> allAppointments = findAll();
 		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
 		String str = ""; 
-		System.out.println(drugstoreId);
-		System.out.println(dermatologistId);
 		for(DermatologistAppointment appointment : allAppointments) {
 			if(appointment.getDrugstore().getId().equals(drugstoreId) && (appointment.getPatient() == null) && (appointment.getDermatologist().getId().equals(dermatologistId)))
 				wantedAppontments.add(appointment);
@@ -117,6 +115,19 @@ public class DermatologistAppointmentService {
 		
 		return allAppointments;
 	}
+	
+	public List<DermatologistAppointment> findAllDermatologistAppointments(String dermatologistId) {
+		List<DermatologistAppointment> allAppointments = findAll();
+		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
+		String str = ""; 
+		for(DermatologistAppointment appointment : allAppointments) {
+			if(appointment.getDermatologist().getId().equals(dermatologistId))
+				wantedAppontments.add(appointment);
+		}
+		System.out.println(wantedAppontments);
+		return wantedAppontments;
+	}
+	
 }
 
 
