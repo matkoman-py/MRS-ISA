@@ -58,12 +58,7 @@
         methods: {
             loginUser: function (event){
                 event.preventDefault();
-                console.log(this.form);
-                this.$http.post("http://localhost:8081/auth/login", this.form)
-                .then(response => {
-                    localStorage.setItem('token', response.data.accessToken);
-                })
-                .catch(error => console.log(error));
+                this.$store.dispatch('userModule/login', this.form);
             }
         }
 

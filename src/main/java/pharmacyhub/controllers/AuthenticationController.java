@@ -37,8 +37,6 @@ public class AuthenticationController {
 	public ResponseEntity<UserTokenState> createAuthenticationToken(
 			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
 		
-		System.out.println(authenticationRequest.getUsername());
-		System.out.println(authenticationRequest.getPassword());
 
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
@@ -51,6 +49,6 @@ public class AuthenticationController {
 		int expiresIn = tokenUtils.getExpiresIn();
 
 
-		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user));
 	}
 }
