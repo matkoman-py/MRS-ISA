@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.DermatologistOverviewDto;
+import pharmacyhub.dto.EmployeeOverviewDto;
 import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
 import pharmacyhub.services.EmployeeService;
@@ -29,8 +30,15 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Employee>> getAllEmployeesOfDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
+	public ResponseEntity<Collection<EmployeeOverviewDto>> getAllEmployeesOfDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
 		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstore(drugstoreId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<EmployeeOverviewDto>> getAllEmployeesBySearch(@RequestParam(value = "drugstoreId") String drugstoreId,
+			@RequestParam(value = "searchText") String searchText, @RequestParam(value = "minRate") double minRate,
+			@RequestParam(value = "maxRate") double maxRate, @RequestParam(value = "type") String employeeType) {
+		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstoreBySearch(drugstoreId, searchText, minRate, maxRate, employeeType), HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/pharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
