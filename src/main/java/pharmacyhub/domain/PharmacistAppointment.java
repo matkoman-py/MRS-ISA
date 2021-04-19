@@ -23,7 +23,7 @@ public class PharmacistAppointment extends BaseEntity{
 	@Column(nullable = false)
 	private Date date;
 	@Column(nullable = false)
-	private String time;
+	private Time time;
 	@Column(nullable = false)
 	private int duration;	
 	@OneToOne(fetch = FetchType.EAGER)
@@ -46,7 +46,7 @@ public class PharmacistAppointment extends BaseEntity{
 		super();
 	}
 	
-	public PharmacistAppointment(Pharmacist pharmacist, Date date, String time, int duration, Patient patient,
+	public PharmacistAppointment(Pharmacist pharmacist, Date date, Time time, int duration, Patient patient,
 			String appointmentReport) {
 		super();
 		this.pharmacist = pharmacist;
@@ -70,10 +70,10 @@ public class PharmacistAppointment extends BaseEntity{
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getTime() {
+	public Time getTime() {
 		return time;
 	}
-	public void setTime(String time) {
+	public void setTime(Time time) {
 		this.time = time;
 	}
 	public int getDuration() {

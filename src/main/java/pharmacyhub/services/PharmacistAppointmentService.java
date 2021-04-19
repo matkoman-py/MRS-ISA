@@ -1,5 +1,6 @@
 package pharmacyhub.services;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -88,22 +89,25 @@ public class PharmacistAppointmentService {
 		List<Pharmacist> wantedPharmacist = new ArrayList<>();
 		
 		pharmacistAppointmentRepository.findAll();
-		String hours = pharmacistAppointmentTime.substring(0,2);
-		int inputTime = Integer.parseInt(hours) * 3600;
-		String minutes = pharmacistAppointmentTime.substring(3,5);
-		inputTime += Integer.parseInt(minutes) * 60;
+		Time in = new Time(Integer.parseInt(pharmacistAppointmentTime.substring(0,2)),Integer.parseInt(pharmacistAppointmentTime.substring(3,5)),0);
+		//String hours = pharmacistAppointmentTime.substring(0,2);
+		//int inputTime = Integer.parseInt(hours) * 3600;
+		//String minutes = pharmacistAppointmentTime.substring(3,5);
+		//inputTime += Integer.parseInt(minutes) * 60;
+		long inputTime = in.getTime();
 		
 		for(Pharmacist ph:allPharmacists) {
 			boolean free = true;
 			List<PharmacistAppointment> Appointments = pharmacistAppointmentRepository.findByPharmacistId(ph.getId());
 			for(PharmacistAppointment Appointment:Appointments) {
 				if(Appointment.getDate().toString().contains(pharmacistAppointmentDate)) {
-					String hours1 = Appointment.getTime().substring(0,2);
-					int busyFrom = Integer.parseInt(hours1) * 3600;
-					String minutes1 = Appointment.getTime().substring(3,5);
-					busyFrom += Integer.parseInt(minutes1) * 60;
+					long busyFrom = Appointment.getTime().getTime();
+
+					long busyTo = busyFrom + Appointment.getDuration()*60000;
 					
-					int busyTo = busyFrom + Appointment.getDuration()*60;
+					System.out.println(inputTime);
+					System.out.println(busyFrom);
+					System.out.println(busyTo);
 					if(inputTime >= busyFrom && inputTime <= busyTo) {
 						free = false;
 					}

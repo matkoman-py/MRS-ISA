@@ -46,7 +46,7 @@
                     pharmacistId: '',
                     date: '',
                     time: '',
-                    duration: '',
+                    duration: 30,
                     patientId: '',
                 },
                 fieldsDrugstores: [{

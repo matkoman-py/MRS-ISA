@@ -305,7 +305,7 @@ export default {
     margin-top: 3%;
     margin-bottom: 3%;
     border-radius: 0.5rem;
-    background: rgb(188, 212, 231);
+    border-style: solid;
 }
 .profile-img{
     text-align: center;
