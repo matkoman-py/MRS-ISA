@@ -6,13 +6,13 @@ import java.util.Date;
 public class PharmacistAppointmentPatientDto {
 	private String pharmacistId;
 	private Date date;
-	private Time time;
+	private String time;
 	private int duration;
 	private String patientId;
 	public PharmacistAppointmentPatientDto() {
 		super();
 	}
-	public PharmacistAppointmentPatientDto(String pharmacistId, Date date, Time time, int duration, String patientId) {
+	public PharmacistAppointmentPatientDto(String pharmacistId, Date date, String time, int duration, String patientId) {
 		super();
 		this.pharmacistId = pharmacistId;
 		this.date = date;
@@ -32,10 +32,10 @@ public class PharmacistAppointmentPatientDto {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Time getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(Time time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	public int getDuration() {

@@ -16,16 +16,15 @@ import DrugStockOverview from "./views/DrugStockOverview"
 import AppointmentsOverview from "./views/AppointmentsOverview"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
-
 import AppointmentDermatologist from "./views/AppointmentDermatologist"
 import AppointmentPharmacist from "./views/AppointmentPharmacist"
 import PharmDermProfile from "./views/PharmDermProfile"
-
 import DrugstoreView from "./views/DrugstoreView"
 import DermatologistAppointments from "./views/DermatologistAppointments"
 import PatientProfile from "./views/PatientProfile"
 import AdminDrugTable from "./components/tables/AdminDrugTable"
 import AdminUserTable from "./components/tables/AdminUserTable"
+import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment"
 
 Vue.use(VueRouter)
 
@@ -149,6 +148,11 @@ const routes = [
         path: '/admin-user-table',
         name: "AdminUserTable",
         component: AdminUserTable
+    },
+    {
+        path: '/schedule-appointment',
+        name: "ScheduleAppointment",
+        component: SchedulePharmacistAppointment
     },
 ];
 
