@@ -32,7 +32,7 @@ public class DermatologistAppointmentService {
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
   
-  @Autowired
+    @Autowired
 	private UserNotificationService userNotificationService;
 
 	
