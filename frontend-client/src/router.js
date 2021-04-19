@@ -26,6 +26,8 @@ import DermatologistAppointments from "./views/DermatologistAppointments"
 import PatientProfile from "./views/PatientProfile"
 import AdminDrugTable from "./components/tables/AdminDrugTable"
 import AdminUserTable from "./components/tables/AdminUserTable"
+import PharmacistOverview from "./views/PharmacistOverview"
+import DermatologistOverview from "./views/DermatologistOverview"
 
 Vue.use(VueRouter)
 
@@ -149,6 +151,16 @@ const routes = [
         path: '/admin-user-table',
         name: "AdminUserTable",
         component: AdminUserTable
+    },
+    {
+        path: '/pharmacist-overview',
+        name: "PharmacistOverview",
+        component: PharmacistOverview
+    },
+    {
+        path: '/dermatologist-overview',
+        name: "DermatologistOverview",
+        component: DermatologistOverview
     },
 ];
 
