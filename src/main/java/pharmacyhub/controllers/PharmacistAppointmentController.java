@@ -1,5 +1,7 @@
 package pharmacyhub.controllers;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +35,12 @@ public class PharmacistAppointmentController {
 	@GetMapping(path ="/begin-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PharmacistAppointment> getPharmacistAppointment(@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String pharmacistAppointmentId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findAppointment(pharmacistAppointmentId), HttpStatus.OK);
+		//return new ResponseEntity<>("Vratio",HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PharmacistAppointment>> getAllPharmacistAppointments(@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
+		return new ResponseEntity<>(pharmacistAppointmentService.getAllPharmacistAppointments(pharmacistId), HttpStatus.OK);
 		//return new ResponseEntity<>("Vratio",HttpStatus.OK);
 	}
 }

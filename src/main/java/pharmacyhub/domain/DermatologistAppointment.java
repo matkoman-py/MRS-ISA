@@ -53,7 +53,7 @@ public class DermatologistAppointment extends BaseEntity{
 		this.appointmentReport = appointmentReport;
 		this.price = price;
 		this.timeEnd = new Time(time.getTime()+(60000*this.duration));
-		System.out.println(this.timeEnd);
+		//System.out.println(this.timeEnd);
 	}
 
 	public int getPrice() {

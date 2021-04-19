@@ -24,7 +24,7 @@
             <b>{{ event.start.replace('T',' ') }}</b>
             <i>{{ event.title }}</i>
             <br>
-            <i>at {{ event.drugstore.name }}</i>
+            <i>at {{ event.pharmacist.drugstore.name }}</i>
           </li>
         </ul>
       </div>
@@ -50,7 +50,7 @@
           <p v-if="patientNotNull">Patient: {{selected.extendedProps.patient.name}} {{selected.extendedProps.patient.surname}}</p>
           <p v-else>Available</p>
           
-          <p>Drugstore: {{selected.extendedProps.drugstore.name}}</p>
+          <p>Drugstore: {{selected.extendedProps.pharmacist.drugstore.name}}</p>
           <p>Start: {{selected.start}}</p>
           <p>Duration: {{selected.extendedProps.durationn}} minutes</p>
         </div>
@@ -66,7 +66,7 @@
           <p v-if="patientNotNull">Patient: {{selected.extendedProps.patient.name}} {{selected.extendedProps.patient.surname}}</p>
           <p v-else>Available</p>
           
-          <p>Drugstore: {{selected.extendedProps.drugstore.name}}</p>
+          <p>Drugstore: {{selected.extendedProps.pharmacist.drugstore.name}}</p>
           <p>Start: {{selected.start}}</p>
           <p>Duration: {{selected.extendedProps.durationn}} minutes</p>
         </div>
@@ -130,7 +130,6 @@ export default {
   },
   methods: {
     close: function(){
-      
       this.$root.$emit('bv::hide::modal', 'passedModal');
       
     },
@@ -164,17 +163,16 @@ export default {
 
     },
     handleEvents: function() {
-      axios.get('http://localhost:8081/dermatologist-appointment/all-derm-app', {
+      axios.get('http://localhost:8081/pharmacist-appointment/all-appointments', {
                         params: {
-                            dermatologistId: 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
+                            pharmacistId: 'ccb953a7-d244-48bb-8627-4b2437491dc1'
                         }
                     })
                     .then(response => {
                         this.calendarOptions.events = response.data.map(currentEvent =>
                             ({
                                 id: currentEvent.id,
-                                dermatologist: currentEvent.dermatologist,
-                                drugstore: currentEvent.drugstore,
+                                pharmacist: currentEvent.pharmacist,
                                 allDay: false,
                                 start: currentEvent.date.substring(0, 10)+"T"+currentEvent.time,
                                 displayEventTime: true,

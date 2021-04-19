@@ -105,6 +105,6 @@ INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b
 --
 -- Data for Name: pharmacist_appointment; 
 --
-INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3, '12:59:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
+INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3, '12:00:00', '13:00:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
 
 
