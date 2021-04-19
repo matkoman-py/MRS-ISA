@@ -25,7 +25,8 @@ const mutations = {
     },
     logout(state) {
         state.role = '';
-        state.user = null;
+        state.loggedInUser = null;
+        localStorage.removeItem("token");
         sessionStorage.clear();
     },
 }
@@ -35,7 +36,6 @@ const actions = {
         VueAxios.post("http://localhost:8081/auth/login", credentials)
                 .then(response => {
                     localStorage.setItem('token', response.data.accessToken);
-                    console.log(response.data.user);
                     commit('setLoggedInUser', response.data.user);
                     router.push('/');
                 })
