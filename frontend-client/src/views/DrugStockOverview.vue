@@ -190,24 +190,22 @@
           event.preventDefault();
           this.inputValuesForNewPrice.drugName = this.selected[0].drug
           axios.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValuesForNewPrice)))
-              .then(response => {
-              console.log(response);
-              alert("New price for " + this.selected[0].drug + " is successfully added.");
+              .then(() => {
+                alert("New price for " + this.selected[0].drug + " is successfully added.");
+                this.getDrugStockForDrugstore();
               })
               .catch(error => console.log(error));
-          this.getDrugStockForDrugstore();
           this.$root.$emit('bv::hide::modal', 'newPriceModal');
         },
         createNewPromotion(event) {
           event.preventDefault();
           this.inputValuesForNewPromotion.drugName = this.selected[0].drug
           axios.post("http://localhost:8081/drug-price/promotion", JSON.parse(JSON.stringify(this.inputValuesForNewPromotion)))
-              .then(response => {
-              console.log(response);
-              alert("New promotion for " + this.selected[0].drug + " is successfully added.");
+              .then(() => {
+                alert("New promotion for " + this.selected[0].drug + " is successfully added.");
+                this.getDrugStockForDrugstore();
               })
               .catch(error => console.log(error));
-          this.getDrugStockForDrugstore();
           this.$root.$emit('bv::hide::modal', 'newPromotionModal');
         },
         handleClose(){
