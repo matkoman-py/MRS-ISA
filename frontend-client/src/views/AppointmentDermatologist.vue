@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 export default {
     name: "AppointmentDermatologist",
     
@@ -151,7 +151,7 @@ export default {
     methods: {
         beginAppointment: function(){
             this.currentAppointment.id = "4a73ae19-2001-450a-a050-85f51717ab76";
-            axios.get('http://localhost:8081/dermatologist-appointment/begin-appointment', {
+            this.$http.get('http://localhost:8081/dermatologist-appointment/begin-appointment', {
                         params: {
                             dermatologistAppointmentId: this.currentAppointment.id
                         }
@@ -167,7 +167,7 @@ export default {
             
         },
         getAllAppointments: function () {
-                axios.get('http://localhost:8081/dermatologist-appointment/available', {
+                this.$http.get('http://localhost:8081/dermatologist-appointment/available', {
                         params: {
                             drugstoreId: this.currentAppointment.drugstore.id,
                             dermatologistId: this.currentAppointment.dermatologist.id
@@ -194,7 +194,7 @@ export default {
           this.inputValues.drugstoreId = this.currentAppointment.drugstore.id;
           this.inputValues.patientId = this.currentAppointment.patient.id;
           this.inputValues.dermatologistId = this.currentAppointment.dermatologist.id;
-          axios.post("http://localhost:8081/dermatologist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("http://localhost:8081/dermatologist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New appointment is successfully created.");
@@ -203,7 +203,7 @@ export default {
           this.$root.$emit('bv::hide::modal', 'appointmentmodal');
         },
         createReservation :function(item){
-                axios.get('http://localhost:8081/dermatologist-appointment/reserveAppointment', {
+                this.$http.get('http://localhost:8081/dermatologist-appointment/reserveAppointment', {
                         params: {
                             drugstoreId : this.currentAppointment.drugstore.id,
                             patientId: this.currentAppointment.patient.id,

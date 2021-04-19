@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable"
 
 export default {
@@ -86,14 +85,14 @@ export default {
         this.currentDrugstoreId =  this.$route.path.slice(12, this.$route.path.length);
     },
         getCurrentDrugstore() {
-            axios.get('http://localhost:8081/drugstores/' + this.currentDrugstoreId, {
+            this.$http.get('http://localhost:8081/drugstores/' + this.currentDrugstoreId, {
                     })
                     .then(response => {
                         this.drugstore = response.data;
                     })
                     .catch(error => console.log(error));
         }, getAllDermatologists() {
-        axios.get("http://localhost:8081/employment/dermatologist-employments", {
+        this.$http.get("http://localhost:8081/employment/dermatologist-employments", {
                 params: {
                             drugstoreId: this.currentDrugstoreId
                         }})
@@ -110,7 +109,7 @@ export default {
             })
             .catch(error => console.log(error));
     }, getAllPharmacists() {
-        axios.get("http://localhost:8081/employment/pharmacist-employments", {
+        this.$http.get("http://localhost:8081/employment/pharmacist-employments", {
                 params: {
                             drugstoreId: this.currentDrugstoreId
                         }})

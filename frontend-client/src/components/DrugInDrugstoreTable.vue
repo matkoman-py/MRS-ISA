@@ -47,8 +47,6 @@
 </template>
 
 <script>
-  import axios from "axios";
-
   export default {
     name: "DrugTable",
     data: function () {
@@ -98,7 +96,7 @@
         this.currentDrugstoreId =  this.$route.path.slice(12, this.$route.path.length);
       },
       getDrugs: function () {
-        axios.get('http://localhost:8081/drugs/search', {
+        this.$http.get('http://localhost:8081/drugs/search', {
             params: {
               drugNameParam: this.name,
               drugTypeParam: this.type.name,
@@ -121,7 +119,7 @@
           .catch(error => console.log(error));
       },
       getManufacturers: function () {
-        axios.get("http://localhost:8081/manufacturers")
+        this.$http.get("http://localhost:8081/manufacturers")
           .then(response => {
             this.manufacturerOptions = response.data.map((manufacturer) =>
               ({
@@ -133,7 +131,7 @@
           .catch(error => console.log(error));
       },
       getDrugTypes: function () {
-        axios.get("http://localhost:8081/drug-types")
+        this.$http.get("http://localhost:8081/drug-types")
           .then(response => {
             this.drugTypeOptions = response.data.map((drugType) =>
               ({
@@ -145,21 +143,21 @@
           .catch(error => console.log(error));
       },
       getIngrediants: function () {
-        axios.get("http://localhost:8081/ingredients")
+        this.$http.get("http://localhost:8081/ingredients")
           .then(response => {
             this.ingrediants = response.data;
           })
           .catch(error => console.log(error));
       },
       getSubstitutionDrugs: function () {
-        axios.get("http://localhost:8081/drugs")
+        this.$http.get("http://localhost:8081/drugs")
           .then(response => {
             this.substitutions = response.data;
           })
           .catch(error => console.log(error));
       },
       getAllDrugsOfDrugstore: function () {
-        axios.get('http://localhost:8081/drugs/in-drugstore/' + this.currentDrugstoreId)
+        this.$http.get('http://localhost:8081/drugs/in-drugstore/' + this.currentDrugstoreId)
           .then(response => {
             this.drugs = response.data.map(drug =>
               ({

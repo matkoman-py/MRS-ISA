@@ -31,7 +31,6 @@
 
 <script>
 import DrugstoreBasicInfoUpdate from '../../views/DrugstoreBasicInfoUpdate.vue';
-import axios from 'axios'
 
 export default {
   components: { DrugstoreBasicInfoUpdate },
@@ -67,7 +66,7 @@ export default {
             this.editModal.title = '';
       },
       edit: function(){
-          axios.put('http://localhost:8081/drugstores', this.editModal.drugstore)
+          this.$http.put('http://localhost:8081/drugstores', this.editModal.drugstore)
             .then(response => {
                 let index = this.drugstores.findIndex(drugstore => drugstore.id == response.data.id);
                 this.drugstores.splice(index, 1, response.data);
@@ -85,7 +84,7 @@ export default {
             this.deleteModal.title = '';
       },
       deleteDrugstore: function(){
-          axios.delete(`http://localhost:8081/drugstores/${this.deleteModal.drugstore.id}`)
+          this.$http.delete(`http://localhost:8081/drugstores/${this.deleteModal.drugstore.id}`)
             .then(response => {
                 let index = this.drugstores.findIndex(drugstore => drugstore.id == this.deleteModal.drugstore.id);
                 this.drugstores.splice(index, 1);
@@ -94,7 +93,7 @@ export default {
             .catch(error => console.log(error));
       },
       getDrugstores: function () {
-            axios.get('http://localhost:8081/drugstores')
+            this.$http.get('http://localhost:8081/drugstores')
             .then(response => {
                 this.drugstores = response.data;
             })

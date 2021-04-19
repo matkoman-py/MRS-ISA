@@ -77,7 +77,6 @@
 </template>
 
 <script>
-  import axios from "axios";
 
   export default {
     data: function() {
@@ -103,7 +102,7 @@
 
         },
         getAllDermatologistForThisDrugstore : function() {
-            axios.get("http://localhost:8081/employment/dermatologists", {
+            this.$http.get("http://localhost:8081/employment/dermatologists", {
                 params: {
                             drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
                         }})
@@ -123,7 +122,7 @@
         },
         addNewApointment(event) {
           event.preventDefault();
-          axios.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New appointment is successfully created.");

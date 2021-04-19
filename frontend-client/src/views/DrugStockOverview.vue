@@ -65,7 +65,6 @@
 </template>
 
 <script>
-  import axios from "axios";
 
   export default {
     data: function() {
@@ -88,7 +87,7 @@
     },
     methods: {
         getDrugStockForDrugstore : function(){
-            axios.get('http://localhost:8081/drug-stock', {
+            this.$http.get('http://localhost:8081/drug-stock', {
             params: {
                             drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
                         }})
@@ -110,7 +109,7 @@
         },
         search(event) {
             event.preventDefault()
-            axios.get('http://localhost:8081/drug-stock/search', {
+            this.$http.get('http://localhost:8081/drug-stock/search', {
             params: {
               searchedText: this.searchText,
               drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
@@ -140,7 +139,7 @@
         addNewPrice(event) {
           event.preventDefault();
           this.inputValues.drugName = this.selected[0].drug
-          axios.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New price for " + this.selected[0].drug + " is successfully added.");

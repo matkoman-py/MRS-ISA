@@ -99,7 +99,6 @@
 </template>
 
 <script>
-import axios from 'axios'
     export default {
         data() {
             return {
@@ -137,7 +136,7 @@ import axios from 'axios'
                 this.registerUser();
             },
             registerUser: function(){
-                axios.post("http://localhost:8081/register", this.form)
+                this.$http.post("http://localhost:8081/register", this.form)
             .then(response => {
                 console.log(response);
                 alert("Check your email for further instructions!");

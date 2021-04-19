@@ -79,7 +79,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
     name: "AppointmentPharmacist",
     
@@ -98,7 +97,7 @@ export default {
     methods: {
         beginAppointment: function(){
             this.currentAppointment.id = "2229dbcb-7f36-4e4e-81f5-656ce14a553a";
-            axios.get('http://localhost:8081/pharmacist-appointment/begin-appointment', {
+            this.$http.get('http://localhost:8081/pharmacist-appointment/begin-appointment', {
                         params: {
                             pharmacistAppointmentId: this.currentAppointment.id
                         }
@@ -121,7 +120,7 @@ export default {
           this.inputValues.pharmacistId = this.currentAppointment.pharmacist.id;
           //this.inputValues.pharmacistId = "ccb953a7-d244-48bb-8627-4b2437491dc1";
           //this.inputValues.patientId = "8128d806-c29b-4086-aae6-877d17eeb6fa";
-          axios.post("http://localhost:8081/pharmacist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("http://localhost:8081/pharmacist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New appointment is successfully created.");

@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import axios from "axios"
 
 export default {
   name: 'SearchDermatologistForm',
@@ -43,7 +42,7 @@ export default {
   methods : {
     onSubmit(event){
           event.preventDefault();
-          axios.post("http://localhost:8081/employees/search/dermatologist", this.form)
+          this.$http.post("http://localhost:8081/employees/search/dermatologist", this.form)
           .then(response => {
               this.dermatologists = response.data;
               this.$emit("dermatologist-search", this.dermatologists);

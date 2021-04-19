@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import AddDrugForm from '../forms/drug/AddDrugForm';
 import EditDrugForm from '../forms/drug/EditDrugForm';
 
@@ -97,7 +96,7 @@ export default {
             this.deleteModal.title = '';
       },
       deleteDrug: function(){
-          axios.delete(`http://localhost:8081/drugs/${this.deleteModal.drug.id}`)
+          this.$http.delete(`http://localhost:8081/drugs/${this.deleteModal.drug.id}`)
             .then(response => {
                 let index = this.drugs.findIndex(drug => drug.id == this.deleteModal.drug.id);
                 this.drugs.splice(index, 1);
@@ -106,7 +105,7 @@ export default {
             .catch(error => console.log(error));
       },
       getDrugs: function () {
-            axios.get('http://localhost:8081/drugs')
+            this.$http.get('http://localhost:8081/drugs')
             .then(response => {
                 this.drugs = response.data;
             })

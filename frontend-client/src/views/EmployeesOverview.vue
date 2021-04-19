@@ -31,7 +31,6 @@
 </template>
 
 <script>
-  import axios from "axios";
 
   export default {
     data: function() {
@@ -48,7 +47,7 @@
     },
     methods: {
         getEmployees : function(){
-            axios.get('http://localhost:8081/employees', {
+            this.$http.get('http://localhost:8081/employees', {
               params: {
                 drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
             }

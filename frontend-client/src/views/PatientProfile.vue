@@ -241,7 +241,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
     data: function(){
         return{
@@ -255,7 +254,7 @@ export default {
         getEmployee : function(){
             this.employee.id = "664783ca-84a1-4a2b-ae27-a2b820bc3c71";
             
-            axios.get('http://localhost:8081/patients/id', {
+            this.$http.get('http://localhost:8081/patients/id', {
                         params: {
                             patientId: this.employee.id
                         }
@@ -278,7 +277,7 @@ export default {
             }
             this.name = this.employee.name;
             this.editEnabled = true;
-            axios.put("http://localhost:8081/patients", this.employee)
+            this.$http.put("http://localhost:8081/patients", this.employee)
                 .then(response => {
                 console.log(response);
                 console.log("ovde");
