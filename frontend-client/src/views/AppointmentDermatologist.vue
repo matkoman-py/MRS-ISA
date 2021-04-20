@@ -234,11 +234,3 @@ export default {
     
 }
 </script>
-
-<style>
-#appointmentmodal{
-    /* max-width: 100%; */
-    /* display: table; */
-    /* width: fit-content; */
-}
-</style>

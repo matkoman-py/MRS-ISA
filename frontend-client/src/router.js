@@ -16,16 +16,19 @@ import DrugStockOverview from "./views/DrugStockOverview"
 import AppointmentsOverview from "./views/AppointmentsOverview"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
-
 import AppointmentDermatologist from "./views/AppointmentDermatologist"
 import AppointmentPharmacist from "./views/AppointmentPharmacist"
 import PharmDermProfile from "./views/PharmDermProfile"
-
+import Schedule from "./views/Schedule"
+import SchedulePharmacist from "./views/SchedulePharmacist"
 import DrugstoreView from "./views/DrugstoreView"
 import DermatologistAppointments from "./views/DermatologistAppointments"
 import PatientProfile from "./views/PatientProfile"
 import AdminDrugTable from "./components/tables/AdminDrugTable"
 import AdminUserTable from "./components/tables/AdminUserTable"
+import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment"
+import PharmacistOverview from "./views/PharmacistOverview"
+import DermatologistOverview from "./views/DermatologistOverview"
 
 import LoginPage from "./views/LoginPage"
 
@@ -156,6 +159,31 @@ const routes = [
         path: '/login',
         name: "LoginPage",
         component: LoginPage
+    },
+    {
+        path: '/schedule-appointment',
+        name: "ScheduleAppointment",
+        component: SchedulePharmacistAppointment
+    },
+    {
+        path: '/schedule',
+        name: "Schedule",
+        component: Schedule
+    },
+    {
+        path: '/schedule-pharm',
+        name: "SchedulePharmacist",
+        component: SchedulePharmacist
+    },
+    {
+        path: '/pharmacist-overview',
+        name: "PharmacistOverview",
+        component: PharmacistOverview
+    },
+    {
+        path: '/dermatologist-overview',
+        name: "DermatologistOverview",
+        component: DermatologistOverview
     },
 ];
 

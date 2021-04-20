@@ -9,12 +9,16 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistDto;
+import pharmacyhub.dto.DermatologistOverviewDto;
+import pharmacyhub.dto.EmployeeOverviewDto;
+import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
@@ -163,17 +167,152 @@ public class EmployeeService {
 		return employee;
   }
   
-	public List<Employee> getAllEmployeesOfDrugstore(String drugstoreId) {
+	public List<EmployeeOverviewDto> getAllEmployeesOfDrugstore(String drugstoreId) {
 		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));	
 		List<Employment> dermatologistEmployments = employmentRepository.findByDrugstoreId(drugstoreId);		
-		List<Employee> employees = new ArrayList<Employee>();
+		List<EmployeeOverviewDto> employees = new ArrayList<EmployeeOverviewDto>();
 		
 		for (Employee e : pharmacists)
-			employees.add(e);
+			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), 10, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
 		for (Employment e : dermatologistEmployments) {
-			employees.add(e.getDermatologist());
+			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), 10, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Pharmacist"));
 		}
 		return employees;
 	}
-  
+	
+	public List<EmployeeOverviewDto> getAllEmployeesOfDrugstoreBySearch(String drugstoreId, String searchText, double minRate,
+			double maxRate, String employeeType) {
+		List<Pharmacist> pharmacists = new ArrayList<Pharmacist>();
+		List<Employment> dermatologistEmployments = new ArrayList<Employment>();
+		List<EmployeeOverviewDto> employees = new ArrayList<EmployeeOverviewDto>();
+		if (employeeType.equals("Dermatologists")) {
+			dermatologistEmployments = employmentRepository.findByDrugstoreId(drugstoreId);
+		} else if (employeeType.equals("Pharmacists")) {
+			pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
+		} else {
+			pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
+			dermatologistEmployments = employmentRepository.findByDrugstoreId(drugstoreId);
+		}
+		
+		for (Employee e : pharmacists) {
+			if (checkIfSearchedTextIsIncluded(searchText, e)) {
+				if (minRate <= 10 && maxRate >= 10) { //ovo treba ispraviti
+					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), 10, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+				}
+			}
+		}
+		for (Employment e : dermatologistEmployments) {
+			if (checkIfSearchedTextIsIncluded(searchText, e.getDermatologist())) {
+				if (minRate <= 10 && maxRate >= 10) { //ovo treba ispraviti
+					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), 10, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
+				}
+			}
+		}
+		
+		return employees;
+	}
+
+	boolean checkIfSearchedTextIsIncluded(String searchText, Employee e) {
+		if (searchText.equals(""))
+			return true;
+		if (e.getPhoneNumber() != null && e.getPhoneNumber().toLowerCase().contains(searchText.toLowerCase()))
+			return true;
+		if (e.getName().toLowerCase().contains(searchText.toLowerCase()) || e.getSurname().toLowerCase().contains(searchText.toLowerCase()) ||
+				e.getEmail().toLowerCase().contains(searchText.toLowerCase()) || e.getLocation().getAddress().toLowerCase().contains(searchText.toLowerCase()) || 
+				e.getLocation().getCity().toLowerCase().contains(searchText.toLowerCase()) || e.getLocation().getCountry().toLowerCase().contains(searchText.toLowerCase()))
+			return true;
+		return false;
+	}
+	public List<PharmacistOverviewDto> getAllPharmacists() {
+		List<Pharmacist> pharmacists = pharmacistRepository.findAll();
+		List<PharmacistOverviewDto> pharmacistReturnValues = new ArrayList<PharmacistOverviewDto>();
+		for (Pharmacist pharmacist : pharmacists) {
+			pharmacistReturnValues.add(new PharmacistOverviewDto(pharmacist.getName(), pharmacist.getSurname(), 10, pharmacist.getDrugstore().getName()));
+		}
+		return pharmacistReturnValues;
+	}
+
+	public List<PharmacistOverviewDto> getPharmacistBySearch(String name, String surname, double minRate, double maxRate, String drugstore) {
+		List<Pharmacist> pharmacists = new ArrayList<Pharmacist>();
+		if (drugstore.equals("")) {
+			pharmacists = pharmacistRepository.findAll();
+		} else {
+			List<Drugstore> drugstores = drugstoreRepository.findByName(drugstore);
+			for (Drugstore d : drugstores) {
+				pharmacists.addAll(pharmacistRepository.findByDrugstore(d));
+			}
+		}
+		List<PharmacistOverviewDto> pharmacistReturnValues = new ArrayList<PharmacistOverviewDto>();
+		for (Pharmacist pharmacist : pharmacists) {
+			if (!name.equals("") && !name.toLowerCase().equals(pharmacist.getName().toLowerCase()))
+				continue;
+			else if (!surname.equals("") && !surname.toLowerCase().equals(pharmacist.getSurname().toLowerCase()))
+				continue;
+			else if (minRate != 0 && minRate > 10)//treba ispraviti
+				continue;
+			else if (maxRate != 0 && maxRate < 10)//treba ispraviti
+				continue;
+			else {
+				pharmacistReturnValues.add(new PharmacistOverviewDto(pharmacist.getName(), pharmacist.getSurname(), 10, pharmacist.getDrugstore().getName()));
+			}
+		}
+		return pharmacistReturnValues;
+	}
+
+	public List<DermatologistOverviewDto> getAlDermatologists() {
+		List<Dermatologist> dermatologists = dermatologistRepository.findAll();
+		List<DermatologistOverviewDto> dermatologistReturnValues = new ArrayList<DermatologistOverviewDto>();
+		for (Dermatologist dermatologist : dermatologists) {
+			String drugstores = "";
+			List<Employment> employments = employmentRepository.findByDermatologistId(dermatologist.getId());
+			for (Employment e : employments) {
+				if (drugstores.equals(""))
+					drugstores += e.getDrugstore().getName();
+				else
+					drugstores += ", " + e.getDrugstore().getName();
+			}
+			dermatologistReturnValues.add(new DermatologistOverviewDto(dermatologist.getName(), dermatologist.getSurname(), 10, drugstores));
+		}
+		return dermatologistReturnValues;
+	}
+
+	public List<DermatologistOverviewDto> getDermatologistBySearch(String name, String surname, double minRate, double maxRate,
+			String drugstore) {
+		List<Dermatologist> dermatologists = new ArrayList<Dermatologist>();
+		if (drugstore.equals("")) {
+			dermatologists = dermatologistRepository.findAll();
+		} else {
+			List<Employment> employments = employmentRepository.findAll();
+			for (Employment e : employments) {
+				if (e.getDrugstore().getName().equals(drugstore)) {
+					if (!dermatologists.contains(e.getDrugstore()))
+						dermatologists.add(e.getDermatologist());
+				}
+			}
+		}
+		List<DermatologistOverviewDto> dermatologistReturnValues = new ArrayList<DermatologistOverviewDto>();
+		for (Dermatologist dermatologist : dermatologists) {
+			if (!name.equals("") && !name.toLowerCase().equals(dermatologist.getName().toLowerCase()))
+				continue;
+			else if (!surname.equals("") && !surname.toLowerCase().equals(dermatologist.getSurname().toLowerCase()))
+				continue;
+			else if (minRate != 0 && minRate > 10)//treba ispraviti
+				continue;
+			else if (maxRate != 0 && maxRate < 10)//treba ispraviti
+				continue;
+			else {
+				String drugstores = "";
+				List<Employment> employments = employmentRepository.findByDermatologistId(dermatologist.getId());
+				for (Employment e : employments) {
+					if (drugstores.equals(""))
+						drugstores += e.getDrugstore().getName();
+					else
+						drugstores += ", " + e.getDrugstore().getName();
+				}
+				dermatologistReturnValues.add(new DermatologistOverviewDto(dermatologist.getName(), dermatologist.getSurname(), 10, drugstores));
+			}
+		}
+		return dermatologistReturnValues;
+	}
+
 }
