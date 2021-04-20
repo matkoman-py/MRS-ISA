@@ -7,4 +7,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("SystemAdmin")
 public class SystemAdmin extends User {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 }

@@ -46,7 +46,6 @@
 </template>
 
 <script>
-    import axios from "axios";
     import DrugstoreCard from './DrugstoreCard.vue';
 
     export default {
@@ -65,7 +64,7 @@
         },
         methods: {
             getDrugstores: function () {
-                axios.get('http://localhost:8081/drugstores/search', {
+                this.$http.get('http://localhost:8081/drugstores/search', {
                         params: {
                             drugStoreNameParam: this.name,
                             drugStoreCityParam: this.city,
@@ -87,7 +86,7 @@
                     .catch(error => console.log(error));
             },
             getAllDrugstores: function () {
-                axios.get('http://localhost:8081/drugstores')
+                this.$http.get('http://localhost:8081/drugstores')
                     .then(response => {
                         this.drugstores = response.data.map(drugstore =>
                             ({

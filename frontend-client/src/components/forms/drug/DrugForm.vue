@@ -77,7 +77,6 @@
 
 <script>
 
-import axios from "axios"
 import SearchableTags from "../../SearchableTags"
 
 export default {
@@ -100,7 +99,7 @@ export default {
   },
   methods: {
     getManufacturers: function(){
-      axios.get("http://localhost:8081/manufacturers")
+      this.$http.get("http://localhost:8081/manufacturers")
       .then(response => {
         this.manufacturerOptions = response.data.map((manufacturer) => 
         ({
@@ -113,7 +112,7 @@ export default {
       .catch(error => console.log(error));
     },
     getDrugTypes: function(){
-      axios.get("http://localhost:8081/drug-types")
+      this.$http.get("http://localhost:8081/drug-types")
       .then(response => {
         this.drugTypeOptions = response.data.map((drugType) => 
         ({
@@ -126,14 +125,14 @@ export default {
       .catch(error => console.log(error));
     },
     getIngredients: function(){
-      axios.get("http://localhost:8081/ingredients")
+      this.$http.get("http://localhost:8081/ingredients")
       .then(response => {
         this.ingredients = response.data;
       })
       .catch(error => console.log(error));
     },
     getSubstitutionDrugs: function(){
-      axios.get("http://localhost:8081/drugs")
+      this.$http.get("http://localhost:8081/drugs")
       .then(response => {
         this.substitutions = response.data;
       })

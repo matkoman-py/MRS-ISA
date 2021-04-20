@@ -9,6 +9,10 @@ import pharmacyhub.domain.enums.UserType;
 @MappedSuperclass
 public class Employee extends User {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// TODO: add work schedule
 	@Column
 	private String workingHoursFrom;

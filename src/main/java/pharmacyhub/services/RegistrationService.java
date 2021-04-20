@@ -1,13 +1,17 @@
 package pharmacyhub.services;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.Patient;
+import pharmacyhub.domain.users.Role;
 import pharmacyhub.domain.users.Supplier;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.UserRegistrationDto;
@@ -26,6 +30,12 @@ public class RegistrationService {
 	
 	@Autowired
 	private DrugstoreRepository drugstoreRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@Autowired
 	private UserNotificationService userNotificationService;
@@ -64,7 +74,9 @@ public class RegistrationService {
 	private DrugstoreAdmin getDrugstoreAdminFromUserRegistrationDto(UserRegistrationDto requestUser) throws Exception {
 		DrugstoreAdmin drugstoreAdmin = new DrugstoreAdmin();
 		drugstoreAdmin.setEmail(requestUser.getEmail());
-		drugstoreAdmin.setPassword(RadnomGeneratorUtil.generateEmployeePassword());
+		String initialPassword = RadnomGeneratorUtil.generateEmployeePassword();
+		String encodedInitialPassword = passwordEncoder.encode(initialPassword);
+		drugstoreAdmin.setPassword(encodedInitialPassword);
 		drugstoreAdmin.setName(requestUser.getName());
 		drugstoreAdmin.setSurname(requestUser.getSurname());
 		drugstoreAdmin.setLocation(requestUser.getLocation());
@@ -75,7 +87,8 @@ public class RegistrationService {
 			throw new Exception("Drugstore with that id doesn't exist.");
 		}
 		drugstoreAdmin.setDrugstore(drugstore);
-		
+		List<Role> roles = roleService.findByName("DrugstoreAdmin");
+		drugstoreAdmin.setRoles(roles);
 		return drugstoreAdmin;
 	}
 
@@ -87,22 +100,27 @@ public class RegistrationService {
 	private Supplier getSupplierFromUserRegistrationDto(UserRegistrationDto requestUser) {
 		Supplier supplier = new Supplier();
 		supplier.setEmail(requestUser.getEmail());
-		supplier.setPassword(RadnomGeneratorUtil.generateEmployeePassword());
+		String initialPassword = RadnomGeneratorUtil.generateEmployeePassword();
+		String encodedInitialPassword = passwordEncoder.encode(initialPassword);
+		supplier.setPassword(encodedInitialPassword);
 		supplier.setName(requestUser.getName());
 		supplier.setSurname(requestUser.getSurname());
 		supplier.setLocation(requestUser.getLocation());
 		supplier.setPhoneNumber(requestUser.getPhoneNumber());
 		supplier.setLocation(locationRepository.save(requestUser.getLocation()));
-
+		List<Role> roles = roleService.findByName("Supplier");
+		supplier.setRoles(roles);
 		return supplier;
 	}
 
 	private void savePatient(UserRegistrationDto requestUser) throws Exception {
 		String activationCode = RadnomGeneratorUtil.generateActivationCode();
 		
-		Patient patient = userRepository.save(getPatientFromUserRegistrationDto(requestUser));
+		Patient patient = getPatientFromUserRegistrationDto(requestUser);
+		patient.setPassword(passwordEncoder.encode(patient.getPassword()));
 		patient.setActivationCode(activationCode);
 		patient.setStatus(false);
+		patient = userRepository.save(patient);
 		
 		if (!requestUser.getPassword().equals(requestUser.getRepeatedPassword())) {
 			throw new Exception("Passwords do not match");
@@ -120,7 +138,8 @@ public class RegistrationService {
 		patient.setLocation(requestUser.getLocation());
 		patient.setPhoneNumber(requestUser.getPhoneNumber());
 		patient.setLocation(locationRepository.save(requestUser.getLocation()));
-
+		List<Role> roles = roleService.findByName("Supplier");
+		patient.setRoles(roles);
 		return patient;
 	}
 	

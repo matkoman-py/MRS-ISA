@@ -10,7 +10,6 @@
 
 <script>
 
-import axios from "axios"
 import DrugForm from './DrugForm'
 
 export default {
@@ -36,7 +35,7 @@ export default {
   methods: {
     addDrug: function(event){
       event.preventDefault();
-      axios.post("http://localhost:8081/drugs", this.form)
+      this.$http.post("http://localhost:8081/drugs", this.form)
       .then(response => {
         alert("drug added successfully");
         console.log(response);

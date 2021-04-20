@@ -14,6 +14,10 @@ import pharmacyhub.domain.Drugstore;
 @SQLDelete(sql = "UPDATE drug_price SET deleted = true WHERE id = ?")
 public class DrugstoreAdmin extends User{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@ManyToOne
 	@JoinColumn(name = "drugstore_fk")
 	private Drugstore drugstore;

@@ -7,7 +7,6 @@
 
 
 <script>
-import axios from 'axios';
 import DrugstoreBasicInfo from '../components/DrugstoreBasicInfo.vue'
   export default {
   components: { DrugstoreBasicInfo },
@@ -29,7 +28,7 @@ import DrugstoreBasicInfo from '../components/DrugstoreBasicInfo.vue'
 
     methods:{
         submitHandler: function(){
-            axios.post("http://localhost:8081/drugstores", this.form)
+            this.$http.post("http://localhost:8081/drugstores", this.form)
             .then(response => {
                 console.log(response);
                 alert("Successfully added drugstore");

@@ -236,7 +236,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
     data: function(){
         return{
@@ -249,7 +248,7 @@ export default {
     methods: {
         getEmployee : function(){
             
-            axios.get('http://localhost:8081/employees/id', {
+            this.$http.get('http://localhost:8081/employees/id', {
                         params: {
                             employeeId: "68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
                         }
@@ -273,7 +272,7 @@ export default {
             }
             this.name = this.employee.name;
             this.editEnabled = true;
-            axios.put("http://localhost:8081/employees", this.employee)
+            this.$http.put("http://localhost:8081/employees", this.employee)
                 .then(response => {
                 console.log(response);
                 console.log("ovde");

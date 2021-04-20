@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import axios from "axios"
 
 export default {
   name: 'AddUserForm',
@@ -111,7 +110,7 @@ export default {
         let user = JSON.parse(JSON.stringify(this.form));
         user.type = this.type;
 
-        axios.post("http://localhost:8081/register/", user)
+        this.$http.post("http://localhost:8081/register/", user)
             .then(response => {
                 console.log(response);
                 alert("New user successfully added.");
@@ -121,7 +120,7 @@ export default {
       },
     getDrugstores(){
         console.log("het")
-        axios.get("http://localhost:8081/drugstores/")
+        this.$http.get("http://localhost:8081/drugstores/")
             .then(response => {
                 console.log(response.data);
                 this.drugstoreOptions = response.data.map(drugstore => ({value: drugstore.id, text: drugstore.name}));

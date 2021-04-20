@@ -30,6 +30,8 @@ import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment
 import PharmacistOverview from "./views/PharmacistOverview"
 import DermatologistOverview from "./views/DermatologistOverview"
 
+import LoginPage from "./views/LoginPage"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -152,6 +154,11 @@ const routes = [
         path: '/admin-user-table',
         name: "AdminUserTable",
         component: AdminUserTable
+    },
+    {
+        path: '/login',
+        name: "LoginPage",
+        component: LoginPage
     },
     {
         path: '/schedule-appointment',

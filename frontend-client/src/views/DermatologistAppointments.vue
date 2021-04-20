@@ -13,7 +13,6 @@
 
 
 <script>
-    import axios from "axios";
 
     export default {
 
@@ -50,7 +49,7 @@
                 console.log(item)
             },
             getAllAppointments: function () {
-                axios.get('http://localhost:8081/dermatologist-appointment/search', {
+                this.$http.get('http://localhost:8081/dermatologist-appointment/search', {
                         params: {
                             drugstoreId: this.drugstoreId,
                         }
@@ -69,7 +68,7 @@
                     }).catch(error => console.log(error));
             },
             createReservation :function(item){
-                axios.get('http://localhost:8081/dermatologist-appointment/createReserrvation', {
+                this.$http.get('http://localhost:8081/dermatologist-appointment/createReserrvation', {
                         params: {
                             appointmentId : item.appointmentId,
                             patientId: '8128d806-c29b-4086-aae6-877d17eeb6fa',

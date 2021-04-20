@@ -89,7 +89,6 @@
 </template>
 
 <script>
-import axios from "axios"
 
 export default {
   name: 'AddPharmacistForm',
@@ -116,7 +115,7 @@ export default {
   methods : {
     onSubmit(event){
           event.preventDefault();
-          axios.post("http://localhost:8081/employees/", JSON.parse(JSON.stringify(this.form)))
+          this.$http.post("http://localhost:8081/employees/", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
               alert("New pharmacist successfully added.");

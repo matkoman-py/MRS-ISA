@@ -8,7 +8,6 @@
 </template>
 
 <script>
-  import axios from "axios";
   export default {
     name: "DrugOverview",
     data: function() {
@@ -18,7 +17,7 @@
     },
     methods: {
         getDrugs : function(){
-            axios.get('http://localhost:8081/drugs')
+            this.$http.get('http://localhost:8081/drugs')
             .then(response => {
 		console.log(response);
                 this.drugs = response.data.map(drug => 

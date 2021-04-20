@@ -57,7 +57,6 @@
 
 <script>
     import SearchableTags from "../components/SearchableTags"
-    import axios from "axios";
 
     export default {
         components: {
@@ -86,7 +85,7 @@
         
         methods: {
             search: function () {
-                axios.get('http://localhost:8081/patients/search', {
+                this.$http.get('http://localhost:8081/patients/search', {
                         params: {
                             patientNameParam: this.form.name,
                             patientSurnameParam: this.form.surname
@@ -109,7 +108,7 @@
                     .catch(error => console.log(error));
             },
             getAllPatients: function () {
-                axios.get('http://localhost:8081/patients')
+                this.$http.get('http://localhost:8081/patients')
                     .then(response => {
                         this.patients = response.data.map(patient =>
                             ({
@@ -136,7 +135,7 @@
                 this.modified.allergens = this.selected.substitutions;
                 this.$root.$emit('bv::hide::modal', 'my-modal');
                 console.log(this.modified);
-                axios.put("http://localhost:8081/patients", this.modified)
+                this.$http.put("http://localhost:8081/patients", this.modified)
                     .then(response => {
                         console.log(response);
                         console.log("ovde");
@@ -153,7 +152,7 @@
                 this.getDrugs();
             },
             getDrugs: function () {
-                axios.get("http://localhost:8081/ingredients")
+                this.$http.get("http://localhost:8081/ingredients")
                     .then(response => {
                         this.substitutions = response.data;
                     })
