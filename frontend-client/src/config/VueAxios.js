@@ -7,8 +7,7 @@ const VueAxios = axios.create({
 
 VueAxios.interceptors.request.use(config => {
     config.headers.Authorization = localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : '';
-    console.log(config.headers.Authorization)
     return config;
-})
+});
 
 export default VueAxios

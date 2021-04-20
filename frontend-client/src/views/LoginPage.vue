@@ -42,8 +42,15 @@
 </template>
 
 <script>
-    export default {
+import { mapState } from 'vuex'
+
+export default {
         name: 'LoginPage',
+        computed: {
+        ...mapState({
+            loginError: state => state.userModule.error,
+        }),
+        },
         components: {
         },
         data: function () {
@@ -59,6 +66,13 @@
             loginUser: function (event){
                 event.preventDefault();
                 this.$store.dispatch('userModule/login', this.form);
+                setTimeout(() =>  
+                {
+                    if (this.loginError){
+                    this.$toastr.e(this.loginError);
+                }
+                }, 1000);
+               
             }
         }
 

@@ -3,6 +3,7 @@ import router from "../../router";
 
 const state = () => ({
     loggedInUser: null,
+    error: '',
     role: ''
 });
 
@@ -29,6 +30,9 @@ const mutations = {
         localStorage.removeItem("token");
         sessionStorage.clear();
     },
+    setError(state, error) {
+        state.error = error;
+    },
 }
 
 const actions = {
@@ -37,9 +41,16 @@ const actions = {
                 .then(response => {
                     localStorage.setItem('token', response.data.accessToken);
                     commit('setLoggedInUser', response.data.user);
+                    commit('setError', '');
                     router.push('/');
                 })
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error.response.status == "401"){
+                        commit('setError', 'Failed to login, wrong password/username');
+                    }else{
+                        commit('setError', error)
+                    }
+                });
     },
     logout({ commit }) {
         commit('logout');
