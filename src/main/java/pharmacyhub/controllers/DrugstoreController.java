@@ -3,6 +3,8 @@ package pharmacyhub.controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.services.DrugstoreService;
 
 @Controller
@@ -46,15 +49,13 @@ public class DrugstoreController {
 		}
 	}
 
-	@GetMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drugstore>> search(
-			@RequestParam(value = "drugStoreNameParam", required = false, defaultValue = "0") String drugStoreName,
-			@RequestParam(value = "drugStoreCityParam", required = false, defaultValue = "0") String drugStoreCity,
-			@RequestParam(value = "drugStoreCountryParam", required = false, defaultValue = "0") String drugStoreCountry)
-			throws Exception {
-
-		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugStoreName, drugStoreCity, drugStoreCountry),
-				HttpStatus.OK);
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size, 
+			@RequestBody DrugstoreSearchDto drugstoreSearchDto) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugstoreSearchDto, pageable), HttpStatus.OK);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,9 +65,9 @@ public class DrugstoreController {
 
 		return new ResponseEntity<>(drugstoreService.findAll(), HttpStatus.OK);
 	}
-	
-	@GetMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> getDrugstore(@PathVariable("id") String id) throws Exception {
-			return new ResponseEntity<>(drugstoreService.findDrugstore(id), HttpStatus.OK);
+		return new ResponseEntity<>(drugstoreService.findDrugstore(id), HttpStatus.OK);
 	}
 }

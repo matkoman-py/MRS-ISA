@@ -53,7 +53,7 @@
     components: {},
     computed: {
       rows() {
-        return this.drugs.length * 3
+        return (this.currentPage+1)*3
       }
     },
     watch: {
@@ -143,7 +143,7 @@
           .catch(error => console.log(error));
       },
       getSubstitutionDrugs: function () {
-        this.$http.get("http://localhost:8081/drugs?page=0&size=3")
+        this.$http.get("http://localhost:8081/drugs")
           .then(response => {
             this.substitutions = response.data;
           })

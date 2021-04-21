@@ -31,17 +31,20 @@ public class DrugController {
 	private DrugService drugService;
 
 	@PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drug>> search(@RequestParam(value = "page") int page,
-			@RequestParam(value = "size") int size, @RequestBody DrugSearchDto searchDto) {
-		Pageable pageable = PageRequest.of(page, size);
+	public ResponseEntity<Collection<Drug>> search(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestBody DrugSearchDto searchDto) {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.returnDrugs(searchDto, pageable), HttpStatus.OK);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 
-	public ResponseEntity<Collection<Drug>> getDrugs(@RequestParam(value = "page") int page,
-			@RequestParam(value = "size") int size) {
-		Pageable pageable = PageRequest.of(page, size);
+	public ResponseEntity<Collection<Drug>> getDrugs(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size) {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.findAll(pageable), HttpStatus.OK);
 	}
 
@@ -52,8 +55,9 @@ public class DrugController {
 
 	@GetMapping(path = "/in-drugstore/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugInDrugstoreDto>> getDrugsInDrugstore(@PathVariable("id") String drugstoreId,
-			@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
-		Pageable pageable = PageRequest.of(page, size);
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size) {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.getDrugsInDrugstore(drugstoreId, pageable), HttpStatus.OK);
 	}
 

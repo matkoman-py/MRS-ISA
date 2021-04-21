@@ -78,6 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/register/activate/**").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
 		.antMatchers(HttpMethod.POST, "/drugs/search/**").permitAll()
+		.antMatchers(HttpMethod.POST, "/drugstores/search/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/**").permitAll()
 		.anyRequest().authenticated().and()
 	    .cors()

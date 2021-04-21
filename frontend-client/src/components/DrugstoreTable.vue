@@ -1,22 +1,22 @@
 <template>
 
     <b-container>
-        <b-row >
+        <b-row>
             <b-col>
                 <h1>Drugstore search: </h1>
                 <b-form @submit="getDrugstores">
                     <b-form-group id="input-group-1" label="Drugstore name:" label-for="input-1">
-                        <b-form-input id="input-1" v-model="name" type="text" placeholder="Enter drugstore name">
+                        <b-form-input id="input-1" v-model="searchForm.name" type="text" placeholder="Enter drugstore name">
                         </b-form-input>
                     </b-form-group>
 
                     <b-form-group id="input-group-2" label="City:" label-for="input-2">
-                        <b-form-input id="input-2" v-model="city" type="text" placeholder="Enter city">
+                        <b-form-input id="input-2" v-model="searchForm.location.city" type="text" placeholder="Enter city">
                         </b-form-input>
                     </b-form-group>
 
                     <b-form-group id="input-group-3" label="Country:" label-for="input-3">
-                        <b-form-input id="input-3" v-model="country" type="text" placeholder="Enter country">
+                        <b-form-input id="input-3" v-model="searchForm.location.country" type="text" placeholder="Enter country">
                         </b-form-input>
                     </b-form-group>
 
@@ -28,16 +28,17 @@
         </b-row>
         <b-row align-h="center">
             <b-col>
-                
-                <template v-for="chunk in getCardDrugstores()">
-                    <b-row  cols-lg="4" :key="chunk">
+
+                <template v-for="(chunk, index) in getCardDrugstores()">
+                    <b-row cols-lg="4" :key="index">
                         <b-col style="padding:20px; text-align:center" v-for="drugstore in chunk" :key="drugstore.id">
                             <drugstore-card :drugstore="drugstore"></drugstore-card>
                         </b-col>
                     </b-row>
                 </template>
-            
+
                 <h1 v-if="drugstores.length == 0"> There are no drugstores that fit the search parameters</h1>
+                <b-pagination v-model="currentPage" per-page=4 :total-rows="rows"></b-pagination>
 
             </b-col>
 
@@ -49,69 +50,85 @@
     import DrugstoreCard from './DrugstoreCard.vue';
 
     export default {
-  components: { DrugstoreCard },
+        computed: {
+            rows() {
+                return (this.currentPage+1)*4
+            }
+        },
+        watch: {
+            currentPage: function () {
+                if (!this.suppress) {
+                    this.getDrugstores();
+                } else {
+                    this.suppress = false;
+                }
+            }
+        },
+        components: {
+            DrugstoreCard
+        },
         name: "DrugstoreTable",
         data: function () {
             return {
+                searchForm: {
+                    name: '',
+                    location: {
+                        city: '',
+                        country: '',
+                        id: '',
+                        address: '',
+                    },
+                },
                 id: '',
-                name: '',
-                city: '',
-                country: '',
                 drugstores: [],
-                threeDrugstores: [],
-                cardCounter: 0,
+                currentPage: 1,
+                suppress: false,
             }
         },
         methods: {
             getDrugstores: function () {
-                this.$http.get('http://localhost:8081/drugstores/search', {
-                        params: {
-                            drugStoreNameParam: this.name,
-                            drugStoreCityParam: this.city,
-                            drugStoreCountryParam: this.country,
-                        }
-                    })
+                this.$http.post(`http://localhost:8081/drugstores/search?page=${this.currentPage-1}&size=4`, this.searchForm)
                     .then(response => {
-                        this.drugstores = response.data.map(drugstore =>
-                            ({
-                                id: drugstore.id,
-                                name: drugstore.name,
-                                adress: drugstore.location.address,
-                                country: drugstore.location.country,
-                                city: drugstore.location.city,
-                                description: drugstore.decription,
-                                rating: drugstore.averageRating,
-                            }));
+                        if (response.data.length == 0) {
+                            this.suppress = true;
+                            this.currentPage--;
+                        } else {
+                            this.suppress = false;
+                            this.drugstores = this.mapDrugstores(response);
+                        }
                     })
                     .catch(error => console.log(error));
             },
             getAllDrugstores: function () {
                 this.$http.get('http://localhost:8081/drugstores')
                     .then(response => {
-                        this.drugstores = response.data.map(drugstore =>
-                            ({
-                                id: drugstore.id,
-                                name: drugstore.name,
-                                adress: drugstore.location.address,
-                                country: drugstore.location.country,
-                                city: drugstore.location.city,
-                                description: drugstore.decription,
-                                rating: drugstore.averageRating,
-                            }));
+                        this.drugstores = this.mapDrugstores(response);
                     })
                     .catch(error => console.log(error));
             },
-            getCardDrugstores: function(){
-                let chunkArray=[];
-                for(var i=0; i<this.drugstores.length; i+=4){
-                    chunkArray.push(this.drugstores.slice(i, i+4));
+            mapDrugstores: function (response) {
+                return response.data.map(drugstore =>
+                    ({
+                        id: drugstore.id,
+                        name: drugstore.name,
+                        adress: drugstore.location.address,
+                        country: drugstore.location.country,
+                        city: drugstore.location.city,
+                        description: drugstore.decription,
+                        rating: drugstore.averageRating,
+                    }));
+            },
+            getCardDrugstores: function () {
+                let chunkArray = [];
+                for (var i = 0; i < this.drugstores.length; i += 4) {
+                    chunkArray.push(this.drugstores.slice(i, i + 4));
                 }
                 return chunkArray
-                
+
             },
         },
         mounted: function () {
-            this.getAllDrugstores();
+            this.getDrugstores();
         }
     }
 </script>

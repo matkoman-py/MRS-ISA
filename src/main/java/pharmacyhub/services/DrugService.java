@@ -40,9 +40,6 @@ public class DrugService {
 	private DrugPriceRepository drugPriceRepository;
 
 	public List<Drug> findAll(Pageable pageable) {
-		System.out.println(pageable.getPageNumber());
-		System.out.println(pageable.getPageSize());
-
 		return drugRepository.findAll(pageable).toList();
 	}
 	

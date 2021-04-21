@@ -16,7 +16,7 @@ public class DrugSpecifications {
 
 			List<Predicate> predicates = new ArrayList<>();
 			
-			if(!drugSearchDto.getName().isBlank() && drugSearchDto.getForm() != null) {
+			if(!drugSearchDto.getName().isBlank() && drugSearchDto.getName() != null) {
 				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(drug.get("name")), "%" + drugSearchDto.getName().toLowerCase() + "%"));
 			}
 			
