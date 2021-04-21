@@ -16,19 +16,19 @@ public class DrugSpecifications {
 
 			List<Predicate> predicates = new ArrayList<>();
 			
-			if(!drugSearchDto.getName().isBlank() && drugSearchDto.getName() != null) {
+			if(drugSearchDto.getName() != null && !drugSearchDto.getName().isBlank()) {
 				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(drug.get("name")), "%" + drugSearchDto.getName().toLowerCase() + "%"));
 			}
 			
-			if(!drugSearchDto.getForm().isBlank() && drugSearchDto.getForm() != null) {
+			if(drugSearchDto.getForm() != null && !drugSearchDto.getForm().isBlank()) {
 				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(drug.get("form")), "%" + drugSearchDto.getForm().toLowerCase() + "%"));
 			}
 			
-			if(!drugSearchDto.getType().isBlank() && drugSearchDto.getType() != null) {
+			if(drugSearchDto.getType() != null && !drugSearchDto.getType().isBlank()) {
 				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(drug.get("type").get("name")), "%" + drugSearchDto.getType().toLowerCase() + "%"));
 			}
 			
-			if(!drugSearchDto.getManufacturerId().isBlank() && drugSearchDto.getManufacturerId() != null) {
+			if(drugSearchDto.getManufacturerId() != null && !drugSearchDto.getManufacturerId().isBlank()) {
 				predicates.add(criteriaBuilder.equal(drug.get("manufacturer").get("id"), drugSearchDto.getManufacturerId()));
 			}
 			

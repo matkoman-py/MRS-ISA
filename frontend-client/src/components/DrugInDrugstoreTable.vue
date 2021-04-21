@@ -96,15 +96,22 @@
         this.currentDrugstoreId =  this.$route.path.slice(12, this.$route.path.length);
       },
       getDrugs: function () {
-        this.$http.get('http://localhost:8081/drugs/search', {
-            params: {
-              drugNameParam: this.name,
-              drugTypeParam: this.type.name,
-              drugFormParam: this.form,
-              drugManufacturerParam: this.manufacturer.name,
-              drugReceiptParam: this.receipt,
+        console.log({
+          name: this.name,
+              type: this.type.name,
+              form: this.form,
+              manufacturerId: this.manufacturer.id,
+              receipt: this.receipt,
+        })
+        this.$http.post('http://localhost:8081/drugs/search', 
+            {
+              name: this.name,
+              type: this.type.name,
+              form: this.form,
+              manufacturerId: this.manufacturer.id,
+              receipt: this.receipt,
             }
-          })
+          )
           .then(response => {
             this.drugs = response.data.map(drug =>
               ({
