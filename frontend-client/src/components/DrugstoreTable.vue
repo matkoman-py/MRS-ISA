@@ -4,7 +4,7 @@
         <b-row>
             <b-col>
                 <h1>Drugstore search: </h1>
-                <b-form @submit="getDrugstores">
+                <b-form @submit="searchDrugstores">
                     <b-form-group id="input-group-1" label="Drugstore name:" label-for="input-1">
                         <b-form-input id="input-1" v-model="searchForm.name" type="text" placeholder="Enter drugstore name">
                         </b-form-input>
@@ -83,11 +83,16 @@
                 drugstores: [],
                 currentPage: 1,
                 suppress: false,
+                currentSearch : {},
             }
         },
         methods: {
+            searchDrugstores: function () {
+                this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
+                this.getDrugstores();
+            },
             getDrugstores: function () {
-                this.$http.post(`http://localhost:8081/drugstores/search?page=${this.currentPage-1}&size=4`, this.searchForm)
+                this.$http.post(`http://localhost:8081/drugstores/search?page=${this.currentPage-1}&size=4`, this.currentSearch)
                     .then(response => {
                         if (response.data.length == 0) {
                             this.suppress = true;
@@ -128,7 +133,7 @@
             },
         },
         mounted: function () {
-            this.getDrugstores();
+            this.searchDrugstores();
         }
     }
 </script>

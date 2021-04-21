@@ -3,7 +3,7 @@
   <b-container>
     <b-row>
       <b-col>
-        <b-form @submit="getDrugs">
+        <b-form @submit="searchDrugs">
           <b-form-group id="input-group-1" label="Drug name:" label-for="input-1">
             <b-form-input id="input-1" v-model="searchForm.name" type="text" placeholder="Enter drug name">
             </b-form-input>
@@ -94,12 +94,18 @@
         ingrediants: [],
         substitutions: [],
         currentPage: 1,
-        suppress: false
+        suppress: false,
+        currentSearch : {},
+
       }
     },
     methods: {
+      searchDrugs: function () {
+                this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
+                this.getDrugs();
+            },
       getDrugs: function () {
-        this.$http.post(`http://localhost:8081/drugs/search?page=${this.currentPage-1}&size=3`, this.searchForm)
+        this.$http.post(`http://localhost:8081/drugs/search?page=${this.currentPage-1}&size=3`, this.currentSearch)
           .then(response => {
             if (response.data.length == 0) {
               this.suppress = true;
@@ -169,7 +175,7 @@
       this.getIngrediants();
       this.getSubstitutionDrugs();
       this.getDrugTypes();
-      this.getDrugs();
+      this.searchDrugs();
     }
   }
 </script>
