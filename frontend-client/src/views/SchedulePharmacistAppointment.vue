@@ -27,7 +27,6 @@
 </template>
 
 <script>
-    import axios from "axios";
 
     export default {
         data: function () {
@@ -83,7 +82,7 @@
                 this.saveData.date = this.inputValues.date;
                 this.saveData.time = this.inputValues.time;
                 this.saveData.patientId = "664783ca-84a1-4a2b-ae27-a2b820bc3c71";
-                axios.post("http://localhost:8081/pharmacist-appointment/with-patient", JSON.parse(JSON.stringify(
+                this.$http.post("http://localhost:8081/pharmacist-appointment/with-patient", JSON.parse(JSON.stringify(
                         this.saveData)))
                     .then(response => {
                         console.log(response);
@@ -93,7 +92,7 @@
                     .catch(error => console.log(error));
             },
             getPharmacists: function (data) {
-                axios.get('http://localhost:8081/pharmacist-appointment/get-pharmacists', {
+                this.$http.get('http://localhost:8081/pharmacist-appointment/get-pharmacists', {
                         params: {
                             drugstoreId: data.id,
                             pharmacistAppointmentDate: this.inputValues.date,
@@ -119,7 +118,7 @@
             showDrugstores: function (event) {
                 event.preventDefault();
                 if(this.inputValues.date == "" || this.inputValues.time == "") return;
-                axios.get('http://localhost:8081/pharmacist-appointment/get-drugstores', {
+                this.$http.get('http://localhost:8081/pharmacist-appointment/get-drugstores', {
                         params: {
                             pharmacistAppointmentDate: this.inputValues.date,
                             pharmacistAppointmentTime: this.inputValues.time,

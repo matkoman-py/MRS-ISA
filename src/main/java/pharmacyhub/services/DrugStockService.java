@@ -33,7 +33,7 @@ public class DrugStockService {
 	}
 	
 	public List<DrugStockPriceDto> returnDrugStockForDrugstore(String drugstoreId) {
-		List<DrugStock> drugStocks = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
+		List<DrugStock> drugStocks = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), null);
 		List<DrugStockPriceDto> drugsStockPriceDto = new ArrayList<DrugStockPriceDto>();
 		for (DrugStock ds : drugStocks) {
 			List<DrugPrice> dpList = drugPriceRepository.findByDrugAndDrugstore(ds.getDrug(), ds.getDrugstore());

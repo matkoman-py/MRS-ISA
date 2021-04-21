@@ -82,7 +82,7 @@
             .catch(error => console.log(error));
         },
         employeesSearchResult : function() {
-            axios.get('http://localhost:8081/employees/search', {
+            this.$http.get('http://localhost:8081/employees/search', {
               params: {
                 drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843",
                 searchText: this.searchText,
