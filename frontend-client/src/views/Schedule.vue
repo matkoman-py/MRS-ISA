@@ -85,7 +85,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import axios from "axios"
+
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -164,7 +164,7 @@ export default {
 
     },
     handleEvents: function() {
-      axios.get('http://localhost:8081/dermatologist-appointment/all-derm-app', {
+      this.$http.get('http://localhost:8081/dermatologist-appointment/all-derm-app', {
                         params: {
                             dermatologistId: 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }
@@ -191,7 +191,7 @@ export default {
                     
     },
     addEmployment: function() {
-        axios.get('http://localhost:8081/employment/employment-for-derm', {
+        this.$http.get('http://localhost:8081/employment/employment-for-derm', {
                         params: {
                             dermatologistId: 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }

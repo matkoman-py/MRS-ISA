@@ -47,7 +47,6 @@
 </template>
 
 <script>
-  import axios from "axios";
 
   export default {
     data: function() {
@@ -63,7 +62,7 @@
     },
     methods: {
         getDermatologists : function(){
-            axios.get('http://localhost:8081/employees/dermatologists')
+            this.$http.get('http://localhost:8081/employees/dermatologists')
             .then(response => {
             this.dermatologists = response.data.map(dermatologist => 
             (
@@ -78,7 +77,7 @@
             .catch(error => console.log(error));
         },
         getDrugstores : function() {
-            axios.get('http://localhost:8081/drugstores')
+            this.$http.get('http://localhost:8081/drugstores')
             .then(response => {
             this.drugstores = response.data.map((drugstore) =>
                 ({
@@ -90,7 +89,7 @@
             .catch(error => console.log(error));
         },
         dermatologistSearchResult : function() {
-            axios.get('http://localhost:8081/employees/dermatologists/search', {
+            this.$http.get('http://localhost:8081/employees/dermatologists/search', {
               params: {
                 name: this.searchName,
                 surname: this.searchSurname,

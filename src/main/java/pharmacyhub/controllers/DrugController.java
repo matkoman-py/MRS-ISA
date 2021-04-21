@@ -3,6 +3,8 @@ package pharmacyhub.controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.dto.DrugInDrugstoreDto;
+import pharmacyhub.dto.search.DrugSearchDto;
 import pharmacyhub.services.DrugService;
 
 @Controller
@@ -27,37 +30,39 @@ public class DrugController {
 	@Autowired
 	private DrugService drugService;
 
-	
-	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drug>> search(@RequestParam(value = "drugNameParam", required=false,  defaultValue = "0") String drugName,
-												 @RequestParam(value = "drugTypeParam", required=false,  defaultValue = "0") String drugType,
-												 @RequestParam(value = "drugFormParam", required=false,  defaultValue = "0") String drugForm,
-												 @RequestParam(value = "drugManufacturerParam", required=false,  defaultValue = "0") String drugManufacturer,
-												 @RequestParam(value = "drugReceiptParam", required=false,  defaultValue = "0") String drugReceipt) {
-		
-		return new ResponseEntity<>(drugService.returnDrugs(drugName,drugType,drugForm,drugManufacturer,drugReceipt), HttpStatus.OK);
+	@PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Drug>> search(@RequestParam(value = "page") int page,
+			@RequestParam(value = "size") int size, @RequestBody DrugSearchDto searchDto) {
+		Pageable pageable = PageRequest.of(page, size);
+		return new ResponseEntity<>(drugService.returnDrugs(searchDto, pageable), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drug>> getDrugs() {
-		return new ResponseEntity<>(drugService.findAll(), HttpStatus.OK);
+
+	public ResponseEntity<Collection<Drug>> getDrugs(@RequestParam(value = "page") int page,
+			@RequestParam(value = "size") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return new ResponseEntity<>(drugService.findAll(pageable), HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drug> add(@RequestBody Drug drug) throws Exception {
 		return new ResponseEntity<>(drugService.save(drug), HttpStatus.OK);
 	}
-	
-	@GetMapping(path="/in-drugstore/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<DrugInDrugstoreDto>> getDrugsInDrugstore(@PathVariable("id") String drugstoreId) {
-		return new ResponseEntity<>(drugService.getDrugsInDrugstore(drugstoreId), HttpStatus.OK);
-  }
+
+	@GetMapping(path = "/in-drugstore/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DrugInDrugstoreDto>> getDrugsInDrugstore(@PathVariable("id") String drugstoreId,
+			@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return new ResponseEntity<>(drugService.getDrugsInDrugstore(drugstoreId, pageable), HttpStatus.OK);
+	}
+
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drug> update(@RequestBody Drug drug) throws Exception {
 		return new ResponseEntity<>(drugService.update(drug), HttpStatus.OK);
 	}
-	
-	@DeleteMapping(path ="/{id}")
+
+	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Boolean> deleteDrug(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(drugService.delete(id), HttpStatus.OK);
 	}

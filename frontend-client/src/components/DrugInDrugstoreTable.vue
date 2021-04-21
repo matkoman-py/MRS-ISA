@@ -157,7 +157,13 @@
           .catch(error => console.log(error));
       },
       getAllDrugsOfDrugstore: function () {
-        this.$http.get('http://localhost:8081/drugs/in-drugstore/' + this.currentDrugstoreId)
+        this.$http.get('http://localhost:8081/drugs/in-drugstore/' + this.currentDrugstoreId, 
+        {
+          params: {
+            size : 5,
+            page : 0
+          }
+        })
           .then(response => {
             this.drugs = response.data.map(drug =>
               ({
