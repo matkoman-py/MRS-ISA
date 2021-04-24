@@ -1,5 +1,5 @@
 <template>
-  <b-container style="width: 40%" align-h="center">
+  <b-container class="form-container">
     <b-row>
       <b-col>
         <drug-form :form="form"></drug-form>

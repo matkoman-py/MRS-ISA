@@ -15,13 +15,13 @@
                     Add
         </b-button>
     </b-container>
-    <b-modal :id="addModal.id" :title="addModal.title" ok-only v-on:ok='addDrug' @hide="resetAddModal" size="xl">
+    <b-modal :id="addModal.id" :title="addModal.title" ok-only v-on:ok='addDrug' @hide="resetAddModal" size="lg">
         <add-drug-form ref='add-drug-form'></add-drug-form>
     </b-modal>
-    <b-modal :id="editModal.id" :title="editModal.title" ok-only v-on:ok='edit' @hide="resetEditModal" size="xl">
+    <b-modal :id="editModal.id" :title="editModal.title" ok-only v-on:ok='edit' @hide="resetEditModal" size="lg">
         <edit-drug-form ref='edit-drug-form' :form="this.editModal.drug"></edit-drug-form>
     </b-modal>
-    <b-modal :id="deleteModal.id" :title="deleteModal.title" ok-only v-on:ok='deleteDrug' @hide="resetDeleteModal" size="xl">
+    <b-modal :id="deleteModal.id" :title="deleteModal.title" ok-only v-on:ok='deleteDrug' @hide="resetDeleteModal" size="lg">
         Are you sure that you want to delete this drug?
     </b-modal>
   </div>
