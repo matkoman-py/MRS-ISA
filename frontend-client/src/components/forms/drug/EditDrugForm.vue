@@ -28,10 +28,10 @@ export default {
       event.preventDefault();
       this.$http.put("http://localhost:8081/drugs", this.form)
       .then(response => {
-        alert("drug edited successfully");
-        console.log(response);
+        this.$emit("update-drug-success", response.data);
+        this.$toastr.s("Drug edited successfully!");
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     }
   }
 }

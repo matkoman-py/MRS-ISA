@@ -144,7 +144,7 @@ INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac677a1', 'f3
 INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '58da0253-f5cf-4163-afdc-32f61d7471a3');
 
 --system admins
-INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '3a58b85f-23fa-4c1c-a2ac-23221875d6fa');
+INSERT INTO public.user_role VALUES ('2d2eacbf-fda8-4a50-aa05-be2be4fb2884', '3a58b85f-23fa-4c1c-a2ac-23221875d6fa');
 
 
 

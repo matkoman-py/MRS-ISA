@@ -48,5 +48,29 @@
   width: 100%;
 }
 
+.multiselect__tag,
+.multiselect__option--highlight
+{
+  background: #2f52ad;
+}
+
+.multiselect__tag-icon:hover
+{
+  background: #8a8dba;
+}
+
+.multiselect__tag-icon::after
+{
+  color: #fdfdfd;
+}
+
+$hub: #2f52ad !default;
+
+$theme-colors: 
+(
+    hub: $hub,
+);
+
+
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import 'node_modules/bootstrap-vue/src/index.scss';

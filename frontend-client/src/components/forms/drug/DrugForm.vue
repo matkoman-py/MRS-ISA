@@ -71,19 +71,18 @@
       </b-col>
     </b-form-row>
 
-
-
-  
     <searchable-tags labelName="Ingredients"
-                      :updateValue="(data) => form.ingredients = data"
-                      :data="ingredients"
-                      ref="ingrediants-tags"
+                      :form="form"
+                      :options="ingredients"
+                      type="ingredients"
                       >
     </searchable-tags>
 
     <searchable-tags labelName="Substitutions"
-                      :updateValue="(data) => form.substitutions = data"
-                      :data="substitutions">
+                      :form="form"
+                      :options="substitutions"
+                      type="substitutions"
+                      >
     </searchable-tags>
   </b-form>
 </template>
@@ -122,7 +121,7 @@ export default {
         );
         this.manufacturerOptions.unshift({value: null, text: "Choose one"})
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     },
     getDrugTypes: function(){
       this.$http.get("http://localhost:8081/drug-types")
@@ -135,21 +134,21 @@ export default {
         );
         this.drugTypeOptions.unshift({value: null, text: "Choose one"})
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     },
     getIngredients: function(){
       this.$http.get("http://localhost:8081/ingredients")
       .then(response => {
         this.ingredients = response.data;
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     },
     getSubstitutionDrugs: function(){
       this.$http.get("http://localhost:8081/drugs")
       .then(response => {
         this.substitutions = response.data;
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     }
   },
   mounted: function(){
