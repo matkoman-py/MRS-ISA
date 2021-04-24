@@ -3,6 +3,7 @@ package pharmacyhub.domain.users;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -50,7 +52,7 @@ public class User extends BaseEntity implements UserDetails{
 	private String phoneNumber;
 
 	// treba nullable false mozda?
-	@ManyToOne
+	@ManyToOne//(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "location_fk")
 	public Location location;
 
@@ -63,8 +65,7 @@ public class User extends BaseEntity implements UserDetails{
 
 	@Column(nullable = true)
 	private String activationCode;
-	
-  @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)//, cascade = {CascadeType.ALL})
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -86,7 +87,6 @@ public class User extends BaseEntity implements UserDetails{
 		this.type = type;
 		this.status = status;
 		this.activationCode = activationCode;
-
 	}
 
 	public String getEmail() {

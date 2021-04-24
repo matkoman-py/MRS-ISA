@@ -13,6 +13,7 @@ import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
+import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistDto;
@@ -53,8 +54,6 @@ public class EmployeeService {
 	private EmploymentRepository employmentRepository;
 
 	public Collection<DermatologistDto> searchDermatologist(SearchDermatologistDto searchDermatologistDto) {
-		System.out.println("Name: " + searchDermatologistDto.getName());
-		System.out.println("Surname: " + searchDermatologistDto.getSurname());
 
 		List<Dermatologist> dermatologists = dermatologistRepository.findAll().stream()
 				.filter(dermatologist -> isNullOrEmptyString(searchDermatologistDto.getName()) || dermatologist
@@ -79,7 +78,7 @@ public class EmployeeService {
 		return Stream.concat(pharmacists.stream(), dermatologists.stream()).collect(Collectors.toList());
 	}
 
-	public Pharmacist savePharmacist(Employee employee) throws Exception {
+	/*public Pharmacist savePharmacist(Employee employee) throws Exception {
 
 		locationRepository.save(employee.getLocation());
 		Pharmacist pharmacist = new Pharmacist(employee.getEmail(), RadnomGeneratorUtil.generateEmployeePassword(),
@@ -90,7 +89,7 @@ public class EmployeeService {
 		userNotificationService.sendEmployeeInitialPassword(pharmacist.getEmail(), pharmacist.getPassword());
 
 		return pharmacistRepository.save(pharmacist);
-	}
+	}*/
 
 	public Dermatologist saveDermatologist(Employee employee) throws Exception {
 
@@ -115,7 +114,7 @@ public class EmployeeService {
 		if (employee.getType().equals(UserType.Dermatologist)) {
 			saveDermatologist(employee);
 		} else {
-			savePharmacist(employee);
+			//savePharmacist(employee);
 		}
 		return findAll();
 	}
@@ -167,7 +166,9 @@ public class EmployeeService {
 		return employee;
   }
   
-	public List<EmployeeOverviewDto> getAllEmployeesOfDrugstore(String drugstoreId) {
+	public List<EmployeeOverviewDto> getAllEmployeesOfDrugstore(String adminId) {
+		DrugstoreAdmin user = (DrugstoreAdmin)userRepository.findById(adminId).orElse(null);
+		String drugstoreId = user.getDrugstore().getId();
 		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));	
 		List<Employment> dermatologistEmployments = employmentRepository.findByDrugstoreId(drugstoreId);		
 		List<EmployeeOverviewDto> employees = new ArrayList<EmployeeOverviewDto>();
@@ -175,13 +176,16 @@ public class EmployeeService {
 		for (Employee e : pharmacists)
 			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), 10, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
 		for (Employment e : dermatologistEmployments) {
-			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), 10, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Pharmacist"));
+			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), 10, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
 		}
 		return employees;
 	}
 	
-	public List<EmployeeOverviewDto> getAllEmployeesOfDrugstoreBySearch(String drugstoreId, String searchText, double minRate,
+	public List<EmployeeOverviewDto> getAllEmployeesOfDrugstoreBySearch(String adminId, String searchText, double minRate,
 			double maxRate, String employeeType) {
+		// drugstore id je zapravo drugstore admin id
+		DrugstoreAdmin user = (DrugstoreAdmin)userRepository.findById(adminId).orElse(null);
+		String drugstoreId = user.getDrugstore().getId();
 		List<Pharmacist> pharmacists = new ArrayList<Pharmacist>();
 		List<Employment> dermatologistEmployments = new ArrayList<Employment>();
 		List<EmployeeOverviewDto> employees = new ArrayList<EmployeeOverviewDto>();
@@ -259,7 +263,7 @@ public class EmployeeService {
 		return pharmacistReturnValues;
 	}
 
-	public List<DermatologistOverviewDto> getAlDermatologists() {
+	public List<DermatologistOverviewDto> getAllDermatologists() {
 		List<Dermatologist> dermatologists = dermatologistRepository.findAll();
 		List<DermatologistOverviewDto> dermatologistReturnValues = new ArrayList<DermatologistOverviewDto>();
 		for (Dermatologist dermatologist : dermatologists) {
@@ -313,6 +317,27 @@ public class EmployeeService {
 			}
 		}
 		return dermatologistReturnValues;
+	}
+
+	public Drugstore findDrugstoreByDrugstoreAdminId(String adminId) {
+		DrugstoreAdmin admin = (DrugstoreAdmin)userRepository.findById(adminId).orElse(null);
+		return admin.getDrugstore();
+	}
+
+	public List<Pharmacist> addPharmacist(Pharmacist pharmacist) throws Exception{
+		if (userRepository.findByEmail(pharmacist.getEmail()) != null) {
+			throw new Exception("A user with this email already exist!");
+		}
+		Drugstore dg = drugstoreRepository.findById(pharmacist.getDrugstore().getId()).orElse(null);
+		locationRepository.save(pharmacist.getLocation());
+		Pharmacist p = new Pharmacist(pharmacist.getEmail(), RadnomGeneratorUtil.generateEmployeePassword(),
+				pharmacist.getName(), pharmacist.getSurname(), pharmacist.getPhoneNumber(), pharmacist.getLocation(),
+				pharmacist.getWorkingHoursFrom(), pharmacist.getWorkingHoursTo(), dg);
+
+		pharmacistRepository.save(p);
+		userNotificationService.sendEmployeeInitialPassword(p.getEmail(), p.getPassword());
+				
+		return null;
 	}
 
 }
