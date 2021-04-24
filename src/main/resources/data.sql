@@ -116,12 +116,12 @@ INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce
 --
 -- Data for Name: roles; 
 --
-INSERT INTO public.roles VALUES ('77f0ab33-f97c-4282-bb60-c34d8d897092', false, 'Patient');
-INSERT INTO public.roles VALUES ('f367f6cf-e8f8-45ee-99c6-e000d7c68003', false, 'Dermatologist');
-INSERT INTO public.roles VALUES ('9f58c424-f0e2-4e95-80c8-14039b24e40f', false, 'Pharmacist');
-INSERT INTO public.roles VALUES ('122c0bad-e159-4896-bb10-6e8b69547e2f', false, 'Supplier');
-INSERT INTO public.roles VALUES ('58da0253-f5cf-4163-afdc-32f61d7471a3', false, 'DrugstoreAdmin');
-INSERT INTO public.roles VALUES ('3a58b85f-23fa-4c1c-a2ac-23221875d6fa', false, 'SystemAdmin');
+INSERT INTO public.roles VALUES ('77f0ab33-f97c-4282-bb60-c34d8d897092', false, 'ROLE_PATIENT');
+INSERT INTO public.roles VALUES ('f367f6cf-e8f8-45ee-99c6-e000d7c68003', false, 'ROLE_DERMATOLOGIST');
+INSERT INTO public.roles VALUES ('9f58c424-f0e2-4e95-80c8-14039b24e40f', false, 'ROLE_PHARMACIST');
+INSERT INTO public.roles VALUES ('122c0bad-e159-4896-bb10-6e8b69547e2f', false, 'ROLE_SUPPLIER');
+INSERT INTO public.roles VALUES ('58da0253-f5cf-4163-afdc-32f61d7471a3', false, 'ROLE_DRUGSTOREADMIN');
+INSERT INTO public.roles VALUES ('3a58b85f-23fa-4c1c-a2ac-23221875d6fa', false, 'ROLE_SYSTEMADMIN');
 
 --
 -- Data for Name: user-role; 
