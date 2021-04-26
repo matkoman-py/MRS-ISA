@@ -27,6 +27,15 @@ public class Drug extends BaseEntity {
 	@Column(nullable = false)
 	private boolean receipt;
 	
+	@Column(nullable = false)
+	private String counterEffects;
+	
+	@Column(nullable = false)
+	private int dailyDose;
+	
+	@Column(nullable = false)
+	private int weight;
+	
 	@ManyToOne
 	@JoinColumn(name = "drug_type_fk", nullable = false)
 	private DrugType type;

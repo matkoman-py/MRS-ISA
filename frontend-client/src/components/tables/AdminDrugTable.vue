@@ -20,6 +20,7 @@
         :title="addModal.title" 
         ok-only 
         v-on:ok='addDrug' 
+        ok-variant="outline-hub"
         @hide="resetAddModal" 
         size="lg">
         <add-drug-form ref='add-drug-form'></add-drug-form>
@@ -28,6 +29,7 @@
         :id="editModal.id" 
         :title="editModal.title" 
         ok-only 
+        ok-variant="outline-hub"
         v-on:ok='edit' 
         @hide="resetEditModal" 
         size="lg">
@@ -41,6 +43,7 @@
         :id="deleteModal.id" 
         :title="deleteModal.title" 
         ok-only 
+        ok-variant="outline-hub"
         v-on:ok='deleteDrug' 
         @hide="resetDeleteModal" 
         size="lg">
