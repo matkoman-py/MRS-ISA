@@ -1,6 +1,7 @@
 package pharmacyhub.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -122,6 +123,30 @@ public class DermatologistAppointmentService {
 		String str = ""; 
 		for(DermatologistAppointment appointment : allAppointments) {
 			if(appointment.getDermatologist().getId().equals(dermatologistId))
+				wantedAppontments.add(appointment);
+		}
+		System.out.println(wantedAppontments);
+		return wantedAppontments;
+	}
+
+	public DermatologistAppointment endAppointment(String appointmentId, String appointmentReport) {
+		DermatologistAppointment da = dermatologistAppointmentRepository.findById(appointmentId).orElse(null);
+		da.setAppointmentReport(appointmentReport);
+		dermatologistAppointmentRepository.save(da);
+		return da;
+	}
+
+	public List<DermatologistAppointment> findAllDermatologistAppointmentsDone(String dermatologistId) {
+		List<DermatologistAppointment> allAppointments = findAll();
+		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
+		
+		long sad = new Date().getTime();
+		for(DermatologistAppointment appointment : allAppointments) {
+			Date vreme = appointment.getDate();
+			vreme.setHours(appointment.getTime().getHours());
+			vreme.setMinutes(appointment.getTime().getMinutes());
+			long vremee = vreme.getTime();
+			if(appointment.getDermatologist().getId().equals(dermatologistId) && vremee < sad)
 				wantedAppontments.add(appointment);
 		}
 		System.out.println(wantedAppontments);

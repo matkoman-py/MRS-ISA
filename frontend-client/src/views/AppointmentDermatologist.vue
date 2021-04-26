@@ -6,11 +6,12 @@
                 <h2>Drugstore: {{currentAppointment.drugstore.name}}</h2>
                 <h2>Patient: {{currentAppointment.patient.name}}  {{currentAppointment.patient.surname}}</h2>
                 <h2>Dermatologist: {{currentAppointment.dermatologist.name}}</h2>
+                <h2>Duration: {{currentAppointment.duration}} minutes</h2>
             </b-col>
             <b-col style="text-align:center">
                 <label for="diagnosis"> <h3>Diagnosis:</h3></label>
                 <br>
-                <textarea id="diagnosis" name="diagnosis" rows="10" cols="50" style="resize: none">
+                <textarea id="diagnosis" v-model="currentAppointment.appointmentReport" name="diagnosis" rows="10" cols="50" style="resize: none">
 
                 </textarea>
             </b-col>
@@ -30,10 +31,7 @@
                 <b-button variant="info" @click="showAppointmentModal">New appointment</b-button>
             </b-col>
             <b-col>
-                <b-button variant="success">End appointment</b-button>
-            </b-col>
-            <b-col>
-                <b-button variant="danger">Absent patient</b-button>
+                <b-button variant="success" @click="endAppointment">End appointment</b-button>
             </b-col>
         </b-row>
         
@@ -110,7 +108,9 @@
 
 export default {
     name: "AppointmentDermatologist",
-    
+    props:{
+        passedId: String,
+    },
     data: function () {
             return {
                 currentAppointment: {},
@@ -149,8 +149,21 @@ export default {
             }
     },
     methods: {
+        endAppointment: function(){
+            this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
+            this.$http.get('http://localhost:8081/dermatologist-appointment/end-appointment', {
+                        params: {
+                            dermatologistAppointmentId: this.currentAppointment.id,
+                            appointmentReport: this.currentAppointment.appointmentReport,
+                        }
+                    })
+                    .then(response => {
+                        this.currentAppointment = response.data;  
+                    })
+                    
+        },
         beginAppointment: function(){
-            this.currentAppointment.id = "4a73ae19-2001-450a-a050-85f51717ab76";
+            this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
             this.$http.get('http://localhost:8081/dermatologist-appointment/begin-appointment', {
                         params: {
                             dermatologistAppointmentId: this.currentAppointment.id

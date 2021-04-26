@@ -70,7 +70,7 @@
           <p>Start: {{selected.start}}</p>
           <p>Duration: {{selected.extendedProps.durationn}} minutes</p>
         </div>
-        <b-button class="mt-3" variant="danger" :disabled="!patientNotNull" block @click="close"  >Close</b-button>
+        <b-button class="mt-3" variant="danger"  block @click="close"  >Close</b-button>
         
       </b-modal>
     </div>
@@ -85,9 +85,18 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+import { mapState } from 'vuex'
+
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
+  },
+  computed:{
+        ...mapState({
+        user: state => state.userModule.loggedInUser,
+        //email: state => state.userModule.loggedInUser.email,
+        //role: state => state.userModule.loggedInUser.type
+        }),
   },
   data: function() {
     return {
@@ -134,12 +143,24 @@ export default {
     },
     patientNotShowup: function(){
       alert("Patient did not show up");
+      console.log(this.selected.extendedProps.patient.id);
       this.$root.$emit('bv::hide::modal', 'my-modal');
       // OVDE TREBA DA SE POZOVE BEK I DA SE KAZNI PACIJENT,  TO RADIS PREKO SELECTED
+      this.$http.get('http://localhost:8081/patients/penalty', {
+                        params: {
+                            patientId: this.selected.extendedProps.patient.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
+                        }
+                    })
+                    .then(response => {
+                      console.log(response);
+                      alert("Patient received a penalty.");
+                    })
+                    .catch(error => console.log(error));
     },
     startApp: function(){
-      alert("Appointment started");
+      alert("Appointment started"+this.selected.id);
       this.$root.$emit('bv::hide::modal', 'my-modal');
+      this.$router.push({ name: 'AppointmentPharmacist', params: { passedId: this.selected.id } })
       // PREBACUJES NA APPPOINTMENT SA TIM PACIJENTOM I DERM 
     },
     handleWeekendsToggle() {
@@ -152,7 +173,17 @@ export default {
       }else{
         this.patientNotNull = false;
       }
-      if(clickInfo.event.start < Date.now()){
+      var d = new Date();
+      var d1 = new Date(clickInfo.event.start);
+      d1.setMinutes(d1.getMinutes()-10);
+      var d2 = new Date(clickInfo.event.start);
+      d2.setMinutes(d2.getMinutes()+10);
+      if(d>d1 && d<d2 && this.patientNotNull){
+          this.patientNotNull = true;
+      }else{
+          this.patientNotNull = false;
+      }
+      if(d2 < d){
           this.$root.$emit('bv::show::modal', 'passedModal');
       }else{
           this.$root.$emit('bv::show::modal', 'my-modal');
@@ -164,7 +195,7 @@ export default {
     handleEvents: function() {
       this.$http.get('http://localhost:8081/pharmacist-appointment/all-appointments', {
                         params: {
-                            pharmacistId: 'ccb953a7-d244-48bb-8627-4b2437491dc1'
+                            pharmacistId: this.user.id//'ccb953a7-d244-48bb-8627-4b2437491dc1'
                         }
                     })
                     .then(response => {
@@ -190,7 +221,7 @@ export default {
     addEmployment: function() {
         this.$http.get('http://localhost:8081/employment/employment-for-derm', {
                         params: {
-                            dermatologistId: 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
+                            dermatologistId: this.user.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }
                     })
                     .then(response => {

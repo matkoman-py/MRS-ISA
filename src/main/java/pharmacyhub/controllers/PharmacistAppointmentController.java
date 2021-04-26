@@ -62,4 +62,17 @@ public class PharmacistAppointmentController {
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllPharmacistAppointments(@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.getAllPharmacistAppointments(pharmacistId), HttpStatus.OK);
 	}
+	
+	@GetMapping(path ="/end-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PharmacistAppointment> endAppointment(
+			@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String appointmentId,
+			@RequestParam (value = "appointmentReport", required=false,  defaultValue = "0") String appointmentReport) throws Exception {
+		return new ResponseEntity<>(pharmacistAppointmentService.endAppointment(appointmentId,appointmentReport), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-pharm-done", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsDone(
+			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
+		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDone(pharmacistId), HttpStatus.OK);
+	}
 }

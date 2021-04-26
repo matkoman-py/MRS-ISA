@@ -11,6 +11,7 @@
                         <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
                 </b-navbar-brand>
 
+                
                  <b-nav-item-dropdown text="CRUD" right v-if="!$helpers.isObjectEmpty(user) && role == 'SystemAdmin'" class="nav-dropdown link-font">
                   <b-dropdown-item  v-for="route in userSpecificRoutes['SystemAdmin']" :key="route.name">
                     <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
@@ -63,8 +64,14 @@ export default {
             {name: "User CRUD", path: "/admin-user-table"},
           ],
           "DrugstoreAdmin":[],
-          "Pharmacist":[],
-          "Dermatologist":[],
+          "Pharmacist":[
+            {name: "Schedule", path: "/schedule-pharm"},
+            {name: "Treated patients", path: "/patientoverview"},
+          ],
+          "Dermatologist":[
+            {name: "Schedule", path: "/schedule"},
+            {name: "Treated patients", path: "/patientoverview"},
+          ],
           "Patient":[],
         },
         commonRoutes: [

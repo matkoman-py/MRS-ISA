@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class PharmacistAppointmentService {
 		return wantedPharmacist; 
   }
    
-  public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {
+	public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {
 		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
 		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
     
@@ -126,6 +127,30 @@ public class PharmacistAppointmentService {
 			if(appointment.getPharmacist().getId().equals(pharmacistId))
 				wantedAppontments.add(appointment);
 		}
+		return wantedAppontments;
+	}
+	
+	public PharmacistAppointment endAppointment(String appointmentId, String appointmentReport) {
+		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
+		da.setAppointmentReport(appointmentReport);
+		pharmacistAppointmentRepository.save(da);
+		return da;
+	}
+  	
+	public List<PharmacistAppointment> findAllPharmacistAppointmentsDone(String pharmacistId) {
+		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
+		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
+		
+		long sad = new Date().getTime();
+		for(PharmacistAppointment appointment : allAppointments) {
+			Date vreme = appointment.getDate();
+			vreme.setHours(appointment.getTime().getHours());
+			vreme.setMinutes(appointment.getTime().getMinutes());
+			long vremee = vreme.getTime();
+			if(appointment.getPharmacist().getId().equals(pharmacistId) && vremee < sad)
+				wantedAppontments.add(appointment);
+		}
+		System.out.println(wantedAppontments);
 		return wantedAppontments;
 	}
 }
