@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import pharmacyhub.domain.BaseEntity;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
@@ -161,6 +163,7 @@ public class User extends BaseEntity implements UserDetails{
 		this.activationCode = activationCode;
 	}
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles;
