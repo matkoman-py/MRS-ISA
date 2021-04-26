@@ -3,6 +3,7 @@
     <h1> List of dermatologists </h1>
     <div style="margin:40px; border-style:solid;">
         <b-table striped hover :items="dermatologists"></b-table>
+        <p v-if="dermatologists.length == 0"> There are no dermatologists for this criteria.</p>
     </div>
     <b-container style="margin-left:60px">
         <b-row>
@@ -95,7 +96,7 @@
                 surname: this.searchSurname,
                 minRate: this.filterRateMin,
                 maxRate: this.filterRateMax,
-                drugstore: this.selected.name,
+                drugstore: this.selected.name ? this.selected.name : "",
             }
             })
             .then(response => {

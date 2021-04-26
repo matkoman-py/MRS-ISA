@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, "/drugs/search/**").permitAll()
 		.antMatchers(HttpMethod.POST, "/drugstores/search/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/**").permitAll()
+		.antMatchers(HttpMethod.POST, "/employees/pharmacist").permitAll()//.hasAuthority("DrugstoreAdmin") // dodato
 		.anyRequest().authenticated().and()
 	    .cors()
 	    .and().addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class)

@@ -84,15 +84,19 @@
         </b-form>
       </b-col>
     </b-row>
-    
   </b-container>
 </template>
 
 <script>
-
-export default {
+  import { mapState } from 'vuex'
+  export default {
   name: 'AddPharmacistForm',
   components: {
+  },
+  computed: {
+      ...mapState({
+        user: state => state.userModule.loggedInUser,
+      }),
   },
   data: function(){
     return {
@@ -108,21 +112,36 @@ export default {
         },
         workingHoursFrom: "",
         workingHoursTo: "",
-        type: "Pharmacist"
+        type: "Pharmacist",
+        drugstore: {}
       }
     }
   },
   methods : {
     onSubmit(event){
           event.preventDefault();
-          this.$http.post("http://localhost:8081/employees/", JSON.parse(JSON.stringify(this.form)))
+          console.log(this.form);
+          this.$http.post("http://localhost:8081/employees/pharmacist", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
               alert("New pharmacist successfully added.");
               this.$router.push('employeesOverview');
               })
               .catch(error => console.log(error));
-      }
-  }
+      },
+    getDrugstore() {
+       this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+              params: {
+                drugstoreAdminId: this.user.id
+              }
+              })
+              .then(response => {
+              this.form.drugstore = response.data;
+              })
+              .catch(error => console.log(error));
+    }
+  }, mounted() {
+        this.getDrugstore();
+    }
 }
 </script>

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Employee;
+import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.DermatologistOverviewDto;
 import pharmacyhub.dto.EmployeeOverviewDto;
@@ -30,15 +32,15 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<EmployeeOverviewDto>> getAllEmployeesOfDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
-		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstore(drugstoreId), HttpStatus.OK);
+	public ResponseEntity<Collection<EmployeeOverviewDto>> getAllEmployeesOfDrugstore(@RequestParam(value = "drugstoreAdminId") String drugstoreAdminId) {
+		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstore(drugstoreAdminId), HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<EmployeeOverviewDto>> getAllEmployeesBySearch(@RequestParam(value = "drugstoreId") String drugstoreId,
+	public ResponseEntity<Collection<EmployeeOverviewDto>> getAllEmployeesBySearch(@RequestParam(value = "drugstoreAdminId") String drugstoreAdminId,
 			@RequestParam(value = "searchText") String searchText, @RequestParam(value = "minRate") double minRate,
 			@RequestParam(value = "maxRate") double maxRate, @RequestParam(value = "type") String employeeType) {
-		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstoreBySearch(drugstoreId, searchText, minRate, maxRate, employeeType), HttpStatus.OK);
+		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstoreBySearch(drugstoreAdminId, searchText, minRate, maxRate, employeeType), HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/pharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,7 +57,7 @@ public class EmployeeController {
 	
 	@GetMapping(path="/dermatologists", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistOverviewDto>> getAlDermatologists() {
-		return new ResponseEntity<>(employeeService.getAlDermatologists(), HttpStatus.OK);
+		return new ResponseEntity<>(employeeService.getAllDermatologists(), HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/dermatologists/search", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -67,7 +69,12 @@ public class EmployeeController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Employee>> addEmployee(@RequestBody Employee employee) throws Exception {
-		return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.OK);
+		return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.OK); // koristi se samo za dermatologa sad, treba preimenovati i srediti
+	}
+	
+	@PostMapping(path="/pharmacist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Pharmacist>> addEmployee(@RequestBody Pharmacist pharmacist) throws Exception {
+		return new ResponseEntity<>(employeeService.addPharmacist(pharmacist), HttpStatus.OK);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -84,6 +91,11 @@ public class EmployeeController {
 	@GetMapping(path ="/id",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Employee> findOne(@RequestParam (value = "employeeId", required=false,  defaultValue = "0") String employeeId) throws Exception {
 		return new ResponseEntity<>(employeeService.findOne(employeeId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/drugstoreForId",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Drugstore> findDrugstoreByEmployeeId(@RequestParam (value = "drugstoreAdminId") String drugstoreAdminId) throws Exception {
+		return new ResponseEntity<>(employeeService.findDrugstoreByDrugstoreAdminId(drugstoreAdminId), HttpStatus.OK);
 	}
 
 }
