@@ -79,6 +79,11 @@ INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b5
 --
 INSERT INTO public.users VALUES ('SystemAdmin', '2d2eacbf-fda8-4a50-aa05-be2be4fb2884', false, '', 'gvozden@karadjordjevic.com', 'Gvozden', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Karadjordjevic', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
+--
+-- Data for Name: Supplier;
+--
+INSERT INTO public.users VALUES ('Supplier', '4f3bgfza-fda8-4a50-aa05-be2be4fb2884', false, '', 'supplier@primer.com', 'Supplier', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Primer', '2b7933e9-6as3-463a-974b-ded43ad63843');
+
 
 --
 -- Data for Name: Drugstock;
@@ -146,6 +151,9 @@ INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '58
 
 --system admins
 INSERT INTO public.user_role VALUES ('2d2eacbf-fda8-4a50-aa05-be2be4fb2884', '3a58b85f-23fa-4c1c-a2ac-23221875d6fa');
+
+--suppliers
+INSERT INTO public.user_role VALUES ('4f3bgfza-fda8-4a50-aa05-be2be4fb2884', '122c0bad-e159-4896-bb10-6e8b69547e2f');
 
 
 
