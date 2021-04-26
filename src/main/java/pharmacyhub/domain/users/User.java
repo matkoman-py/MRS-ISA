@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import pharmacyhub.domain.BaseEntity;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
@@ -50,7 +52,7 @@ public class User extends BaseEntity implements UserDetails{
 	private String phoneNumber;
 
 	// treba nullable false mozda?
-	@ManyToOne
+	@ManyToOne//(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "location_fk")
 	public Location location;
 
@@ -63,6 +65,7 @@ public class User extends BaseEntity implements UserDetails{
 
 	@Column(nullable = true)
 	private String activationCode;
+
 	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -86,7 +89,6 @@ public class User extends BaseEntity implements UserDetails{
 		this.type = type;
 		this.status = status;
 		this.activationCode = activationCode;
-
 	}
 
 	public String getEmail() {
@@ -161,6 +163,7 @@ public class User extends BaseEntity implements UserDetails{
 		this.activationCode = activationCode;
 	}
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles;

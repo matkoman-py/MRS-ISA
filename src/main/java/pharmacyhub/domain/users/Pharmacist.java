@@ -1,5 +1,6 @@
 package pharmacyhub.domain.users;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,7 +21,7 @@ public class Pharmacist extends Employee {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@ManyToOne
+	@ManyToOne//(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "drugstore_fk")
 	private Drugstore drugstore;
 		
@@ -28,8 +29,9 @@ public class Pharmacist extends Employee {
 		super();
 	}
 
-	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, String workingHoursFrom, String workingHoursTo) {
+	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, String workingHoursFrom, String workingHoursTo, Drugstore drugstore) {
 		super(email, password, name, surname, phoneNumber, location, UserType.Pharmacist, true, null, workingHoursFrom, workingHoursTo);
+		this.drugstore = drugstore;
 	}
 	
 	public Drugstore getDrugstore() {

@@ -3,6 +3,7 @@
     <h1> List of pharmacists </h1>
     <div style="margin:40px; border-style:solid;">
         <b-table striped hover :items="pharmacists"></b-table>
+        <p v-if="pharmacists.length == 0"> There are no pharmacists for this criteria.</p>
     </div>
     <b-container style="margin-left:60px">
         <b-row>
@@ -31,7 +32,7 @@
         <b-row style="margin-left:20px" align-h="left">         
             <b-form align="center" style="width:80%" inline>
             <b-label>Drugstore:</b-label>
-            <b-form-select style="margin:20px;" v-model="selected" :options="drugstores" aria-placeholder="All drugstores"></b-form-select>
+            <b-form-select style="margin:20px;" v-model="selected" :options="drugstores" ></b-form-select>
             </b-form>
         </b-row>
 
@@ -95,7 +96,7 @@
                 surname: this.searchSurname,
                 minRate: this.filterRateMin,
                 maxRate: this.filterRateMax,
-                drugstore: this.selected.name,
+                drugstore: this.selected.name ? this.selected.name : "",
             }
             })
             .then(response => {

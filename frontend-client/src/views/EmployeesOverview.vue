@@ -3,6 +3,7 @@
     <h1> Employees in drugstore </h1>
     <div style="margin:40px; border-style:solid;">
         <b-table striped hover :items="employees"></b-table>
+        <p v-if="employees.length == 0"> There are no employees for this criteria.</p>
     </div>
     <div>
         <router-link to="/addPharmacistForm">
@@ -35,13 +36,17 @@
             </b-form>
         </b-row>
     </b-container>
-    {{this.selected}}
   </b-container>
 </template>
 
 <script>
-
+  import { mapState } from 'vuex'
   export default {
+    computed: {
+      ...mapState({
+        user: state => state.userModule.loggedInUser,
+      }),
+    },
     data: function() {
       return {
         employees: [],
@@ -60,7 +65,7 @@
         getEmployees : function(){
             this.$http.get('http://localhost:8081/employees', {
               params: {
-                drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+                drugstoreAdminId: this.user.id//"2b7933e9-6as3-463a-974b-ded43ad63843"
             }
             })
             .then(response => {
@@ -84,7 +89,7 @@
         employeesSearchResult : function() {
             this.$http.get('http://localhost:8081/employees/search', {
               params: {
-                drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843",
+                drugstoreAdminId: this.user.id,//"2b7933e9-6as3-463a-974b-ded43ad63843",
                 searchText: this.searchText,
                 minRate: this.filterRateMin,
                 maxRate: this.filterRateMax,
