@@ -54,8 +54,8 @@
           <p>Start: {{selected.start}}</p>
           <p>Duration: {{selected.extendedProps.durationn}} minutes</p>
         </div>
-        <b-button class="mt-3" variant="danger" :disabled="!patientNotNull" block @click="patientNotShowup"  >Patient did not show up!</b-button>
-        <b-button class="mt-2" variant="success" :disabled="!patientNotNull" block @click="startApp">Start appointment!</b-button>
+        <b-button class="mt-3" variant="danger" :disabled="!patientNotNull || !timeValid" block @click="patientNotShowup"  >Patient did not show up!</b-button>
+        <b-button class="mt-2" variant="success" :disabled="!patientNotNull || !timeValid" block @click="startApp">Start appointment!</b-button>
       </b-modal>
     </div>
 
@@ -134,6 +134,7 @@ export default {
       selected: {},
       mountedTrue: false,
       patientNotNull: false,
+      timeValid: false,
     }
   },
   methods: {
@@ -181,9 +182,9 @@ export default {
       var d2 = new Date(clickInfo.event.start);
       d2.setMinutes(d2.getMinutes()+10);
       if(d>d1 && d<d2 && this.patientNotNull){
-          this.patientNotNull = true;
+          this.timeValid = true;
       }else{
-          this.patientNotNull = false;
+          this.timeValid = false;
       }
       if(d2 < d){
           this.$root.$emit('bv::show::modal', 'passedModal');
@@ -211,7 +212,7 @@ export default {
                                 displayEventTime: true,
                                 durationn:  currentEvent.duration,
                                 end: currentEvent.date.substring(0, 10)+"T"+currentEvent.timeEnd,
-                                title: currentEvent.patient ? currentEvent.patient.name+" "+currentEvent.patient.surname : "Available",
+                                title: currentEvent.patient ? currentEvent.patient.name+" "+currentEvent.patient.surname : "No patient",
                                 patient: currentEvent.patient,
                             }));
                     })

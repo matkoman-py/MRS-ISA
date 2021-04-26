@@ -135,6 +135,29 @@
             //         .catch(error => console.log(error));
             // },
             getAllPatients: function () {
+                if(this.user.type == "Dermatologist"){
+                this.$http.get('http://localhost:8081/dermatologist-appointment/all-derm-done', {
+                        params: {
+                            dermatologistId:  this.user.id// 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
+                        }
+                    })
+                    .then(response => {
+                        this.patients = response.data.map(currentEvent =>
+                            ({
+                                first_name: currentEvent.patient.name,
+                                last_name:  currentEvent.patient.surname,
+                                drugstore: currentEvent.drugstore.name,
+                                start: currentEvent.date.substring(0, 10)+" "+currentEvent.time,
+                                duration:  currentEvent.duration,
+                                end: currentEvent.date.substring(0, 10)+" "+currentEvent.timeEnd,
+                               
+                            }));
+                    })
+                    .then(() => {
+                        this.mountedTrue = true;
+                        }
+                    )    
+                }else{
                 this.$http.get('http://localhost:8081/pharmacist-appointment/all-pharm-done', {
                         params: {
                             pharmacistId:  this.user.id// 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
@@ -145,7 +168,7 @@
                             ({
                                 first_name: currentEvent.patient.name,
                                 last_name:  currentEvent.patient.surname,
-                                //drugstore: currentEvent.drugstore.name,
+                                drugstore: currentEvent.pharmacist.drugstore.name,
                                 start: currentEvent.date.substring(0, 10)+" "+currentEvent.time,
                                 duration:  currentEvent.duration,
                                 end: currentEvent.date.substring(0, 10)+" "+currentEvent.timeEnd,
@@ -156,6 +179,7 @@
                         this.mountedTrue = true;
                         }
                     )
+                }
 
             },
             // onSubmit(event) {

@@ -11,6 +11,17 @@
                         <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
                 </b-navbar-brand>
 
+                <template v-if="!$helpers.isObjectEmpty(user) && role == 'Dermatologist'">
+                  <b-navbar-brand v-for="route in userSpecificRoutes['Dermatologist']" :key="route.name" tag="h3" class="nav-link">
+                        <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
+                  </b-navbar-brand>
+                </template>
+
+                <template v-if="!$helpers.isObjectEmpty(user) && role == 'Pharmacist'">
+                  <b-navbar-brand v-for="route in userSpecificRoutes['Pharmacist']" :key="route.name" tag="h3" class="nav-link">
+                        <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
+                  </b-navbar-brand>
+                </template>
                 
                  <b-nav-item-dropdown text="CRUD" right v-if="!$helpers.isObjectEmpty(user) && role == 'SystemAdmin'" class="nav-dropdown link-font">
                   <b-dropdown-item  v-for="route in userSpecificRoutes['SystemAdmin']" :key="route.name">
@@ -66,11 +77,13 @@ export default {
           "DrugstoreAdmin":[],
           "Pharmacist":[
             {name: "Schedule", path: "/schedule-pharm"},
-            {name: "Treated patients", path: "/patientoverview"},
+            {name: "Patients", path: "/patientoverview"},
+            {name: "Treated patients", path: "/treated"},
           ],
           "Dermatologist":[
             {name: "Schedule", path: "/schedule"},
-            {name: "Treated patients", path: "/patientoverview"},
+            {name: "Patients", path: "/patientoverview"},
+            {name: "Treated patients", path: "/treated"},
           ],
           "Patient":[],
         },

@@ -42,7 +42,7 @@ public class PharmacistAppointmentService {
 	private UserNotificationService userNotificationService;
 	
     public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
-    	userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail());
+    	userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
 		return pharmacistAppointmentRepository.findByPatientId(patientId);
 	}
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
