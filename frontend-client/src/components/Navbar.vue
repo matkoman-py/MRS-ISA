@@ -22,6 +22,12 @@
                         <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
                   </b-navbar-brand>
                 </template>
+
+                <template v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'">
+                  <b-navbar-brand v-for="route in userSpecificRoutes['DrugstoreAdmin']" :key="route.name" tag="h3" class="nav-link">
+                        <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
+                  </b-navbar-brand>
+                </template>
                 
                  <b-nav-item-dropdown text="CRUD" right v-if="!$helpers.isObjectEmpty(user) && role == 'SystemAdmin'" class="nav-dropdown link-font">
                   <b-dropdown-item  v-for="route in userSpecificRoutes['SystemAdmin']" :key="route.name">
@@ -76,7 +82,10 @@ export default {
             {name: "Drug CRUD", path: "/admin-drug-table"},
             {name: "User CRUD", path: "/admin-user-table"},
           ],
-          "DrugstoreAdmin":[],
+          "DrugstoreAdmin":[
+            {name: "Employees", path: "/employeesOverview"},
+            {name: "Drug stock", path: "/drug-stock-overview"},
+          ],
           "Pharmacist":[
             {name: "Schedule", path: "/schedule-pharm"},
             {name: "Patients", path: "/patientoverview"},

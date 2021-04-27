@@ -14,18 +14,18 @@
     >
       <!-- Text slides with image -->
       <b-carousel-slide
-        img-src="static/slider1.jfif" img-height="150">
-        <h1>Najjaci lekovi bez recepta!</h1>
+        img-src="static/nekaSlika2.jpg" img-height="150">
+        <h1>Pharmacy hub - 25 godina sa vama!</h1>
       </b-carousel-slide>
 
       <!-- Slides with custom text -->
-      <b-carousel-slide img-src="static/slider2.png">
-        <h1>Hello world!</h1>
+      <b-carousel-slide img-src="static/slider2.jpg">
+        <h1></h1>
       </b-carousel-slide>
 
       <!-- Slides with image only -->
-      <b-carousel-slide img-src="https://picsum.photos/1024/150/?image=58">
-      <h1>Opis</h1>
+      <b-carousel-slide img-src="static/nekaSlika.jpg">
+      <h1></h1>
       </b-carousel-slide>
 
       <!-- Slides with img slot -->
@@ -36,7 +36,7 @@
             class="d-block img-fluid w-100"
             width="1024"
             height="100"
-            src="https://picsum.photos/1024/150/?image=55"
+            src="static/slider3.jpg"
             alt="image slot"
           >
         </template>
