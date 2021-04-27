@@ -50,6 +50,7 @@
             id="duration-input"
             v-model="inputValues.duration"
             type="number"
+            min="0"
             required >
             </b-form-input>
         </b-form-group>
@@ -62,6 +63,7 @@
             id="price-input"
             v-model="inputValues.price"
             type="number"
+            min="0"
             required >
             </b-form-input>
         </b-form-group>
@@ -77,8 +79,13 @@
 </template>
 
 <script>
-
+  import { mapState } from 'vuex'
   export default {
+    computed: {
+      ...mapState({
+        user: state => state.userModule.loggedInUser,
+      }),
+    },
     data: function() {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -89,7 +96,7 @@
         availableDermatologists: [],
         inputValues: {
           dermatologist: '',
-          drugstoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
+          drugstoreId: '',
           date: '',
           time: '',
           duration: '',
@@ -99,12 +106,24 @@
     },
     methods: {
         getAllApointments : function(){
-
+        },
+        initialize() {
+            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+              params: {
+                drugstoreAdminId: this.user.id
+              }
+              })
+              .then(response => {
+              this.inputValues.drugstoreId = response.data.id;
+              this.getAllApointments();
+              this.getAllDermatologistForThisDrugstore();
+              })
+              .catch(error => console.log(error));
         },
         getAllDermatologistForThisDrugstore : function() {
             this.$http.get("http://localhost:8081/employment/dermatologists", {
                 params: {
-                            drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+                            drugstoreId: this.inputValues.drugstoreId
                         }})
             .then(response => {
             this.availableDermatologists = response.data.map((dermatologist) =>
@@ -135,8 +154,7 @@
         }
         },
     mounted: function(){
-        this.getAllApointments();
-        this.getAllDermatologistForThisDrugstore();
+        this.initialize();
     }
   }
 </script>

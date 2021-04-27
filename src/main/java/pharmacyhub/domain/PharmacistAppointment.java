@@ -10,11 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 
 @Entity
+@SQLDelete(sql = "UPDATE pharmacist_appointment SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class PharmacistAppointment extends BaseEntity{
 	
 	@ManyToOne
@@ -33,6 +37,8 @@ public class PharmacistAppointment extends BaseEntity{
 	private String appointmentReport; //bice appointmentReport objekat
 	@Column(nullable = true)
 	private Time timeEnd;
+	@Column(nullable = true)
+	private boolean processed;
 	
 	public Time getTimeEnd() {
 		return timeEnd;
@@ -47,7 +53,7 @@ public class PharmacistAppointment extends BaseEntity{
 	}
 	
 	public PharmacistAppointment(Pharmacist pharmacist, Date date, Time time, int duration, Patient patient,
-			String appointmentReport) {
+			String appointmentReport, boolean processed) {
 		super();
 		this.pharmacist = pharmacist;
 		this.date = date;
@@ -56,8 +62,17 @@ public class PharmacistAppointment extends BaseEntity{
 		this.patient = patient;
 		this.appointmentReport = appointmentReport;
 		this.timeEnd = new Time(time.getTime()+(60000*this.duration));
+		this.processed = processed;
 	}
 	
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
+	}
+
 	public Pharmacist getPharmacist() {
 		return pharmacist;
 	}

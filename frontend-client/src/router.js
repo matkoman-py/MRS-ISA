@@ -32,7 +32,7 @@ import DermatologistOverview from "./views/DermatologistOverview"
 import SupplierStockTable from "./components/tables/SupplierStockTable"
 import DrugOrderTable from "./components/tables/DrugOrderTable"
 import OfferTable from "./components/tables/OfferTable"
-
+import TreatedPatients from "./views/TreatedPatients"
 import LoginPage from "./views/LoginPage"
 
 Vue.use(VueRouter)
@@ -121,7 +121,8 @@ const routes = [
     {
         path: '/appointment-dermatologist',
         name: "AppointmentDermatologist",
-        component: AppointmentDermatologist
+        component: AppointmentDermatologist,
+        props: true
     },
     {
         path: '/drugstores/:id',
@@ -136,7 +137,8 @@ const routes = [
     {
         path: '/appointment-pharmacist',
         name: "AppointmentPharmacist",
-        component: AppointmentPharmacist
+        component: AppointmentPharmacist,
+        props: true
     },
     {
         path: '/pharm-derm-profile',
@@ -202,6 +204,11 @@ const routes = [
         path: '/supplier-offers',
         name: "OfferTable",
         component: OfferTable
+    },
+    {     
+        path: '/treated',
+        name: "Treated",
+        component: TreatedPatients
     },
 ];
 

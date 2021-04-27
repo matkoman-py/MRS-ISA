@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.services.DrugstoreService;
@@ -69,5 +70,14 @@ public class DrugstoreController {
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> getDrugstore(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(drugstoreService.findDrugstore(id), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DrugStock>> getDrugstores(@RequestParam("drugId") String id)
+			//@RequestParam(value = "page", required = false) Integer page,
+			//@RequestParam(value = "size", required = false) Integer size) 
+			throws Exception {
+		//Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(drugstoreService.findDrugstores(id/*pageable*/), HttpStatus.OK);
 	}
 }

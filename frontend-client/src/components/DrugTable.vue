@@ -37,8 +37,16 @@
       </b-col>
 
       <b-col>
-        <b-table head-variant="dark" striped hover :items="drugs" sticky-header="400px"></b-table>
+        <b-table head-variant="dark" striped hover :fields="fields" :items="drugs" sticky-header="400px">
+          <template #cell(actions)="row">
+            <b-button variant="outline-info" v-if="row.item" size="sm"
+              @click="getDrugstores(row.item, row.index, $event.target)" class="mr-1">
+              Reserve
+            </b-button>
+          </template>
+        </b-table>
 
+        <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores"></drug-reservation>
         <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
 
         <h1 v-if="drugs.length == 0"> There are no drugs that fit the search parameters</h1>
@@ -48,25 +56,35 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  import DrugReservation from "../components/DrugReservation"
+  
   export default {
     name: "DrugTable",
-    components: {},
+    components: {DrugReservation},
     computed: {
+      ...mapState({
+        user: state => state.userModule.loggedInUser,
+        email: state => state.userModule.loggedInUser.email,
+        role: state => state.userModule.loggedInUser.type
+      }),
       rows() {
-        return (this.currentPage+1)*3
+        return (this.currentPage + 1) * 3
       }
     },
     watch: {
       currentPage: function () {
-        if(!this.suppress){
+        if (!this.suppress) {
           this.getDrugs();
-        }else{
+        } else {
           this.suppress = false;
         }
       }
     },
     data: function () {
       return {
+        reserved : 0,
+        drugstores: [],
         searchForm: {
           name: '',
           type: '',
@@ -74,6 +92,32 @@
           manufacturerId: '',
           receipt: '',
         },
+        fields: [{
+            key: "name"
+          },
+          {
+            key: "form"
+          },
+          {
+            key: "type"
+          },
+          {
+            key: "receipt"
+          },
+          {
+            key: "manufacturer"
+          },
+          {
+            key: "substitutions"
+          },
+          {
+            key: "ingredients"
+          },
+          {
+            key: 'actions',
+            label: ''
+          }
+        ],
         receiptOptions: [{
             value: null,
             text: "Both"
@@ -87,6 +131,7 @@
             text: 'No'
           },
         ],
+        selectedDrug: null,
         drugs: [],
         drugType: [],
         manufacturerOptions: [],
@@ -95,15 +140,44 @@
         substitutions: [],
         currentPage: 1,
         suppress: false,
-        currentSearch : {},
+        currentSearch: {},
 
       }
     },
     methods: {
+      getDrugstores: function (data) {
+        if(this.user == null) {
+          alert("You must be logged in to reserve a drug!");
+          return;
+        }
+        //alert(this.user.id);
+        //alert(data.id);
+        this.selectedDrug = {
+            id: data.id,
+            name: data.name,
+            type: data.type
+        }
+        this.reserved = 1;
+        this.$http.get('http://localhost:8081/drugstores/reserve',{
+          params:{
+            drugId: data.id
+          }})
+        .then(response => {
+          this.drugstores = response.data.map(stock => 
+          ({
+              id: stock.drugstore.id,
+              name: stock.drugstore.name,
+              address: stock.drugstore.location.address,
+              city: stock.drugstore.location.city,
+              rating: stock.drugstore.averageRating
+            }
+          ));
+        })
+      },
       searchDrugs: function () {
-                this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
-                this.getDrugs();
-            },
+        this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
+        this.getDrugs();
+      },
       getDrugs: function () {
         this.$http.post(`http://localhost:8081/drugs/search?page=${this.currentPage-1}&size=3`, this.currentSearch)
           .then(response => {
@@ -158,6 +232,7 @@
       mapDrugs: function (response) {
         return response.data.map(drug =>
           ({
+            id: drug.id,
             name: drug.name,
             form: drug.form,
             type: drug.type.name,

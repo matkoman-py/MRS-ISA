@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
@@ -87,6 +88,11 @@ public class DrugstoreService {
 	public Drugstore findDrugstore(String drugstoreId) throws Exception {
 		
 		return drugstoreRepository.findById(drugstoreId).orElse(null);
+	}
+
+	public List<DrugStock> findDrugstores(String id/*, Pageable pageable*/) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugId(id/*, pageable*/);
+		return drugsOnStock;
 	}
 }
 

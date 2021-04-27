@@ -236,7 +236,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+    computed:{
+        validationState: function(){
+            if(this.editEnabled)
+                return null
+            return this.employee.password == this.validationPassword;
+        },
+        ...mapState({
+        user: state => state.userModule.loggedInUser,
+        //email: state => state.userModule.loggedInUser.email,
+        //role: state => state.userModule.loggedInUser.type
+        }),
+    },
     data: function(){
         return{
             employee: {},
@@ -250,7 +263,7 @@ export default {
             
             this.$http.get('http://localhost:8081/employees/id', {
                         params: {
-                            employeeId: "68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
+                            employeeId: this.user.id //"68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
                         }
                     })
                     .then(response => {
@@ -287,13 +300,7 @@ export default {
         console.log(this.employee);
         this.getEmployee();
     },
-    computed:{
-        validationState: function(){
-            if(this.editEnabled)
-                return null
-            return this.employee.password == this.validationPassword;
-        },
-    }
+    
 }
 </script>
 

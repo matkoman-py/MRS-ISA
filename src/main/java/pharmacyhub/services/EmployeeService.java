@@ -21,9 +21,11 @@ import pharmacyhub.dto.DermatologistOverviewDto;
 import pharmacyhub.dto.EmployeeOverviewDto;
 import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
+import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.repositories.users.UserRepository;
@@ -52,7 +54,10 @@ public class EmployeeService {
 	
 	@Autowired
 	private EmploymentRepository employmentRepository;
-
+	
+	@Autowired
+	private PharmacistAppointmentRepository pharmacistAppointmentRepository;
+		
 	public Collection<DermatologistDto> searchDermatologist(SearchDermatologistDto searchDermatologistDto) {
 
 		List<Dermatologist> dermatologists = dermatologistRepository.findAll().stream()
@@ -338,6 +343,17 @@ public class EmployeeService {
 		userNotificationService.sendEmployeeInitialPassword(p.getEmail(), p.getPassword());
 				
 		return null;
+	}
+
+	public String deletePharmacist(String pharmacistEmail) {
+		checkFuturePharmacistAppointments(pharmacistEmail);
+		pharmacistRepository.deleteByEmail(pharmacistEmail);
+		return "success";
+	}
+
+	private void checkFuturePharmacistAppointments(String pharmacistEmail) {
+		String pharmacistId = pharmacistRepository.findByEmail(pharmacistEmail).getId();
+		pharmacistAppointmentRepository.deleteByPharmacist((Pharmacist)pharmacistRepository.findByEmail(pharmacistEmail)); //treba samo one koji predstoje?
 	}
 
 }

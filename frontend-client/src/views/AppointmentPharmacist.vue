@@ -7,11 +7,13 @@
                 <!-- <h2>Drugstore: {{currentAppointment.pharmacist.drugstore.name}} </h2> -->
                 <h2>Patient: {{currentAppointment.patient.name}} </h2>
                 <h2>Pharmacist: {{currentAppointment.pharmacist.name}} </h2>
+                <h2>Duration: {{currentAppointment.duration}} minutes</h2>
+
             </b-col>
             <b-col style="text-align:center">
                 <label for="diagnosis"> <h3>Diagnosis:</h3></label>
                 <br>
-                <textarea id="diagnosis" name="diagnosis" rows="10" cols="50" style="resize: none">
+                <textarea id="diagnosis" name="diagnosis" v-model="currentAppointment.appointmentReport" rows="10" cols="50" style="resize: none">
 
                 </textarea>
             </b-col>
@@ -24,10 +26,7 @@
                 <b-button variant="info" @click="showAppointmentModal">New appointment</b-button>
             </b-col>
             <b-col>
-                <b-button variant="success">End appointment</b-button>
-            </b-col>
-            <b-col>
-                <b-button variant="danger">Absent patient</b-button>
+                <b-button variant="success" @click="endAppointment">End appointment</b-button>
             </b-col>
         </b-row>
         
@@ -81,10 +80,16 @@
 <script>
 export default {
     name: "AppointmentPharmacist",
-    
+    props:{
+        passedId: String,
+    },
     data: function () {
+            const now = new Date()
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            const minDate = new Date(today)
             return {
                 currentAppointment: {},
+                minDate:minDate,
                 inputValues: {
                     pharmacistId: '',
                     date: '',
@@ -95,8 +100,22 @@ export default {
             }
     },
     methods: {
+        endAppointment: function(){
+            this.currentAppointment.id = this.passedId? this.passedId:"2229dbcb-7f36-4e4e-81f5-656ce14a553a";
+            this.$http.get('http://localhost:8081/pharmacist-appointment/end-appointment', {
+                        params: {
+                            pharmacistAppointmentId: this.currentAppointment.id,
+                            appointmentReport: this.currentAppointment.appointmentReport,
+                        }
+                    })
+                    .then(response => {
+                        this.currentAppointment = response.data;
+                        this.$router.push({ name: 'SchedulePharmacist' })   
+                    })
+                    
+        },
         beginAppointment: function(){
-            this.currentAppointment.id = "2229dbcb-7f36-4e4e-81f5-656ce14a553a";
+            this.currentAppointment.id = this.passedId? this.passedId:"2229dbcb-7f36-4e4e-81f5-656ce14a553a";
             this.$http.get('http://localhost:8081/pharmacist-appointment/begin-appointment', {
                         params: {
                             pharmacistAppointmentId: this.currentAppointment.id
@@ -118,8 +137,6 @@ export default {
           event.preventDefault();
           this.inputValues.patientId = this.currentAppointment.patient.id;
           this.inputValues.pharmacistId = this.currentAppointment.pharmacist.id;
-          //this.inputValues.pharmacistId = "ccb953a7-d244-48bb-8627-4b2437491dc1";
-          //this.inputValues.patientId = "8128d806-c29b-4086-aae6-877d17eeb6fa";
           this.$http.post("http://localhost:8081/pharmacist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);

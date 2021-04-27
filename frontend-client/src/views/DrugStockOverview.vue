@@ -3,6 +3,7 @@
     <h1> Drugs on stock </h1>
     <div style="margin:40px; border-style:solid;">
         <b-table striped hover :items="drugStocks" selectable select-mode='single' @row-selected="onRowSelected"></b-table>
+        <p v-if="drugStocks.length == 0">There are no certain drugs in this drugstore at the moment.</p>
     </div>
     <div>
         <router-link to="/drug-stock-create-order">
@@ -31,7 +32,7 @@
     <b-modal id="newPriceModal" title="Create new price" hide-footer>
       <b-form>
         <b-form-group
-          label="Promotion price"
+          label="New price"
           label-for="price-input"
           invalid-feedback="Price is required">
           <b-form-input
@@ -44,7 +45,7 @@
         </b-form-group>
 
         <b-form-group
-          label="Promotion expiration date"
+          label="Price expiration date"
           label-for="date-input"
           invalid-feedback="Expiration date is required">
           <b-form-datepicker
@@ -64,7 +65,7 @@
     <b-modal id="newPromotionModal" title="Create new promotion" hide-footer>
       <b-form>
         <b-form-group
-          label="New price"
+          label="Promotion price"
           label-for="price-input"
           invalid-feedback="Price is required">
           <b-form-input
@@ -77,7 +78,7 @@
         </b-form-group>
 
         <b-form-group
-          label="Expiration date"
+          label="Promotion expiration date"
           label-for="date-input"
           invalid-feedback="Expiration date is required">
           <b-form-datepicker
@@ -100,7 +101,13 @@
 
 <script>
 
+  import { mapState } from 'vuex'
   export default {
+    computed: {
+      ...mapState({
+        user: state => state.userModule.loggedInUser,
+      }),
+    },
     data: function() {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -110,27 +117,42 @@
         searchText: '',
         selected: [],
         minDate: minDate,
+        drugstoreId:'',
         inputValuesForNewPrice: {
           price: '',
           drugName: '',
-          drugStoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
+          drugStoreId: '',
           startDate: minDate,
           endDate: ''
         },
         inputValuesForNewPromotion: {
           price: '',
           drugName: '',
-          drugStoreId: '2b7933e9-6as3-463a-974b-ded43ad63843',
+          drugStoreId: '',
           startDate: minDate,
           endDate: ''
         }
       }
     },
     methods: {
+        initialize() {
+            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+              params: {
+                drugstoreAdminId: this.user.id
+              }
+              })
+              .then(response => {
+              this.inputValuesForNewPrice.drugStoreId = response.data.id;
+              this.inputValuesForNewPromotion.drugStoreId = response.data.id;
+              this.drugstoreId = response.data.id;
+              this.getDrugStockForDrugstore();
+              })
+              .catch(error => console.log(error));
+        },
         getDrugStockForDrugstore : function(){
             this.$http.get('http://localhost:8081/drug-stock', {
             params: {
-              drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+              drugstoreId: this.drugstoreId
             }})
             .then(response => {
             this.drugStocks = response.data.map(drugStockDto => 
@@ -153,7 +175,7 @@
             this.$http.get('http://localhost:8081/drug-stock/search', {
             params: {
               searchedText: this.searchText,
-              drugstoreId: "2b7933e9-6as3-463a-974b-ded43ad63843"
+              drugstoreId: this.drugstoreId
             }
           })
           .then(response => {
@@ -213,7 +235,7 @@
         }
         },
     mounted: function(){
-        this.getDrugStockForDrugstore();
+        this.initialize();
     }
   }
 </script>

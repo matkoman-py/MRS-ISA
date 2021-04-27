@@ -82,6 +82,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/**").permitAll()
 		.antMatchers(HttpMethod.PUT, "/drugs/**").hasRole("SYSTEMADMIN")
 		.antMatchers(HttpMethod.POST, "/employees/pharmacist").permitAll()
+		.antMatchers(HttpMethod.POST, "/**").permitAll() // dodato
+		.antMatchers(HttpMethod.PUT, "/**").permitAll() // dodato
+		.antMatchers(HttpMethod.DELETE, "/**").permitAll() // dodato
+		.antMatchers(HttpMethod.GET, "/**").permitAll() // dodato
 		.anyRequest().authenticated().and()
 	    .cors()
 	    .and().addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class)
