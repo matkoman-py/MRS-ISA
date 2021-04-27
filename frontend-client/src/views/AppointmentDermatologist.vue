@@ -162,9 +162,10 @@ export default {
                         }
                     })
                     .then(response => {
-                        this.currentAppointment = response.data;  
+                        this.currentAppointment = response.data; 
+                        this.$router.push({ name: 'Schedule' }) 
                     })
-                    
+            
         },
         beginAppointment: function(){
             this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";

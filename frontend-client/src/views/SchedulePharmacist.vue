@@ -146,6 +146,8 @@ export default {
       alert("Patient did not show up");
       console.log(this.selected.extendedProps.patient.id);
       this.$root.$emit('bv::hide::modal', 'my-modal');
+      //var prvo = false;
+      //var drugo = false;
       // OVDE TREBA DA SE POZOVE BEK I DA SE KAZNI PACIJENT,  TO RADIS PREKO SELECTED
       this.$http.get('http://localhost:8081/patients/penalty', {
                         params: {
@@ -155,8 +157,28 @@ export default {
                     .then(response => {
                       console.log(response);
                       alert("Patient received a penalty.");
+                      //prvo = true;
                     })
                     .catch(error => console.log(error));
+      
+      this.$http.get('http://localhost:8081/pharmacist-appointment/end-appointment', {
+                        params: {
+                            pharmacistAppointmentId: this.selected.id,
+                            appointmentReport: "Patient did not show up!",
+                        }
+                    })
+                    .then(response => {
+                        this.currentAppointment = response.data;
+                        let index = this.calendarOptions.events.findIndex(event => event.id == this.selected.id);
+                        this.calendarOptions.events[index].processed=true;//.splice(index, 1, response.data);
+                        //drugo = true;
+                    })
+      
+      // if(prvo && drugo){
+      //   this.handleEvents();
+      // }
+      //this.selected.extendedProps.processed = true;
+      // kako refresh page
     },
     startApp: function(){
       alert("Appointment started"+this.selected.id);
@@ -184,7 +206,7 @@ export default {
       }else{
           this.timeValid = false;
       }
-      if(d2 < d){
+      if(d2 < d || this.selected.extendedProps.processed){
           this.$root.$emit('bv::show::modal', 'passedModal');
       }else{
           this.$root.$emit('bv::show::modal', 'my-modal');
@@ -211,6 +233,7 @@ export default {
                                 end: currentEvent.date.substring(0, 10)+"T"+currentEvent.timeEnd,
                                 title: currentEvent.patient ? currentEvent.patient.name+" "+currentEvent.patient.surname : "Available",
                                 patient: currentEvent.patient,
+                                processed: currentEvent.processed,
                             }));
                     })
                     .then(() => {

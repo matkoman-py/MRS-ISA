@@ -37,12 +37,14 @@ public class DermatologistAppointment extends BaseEntity{
 	private int price;
 	@Column(nullable = true)
 	private Time timeEnd;
+	@Column(nullable = true)
+	private boolean processed;
 	public DermatologistAppointment() {
 		
 	}
 	
 	public DermatologistAppointment(Dermatologist dermatologist, Drugstore drugstore, Date date, Time time,
-			int duration, Patient patient, String appointmentReport, int price) {
+			int duration, Patient patient, String appointmentReport, int price, boolean processed) {
 		super();
 		this.dermatologist = dermatologist;
 		this.drugstore = drugstore;
@@ -53,7 +55,16 @@ public class DermatologistAppointment extends BaseEntity{
 		this.appointmentReport = appointmentReport;
 		this.price = price;
 		this.timeEnd = new Time(time.getTime()+(60000*this.duration));
+		this.processed = processed;
 		//System.out.println(this.timeEnd);
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
 	}
 
 	public int getPrice() {

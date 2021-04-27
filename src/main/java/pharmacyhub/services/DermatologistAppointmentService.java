@@ -78,7 +78,7 @@ public class DermatologistAppointmentService {
 			}
 		}
 		
-		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistAppointmentDto.getDermatologist(), drugstoreRepository.findById(dermatologistAppointmentDto.getDrugstoreId()).orElse(null), dermatologistAppointmentDto.getDate(), dermatologistAppointmentDto.getTime(), dermatologistAppointmentDto.getDuration(), null, null, dermatologistAppointmentDto.getPrice()));
+		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistAppointmentDto.getDermatologist(), drugstoreRepository.findById(dermatologistAppointmentDto.getDrugstoreId()).orElse(null), dermatologistAppointmentDto.getDate(), dermatologistAppointmentDto.getTime(), dermatologistAppointmentDto.getDuration(), null, null, dermatologistAppointmentDto.getPrice(),false));
 	}
 	
 	public DermatologistAppointment saveWithPatient(DermatologistAppointmentPatientDto dermatologistAppointmentPatientDto) throws Exception {
@@ -166,7 +166,7 @@ public class DermatologistAppointmentService {
 		}
 		
 		userNotificationService.sendReservationConfirmation(patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null).getEmail(), "dermatologist");
-		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistRepository.findById(dermatologistAppointmentPatientDto.getDermatologistId()).orElse(null), drugstoreRepository.findById(dermatologistAppointmentPatientDto.getDrugstoreId()).orElse(null), dermatologistAppointmentPatientDto.getDate(), dermatologistAppointmentPatientDto.getTime(), dermatologistAppointmentPatientDto.getDuration(), patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null), null, dermatologistAppointmentPatientDto.getPrice()));
+		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistRepository.findById(dermatologistAppointmentPatientDto.getDermatologistId()).orElse(null), drugstoreRepository.findById(dermatologistAppointmentPatientDto.getDrugstoreId()).orElse(null), dermatologistAppointmentPatientDto.getDate(), dermatologistAppointmentPatientDto.getTime(), dermatologistAppointmentPatientDto.getDuration(), patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null), null, dermatologistAppointmentPatientDto.getPrice(),false));
 	}
 	
 	//List<DermatologistAppointment>
@@ -250,6 +250,7 @@ public class DermatologistAppointmentService {
 	public DermatologistAppointment endAppointment(String appointmentId, String appointmentReport) {
 		DermatologistAppointment da = dermatologistAppointmentRepository.findById(appointmentId).orElse(null);
 		da.setAppointmentReport(appointmentReport);
+		da.setProcessed(true);
 		dermatologistAppointmentRepository.save(da);
 		return da;
 	}
@@ -258,13 +259,13 @@ public class DermatologistAppointmentService {
 		List<DermatologistAppointment> allAppointments = findAll();
 		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
 		
-		long sad = new Date().getTime();
+		//long sad = new Date().getTime();
 		for(DermatologistAppointment appointment : allAppointments) {
-			Date vreme = appointment.getDate();
-			vreme.setHours(appointment.getTime().getHours());
-			vreme.setMinutes(appointment.getTime().getMinutes());
-			long vremee = vreme.getTime();
-			if(appointment.getDermatologist().getId().equals(dermatologistId) && vremee < sad)
+//			Date vreme = appointment.getDate();
+//			vreme.setHours(appointment.getTime().getHours());
+//			vreme.setMinutes(appointment.getTime().getMinutes());
+//			long vremee = vreme.getTime();
+			if(appointment.getDermatologist().getId().equals(dermatologistId) && appointment.isProcessed())
 				wantedAppontments.add(appointment);
 		}
 		System.out.println(wantedAppontments);

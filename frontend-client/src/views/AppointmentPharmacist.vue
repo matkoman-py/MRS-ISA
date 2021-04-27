@@ -109,7 +109,8 @@ export default {
                         }
                     })
                     .then(response => {
-                        this.currentAppointment = response.data;  
+                        this.currentAppointment = response.data;
+                        this.$router.push({ name: 'SchedulePharmacist' })   
                     })
                     
         },

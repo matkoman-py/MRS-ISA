@@ -30,7 +30,7 @@
  
         <b-row>
             <b-col>
-                <b-table id="tabela_pacijenata" striped hover :items="patients" @row-clicked="showModal"></b-table>
+                <b-table id="tabela_pacijenata" striped hover :items="patients" ></b-table>
             </b-col>
         </b-row>
         <b-row align-h="center">

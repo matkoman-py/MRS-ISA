@@ -41,7 +41,9 @@
               </template>
               <template v-else>
                 <b-navbar-brand tag="h3" class="nav-link">
-                  <router-link to="/">{{email}}</router-link>
+                  <router-link v-if="role == 'Dermatologist' || role == 'Pharmacist'" to="/pharm-derm-profile">{{email}}</router-link>
+                  <router-link v-else to="/">{{email}}</router-link>
+                  
                 </b-navbar-brand> 
                 <b-navbar-brand tag="h3" class="nav-link" v-on:click="logout">
                         <router-link to="/" class="link-font">Logout</router-link>

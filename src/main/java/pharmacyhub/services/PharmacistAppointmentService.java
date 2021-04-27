@@ -135,7 +135,7 @@ public class PharmacistAppointmentService {
 		}
 		
     	userNotificationService.sendReservationConfirmation(patientRepository.getById(pharmacistAppointmentPatientDto.getPatientId()).getEmail(), "pharmacist");
-		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null));
+		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null,false));
 	}
 	
 	public PharmacistAppointment findAppointment(String pharmacistAppointmentId) {
@@ -221,6 +221,7 @@ public class PharmacistAppointmentService {
 	public PharmacistAppointment endAppointment(String appointmentId, String appointmentReport) {
 		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
 		da.setAppointmentReport(appointmentReport);
+		da.setProcessed(true);
 		pharmacistAppointmentRepository.save(da);
 		return da;
 	}
@@ -229,13 +230,13 @@ public class PharmacistAppointmentService {
 		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
 		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
 		
-		long sad = new Date().getTime();
+		//long sad = new Date().getTime();
 		for(PharmacistAppointment appointment : allAppointments) {
-			Date vreme = appointment.getDate();
-			vreme.setHours(appointment.getTime().getHours());
-			vreme.setMinutes(appointment.getTime().getMinutes());
-			long vremee = vreme.getTime();
-			if(appointment.getPharmacist().getId().equals(pharmacistId) && vremee < sad)
+//			Date vreme = appointment.getDate();
+//			vreme.setHours(appointment.getTime().getHours());
+//			vreme.setMinutes(appointment.getTime().getMinutes());
+//			long vremee = vreme.getTime();
+			if(appointment.getPharmacist().getId().equals(pharmacistId) && appointment.isProcessed())
 				wantedAppontments.add(appointment);
 		}
 		System.out.println(wantedAppontments);
