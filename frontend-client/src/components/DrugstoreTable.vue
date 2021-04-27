@@ -21,7 +21,7 @@
                     </b-form-group>
 
 
-                    <b-button type="submit" variant="primary">Submit</b-button>
+                    <b-button type="submit" variant="outline-hub">Submit</b-button>
                     <br><br><br>
                 </b-form>
             </b-col>

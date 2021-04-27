@@ -23,14 +23,14 @@
                 </b-form-group>
 
                 <b-form-group label="Appointment report" label-for="duration-input">
-                <textarea disabled id="diagnosis" v-model="selected.appointment_report" name="diagnosis" rows="10" cols="50" style="resize: none">
+                <textarea disabled id="diagnosis" v-model="selected.appointment_report" name="diagnosis" rows="10" cols="47" style="resize: none">
 
                 </textarea>
                 </b-form-group>
                 
                 
                 
-                <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
+                <b-button type="button" variant="outline-hub" @click="handleClose">Cancel</b-button>
             </b-form>
         </b-modal>
  

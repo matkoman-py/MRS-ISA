@@ -26,16 +26,16 @@
             </b-form-select>
           </b-form-group>
 
-          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="submit" variant="outline-hub">Submit</b-button>
           <br>
           <br>
         </b-form>
       </b-col>
 
       <b-col>
-        <b-table head-variant="dark" striped hover :items="drugs" :fields="fields" sticky-header="400px">
+        <b-table head-variant="outline-hub" striped hover :items="drugs" :fields="fields" sticky-header="400px">
             <template #cell(actions)="row">
-                <b-button variant="outline-info" v-if="row.item" size="sm" class="mr-1">
+                <b-button variant="outline-hub" v-if="row.item" size="sm" class="mr-1">
                     Reserve
                 </b-button>
             </template>

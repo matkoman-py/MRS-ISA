@@ -21,14 +21,14 @@
                                         {{employee.type}}
                                     </h6>
                                     <p class="proile-rating">RANKING : <span>8/10</span></p>
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#about" role="tab" aria-controls="home" aria-selected="true">About</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#schedule" role="tab" aria-controls="profile" aria-selected="false">Work schedule</a>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -97,7 +97,7 @@
                                                 ></b-form-input>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6">
                                                 <label>Password</label>
                                             </div>
@@ -126,7 +126,7 @@
                                                 required
                                                 ></b-form-input>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -170,11 +170,11 @@
                                         
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <b-button class="dugme" type="button" variant="secondary" :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
+                                                <b-button class="dugme" type="button" variant="outline-hub" :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
                                             </div>
                                             <div class="col-md-6">
                                                 
-                                                <b-button class="dugme" type="submit" variant="primary" :disabled="editEnabled">Save info</b-button>
+                                                <b-button class="dugme" type="submit" variant="outline-hub" :disabled="editEnabled">Save info</b-button>
                                             </div>
                                             
                                         </div> 
@@ -280,9 +280,9 @@ export default {
         },
         handleSubmit: function(event){
             event.preventDefault();
-            if(!this.validatePassword()){
-                    return;
-            }
+            // if(!this.validatePassword()){
+            //         return;
+            // }
             this.name = this.employee.name;
             this.editEnabled = true;
             this.$http.put("http://localhost:8081/employees", this.employee)

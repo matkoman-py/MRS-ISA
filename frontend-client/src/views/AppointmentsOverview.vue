@@ -5,7 +5,7 @@
         
     </div>
     <div>
-        <b-button variant="success" @click="showForm">Create new appointment</b-button>
+        <b-button variant="outline-hub" @click="showForm">Create new appointment</b-button>
     </div>
 
     <b-modal id="my-modal" title="Create new appointment" hide-footer>
@@ -68,8 +68,8 @@
             </b-form-input>
         </b-form-group>
 
-        <b-button type="button" variant="primary" @click="addNewApointment">Save</b-button>
-        <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
+        <b-button type="button" variant="outline-hub" @click="addNewApointment">Save</b-button>
+        <b-button type="button" variant="outline-hub" @click="handleClose" >Cancel</b-button>
 
       </b-form>
     </b-modal>

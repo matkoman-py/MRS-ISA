@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
@@ -57,6 +58,9 @@ public class EmployeeService {
 	
 	@Autowired
 	private PharmacistAppointmentRepository pharmacistAppointmentRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 		
 	public Collection<DermatologistDto> searchDermatologist(SearchDermatologistDto searchDermatologistDto) {
 
@@ -135,7 +139,7 @@ public class EmployeeService {
 			
 			derm.setLocation(locationRepository.save(employee.getLocation()));
 			derm.setName(employee.getName());
-			derm.setPassword(employee.getPassword());
+			derm.setPassword(passwordEncoder.encode(employee.getPassword()));
 			derm.setPhoneNumber(employee.getPhoneNumber());
 			derm.setSurname(employee.getSurname());
 			dermatologistRepository.save(derm);
@@ -150,7 +154,7 @@ public class EmployeeService {
 			pharm.setEmail(employee.getEmail());
 			pharm.setLocation(locationRepository.save(employee.getLocation()));
 			pharm.setName(employee.getName());
-			pharm.setPassword(employee.getPassword());
+			pharm.setPassword(passwordEncoder.encode(employee.getPassword()));
 			pharm.setPhoneNumber(employee.getPhoneNumber());
 			pharm.setSurname(employee.getSurname());
 			pharmacistRepository.save(pharm);

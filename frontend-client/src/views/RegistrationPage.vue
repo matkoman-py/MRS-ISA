@@ -54,7 +54,7 @@
                             <b-popover target="input6" id="pop" triggers="a" :placement="placement">
                                 <p>
                                     <b-icon style="position: relative; top:8px" class="h4" name="icon"
-                                        icon="exclamation-square-fill" variant="warning"></b-icon> Phone number must
+                                        icon="exclamation-square-fill" variant="outline-hub"></b-icon> Phone number must
                                     have at least 6 digits.
                                 </p>
                             </b-popover>
@@ -89,7 +89,7 @@
                     </b-col>
                 </b-form-row>
 
-                <b-button type="submit" variant="primary">Submit</b-button>
+                <b-button type="submit" variant="outline-hub">Submit</b-button>
                 <br>
                 <br>
             </b-form>

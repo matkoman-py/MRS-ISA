@@ -16,7 +16,7 @@
                 <b-form-timepicker v-model="inputValues.time" locale="en" required>
                 </b-form-timepicker>
             </b-form-group>
-            <b-button type="submit" variant="primary">Search</b-button>
+            <b-button type="submit" variant="outline-hub">Search</b-button>
         </b-form>
         <br>
         <h1 v-if="searched == 1 & drugstores.length == 0">Sorry, there are no available pharmacists at this time.</h1>

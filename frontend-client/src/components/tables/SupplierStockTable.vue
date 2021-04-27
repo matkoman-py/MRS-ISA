@@ -3,7 +3,6 @@
         <b-container class="mt-3">
             <b-row>
                 <b-col cols="4">
-
                     <supplier-stock-search :perPage="perPage" :currentPage="currentPage"
                         v-on:success-search-results="data => supplierStocks = data" ref="supplierStockSearch">
                     </supplier-stock-search>

@@ -20,13 +20,13 @@
         </b-row>
         <b-row style="margin-top:140px">
             <b-col>
-                <b-button variant="info">Reserve drug</b-button>
+                <b-button variant="outline-hub">Reserve drug</b-button>
             </b-col>
             <b-col>
-                <b-button variant="info" @click="showAppointmentModal">New appointment</b-button>
+                <b-button variant="outline-hub" @click="showAppointmentModal">New appointment</b-button>
             </b-col>
             <b-col>
-                <b-button variant="success" @click="endAppointment">End appointment</b-button>
+                <b-button variant="outline-hub" @click="endAppointment">End appointment</b-button>
             </b-col>
         </b-row>
         
@@ -68,8 +68,8 @@
                     </b-form-input>
                 </b-form-group>
 
-                <b-button type="button" variant="primary" @click="addNewApointment">Save</b-button>
-                <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
+                <b-button type="button" variant="outline-hub" @click="addNewApointment">Save</b-button>
+                <b-button type="button" variant="outline-hub" @click="handleClose" >Cancel</b-button>
 
             </b-form>
         </b-modal>

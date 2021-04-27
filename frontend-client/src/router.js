@@ -146,7 +146,7 @@ const routes = [
         component: PharmDermProfile
     },
     {
-        path: '/patient/:id',
+        path: '/patient/',
         name: "PatientProfile",
         component: PatientProfile 
     },

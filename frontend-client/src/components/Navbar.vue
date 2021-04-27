@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="sm" type="light" variant="light">
+  <b-navbar toggleable="sm" type="light" variant="outline-hub">
     <b-navbar-nav>
       <b-navbar-brand>
         <router-link to="/">
@@ -29,8 +29,6 @@
                   </b-navbar-brand>
                 </template>
                 
-                 <b-nav-item-dropdown text="CRUD" right v-if="!$helpers.isObjectEmpty(user) && role == 'SystemAdmin'" class="nav-dropdown link-font">
-                  <b-dropdown-item  v-for="route in userSpecificRoutes['SystemAdmin']" :key="route.name">
 
             <template v-if="!$helpers.isObjectEmpty(user) && role == 'Supplier'">
               <b-navbar-brand v-for="route in userSpecificRoutes['Supplier']" :key="route.name" tag="h3" class="nav-link">
@@ -64,6 +62,7 @@
               <template v-else>
                 <b-navbar-brand tag="h3" class="nav-link">
                   <router-link v-if="role == 'Dermatologist' || role == 'Pharmacist'" to="/pharm-derm-profile">{{email}}</router-link>
+                  <router-link v-else-if="role == 'Patient'" to="/patient">{{email}}</router-link>
                   <router-link v-else to="/">{{email}}</router-link>
                   
                 </b-navbar-brand> 

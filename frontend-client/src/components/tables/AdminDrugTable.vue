@@ -3,7 +3,7 @@
     <b-container>
         <b-table id="drug-table" striped hover :items="drugs" :fields="fields">
             <template #cell(actions)="row">
-                <b-button size="sm" @click="showEditModal(row.item, $event.target)" class="mr-1" variant="outline-hub">
+                <b-button size="sm"  @click="showEditModal(row.item, $event.target)" class="mr-1" variant="outline-hub">
                     Edit
                 </b-button>
                 <b-button size="sm" @click="showDeleteModal(row.item, $event.target)" class="mr-1" variant="outline-hub">

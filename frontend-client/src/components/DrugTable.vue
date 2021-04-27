@@ -1,67 +1,77 @@
 <template>
 
   <b-container>
-    <b-row>
-      <b-col>
-        <b-form @submit="searchDrugs">
-          <b-form-group id="input-group-1" label="Drug name:" label-for="input-1">
-            <b-form-input id="input-1" v-model="searchForm.name" type="text" placeholder="Enter drug name">
-            </b-form-input>
-          </b-form-group>
+    <b-row class="mt-3">
+      <b-col cols="4">
+        <b-card>
+          <h3>Search</h3>
+          <b-form @submit="searchDrugs">
+            <b-form-group id="input-group-1" label="Drug name:" label-for="input-1">
+              <b-form-input id="input-1" v-model="searchForm.name" type="text" placeholder="Enter drug name">
+              </b-form-input>
+            </b-form-group>
 
-          <b-form-group id="input-group-3" label="Drug type:" label-for="input-3">
-            <b-form-select id="input-3" v-model="searchForm.type" placeholder="Choose a drug type"
-              :options="drugTypeOptions">
-            </b-form-select>
-          </b-form-group>
+            <b-form-group id="input-group-3" label="Drug type:" label-for="input-3">
+              <b-form-select id="input-3" v-model="searchForm.type" placeholder="Choose a drug type"
+                :options="drugTypeOptions">
+              </b-form-select>
+            </b-form-group>
 
-          <b-form-group id="input-group-1" label="Drug form:" label-for="input-1">
-            <b-form-input id="input-1" v-model="searchForm.form" type="text" placeholder="Enter a drug form">
-            </b-form-input>
-          </b-form-group>
+            <b-form-group id="input-group-1" label="Drug form:" label-for="input-1">
+              <b-form-input id="input-1" v-model="searchForm.form" type="text" placeholder="Enter a drug form">
+              </b-form-input>
+            </b-form-group>
 
-          <b-form-group id="input-group-3" label="Drug manufacturer:" label-for="input-3">
-            <b-form-select id="input-3" v-model="searchForm.manufacturerId" :options="manufacturerOptions">
-            </b-form-select>
-          </b-form-group>
+            <b-form-group id="input-group-3" label="Drug manufacturer:" label-for="input-3">
+              <b-form-select id="input-3" v-model="searchForm.manufacturerId" :options="manufacturerOptions">
+              </b-form-select>
+            </b-form-group>
 
-          <b-form-group id="input-group-3" label="Receipt needed:" label-for="input-3">
-            <b-form-select id="input-3" v-model="searchForm.receipt" :options="receiptOptions">
-            </b-form-select>
-          </b-form-group>
+            <b-form-group id="input-group-3" label="Receipt needed:" label-for="input-3">
+              <b-form-select id="input-3" v-model="searchForm.receipt" :options="receiptOptions">
+              </b-form-select>
+            </b-form-group>
 
-          <b-button type="submit" variant="primary">Submit</b-button>
-          <br>
-          <br>
-        </b-form>
+            <b-button type="submit" variant="outline-hub">Submit</b-button>
+            <br>
+            <br>
+          </b-form>
+        </b-card>
       </b-col>
 
-      <b-col>
-        <b-table head-variant="dark" striped hover :fields="fields" :items="drugs" sticky-header="400px">
-          <template #cell(actions)="row">
-            <b-button variant="outline-info" v-if="row.item" size="sm"
-              @click="getDrugstores(row.item, row.index, $event.target)" class="mr-1">
-              Reserve
-            </b-button>
-          </template>
-        </b-table>
-
-        <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores"></drug-reservation>
-        <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
-
-        <h1 v-if="drugs.length == 0"> There are no drugs that fit the search parameters</h1>
+      <b-col cols="8">
+        <b-card>
+          <b-table head-variant="outline-hub" striped hover :fields="fields" :items="drugs" sticky-header="400px">
+            <template #cell(actions)="row">
+              <b-button variant="outline-hub" v-if="row.item" size="sm"
+                @click="getDrugstores(row.item, row.index, $event.target)" class="mr-1">
+                Reserve
+              </b-button>
+            </template>
+          </b-table>
+          <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
+        </b-card>
+        <b-card v-if="reserved" class="mt-3">
+          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores">
+          </drug-reservation>
+          <h1 v-if="drugs.length == 0"> There are no drugs that fit the search parameters</h1>
+        </b-card>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import {
+    mapState
+  } from 'vuex'
   import DrugReservation from "../components/DrugReservation"
-  
+
   export default {
     name: "DrugTable",
-    components: {DrugReservation},
+    components: {
+      DrugReservation
+    },
     computed: {
       ...mapState({
         user: state => state.userModule.loggedInUser,
@@ -83,7 +93,7 @@
     },
     data: function () {
       return {
-        reserved : 0,
+        reserved: 0,
         drugstores: [],
         searchForm: {
           name: '',
@@ -106,12 +116,6 @@
           },
           {
             key: "manufacturer"
-          },
-          {
-            key: "substitutions"
-          },
-          {
-            key: "ingredients"
           },
           {
             key: 'actions',
@@ -146,33 +150,31 @@
     },
     methods: {
       getDrugstores: function (data) {
-        if(this.user == null) {
+        if (this.user == null) {
           alert("You must be logged in to reserve a drug!");
           return;
         }
-        //alert(this.user.id);
-        //alert(data.id);
         this.selectedDrug = {
-            id: data.id,
-            name: data.name,
-            type: data.type
+          id: data.id,
+          name: data.name,
+          type: data.type
         }
         this.reserved = 1;
-        this.$http.get('http://localhost:8081/drugstores/reserve',{
-          params:{
-            drugId: data.id
-          }})
-        .then(response => {
-          this.drugstores = response.data.map(stock => 
-          ({
-              id: stock.drugstore.id,
-              name: stock.drugstore.name,
-              address: stock.drugstore.location.address,
-              city: stock.drugstore.location.city,
-              rating: stock.drugstore.averageRating
+        this.$http.get('http://localhost:8081/drugstores/reserve', {
+            params: {
+              drugId: data.id
             }
-          ));
-        })
+          })
+          .then(response => {
+            this.drugstores = response.data.map(stock =>
+              ({
+                id: stock.drugstore.id,
+                name: stock.drugstore.name,
+                address: stock.drugstore.location.address,
+                city: stock.drugstore.location.city,
+                rating: stock.drugstore.averageRating
+              }));
+          })
       },
       searchDrugs: function () {
         this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));

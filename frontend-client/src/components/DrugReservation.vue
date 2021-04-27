@@ -5,7 +5,7 @@
     <b-table head-variant="dark" striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
       :items="drugstores">
       <template #cell(actions)="row">
-        <b-button variant="outline-info" v-if="row.item" size="sm"
+        <b-button variant="outline-hub" v-if="row.item" size="sm"
           @click="showModal(row.item, row.index, $event.target)" class="mr-1">
           Choose pharmacy
         </b-button>
@@ -17,7 +17,7 @@
       <b-form @submit="makeReservation">
         <b-form-datepicker id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
         <br>
-        <b-button :disabled="date == ''" type="submit" variant="primary">Save</b-button>
+        <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
       </b-form>
     </b-modal>
   </b-container>

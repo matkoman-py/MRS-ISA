@@ -3,10 +3,10 @@
     <b-container>
         <b-table id="drugstore-table" striped hover :items="drugstores" :fields="fields">
             <template #cell(actions)="row">
-                <b-button size="sm" @click="showEditModal(row.item, $event.target)" class="mr-1">
+                <b-button size="sm" variant="outline-hub" @click="showEditModal(row.item, $event.target)" class="mr-1">
                     Edit
                 </b-button>
-                <b-button size="sm" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
+                <b-button size="sm" variant="outline-hub" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
                     Delete
                 </b-button>
             </template>
