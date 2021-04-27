@@ -10,21 +10,26 @@
       ></b-form-input>
     </b-form-group>
 
-    <b-form-group label="Drug Type:" label-for="drug-type-select">
-        <b-form-select id="drug-type-select" 
-                        v-model="form.type"
-                        :options="drugTypeOptions"
-                        :required="form.type == null"></b-form-select>
-    </b-form-group>
-
-    <b-form-group label="Form:" label-for="form-input">
-      <b-form-input
-        id="form-input"
-        v-model="form.form"
-        placeholder="Form name"
-        required
-      ></b-form-input>
-    </b-form-group>
+    <b-form-row>
+      <b-col>
+        <b-form-group label="Drug Type:" label-for="drug-type-select">
+          <b-form-select id="drug-type-select" 
+                          v-model="form.type"
+                          :options="drugTypeOptions"
+                          :required="form.type == null"></b-form-select>
+        </b-form-group>
+      </b-col>
+      <b-col>
+        <b-form-group label="Form:" label-for="form-input">
+          <b-form-input
+            id="form-input"
+            v-model="form.form"
+            placeholder="Form name"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </b-col>
+    </b-form-row>
 
     <b-form-group label="Manufacturer:" label-for="manufacturer-select">
         <b-form-select id="manufacturer-select" 
@@ -44,33 +49,40 @@
       ></b-form-textarea>
     </b-form-group>
 
-    <b-form-group label="Receipt:" label-for="receipt-select">
-        <b-form-select id="receipt-select"
-                        v-model="form.receipt"
-                        :options="receiptOptions"
-                        ></b-form-select>
-    </b-form-group>
+    <b-form-row>
+      <b-col>
+          <b-form-group label="Receipt:" label-for="receipt-select">
+            <b-form-select id="receipt-select"
+                            v-model="form.receipt"
+                            :options="receiptOptions"
+                            ></b-form-select>
+        </b-form-group>
+      </b-col>
+      <b-col>
+        <b-form-group label="Points:" label-for="point-input">
+          <b-form-input
+            id="point-input"
+            v-model="form.point"
+            placeholder="Number of points"
+            type="number"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </b-col>
+    </b-form-row>
 
-    <b-form-group label="Points:" label-for="point-input">
-      <b-form-input
-        id="point-input"
-        v-model="form.point"
-        placeholder="Number of points"
-        type="number"
-        required
-      ></b-form-input>
-    </b-form-group>
-  
     <searchable-tags labelName="Ingredients"
-                      :updateValue="(data) => form.ingredients = data"
-                      :data="ingredients"
-                      ref="ingrediants-tags"
+                      :form="form"
+                      :options="ingredients"
+                      type="ingredients"
                       >
     </searchable-tags>
 
     <searchable-tags labelName="Substitutions"
-                      :updateValue="(data) => form.substitutions = data"
-                      :data="substitutions">
+                      :form="form"
+                      :options="substitutions"
+                      type="substitutions"
+                      >
     </searchable-tags>
   </b-form>
 </template>
@@ -109,7 +121,7 @@ export default {
         );
         this.manufacturerOptions.unshift({value: null, text: "Choose one"})
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     },
     getDrugTypes: function(){
       this.$http.get("http://localhost:8081/drug-types")
@@ -122,21 +134,21 @@ export default {
         );
         this.drugTypeOptions.unshift({value: null, text: "Choose one"})
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     },
     getIngredients: function(){
       this.$http.get("http://localhost:8081/ingredients")
       .then(response => {
         this.ingredients = response.data;
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     },
     getSubstitutionDrugs: function(){
       this.$http.get("http://localhost:8081/drugs")
       .then(response => {
         this.substitutions = response.data;
       })
-      .catch(error => console.log(error));
+      .catch(error => this.$toastr.e(error));
     }
   },
   mounted: function(){

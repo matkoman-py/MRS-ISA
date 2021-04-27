@@ -40,7 +40,6 @@ public class DrugController {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-
 	public ResponseEntity<Collection<Drug>> getDrugs(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size) {

@@ -79,6 +79,11 @@ INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b5
 --
 INSERT INTO public.users VALUES ('SystemAdmin', '2d2eacbf-fda8-4a50-aa05-be2be4fb2884', false, '', 'gvozden@karadjordjevic.com', 'Gvozden', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Karadjordjevic', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
+--
+-- Data for Name: Supplier;
+--
+INSERT INTO public.users VALUES ('Supplier', '4f3bgfza-fda8-4a50-aa05-be2be4fb2884', false, '', 'supplier@primer.com', 'Supplier', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Primer', '2b7933e9-6as3-463a-974b-ded43ad63843');
+
 
 --
 -- Data for Name: Drugstock;
@@ -146,8 +151,38 @@ INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '58
 INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a3', '58da0253-f5cf-4163-afdc-32f61d7471a3');
 
 --system admins
-INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '3a58b85f-23fa-4c1c-a2ac-23221875d6fa');
+INSERT INTO public.user_role VALUES ('2d2eacbf-fda8-4a50-aa05-be2be4fb2884', '3a58b85f-23fa-4c1c-a2ac-23221875d6fa');
 
+--suppliers
+INSERT INTO public.user_role VALUES ('4f3bgfza-fda8-4a50-aa05-be2be4fb2884', '122c0bad-e159-4896-bb10-6e8b69547e2f');
+
+
+
+--
+-- Data for Name: order-stock; 
+--
+INSERT INTO public.order_stock VALUES ('5d341148-a753-11eb-bcbc-0242ac130002', false, 10, 'd7d2d173-9f15-4bd2-979c-6933746f6be4');
+INSERT INTO public.order_stock VALUES ('82bd5b90-a753-11eb-bcbc-0242ac130002', false, 100, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49');
+
+INSERT INTO public.order_stock VALUES ('87ac4d96-a753-11eb-bcbc-0242ac130002', false, 100, 'd7d2d173-9f15-4bd2-979c-6933746f6be4');
+INSERT INTO public.order_stock VALUES ('8b941ec0-a753-11eb-bcbc-0242ac130002', false, 1000, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49');
+
+
+--
+-- Data for Name: drug-order; 
+--
+INSERT INTO public.drug_order VALUES ('c93555b4-a753-11eb-bcbc-0242ac130002', false, '2021-05-22', '12:00:00', 0, '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.drug_order VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', false, '2021-04-22', '12:00:00', 1, '2bas33e9-6523-463a-974b-ded43ad63843');
+
+--
+-- Data for Name: drug-order-stock; 
+--
+INSERT INTO public.drug_order_stock VALUES ('c93555b4-a753-11eb-bcbc-0242ac130002', '5d341148-a753-11eb-bcbc-0242ac130002');
+INSERT INTO public.drug_order_stock VALUES ('c93555b4-a753-11eb-bcbc-0242ac130002', '82bd5b90-a753-11eb-bcbc-0242ac130002');
+
+
+INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', '87ac4d96-a753-11eb-bcbc-0242ac130002');
+INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', '8b941ec0-a753-11eb-bcbc-0242ac130002');
 
 
 
