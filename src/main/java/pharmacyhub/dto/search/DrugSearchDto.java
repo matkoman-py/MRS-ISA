@@ -11,7 +11,7 @@ public class DrugSearchDto {
 	private String manufacturerId;
 	
 	private Boolean receipt;
-
+	
 	public String getName() {
 		return name;
 	}

@@ -45,7 +45,6 @@ public class PharmacistAppointmentService {
 		return pharmacistAppointmentRepository.findByPatientId(patientId);
 	}
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
-		//treba provera da li je dermatolog u datom periodu slobodan
 		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null));
 	}
 	
@@ -77,7 +76,9 @@ public class PharmacistAppointmentService {
 			
 			if(inputTime > workingFrom && inputTime < workingTo) {
 				if(!wantedDrugstores.contains(drugstoreRepository.findById(ph.getDrugstore().getId()).orElse(null))){
-					wantedDrugstores.add(drugstoreRepository.findById(ph.getDrugstore().getId()).orElse(null));
+					if(findPharmacists(ph.getDrugstore().getId(),pharmacistAppointmentDate,pharmacistAppointmentTime).size() > 0) {
+						wantedDrugstores.add(drugstoreRepository.findById(ph.getDrugstore().getId()).orElse(null));
+					}
 				}
 			}
 		}
@@ -90,10 +91,6 @@ public class PharmacistAppointmentService {
 		
 		pharmacistAppointmentRepository.findAll();
 		Time in = new Time(Integer.parseInt(pharmacistAppointmentTime.substring(0,2)),Integer.parseInt(pharmacistAppointmentTime.substring(3,5)),0);
-		//String hours = pharmacistAppointmentTime.substring(0,2);
-		//int inputTime = Integer.parseInt(hours) * 3600;
-		//String minutes = pharmacistAppointmentTime.substring(3,5);
-		//inputTime += Integer.parseInt(minutes) * 60;
 		long inputTime = in.getTime();
 		
 		for(Pharmacist ph:allPharmacists) {
@@ -101,13 +98,10 @@ public class PharmacistAppointmentService {
 			List<PharmacistAppointment> Appointments = pharmacistAppointmentRepository.findByPharmacistId(ph.getId());
 			for(PharmacistAppointment Appointment:Appointments) {
 				if(Appointment.getDate().toString().contains(pharmacistAppointmentDate)) {
+					
 					long busyFrom = Appointment.getTime().getTime();
-
 					long busyTo = busyFrom + Appointment.getDuration()*60000;
 					
-					System.out.println(inputTime);
-					System.out.println(busyFrom);
-					System.out.println(busyTo);
 					if(inputTime >= busyFrom && inputTime <= busyTo) {
 						free = false;
 					}
