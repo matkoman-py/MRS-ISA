@@ -5,9 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import pharmacyhub.domain.users.Dermatologist;
 
 @Entity
+@SQLDelete(sql = "UPDATE employment SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Employment extends BaseEntity {
 
 	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

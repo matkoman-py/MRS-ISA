@@ -3,25 +3,25 @@
         <b-modal id="my-modal" title="Your profile" hide-footer>
             <b-form @submit="onSubmit">
                 <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required">
-                    <b-form-input id="name-input" v-model="selected.name"></b-form-input>
+                    <b-form-input id="name-input" v-model="selected.name" disabled></b-form-input>
                 </b-form-group>
 
                 <b-form-group label="Surame" label-for="surname-input" invalid-feedback="Surname is required">
-                    <b-form-input id="surname-input" v-model="selected.surname"></b-form-input>
+                    <b-form-input id="surname-input" v-model="selected.surname" disabled></b-form-input>
                 </b-form-group>
 
                 <b-form-group label="E-mail" label-for="email-input" invalid-feedback="E-mail is required">
-                    <b-form-input id="email-input" type="email" v-model="selected.email"></b-form-input>
+                    <b-form-input id="email-input" type="email" v-model="selected.email" disabled></b-form-input>
                 </b-form-group>
 
                 <b-form-group label="Phone number" label-for="phonenumber-input"
                     invalid-feedback="Phone number is required">
-                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber"></b-form-input>
+                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber" disabled></b-form-input>
                 </b-form-group>
                 
-               <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
+               <!-- <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
                     :data="substitutions" v-model="selected.substitutions">
-                </searchable-tags>
+                </searchable-tags> -->
 
                 <b-button type="submit" variant="primary">Save</b-button>
                 <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
@@ -30,7 +30,7 @@
  
         <b-row>
             <b-col>
-                <b-table id="tabela_pacijenata" striped hover :items="patients" @row-clicked="showModal"></b-table>
+                <b-table id="tabela_pacijenata" striped hover :items="patients" ></b-table>
             </b-col>
         </b-row>
         <b-row align-h="center">
@@ -56,11 +56,11 @@
 </template>
 
 <script>
-    import SearchableTags from "../components/SearchableTags"
+    //import SearchableTags from "../components/SearchableTags"
 
     export default {
         components: {
-            SearchableTags
+            //SearchableTags
         },
         data: function () {
             return {

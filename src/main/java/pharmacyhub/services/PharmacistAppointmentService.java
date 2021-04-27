@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
@@ -25,6 +26,10 @@ import pharmacyhub.repositories.users.PharmacistRepository;
 
 @Service
 public class PharmacistAppointmentService {
+	
+	@Autowired 
+	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
+	
 	@Autowired 
 	private PharmacistAppointmentRepository pharmacistAppointmentRepository;
 	
@@ -41,11 +46,77 @@ public class PharmacistAppointmentService {
 	private UserNotificationService userNotificationService;
 	
     public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
-    	userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail());
+    	userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
 		return pharmacistAppointmentRepository.findByPatientId(patientId);
 	}
+    
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
-		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null));
+		
+		Date vreme = pharmacistAppointmentPatientDto.getDate();
+		vreme.setHours(pharmacistAppointmentPatientDto.getTime().getHours());
+		vreme.setMinutes(pharmacistAppointmentPatientDto.getTime().getMinutes());
+		long vremePocetak = vreme.getTime();
+		vreme.setMinutes(pharmacistAppointmentPatientDto.getTime().getMinutes()+pharmacistAppointmentPatientDto.getDuration());
+		long vremeKraj = vreme.getTime();
+		
+		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+		for(PharmacistAppointment pa : pharmacistAppointments) {
+			Date pVreme = pa.getDate();
+			pVreme.setHours(pa.getTime().getHours());
+			pVreme.setMinutes(pa.getTime().getMinutes());
+			long pvremePocetak = pVreme.getTime();
+			pVreme.setHours(pa.getTimeEnd().getHours());
+			pVreme.setMinutes(pa.getTimeEnd().getMinutes());
+			long pvremeKraj = pVreme.getTime();
+			
+			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
+				throw new Exception("Patient already has an appointment at that time.");
+			}
+			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
+				throw new Exception("Patient already has an appointment at that time.");
+			}
+		}
+		
+		
+		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistId(pharmacistAppointmentPatientDto.getPharmacistId());
+		for(PharmacistAppointment pa : pharmacistAppointmentsPharm) {
+			System.out.println(pa.getDate());
+			System.out.println(pa.getTime());
+			Date pVreme = pa.getDate();
+			pVreme.setHours(pa.getTime().getHours());
+			pVreme.setMinutes(pa.getTime().getMinutes());
+			long pvremePocetak = pVreme.getTime();
+			pVreme.setHours(pa.getTimeEnd().getHours());
+			pVreme.setMinutes(pa.getTimeEnd().getMinutes());
+			long pvremeKraj = pVreme.getTime();
+			
+			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
+				throw new Exception("Patient already has an appointment at that time.");
+			}
+			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
+				throw new Exception("Patient already has an appointment at that time.");
+			}
+		}
+		
+		
+		List<DermatologistAppointment> dermatologistAppointmentsPatient = dermatologistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+		for(DermatologistAppointment da : dermatologistAppointmentsPatient) {
+			Date pVreme = da.getDate();
+			pVreme.setHours(da.getTime().getHours());
+			pVreme.setMinutes(da.getTime().getMinutes());
+			long pvremePocetak = pVreme.getTime();
+			pVreme.setHours(da.getTimeEnd().getHours());
+			pVreme.setMinutes(da.getTimeEnd().getMinutes());
+			long pvremeKraj = pVreme.getTime();
+			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
+				throw new Exception("Patient already has an appointment at that time.");
+			}
+			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
+				throw new Exception("Patient already has an appointment at that time.");
+			}
+		}
+    	userNotificationService.sendReservationConfirmation(patientRepository.getById(pharmacistAppointmentPatientDto.getPatientId()).getEmail(), "pharmacist");
+		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null,false));
 	}
 	
 	public PharmacistAppointment findAppointment(String pharmacistAppointmentId) {
@@ -112,12 +183,32 @@ public class PharmacistAppointmentService {
 		return wantedPharmacist; 
   }
    
-  public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {
+	public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {
 		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
 		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
     
 		for(PharmacistAppointment appointment : allAppointments) {
 			if(appointment.getPharmacist().getId().equals(pharmacistId))
+				wantedAppontments.add(appointment);
+		}
+		return wantedAppontments;
+	}
+	
+	public PharmacistAppointment endAppointment(String appointmentId, String appointmentReport) {
+		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
+		da.setAppointmentReport(appointmentReport);
+		da.setProcessed(true);
+		pharmacistAppointmentRepository.save(da);
+		return da;
+	}
+  	
+	public List<PharmacistAppointment> findAllPharmacistAppointmentsDone(String pharmacistId) {
+		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
+		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
+
+		for(PharmacistAppointment appointment : allAppointments) {
+
+			if(appointment.getPharmacist().getId().equals(pharmacistId) && appointment.isProcessed())
 				wantedAppontments.add(appointment);
 		}
 		return wantedAppontments;

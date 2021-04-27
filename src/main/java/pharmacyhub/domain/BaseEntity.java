@@ -24,6 +24,14 @@ public class BaseEntity {
 		return id;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public void setId(String id) {
 		this.id = id;
 	}

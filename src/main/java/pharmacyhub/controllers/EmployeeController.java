@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -96,6 +97,11 @@ public class EmployeeController {
 	@GetMapping(path ="/drugstoreForId",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> findDrugstoreByEmployeeId(@RequestParam (value = "drugstoreAdminId") String drugstoreAdminId) throws Exception {
 		return new ResponseEntity<>(employeeService.findDrugstoreByDrugstoreAdminId(drugstoreAdminId), HttpStatus.OK);
+	}
+	
+	@DeleteMapping(path="/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deletePharmacist(@RequestParam (value = "pharmacistEmail") String pharmacistEmail) throws Exception {
+		return new ResponseEntity<>(employeeService.deletePharmacist(pharmacistEmail), HttpStatus.OK);
 	}
 
 }

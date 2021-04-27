@@ -1,5 +1,6 @@
 package pharmacyhub.domain.users;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -26,7 +27,7 @@ public class Dermatologist extends Employee {
 	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Employment> employements;
-
+	
 	public Dermatologist() {
 		super();
 	}
@@ -35,6 +36,7 @@ public class Dermatologist extends Employee {
 			Location location, String workingHoursFrom, String workingHoursTo) {
 		super(email, password, name, surname, phoneNumber, location, UserType.Dermatologist, true, "", workingHoursFrom,
 				workingHoursTo);
+		this.employements = new ArrayList<Employment>();
 	}
 
 	public List<Employment> getEmployements() {

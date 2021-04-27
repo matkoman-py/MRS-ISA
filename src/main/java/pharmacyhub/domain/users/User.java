@@ -20,8 +20,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import pharmacyhub.domain.BaseEntity;
 import pharmacyhub.domain.Location;
@@ -31,6 +35,7 @@ import pharmacyhub.domain.enums.UserType;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Where(clause = "deleted = false")
 public class User extends BaseEntity implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;
@@ -161,6 +166,7 @@ public class User extends BaseEntity implements UserDetails{
 		this.activationCode = activationCode;
 	}
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles;

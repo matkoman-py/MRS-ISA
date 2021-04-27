@@ -25,7 +25,7 @@ public class DermatologistAppointmentDto {
 		this.date = date;
 		this.time = time;
 		this.duration = duration;
-    this.price = price;
+		this.price = price;
 	}
   
 	public int getPrice() {

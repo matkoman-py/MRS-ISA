@@ -23,6 +23,9 @@ public class DrugPriceService {
 	@Autowired 
 	private DrugstoreRepository drugstoreRepository;
 	
+	@Autowired
+	private UserNotificationService userNotificationService;
+	
 	public List<DrugPrice> findAll() {
 		return drugPriceRepository.findAll();
 	}
@@ -32,6 +35,7 @@ public class DrugPriceService {
 	}
 
 	public DrugPrice savePromotion(CreateNewPriceForDrugDto drugPromotion) throws Exception {
+		userNotificationService.notifySubscribers(drugPromotion);
 		return drugPriceRepository.save(new DrugPrice(drugRepository.findByName(drugPromotion.getDrugName()), drugstoreRepository.findById(drugPromotion.getDrugStoreId()).orElse(null), drugPromotion.getPrice(), drugPromotion.getStartDate(), drugPromotion.getEndDate(), true));
 	}
 	

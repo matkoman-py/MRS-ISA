@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
@@ -14,7 +15,7 @@ import pharmacyhub.domain.enums.UserType;
 
 @Entity
 @DiscriminatorValue("Pharmacist")
-@SQLDelete(sql = "UPDATE drug_price SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
 public class Pharmacist extends Employee {
 
 	/**

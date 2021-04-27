@@ -7,8 +7,10 @@ import javax.transaction.Transactional;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Pharmacist;
 
-@Transactional
 public interface PharmacistRepository extends EmployeeRepository<Pharmacist> {	
 	List<Pharmacist> findByDrugstore(Drugstore drugstore);
+	@Transactional
 	void deleteByDrugstore(Drugstore drugstore);
+	@Transactional
+	void deleteByEmail(String email);
 }
