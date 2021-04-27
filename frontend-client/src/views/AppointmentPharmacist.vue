@@ -84,8 +84,12 @@ export default {
         passedId: String,
     },
     data: function () {
+            const now = new Date()
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            const minDate = new Date(today)
             return {
                 currentAppointment: {},
+                minDate:minDate,
                 inputValues: {
                     pharmacistId: '',
                     date: '',

@@ -1,56 +1,45 @@
 <template>
     <b-container>
-        <!-- <b-modal id="my-modal" title="Your profile" hide-footer>
-            <b-form @submit="onSubmit">
-                <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required">
-                    <b-form-input id="name-input" v-model="selected.name"></b-form-input>
+        <b-modal id="my-modal" title="Appointment" hide-footer>
+            <b-form >
+                <b-form-group label="Name" label-for="name-input">
+                    <b-form-input id="name-input"  v-model="selected.first_name" disabled></b-form-input>
                 </b-form-group>
 
-                <b-form-group label="Surame" label-for="surname-input" invalid-feedback="Surname is required">
-                    <b-form-input id="surname-input" v-model="selected.surname"></b-form-input>
+                <b-form-group label="Surname" label-for="surname-input">
+                    <b-form-input id="surname-input"  v-model="selected.last_name" disabled></b-form-input>
                 </b-form-group>
 
-                <b-form-group label="E-mail" label-for="email-input" invalid-feedback="E-mail is required">
-                    <b-form-input id="email-input" type="email" v-model="selected.email"></b-form-input>
+                <b-form-group label="Drugstore" label-for="email-input">
+                    <b-form-input id="email-input" type="email" v-model="selected.drugstore" disabled></b-form-input>
                 </b-form-group>
 
-                <b-form-group label="Phone number" label-for="phonenumber-input"
-                    invalid-feedback="Phone number is required">
-                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber"></b-form-input>
+                <b-form-group label="Start" label-for="phonenumber-input">
+                    <b-form-input id="phonenumber-input"  v-model="selected.start" disabled></b-form-input>
                 </b-form-group>
                 
-               <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
-                    :data="substitutions" v-model="selected.substitutions">
-                </searchable-tags>
+                <b-form-group label="Duration" label-for="duration-input">
+                    <b-form-input id="duration-input"  v-model="selected.duration" disabled></b-form-input>
+                </b-form-group>
 
-                <b-button type="submit" variant="primary">Save</b-button>
+                <b-form-group label="Appointment report" label-for="duration-input">
+                <textarea disabled id="diagnosis" v-model="selected.appointment_report" name="diagnosis" rows="10" cols="50" style="resize: none">
+
+                </textarea>
+                </b-form-group>
+                
+                
+                
                 <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
             </b-form>
-        </b-modal> -->
+        </b-modal>
  
         <b-row>
             <b-col>
-                <b-table id="tabela_pacijenata" striped hover :items="patients" :fields="fields"></b-table>
+                <b-table id="tabela_pacijenata" striped hover :items="patients" :fields="fields" @row-clicked="showModal"></b-table>
             </b-col>
         </b-row>
-        <!-- <b-row align-h="center">
-            <b-col sm="3" md="4" lg="4">
-                <div>
-                    <b-form @submit="search" v-if="show">
-                        <b-form-group id="input-group-2" label="Patient Name:" label-for="input-2">
-                            <b-form-input id="input-2" v-model="form.name" placeholder="Enter name"></b-form-input>
-                        </b-form-group>
-
-                        <b-form-group id="input-group-4" label="Patient Surname:" label-for="input-4">
-                            <b-form-input id="input-4" v-model="form.surname" placeholder="Enter surname">
-                            </b-form-input>
-                        </b-form-group>
-                        <b-button type="submit" variant="primary">Search</b-button>
-                    </b-form>
-
-                </div>
-            </b-col>
-        </b-row> -->
+        
 
     </b-container>
 </template>
@@ -70,7 +59,7 @@
         data: function () {
             return {
                 //substitutions: [],
-                //selected: {},
+                selected: {},
                 //modified: {},
                 patients: [],
                 fields: [
@@ -150,7 +139,7 @@
                                 start: currentEvent.date.substring(0, 10)+" "+currentEvent.time,
                                 duration:  currentEvent.duration,
                                 end: currentEvent.date.substring(0, 10)+" "+currentEvent.timeEnd,
-                               
+                                appointment_report: currentEvent.appointmentReport,
                             }));
                     })
                     .then(() => {
@@ -172,7 +161,7 @@
                                 start: currentEvent.date.substring(0, 10)+" "+currentEvent.time,
                                 duration:  currentEvent.duration,
                                 end: currentEvent.date.substring(0, 10)+" "+currentEvent.timeEnd,
-                               
+                                appointment_report: currentEvent.appointmentReport,
                             }));
                     })
                     .then(() => {
@@ -198,15 +187,16 @@
             //         })
             //         .catch(error => console.log(error));
             // },
-            // handleClose() {
-            //     this.$root.$emit('bv::hide::modal', 'my-modal');
-            // },
-            // showModal(item) {
-            //     this.$root.$emit('bv::show::modal', 'my-modal');
-            //     this.selected = JSON.parse(JSON.stringify(item));
-            //     this.modified = item;
-            //     this.getDrugs();
-            // },
+            handleClose() {
+                this.$root.$emit('bv::hide::modal', 'my-modal');
+            },
+            showModal(item) {
+                this.$root.$emit('bv::show::modal', 'my-modal');
+                this.selected = JSON.parse(JSON.stringify(item));
+                console.log(this.selected);
+                //this.modified = item;
+                //this.getDrugs();
+            },
             // getDrugs: function () {
             //     this.$http.get("http://localhost:8081/ingredients")
             //         .then(response => {

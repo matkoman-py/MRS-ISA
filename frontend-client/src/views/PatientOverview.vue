@@ -19,9 +19,9 @@
                     <b-form-input id="phonenumber-input" v-model="selected.phoneNumber" disabled></b-form-input>
                 </b-form-group>
                 
-               <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
+               <!-- <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
                     :data="substitutions" v-model="selected.substitutions">
-                </searchable-tags>
+                </searchable-tags> -->
 
                 <b-button type="submit" variant="primary">Save</b-button>
                 <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
@@ -56,11 +56,11 @@
 </template>
 
 <script>
-    import SearchableTags from "../components/SearchableTags"
+    //import SearchableTags from "../components/SearchableTags"
 
     export default {
         components: {
-            SearchableTags
+            //SearchableTags
         },
         data: function () {
             return {
