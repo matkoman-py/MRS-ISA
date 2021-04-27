@@ -95,7 +95,7 @@ INSERT INTO public.drugstock VALUES ('4', false, 25, 'a3ew071d-b38c-4014-9fa3-2e
 INSERT INTO public.drug_price VALUES ('0', false, '2021-01-22', true, 200, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.drug_price VALUES ('1', false, '2021-01-22', false, 300, '2021-01-22', 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.drug_price VALUES ('2', false, '2021-01-22', false, 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('3', false, '2021-01-25', false, 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('3', false, '2021-01-25', false, 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843');
 INSERT INTO public.drug_price VALUES ('4', false, '2021-01-22', false, 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
 --
@@ -143,6 +143,7 @@ INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac677a1', 'f3
 
 --drugstore admins
 INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '58da0253-f5cf-4163-afdc-32f61d7471a3');
+INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a3', '58da0253-f5cf-4163-afdc-32f61d7471a3');
 
 --system admins
 INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '3a58b85f-23fa-4c1c-a2ac-23221875d6fa');

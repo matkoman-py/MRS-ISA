@@ -1,5 +1,7 @@
 package pharmacyhub.services;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -9,11 +11,25 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.Subscription;
+import pharmacyhub.domain.users.User;
+import pharmacyhub.dto.CreateNewPriceForDrugDto;
+import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.SubscriptionRepository;
+import pharmacyhub.repositories.users.PatientRepository;
+
 @Service
 public class UserNotificationService {
 	
     @Autowired
 	private JavaMailSender javaMailSender;
+    
+    @Autowired
+	private DrugstoreRepository drugstoreRepository;
+    
+    @Autowired
+	private SubscriptionRepository subscriptionRepository;
 	
     @Async
 	public void sendActivationCode(String email, String activationCode) throws MessagingException {
@@ -61,5 +77,27 @@ public class UserNotificationService {
 		helper.setText(emailContent, true);
 
 		javaMailSender.send(message);	
+	}
+    
+    @Async
+	public void notifySubscribers(CreateNewPriceForDrugDto newPromotion) throws MessagingException {
+    	MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		Drugstore drugstore = drugstoreRepository.findById(newPromotion.getDrugStoreId()).orElse(null);
+		String emailContent = "There is a new promotion for drug: " + newPromotion.getDrugName() + " in '" + drugstore.getName() + "' drugstore!\n";
+		emailContent += "Hurry up, because this special offer is active from " + newPromotion.getStartDate() + " to " + newPromotion.getEndDate() + "!\n";
+		emailContent += "As you already know, you can find us at " + drugstore.getLocation().getAddress() + " in " + drugstore.getLocation().getCity() + ", " + drugstore.getLocation().getCountry() + ". Can't wait to see you!";
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setSubject("Sales in " + drugstore.getName() + "!");
+		helper.setText(emailContent, true);
+		
+		List<Subscription> subscriptions = subscriptionRepository.findByDrugstore(drugstore);
+		for (Subscription s : subscriptions) {
+			String patientEmail = s.getPatient().getEmail();
+			helper.setTo(patientEmail);
+			javaMailSender.send(message);
+		}
+		
 	}
 }

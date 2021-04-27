@@ -9,7 +9,8 @@
                  <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
                  <p style="margin:20px"><b>Average rating</b>: {{drugstore.averageRating}}</p>
                  <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
-                 <b-button variant="outline-primary" style="margin:20px">Subscribe</b-button>
+                 <b-button variant="outline-primary" style="margin:20px" v-if="subscribed == false" @click="subscribe">Subscribe</b-button>
+                 <b-button variant="outline-primary" style="margin:20px" v-if="subscribed == true" @click="unsubscribe">Unsubscribe</b-button>
                 </div>
             </b-col>
         </b-row>
@@ -24,7 +25,8 @@
                     <b-table :items="dermatologists">
 
                     </b-table>
-                    <p v-if="dermatologists.length == 0"><b>There are no dermatologists employed in this drugstore.</b></p>
+                    
+                    <p v-if="dermatologists.length == 0">There are no dermatologists employed in this drugstore.</p>
                 </div>
             </b-col>
 
@@ -32,7 +34,7 @@
                 <div style="margin-top:20px; margin-left:20px; margin-right:20px; border-style:solid;">
                     <b-table :items="pharmacists">
                     </b-table>
-                    <p v-if="pharmacists.length == 0"><b>There are no pharmacists employed in this drugstore.</b></p>
+                    <p v-if="pharmacists.length == 0">There are no pharmacists employed in this drugstore.</p>
                 </div>
             </b-col>
         </b-row>
@@ -66,15 +68,20 @@
 
 <script>
 import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable"
-
+import { mapState } from 'vuex'
 export default {
+    computed: {
+      ...mapState({
+        user: state => state.userModule.loggedInUser,
+      }),
+    },
     components:{
         DrugInDrugstoreTable,
-    },
-    
+    },  
     data: function() {
       return {
         currentDrugstoreId: '',
+        subscribed: false,
         drugstore: {},
         dermatologists: [],
         pharmacists: []
@@ -83,12 +90,24 @@ export default {
     methods: {
         getDrugstoreId() {
         this.currentDrugstoreId =  this.$route.path.slice(12, this.$route.path.length);
-    },
+        },
+        checkSubscription() {
+            this.$http.get("http://localhost:8081/subscription/check", {
+              params: {
+                patientId: this.user.id,
+                drugstoreId : this.drugstore.id
+              }
+            })
+            .then(response => {
+            this.subscribed = response.data;
+            })
+        },
         getCurrentDrugstore() {
             this.$http.get('http://localhost:8081/drugstores/' + this.currentDrugstoreId, {
                     })
                     .then(response => {
                         this.drugstore = response.data;
+                        this.checkSubscription();
                     })
                     .catch(error => console.log(error));
         }, getAllDermatologists() {
@@ -128,6 +147,24 @@ export default {
     }, getAllEmployees() {
             this.getAllDermatologists();
             this.getAllPharmacists();
+    }, subscribe() {
+        this.$http.post("http://localhost:8081/subscription/subscribe", 
+            {
+                patientId: this.user.id,
+                drugstoreId: this.drugstore.id
+            })
+            .then(response => {
+            this.subscribed = response.data;
+            })
+    }, unsubscribe() {
+        this.$http.post("http://localhost:8081/subscription/unsubscribe", 
+            {
+                patientId: this.user.id,
+                drugstoreId: this.drugstore.id
+            })
+            .then(response => {
+            this.subscribed = response.data;
+            })
     }
     },
     mounted: function(){

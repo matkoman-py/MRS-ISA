@@ -2,7 +2,7 @@
   <b-container>
     <h1> Employees in drugstore </h1>
     <div style="margin:40px; border-style:solid;">
-        <b-table striped hover :items="employees"></b-table>
+        <b-table striped hover :items="employees" selectable select-mode='single' @row-selected="onRowSelected"></b-table>
         <p v-if="employees.length == 0"> There are no employees for this criteria.</p>
     </div>
     <div>
@@ -12,7 +12,7 @@
         <router-link to="/addDermatologistForm">
                 <b-button style="margin-left:50px; margin-right:50px" variant="success">Add dermatologist</b-button>
         </router-link>
-        <b-button style="margin-left:50px" variant="danger">Delete employee</b-button>
+        <b-button style="margin-left:50px" variant="danger" @click="showModal">Delete employee</b-button>
     </div>
     <b-container style="margin:15px">
         <b-row align-h="center">
@@ -36,6 +36,20 @@
             </b-form>
         </b-row>
     </b-container>
+
+
+
+    <b-modal id="deleteConfirmation" title="Warning! This emoloyee is going to be removed from this drugstore!" align="center" hide-footer>
+      <b-form>
+        <b-row align-h="center">
+        <b-label> Are you sure that you want to delete this employee?</b-label>
+        </b-row>
+        <b-row align-h="center">
+        <b-button style="margin:20px" type="button" variant="primary" @click="deleteEmployee">Continue</b-button>
+        <b-button style="margin:20px" type="button" variant="primary" @click="cancel" >Cancel</b-button>
+        </b-row>
+      </b-form>
+    </b-modal>
   </b-container>
 </template>
 
@@ -49,6 +63,8 @@
     },
     data: function() {
       return {
+        drugstoreId: '',
+        selectedEmployee:{},
         employees: [],
         searchText: '',
         selected: 'All_Employees',
@@ -62,10 +78,21 @@
       }
     },
     methods: {
+        getDrugstore() {
+            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+              params: {
+                drugstoreAdminId: this.user.id
+              }
+              })
+              .then(response => {
+              this.drugstoreId = response.data.id;
+              })
+              .catch(error => console.log(error));
+        },
         getEmployees : function(){
             this.$http.get('http://localhost:8081/employees', {
               params: {
-                drugstoreAdminId: this.user.id//"2b7933e9-6as3-463a-974b-ded43ad63843"
+                drugstoreAdminId: this.user.id
             }
             })
             .then(response => {
@@ -89,7 +116,7 @@
         employeesSearchResult : function() {
             this.$http.get('http://localhost:8081/employees/search', {
               params: {
-                drugstoreAdminId: this.user.id,//"2b7933e9-6as3-463a-974b-ded43ad63843",
+                drugstoreAdminId: this.user.id,
                 searchText: this.searchText,
                 minRate: this.filterRateMin,
                 maxRate: this.filterRateMax,
@@ -125,8 +152,40 @@
             this.filterRateMin = 0
             this.filterRateMax = 10
         },
+        showModal(event) {
+          event.preventDefault()
+          if (this.selectedEmployee.length == 0) {
+            alert("You need to select employee that you want to delete.")
+          } else {
+            this.$root.$emit('bv::show::modal', 'deleteConfirmation');
+          }
+        },
+        onRowSelected(item) {
+            this.selectedEmployee = item
+        }, cancel() {
+            this.$root.$emit('bv::hide::modal', 'deleteConfirmation');
+        }, deleteEmployee(event) {
+            event.preventDefault();
+            if (this.selectedEmployee[0].type == 'Pharmacist') {
+              this.$http.delete("http://localhost:8081/employees/delete/", {params :{ pharmacistEmail: this.selectedEmployee[0].email}})
+              .then(() => {
+                alert("Pharmacist is succesfully removed from drugstore!");
+                this.getEmployees();
+              })
+              .catch(error => console.log(error));
+            } else {
+              this.$http.delete("http://localhost:8081/employment/delete", {data : { dermatologistEmail: this.selectedEmployee[0].email, drugstoreId: this.drugstoreId }})
+              .then(() => {
+                alert("Dermatologist is succesfully removed from drugstore!");
+                this.getEmployees();
+              })
+              .catch(error => console.log(error));
+            }
+            this.$root.$emit('bv::hide::modal', 'deleteConfirmation');
+        }
     },
     mounted: function(){
+        this.getDrugstore();
         this.getEmployees();
     }
   }

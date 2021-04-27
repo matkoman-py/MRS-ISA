@@ -10,10 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Patient;
 
 @Entity
+@SQLDelete(sql = "UPDATE dermatologist_appointment SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class DermatologistAppointment extends BaseEntity{
 	
 	@ManyToOne
@@ -53,7 +58,6 @@ public class DermatologistAppointment extends BaseEntity{
 		this.appointmentReport = appointmentReport;
 		this.price = price;
 		this.timeEnd = new Time(time.getTime()+(60000*this.duration));
-		//System.out.println(this.timeEnd);
 	}
 
 	public int getPrice() {

@@ -10,11 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 
 @Entity
+@SQLDelete(sql = "UPDATE pharmacist_appointment SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class PharmacistAppointment extends BaseEntity{
 	
 	@ManyToOne
