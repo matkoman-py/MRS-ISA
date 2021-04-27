@@ -16,16 +16,21 @@ import DrugStockOverview from "./views/DrugStockOverview"
 import AppointmentsOverview from "./views/AppointmentsOverview"
 import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
 import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
-
 import AppointmentDermatologist from "./views/AppointmentDermatologist"
 import AppointmentPharmacist from "./views/AppointmentPharmacist"
 import PharmDermProfile from "./views/PharmDermProfile"
-
+import Schedule from "./views/Schedule"
+import SchedulePharmacist from "./views/SchedulePharmacist"
 import DrugstoreView from "./views/DrugstoreView"
 import DermatologistAppointments from "./views/DermatologistAppointments"
 import PatientProfile from "./views/PatientProfile"
 import AdminDrugTable from "./components/tables/AdminDrugTable"
 import AdminUserTable from "./components/tables/AdminUserTable"
+import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment"
+import PharmacistOverview from "./views/PharmacistOverview"
+import DermatologistOverview from "./views/DermatologistOverview"
+import TreatedPatients from "./views/TreatedPatients"
+import LoginPage from "./views/LoginPage"
 
 Vue.use(VueRouter)
 
@@ -113,7 +118,8 @@ const routes = [
     {
         path: '/appointment-dermatologist',
         name: "AppointmentDermatologist",
-        component: AppointmentDermatologist
+        component: AppointmentDermatologist,
+        props: true
     },
     {
         path: '/drugstores/:id',
@@ -128,7 +134,8 @@ const routes = [
     {
         path: '/appointment-pharmacist',
         name: "AppointmentPharmacist",
-        component: AppointmentPharmacist
+        component: AppointmentPharmacist,
+        props: true
     },
     {
         path: '/pharm-derm-profile',
@@ -149,6 +156,41 @@ const routes = [
         path: '/admin-user-table',
         name: "AdminUserTable",
         component: AdminUserTable
+    },
+    {
+        path: '/login',
+        name: "LoginPage",
+        component: LoginPage
+    },
+    {
+        path: '/schedule-appointment',
+        name: "ScheduleAppointment",
+        component: SchedulePharmacistAppointment
+    },
+    {
+        path: '/schedule',
+        name: "Schedule",
+        component: Schedule
+    },
+    {
+        path: '/schedule-pharm',
+        name: "SchedulePharmacist",
+        component: SchedulePharmacist
+    },
+    {
+        path: '/pharmacist-overview',
+        name: "PharmacistOverview",
+        component: PharmacistOverview
+    },
+    {
+        path: '/dermatologist-overview',
+        name: "DermatologistOverview",
+        component: DermatologistOverview
+    },
+    {
+        path: '/treated',
+        name: "Treated",
+        component: TreatedPatients
     },
 ];
 

@@ -236,8 +236,20 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from 'vuex'
 export default {
+    computed:{
+        validationState: function(){
+            if(this.editEnabled)
+                return null
+            return this.employee.password == this.validationPassword;
+        },
+        ...mapState({
+        user: state => state.userModule.loggedInUser,
+        //email: state => state.userModule.loggedInUser.email,
+        //role: state => state.userModule.loggedInUser.type
+        }),
+    },
     data: function(){
         return{
             employee: {},
@@ -249,9 +261,9 @@ export default {
     methods: {
         getEmployee : function(){
             
-            axios.get('http://localhost:8081/employees/id', {
+            this.$http.get('http://localhost:8081/employees/id', {
                         params: {
-                            employeeId: "68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
+                            employeeId: this.user.id //"68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
                         }
                     })
                     .then(response => {
@@ -273,7 +285,7 @@ export default {
             }
             this.name = this.employee.name;
             this.editEnabled = true;
-            axios.put("http://localhost:8081/employees", this.employee)
+            this.$http.put("http://localhost:8081/employees", this.employee)
                 .then(response => {
                 console.log(response);
                 console.log("ovde");
@@ -288,13 +300,7 @@ export default {
         console.log(this.employee);
         this.getEmployee();
     },
-    computed:{
-        validationState: function(){
-            if(this.editEnabled)
-                return null
-            return this.employee.password == this.validationPassword;
-        },
-    }
+    
 }
 </script>
 
@@ -305,7 +311,7 @@ export default {
     margin-top: 3%;
     margin-bottom: 3%;
     border-radius: 0.5rem;
-    background: rgb(188, 212, 231);
+    border-style: solid;
 }
 .profile-img{
     text-align: center;

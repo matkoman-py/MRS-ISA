@@ -1,17 +1,20 @@
 package pharmacyhub.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
+import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
+import pharmacyhub.repositories.specifications.drugstores.DrugstoreSpecifications;
 import pharmacyhub.repositories.users.DrugstoreAdminRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
@@ -77,24 +80,19 @@ public class DrugstoreService {
 		drugstoreRepository.delete(drugstoreToDelete);
 	}
 
-	public List<Drugstore> returnDrugStores(String drugStoreName,String drugStoreCity,String drugStoreCountry) {
+	public List<Drugstore> returnDrugStores(DrugstoreSearchDto drugstoreSearchDto, Pageable pageable) {
 		
-		List<Drugstore> allDrugStores = findAll();
-		List<Drugstore> wantedDrugStores = new ArrayList<>();
-		
-		for(Drugstore drs:allDrugStores) {
-			if( (drs.getName().toLowerCase().contains(drugStoreName.toLowerCase()) || drugStoreName.equals("0")) && 
-				(drs.getLocation().getCity().toLowerCase().contains(drugStoreCity.toLowerCase()) || drugStoreCity.equals("0")) && 
-				(drs.getLocation().getCountry().toLowerCase().contains(drugStoreCountry.toLowerCase()) || drugStoreCountry.equals("0"))) {
-				wantedDrugStores.add(drs);
-			}
-		}
-		return wantedDrugStores;
+		return drugstoreRepository.findAll(DrugstoreSpecifications.withSearch(drugstoreSearchDto), pageable).toList();
 	}
 	
 	public Drugstore findDrugstore(String drugstoreId) throws Exception {
 		
 		return drugstoreRepository.findById(drugstoreId).orElse(null);
+	}
+
+	public List<DrugStock> findDrugstores(String id/*, Pageable pageable*/) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugId(id/*, pageable*/);
+		return drugsOnStock;
 	}
 }
 

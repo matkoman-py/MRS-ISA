@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import AddUserForm from '../forms/user/AddUserForm';
 
 export default {
@@ -86,7 +85,7 @@ export default {
               return;
           }
           console.log(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`);
-          axios.delete(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`)
+          this.$http.delete(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`)
             .then(response => {
                 let index = this.users.findIndex(user => user.id == this.deleteModal.user.id);
                 this.users.splice(index, 1);
@@ -95,7 +94,7 @@ export default {
             .catch(error => console.log(error));
       },
       getUsers: function () {
-            axios.get('http://localhost:8081/suppliers-and-admins')
+            this.$http.get('http://localhost:8081/suppliers-and-admins')
             .then(response => {
                 this.users = response.data;
             })

@@ -12,9 +12,13 @@ import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
+import pharmacyhub.dto.EmploymentDrugstoreDto;
 import pharmacyhub.dto.EmploymentDto;
+import pharmacyhub.dto.RemoveDermatologistDto;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
+import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
@@ -32,6 +36,9 @@ public class EmploymentService {
 	
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
+	
+	@Autowired
+	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	
 	public List<Dermatologist> getAllDermatologistsForDrugstore(String drugstoreId) {
 		List<Employment> employments = employmentRepository.findByDrugstoreId(drugstoreId);
@@ -98,4 +105,27 @@ public class EmploymentService {
 		return employmentInfo;
 	}
 	
+	public List<EmploymentDrugstoreDto> getAllDermatologistEmployments(String dermatologistId) {
+		
+		List<Employment> employments = employmentRepository.findByDermatologistId(dermatologistId);
+		List<EmploymentDrugstoreDto> employmentInfo = new ArrayList<EmploymentDrugstoreDto>();
+		for (Employment e : employments) {
+			employmentInfo.add(new EmploymentDrugstoreDto(e.getDrugstore().getName(),e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getWorkingHoursFrom(), e.getWorkingHoursTo()));
+			System.out.println(e.getDermatologist().getName()+" "+ e.getDrugstore().getName());
+		}
+		
+		return employmentInfo;
+	}
+	
+	public String removeDermatologistFromDrugstore(RemoveDermatologistDto info) throws Exception {
+		checkFutureDermatologistAppointments(info.getDermatologistEmail());
+		Dermatologist dermatologist = (Dermatologist)dermatologistRepository.findByEmail(info.getDermatologistEmail());
+		Drugstore drugstore = drugstoreRepository.findById(info.getDrugstoreId()).orElse(null);
+		employmentRepository.deleteByDermatologistAndDrugstore(dermatologist, drugstore);
+		return "success";
+	}
+	
+	private void checkFutureDermatologistAppointments(String dermatologistEmail) {
+		dermatologistAppointmentRepository.deleteByDermatologist((Dermatologist)dermatologistRepository.findByEmail(dermatologistEmail)); // treba samo buduce
+	}
 }

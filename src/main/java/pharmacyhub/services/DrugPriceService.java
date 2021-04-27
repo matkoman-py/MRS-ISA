@@ -23,15 +23,20 @@ public class DrugPriceService {
 	@Autowired 
 	private DrugstoreRepository drugstoreRepository;
 	
+	@Autowired
+	private UserNotificationService userNotificationService;
+	
 	public List<DrugPrice> findAll() {
 		return drugPriceRepository.findAll();
 	}
 	
 	public DrugPrice save(CreateNewPriceForDrugDto drugPrice) throws Exception {
-		if (drugPrice.getPrice() <= 0) {
-			throw new Exception("Price must be greater than 0!");
-		}
-		return drugPriceRepository.save(new DrugPrice(drugRepository.findByName(drugPrice.getDrugName()), drugstoreRepository.findById(drugPrice.getDrugStoreId()).orElse(null), drugPrice.getPrice(), drugPrice.getStartDate(), drugPrice.getEndDate()));
+		return drugPriceRepository.save(new DrugPrice(drugRepository.findByName(drugPrice.getDrugName()), drugstoreRepository.findById(drugPrice.getDrugStoreId()).orElse(null), drugPrice.getPrice(), drugPrice.getStartDate(), drugPrice.getEndDate(), false));
+	}
+
+	public DrugPrice savePromotion(CreateNewPriceForDrugDto drugPromotion) throws Exception {
+		userNotificationService.notifySubscribers(drugPromotion);
+		return drugPriceRepository.save(new DrugPrice(drugRepository.findByName(drugPromotion.getDrugName()), drugstoreRepository.findById(drugPromotion.getDrugStoreId()).orElse(null), drugPromotion.getPrice(), drugPromotion.getStartDate(), drugPromotion.getEndDate(), true));
 	}
 	
 }

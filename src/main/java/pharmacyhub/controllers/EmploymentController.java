@@ -7,16 +7,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistDto;
+import pharmacyhub.dto.EmploymentDrugstoreDto;
 import pharmacyhub.dto.EmploymentDto;
+import pharmacyhub.dto.RemoveDermatologistDto;
 import pharmacyhub.services.EmploymentService;
 
 @Controller
@@ -46,6 +50,17 @@ public class EmploymentController {
 	@GetMapping(path="/pharmacist-employments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<EmploymentDto>> getAllPharmacistEmploymentsForDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
 		return new ResponseEntity<>(employmentService.getAllPharmacistsEmploymentsForDrugstore(drugstoreId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/employment-for-derm", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<EmploymentDrugstoreDto>> getAllDermatologistEmployments(@RequestParam(value = "dermatologistId") String dermatologistId) {
+		return new ResponseEntity<>(employmentService.getAllDermatologistEmployments(dermatologistId), HttpStatus.OK);
+	}
+	
+	@DeleteMapping(path="/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> removeDermatologistFromDrugstore(@RequestBody RemoveDermatologistDto info) throws Exception {
+		return new ResponseEntity<>(employmentService.removeDermatologistFromDrugstore(info), HttpStatus.OK);
+
 	}
 	
 }

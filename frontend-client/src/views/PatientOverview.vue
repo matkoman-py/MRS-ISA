@@ -3,25 +3,25 @@
         <b-modal id="my-modal" title="Your profile" hide-footer>
             <b-form @submit="onSubmit">
                 <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required">
-                    <b-form-input id="name-input" v-model="selected.name"></b-form-input>
+                    <b-form-input id="name-input" v-model="selected.name" disabled></b-form-input>
                 </b-form-group>
 
                 <b-form-group label="Surame" label-for="surname-input" invalid-feedback="Surname is required">
-                    <b-form-input id="surname-input" v-model="selected.surname"></b-form-input>
+                    <b-form-input id="surname-input" v-model="selected.surname" disabled></b-form-input>
                 </b-form-group>
 
                 <b-form-group label="E-mail" label-for="email-input" invalid-feedback="E-mail is required">
-                    <b-form-input id="email-input" type="email" v-model="selected.email"></b-form-input>
+                    <b-form-input id="email-input" type="email" v-model="selected.email" disabled></b-form-input>
                 </b-form-group>
 
                 <b-form-group label="Phone number" label-for="phonenumber-input"
                     invalid-feedback="Phone number is required">
-                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber"></b-form-input>
+                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber" disabled></b-form-input>
                 </b-form-group>
                 
-               <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
+               <!-- <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
                     :data="substitutions" v-model="selected.substitutions">
-                </searchable-tags>
+                </searchable-tags> -->
 
                 <b-button type="submit" variant="primary">Save</b-button>
                 <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
@@ -30,7 +30,7 @@
  
         <b-row>
             <b-col>
-                <b-table id="tabela_pacijenata" striped hover :items="patients" @row-clicked="showModal"></b-table>
+                <b-table id="tabela_pacijenata" striped hover :items="patients" ></b-table>
             </b-col>
         </b-row>
         <b-row align-h="center">
@@ -56,12 +56,11 @@
 </template>
 
 <script>
-    import SearchableTags from "../components/SearchableTags"
-    import axios from "axios";
+    //import SearchableTags from "../components/SearchableTags"
 
     export default {
         components: {
-            SearchableTags
+            //SearchableTags
         },
         data: function () {
             return {
@@ -86,7 +85,7 @@
         
         methods: {
             search: function () {
-                axios.get('http://localhost:8081/patients/search', {
+                this.$http.get('http://localhost:8081/patients/search', {
                         params: {
                             patientNameParam: this.form.name,
                             patientSurnameParam: this.form.surname
@@ -109,7 +108,7 @@
                     .catch(error => console.log(error));
             },
             getAllPatients: function () {
-                axios.get('http://localhost:8081/patients')
+                this.$http.get('http://localhost:8081/patients')
                     .then(response => {
                         this.patients = response.data.map(patient =>
                             ({
@@ -136,7 +135,7 @@
                 this.modified.allergens = this.selected.substitutions;
                 this.$root.$emit('bv::hide::modal', 'my-modal');
                 console.log(this.modified);
-                axios.put("http://localhost:8081/patients", this.modified)
+                this.$http.put("http://localhost:8081/patients", this.modified)
                     .then(response => {
                         console.log(response);
                         console.log("ovde");
@@ -153,7 +152,7 @@
                 this.getDrugs();
             },
             getDrugs: function () {
-                axios.get("http://localhost:8081/ingredients")
+                this.$http.get("http://localhost:8081/ingredients")
                     .then(response => {
                         this.substitutions = response.data;
                     })

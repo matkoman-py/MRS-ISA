@@ -1,11 +1,13 @@
 package pharmacyhub.domain.users;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
@@ -13,10 +15,14 @@ import pharmacyhub.domain.enums.UserType;
 
 @Entity
 @DiscriminatorValue("Pharmacist")
-@SQLDelete(sql = "UPDATE drug_price SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
 public class Pharmacist extends Employee {
 
-	@ManyToOne
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManyToOne//(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "drugstore_fk")
 	private Drugstore drugstore;
 		
@@ -24,8 +30,9 @@ public class Pharmacist extends Employee {
 		super();
 	}
 
-	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, String workingHoursFrom, String workingHoursTo) {
+	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, String workingHoursFrom, String workingHoursTo, Drugstore drugstore) {
 		super(email, password, name, surname, phoneNumber, location, UserType.Pharmacist, true, null, workingHoursFrom, workingHoursTo);
+		this.drugstore = drugstore;
 	}
 	
 	public Drugstore getDrugstore() {

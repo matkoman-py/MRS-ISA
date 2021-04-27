@@ -98,7 +98,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
     data: function(){
@@ -111,7 +110,7 @@ export default {
     methods: {
         getEmployees : function(){
             
-            axios.get('http://localhost:8081/employees')
+            this.$http.get('http://localhost:8081/employees')
             .then(response => {
                 this.employees = response.data.map(employee => 
                 (
@@ -147,7 +146,7 @@ export default {
             this.modified.phoneNumber = this.selected.phoneNumber;
             this.$root.$emit('bv::hide::modal', 'my-modal');
             console.log(this.modified);
-            axios.put("http://localhost:8081/employees", this.modified)
+            this.$http.put("http://localhost:8081/employees", this.modified)
                 .then(response => {
                 console.log(response);
                 console.log("ovde");

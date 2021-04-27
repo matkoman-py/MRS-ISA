@@ -6,11 +6,12 @@
                 <h2>Drugstore: {{currentAppointment.drugstore.name}}</h2>
                 <h2>Patient: {{currentAppointment.patient.name}}  {{currentAppointment.patient.surname}}</h2>
                 <h2>Dermatologist: {{currentAppointment.dermatologist.name}}</h2>
+                <h2>Duration: {{currentAppointment.duration}} minutes</h2>
             </b-col>
             <b-col style="text-align:center">
                 <label for="diagnosis"> <h3>Diagnosis:</h3></label>
                 <br>
-                <textarea id="diagnosis" name="diagnosis" rows="10" cols="50" style="resize: none">
+                <textarea id="diagnosis" v-model="currentAppointment.appointmentReport" name="diagnosis" rows="10" cols="50" style="resize: none">
 
                 </textarea>
             </b-col>
@@ -30,10 +31,7 @@
                 <b-button variant="info" @click="showAppointmentModal">New appointment</b-button>
             </b-col>
             <b-col>
-                <b-button variant="success">End appointment</b-button>
-            </b-col>
-            <b-col>
-                <b-button variant="danger">Absent patient</b-button>
+                <b-button variant="success" @click="endAppointment">End appointment</b-button>
             </b-col>
         </b-row>
         
@@ -107,13 +105,19 @@
 </template>
 
 <script>
-import axios from "axios";
+
 export default {
     name: "AppointmentDermatologist",
-    
+    props:{
+        passedId: String,
+    },
     data: function () {
+            const now = new Date()
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            const minDate = new Date(today)
             return {
                 currentAppointment: {},
+                minDate:minDate,
                 appointments: [],
                 fields: [
                    
@@ -149,9 +153,23 @@ export default {
             }
     },
     methods: {
+        endAppointment: function(){
+            this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
+            this.$http.get('http://localhost:8081/dermatologist-appointment/end-appointment', {
+                        params: {
+                            dermatologistAppointmentId: this.currentAppointment.id,
+                            appointmentReport: this.currentAppointment.appointmentReport,
+                        }
+                    })
+                    .then(response => {
+                        this.currentAppointment = response.data; 
+                        this.$router.push({ name: 'Schedule' }) 
+                    })
+            
+        },
         beginAppointment: function(){
-            this.currentAppointment.id = "4a73ae19-2001-450a-a050-85f51717ab76";
-            axios.get('http://localhost:8081/dermatologist-appointment/begin-appointment', {
+            this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
+            this.$http.get('http://localhost:8081/dermatologist-appointment/begin-appointment', {
                         params: {
                             dermatologistAppointmentId: this.currentAppointment.id
                         }
@@ -167,7 +185,7 @@ export default {
             
         },
         getAllAppointments: function () {
-                axios.get('http://localhost:8081/dermatologist-appointment/available', {
+                this.$http.get('http://localhost:8081/dermatologist-appointment/available', {
                         params: {
                             drugstoreId: this.currentAppointment.drugstore.id,
                             dermatologistId: this.currentAppointment.dermatologist.id
@@ -194,7 +212,7 @@ export default {
           this.inputValues.drugstoreId = this.currentAppointment.drugstore.id;
           this.inputValues.patientId = this.currentAppointment.patient.id;
           this.inputValues.dermatologistId = this.currentAppointment.dermatologist.id;
-          axios.post("http://localhost:8081/dermatologist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("http://localhost:8081/dermatologist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New appointment is successfully created.");
@@ -203,7 +221,7 @@ export default {
           this.$root.$emit('bv::hide::modal', 'appointmentmodal');
         },
         createReservation :function(item){
-                axios.get('http://localhost:8081/dermatologist-appointment/reserveAppointment', {
+                this.$http.get('http://localhost:8081/dermatologist-appointment/reserveAppointment', {
                         params: {
                             drugstoreId : this.currentAppointment.drugstore.id,
                             patientId: this.currentAppointment.patient.id,
@@ -234,11 +252,3 @@ export default {
     
 }
 </script>
-
-<style>
-#appointmentmodal{
-    /* max-width: 100%; */
-    /* display: table; */
-    /* width: fit-content; */
-}
-</style>

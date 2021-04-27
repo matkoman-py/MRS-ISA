@@ -1,5 +1,6 @@
 package pharmacyhub.domain.users;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -18,11 +19,15 @@ import pharmacyhub.domain.enums.UserType;
 @DiscriminatorValue("Dermatologist")
 public class Dermatologist extends Employee {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Employment> employements;
-
+	
 	public Dermatologist() {
 		super();
 	}
@@ -31,6 +36,7 @@ public class Dermatologist extends Employee {
 			Location location, String workingHoursFrom, String workingHoursTo) {
 		super(email, password, name, surname, phoneNumber, location, UserType.Dermatologist, true, "", workingHoursFrom,
 				workingHoursTo);
+		this.employements = new ArrayList<Employment>();
 	}
 
 	public List<Employment> getEmployements() {

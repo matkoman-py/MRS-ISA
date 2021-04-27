@@ -36,7 +36,7 @@ public class UserController {
 	@GetMapping(path = "/register/activate/{activation-code}")
 	public ResponseEntity<String> activate(@PathVariable("activation-code") String activationCode) throws Exception {
 		boolean success = registrationService.verifyActivationCodeAndActivateUser(activationCode);
-		return new ResponseEntity<>(success ? "Success" : "Failue", HttpStatus.OK);
+		return new ResponseEntity<>(success ? "Success" : "Failure", HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/suppliers-and-admins")

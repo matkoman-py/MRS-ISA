@@ -6,17 +6,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Ingredient;
 import pharmacyhub.dto.DrugInDrugstoreDto;
+import pharmacyhub.dto.search.DrugSearchDto;
+import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
-import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.IngredientRepository;
+import pharmacyhub.repositories.specifications.drugs.DrugSpecifications;
 
 @Service
 public class DrugService {
@@ -36,23 +39,12 @@ public class DrugService {
 	@Autowired
 	private DrugPriceRepository drugPriceRepository;
 
-	public List<Drug> findAll() {
-		return drugRepository.findAll();
+	public List<Drug> findAll(Pageable pageable) {
+		return drugRepository.findAll(pageable).toList();
 	}
 	
-	public Collection<Drug> returnDrugs(String drugName,String drugType,String drugForm,String drugManufacturer,String drugReceipt){
-		Collection<Drug> allDrugs = findAll();
-		Collection<Drug> wantedDrugs = new ArrayList<>();
-		for(Drug medicine:allDrugs) {
-			if((medicine.getName().toLowerCase().contains(drugName.toLowerCase()) || drugName.equals("0")) &&
-			   (medicine.getType().getName().equals(drugType) || drugType.equals("0")) &&
-			   (medicine.getForm().toLowerCase().contains(drugForm) || drugForm.equals("0")) &&
-			   (medicine.getManufacturer().getName().equals(drugManufacturer) || drugManufacturer.equals("0")) &&
-			   ( ((medicine.isReceipt() && drugReceipt.equals("Yes")) || (!medicine.isReceipt() && drugReceipt.equals("No")))  || drugReceipt.equals("0"))) {
-				wantedDrugs.add(medicine);
-			}
-		}
-		return wantedDrugs;
+	public Collection<Drug> returnDrugs(DrugSearchDto drugSearchDto, Pageable pageable){
+		return drugRepository.findAll(DrugSpecifications.withSearch(drugSearchDto), pageable).toList();
 	}
 	
 	public Drug save(Drug drug) throws Exception {
@@ -79,8 +71,8 @@ public class DrugService {
 		return true;
 	}
 
-	public List<DrugInDrugstoreDto> getDrugsInDrugstore(String drugstoreId) {
-		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
+	public List<DrugInDrugstoreDto> getDrugsInDrugstore(String drugstoreId, Pageable pageable) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), pageable);
 		List<DrugInDrugstoreDto> drugsInDrugstore = new ArrayList<DrugInDrugstoreDto>();
 		for (DrugStock ds : drugsOnStock) {
 			drugsInDrugstore.add(new DrugInDrugstoreDto(ds.getDrug().getName(), ds.getDrug().getForm(), ds.getDrug().isReceipt(), ds.getDrug().getType(), ds.getDrug().getManufacturer(), ds.getAmount()));

@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import axios from "axios"
 import SearchDermatologistForm from './SearchDermatologistForm.vue';
 
 export default {
@@ -60,7 +59,7 @@ export default {
     },
     addDermatologist: function(event){
         event.preventDefault();
-        axios.post("http://localhost:8081/employees/employement", this.form)
+        this.$http.post("http://localhost:8081/employees/employement", this.form)
           .then(response => {
               let updatedDermatologist = response.data;
               let index = this.dermatologists.findIndex(dermatologist => dermatologist.email == updatedDermatologist.email);
@@ -72,14 +71,14 @@ export default {
           .catch(error => console.log(error));
     },
     getDrugstores: function(){
-        axios.get("http://localhost:8081/drugstores")
+        this.$http.get("http://localhost:8081/drugstores")
           .then(response => {
               this.drugstores = response.data;
           })
           .catch(error => console.log(error));
     },
     getDermatologist: function(){
-      axios.post("http://localhost:8081/employees/search/dermatologist", this.form)
+      this.$http.post("http://localhost:8081/employees/search/dermatologist", this.form)
           .then(response => {
               this.updateDermatologists(response.data);
           })

@@ -54,24 +54,31 @@ INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', fal
 --
 -- Data for Name: Employee;
 --
-INSERT INTO public.users VALUES ('Pharmacist','ccb953a7-d244-48bb-8627-4b2437491dc1', false, '', 'pera@peric.com', 'Pera', '123', NULL, TRUE, 'Peric', '07:50', '18:40', 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
-INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', false, '', 'mika@mikic.com', 'Mika', '123', NULL, TRUE, 'Mikic', '07:50', '18:40', 0, NULL,   '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
-INSERT INTO public.users VALUES ('Dermatologist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', false, '', 'zika@zikic.com', 'Zika', '123', NULL, TRUE, 'Zikic', NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
-INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', false, '', 'djoka@djokic.com', 'Djoka', '123', NULL, TRUE, 'Djokic', NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
-INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', false, '', 'steva@stevic.com', 'Steva', '123', NULL, TRUE, 'Stevic', NULL, NULL, 0, 	NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Pharmacist','ccb953a7-d244-48bb-8627-4b2437491dc1', false, '', 'pera@peric.com', 'Pera', '$2a$10$3SbblMBSK7acH373BqcAjuFK4yYkLjeIq/cCKGKL8Z.6R8tzIsJcm', NULL, TRUE, 'Peric', '07:50', '18:40', 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', false, '', 'mika@mikic.com', 'Mika', '$2a$10$pYcWpOc3UzGmKJeJnblKN.ZUeC6pjUb.z2gnGXW5h5S7n1OimS.yO', NULL, TRUE, 'Mikic', '07:50', '18:40', 0, NULL,   '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('Dermatologist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', false, '', 'zika@zikic.com', 'Zika', '$2a$10$pYcWpOc3UzGmKJeJnblKN.ZUeC6pjUb.z2gnGXW5h5S7n1OimS.yO', NULL, TRUE, 'Zikic', NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', false, '', 'djoka@djokic.com', 'Djoka', '$2a$10$ajJFXVzGMM83jmCnGxEMpuDAR2T3rpyGTIetAbuCKKuezbkVFGd2u', NULL, TRUE, 'Djokic', NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', false, '', 'steva@stevic.com', 'Steva', '$2a$10$acJM/JgRqMyULOtpJifMLex6HqfbFP8GPgOzxv6IrRBQabRkJiyKy', NULL, TRUE, 'Stevic', NULL, NULL, 0, 	NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
 
 --
 -- Data for Name: Patient;
 --
-INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', false, NULL, 'marko@markoviccc.com', 'Marko', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
-INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', false, NULL, 'mirko@mirkovic.com', 'Mirko', 'pass', NULL, false, 'Mirkovic', NULL, NULL, 0, 0, NULL, NULL);
-INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', false, NULL, 'petar@markovic.com', 'Petar', 'pass', NULL, false, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', false, NULL, 'marko@markoviccc.com', 'Marko', '$2a$12$unh6kPZiK0naKYjUQQTKCeTewEPE7/FhS5SjcfZMvUIwDm3bQGXYa', NULL, true, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', false, NULL, 'mirko@mirkovic.com', 'Mirko', '$2a$12$Fq8JFCN1p2pQAyBKEIHA7enwqoDgZLdKFLJJ3mJKZ04PdXsgRgTnG', NULL, true, 'Mirkovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', false, NULL, 'petar@markovic.com', 'Petar', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, true, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
 
 
 --
 -- Data for Name: Drugstore Admin;
 --
-INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a2', false, '', 'kata@ketamin.com', 'Kata', '123', NULL, TRUE, 'Ketamin', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a2', false, '', 'kata@ketamin.com', 'Kata', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Ketamin', NULL, NULL, NULL, NULL, NULL, '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a3', false, '', 'admin@adminovic.com', 'Djordje', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Djordjevic', NULL, NULL, NULL, NULL, NULL, '2b7933e9-6523-463a-974b-ded43ad63843');
+
+--
+-- Data for Name: System Admin;
+--
+INSERT INTO public.users VALUES ('SystemAdmin', '2d2eacbf-fda8-4a50-aa05-be2be4fb2884', false, '', 'gvozden@karadjordjevic.com', 'Gvozden', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Karadjordjevic', '2b7933e9-6as3-463a-974b-ded43ad63843');
+
 
 --
 -- Data for Name: Drugstock;
@@ -85,11 +92,11 @@ INSERT INTO public.drugstock VALUES ('4', false, 25, 'a3ew071d-b38c-4014-9fa3-2e
 --
 -- Data for Name: DrugPrice;
 --
-INSERT INTO public.drug_price VALUES ('0', false, '2021-01-22', 200, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('1', false, '2021-01-22', 300, '2021-01-22', 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('2', false, '2021-01-22', 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('3', false, '2021-01-25', 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('4', false, '2021-01-22', 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('0', false, '2021-01-22', true, 200, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('1', false, '2021-01-22', false, 300, '2021-01-22', 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('2', false, '2021-01-22', false, 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('3', false, '2021-01-25', false, 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('4', false, '2021-01-22', false, 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
 --
 -- Data for Name: DermatologistEmployment
@@ -100,11 +107,47 @@ INSERT INTO public.employment VALUES ('2', false, '10:00', '12:00', '68eec890-3b
 --
 -- Data for Name: dermatologist_appointment; 
 --
-INSERT INTO public.dermatologist_appointment VALUES ('4a73ae19-2001-450a-a050-85f51717ab76', false, NULL, '2021-04-13 02:00:00', 8, 200,'23:59:00', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
-INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b6a802bce2b', false, NULL, '2021-04-19 02:00:00', 10, 200,'23:59:00', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
+INSERT INTO public.dermatologist_appointment VALUES ('4a73ae19-2001-450a-a050-85f51717ab76', false, NULL, '2021-04-13 02:00:00', 8, 200,true,'12:00:00', '13:00:00','da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
+INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b6a802bce2b', false, NULL, '2021-04-19 02:00:00', 10, 200,true,'16:59:00', '17:59:00','79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
 --
 -- Data for Name: pharmacist_appointment; 
 --
-INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3, '12:59:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
+INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3,true, '12:00:00', '13:00:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
+
+--
+-- Data for Name: roles; 
+--
+INSERT INTO public.roles VALUES ('77f0ab33-f97c-4282-bb60-c34d8d897092', false, 'ROLE_PATIENT');
+INSERT INTO public.roles VALUES ('f367f6cf-e8f8-45ee-99c6-e000d7c68003', false, 'ROLE_DERMATOLOGIST');
+INSERT INTO public.roles VALUES ('9f58c424-f0e2-4e95-80c8-14039b24e40f', false, 'ROLE_PHARMACIST');
+INSERT INTO public.roles VALUES ('122c0bad-e159-4896-bb10-6e8b69547e2f', false, 'ROLE_SUPPLIER');
+INSERT INTO public.roles VALUES ('58da0253-f5cf-4163-afdc-32f61d7471a3', false, 'ROLE_DRUGSTOREADMIN');
+INSERT INTO public.roles VALUES ('3a58b85f-23fa-4c1c-a2ac-23221875d6fa', false, 'ROLE_SYSTEMADMIN');
+
+--
+-- Data for Name: user-role; 
+--
+--patinents
+INSERT INTO public.user_role VALUES ('8128d806-c29b-4086-aae6-877d17eeb6fa', '77f0ab33-f97c-4282-bb60-c34d8d897092');
+INSERT INTO public.user_role VALUES ('664783ca-84a1-4a2b-ae27-a2b820bc3c71', '77f0ab33-f97c-4282-bb60-c34d8d897092');
+INSERT INTO public.user_role VALUES ('393dca36-3778-4802-939c-de7a0a265c9d', '77f0ab33-f97c-4282-bb60-c34d8d897092');
+
+--pharmacists
+INSERT INTO public.user_role VALUES ('ccb953a7-d244-48bb-8627-4b2437491dc1', '9f58c424-f0e2-4e95-80c8-14039b24e40f');
+INSERT INTO public.user_role VALUES ('9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', '9f58c424-f0e2-4e95-80c8-14039b24e40f');
+
+--dermatologists
+INSERT INTO public.user_role VALUES ('68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', 'f367f6cf-e8f8-45ee-99c6-e000d7c68003');
+INSERT INTO public.user_role VALUES ('da9e4ee3-c67c-4511-ad43-82e34d10ddc2', 'f367f6cf-e8f8-45ee-99c6-e000d7c68003');
+INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac677a1', 'f367f6cf-e8f8-45ee-99c6-e000d7c68003');
+
+--drugstore admins
+INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '58da0253-f5cf-4163-afdc-32f61d7471a3');
+INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a3', '58da0253-f5cf-4163-afdc-32f61d7471a3');
+
+--system admins
+INSERT INTO public.user_role VALUES ('79e53b5a-9977-46dc-b5a5-11b54ac627a2', '3a58b85f-23fa-4c1c-a2ac-23221875d6fa');
+
+
 
 
