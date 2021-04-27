@@ -107,12 +107,12 @@ INSERT INTO public.employment VALUES ('2', false, '10:00', '12:00', '68eec890-3b
 --
 -- Data for Name: dermatologist_appointment; 
 --
-INSERT INTO public.dermatologist_appointment VALUES ('4a73ae19-2001-450a-a050-85f51717ab76', false, NULL, '2021-04-13 02:00:00', 8, 200,'12:00:00', '13:00:00','da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
-INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b6a802bce2b', false, NULL, '2021-04-19 02:00:00', 10, 200,'23:59:00', NULL,'79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
+INSERT INTO public.dermatologist_appointment VALUES ('4a73ae19-2001-450a-a050-85f51717ab76', false, NULL, '2021-04-13 02:00:00', 8, 200,true,'12:00:00', '13:00:00','da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
+INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b6a802bce2b', false, NULL, '2021-04-19 02:00:00', 10, 200,true,'16:59:00', '17:59:00','79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
 --
 -- Data for Name: pharmacist_appointment; 
 --
-INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3, '12:00:00', '13:00:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
+INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3,true, '12:00:00', '13:00:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
 
 --
 -- Data for Name: roles; 

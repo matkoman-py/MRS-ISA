@@ -56,5 +56,13 @@ public class PatientService {
 	public Patient returnPatient(String patientId) {
 		return patientRepository.findById(patientId).orElse(null);
 	}
+	
+	public Patient penalty(String patientId) {
+		System.out.println(patientId+"KURAC");
+		Patient pat = patientRepository.findById(patientId).orElse(null);
+		pat.setPenaltyCounter(pat.getPenaltyCounter()+1);
+		patientRepository.save(pat);
+		return pat;
+	}
 
 }

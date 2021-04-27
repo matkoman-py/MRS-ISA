@@ -29,7 +29,7 @@ import AdminUserTable from "./components/tables/AdminUserTable"
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment"
 import PharmacistOverview from "./views/PharmacistOverview"
 import DermatologistOverview from "./views/DermatologistOverview"
-
+import TreatedPatients from "./views/TreatedPatients"
 import LoginPage from "./views/LoginPage"
 
 Vue.use(VueRouter)
@@ -118,7 +118,8 @@ const routes = [
     {
         path: '/appointment-dermatologist',
         name: "AppointmentDermatologist",
-        component: AppointmentDermatologist
+        component: AppointmentDermatologist,
+        props: true
     },
     {
         path: '/drugstores/:id',
@@ -133,7 +134,8 @@ const routes = [
     {
         path: '/appointment-pharmacist',
         name: "AppointmentPharmacist",
-        component: AppointmentPharmacist
+        component: AppointmentPharmacist,
+        props: true
     },
     {
         path: '/pharm-derm-profile',
@@ -184,6 +186,11 @@ const routes = [
         path: '/dermatologist-overview',
         name: "DermatologistOverview",
         component: DermatologistOverview
+    },
+    {
+        path: '/treated',
+        name: "Treated",
+        component: TreatedPatients
     },
 ];
 
