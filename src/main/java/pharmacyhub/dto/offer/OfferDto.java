@@ -12,6 +12,7 @@ public class OfferDto {
 	private OfferStatus status;
 	private Date deliveryDate;
 	private Time deliveryTime;
+	private String supplierId;
 
 	public String getDrugOrderId() {
 		return drugOrderId;
@@ -51,6 +52,14 @@ public class OfferDto {
 
 	public void setDeliveryTime(Time deliveryTime) {
 		this.deliveryTime = deliveryTime;
+	}
+
+	public String getSupplierId() {
+		return supplierId;
+	}
+
+	public void setSupplierId(String supplierId) {
+		this.supplierId = supplierId;
 	}
 
 }

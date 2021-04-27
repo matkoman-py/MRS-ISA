@@ -12,6 +12,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import pharmacyhub.domain.enums.OfferStatus;
+import pharmacyhub.domain.users.Supplier;
 
 @Entity
 @Table(name = "offer")
@@ -33,6 +34,9 @@ public class Offer extends BaseEntity {
 
 	@Column(nullable = false)
 	private Time deliveryTime;
+
+	@ManyToOne
+	private Supplier supplier;
 
 	public DrugOrder getDrugOrder() {
 		return drugOrder;
@@ -72,6 +76,14 @@ public class Offer extends BaseEntity {
 
 	public void setDeliveryTime(Time deliveryTime) {
 		this.deliveryTime = deliveryTime;
+	}
+
+	public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
 	}
 
 }

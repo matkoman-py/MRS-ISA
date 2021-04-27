@@ -1,11 +1,9 @@
 package pharmacyhub.dto.search;
 
-import pharmacyhub.domain.enums.OfferStatus;
-
 public class OfferSearchDto {
 
 	private String supplierId;
-	private OfferStatus offerStatus;
+	private String offerStatus;
 
 	public String getSupplierId() {
 		return supplierId;
@@ -15,12 +13,14 @@ public class OfferSearchDto {
 		this.supplierId = supplierId;
 	}
 
-	public OfferStatus getOfferStatus() {
+	public String getOfferStatus() {
 		return offerStatus;
 	}
 
-	public void setOfferStatus(OfferStatus offerStatus) {
+	public void setOfferStatus(String offerStatus) {
 		this.offerStatus = offerStatus;
 	}
+
+
 
 }

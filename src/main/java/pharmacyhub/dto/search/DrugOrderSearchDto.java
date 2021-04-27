@@ -1,13 +1,10 @@
 package pharmacyhub.dto.search;
 
-import pharmacyhub.domain.enums.OrderStatus;
-
 public class DrugOrderSearchDto {
 
 	private String drugstoreId;
-	private OrderStatus orderStatus;
+	private String orderStatus;
 
-	
 	public String getDrugstoreId() {
 		return drugstoreId;
 	}
@@ -16,11 +13,11 @@ public class DrugOrderSearchDto {
 		this.drugstoreId = drugstoreId;
 	}
 
-	public OrderStatus getOrderStatus() {
+	public String getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(OrderStatus orderStatus) {
+	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 

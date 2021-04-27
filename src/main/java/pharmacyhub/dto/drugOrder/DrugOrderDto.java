@@ -9,12 +9,21 @@ import pharmacyhub.domain.enums.OrderStatus;
 
 public class DrugOrderDto {
 
+	private String id;
 	private List<OrderStock> stock;
 	private Date deadlineDate;
 	private Time deadlineTime;
 	private OrderStatus status;
 	private String drugstoreId;
 	private String drugstoreName;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public List<OrderStock> getStock() {
 		return stock;

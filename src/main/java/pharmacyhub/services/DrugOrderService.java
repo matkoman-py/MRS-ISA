@@ -25,8 +25,9 @@ public class DrugOrderService {
 		dto.setDeadlineTime(drugOrder.getDeadlineTime());
 		dto.setDrugstoreId(drugOrder.getDrugstore().getId());
 		dto.setDrugstoreName(drugOrder.getDrugstore().getName());
-		dto.setStatus(drugOrder.getStatus());
+		dto.setStatus(drugOrder.getStatus() != null ? drugOrder.getStatus() : null);
 		dto.setStock(drugOrder.getStock());
+		dto.setId(drugOrder.getId());
 
 		return dto;
 	}

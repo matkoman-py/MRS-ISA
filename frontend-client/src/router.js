@@ -30,6 +30,8 @@ import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment
 import PharmacistOverview from "./views/PharmacistOverview"
 import DermatologistOverview from "./views/DermatologistOverview"
 import SupplierStockTable from "./components/tables/SupplierStockTable"
+import DrugOrderTable from "./components/tables/DrugOrderTable"
+import OfferTable from "./components/tables/OfferTable"
 
 import LoginPage from "./views/LoginPage"
 
@@ -190,6 +192,16 @@ const routes = [
         path: '/supplier-stock',
         name: "SupplierStockTable",
         component: SupplierStockTable
+    },
+    {
+        path: '/supplier-orders',
+        name: "DrugOrderTable",
+        component: DrugOrderTable
+    },
+    {
+        path: '/supplier-offers',
+        name: "OfferTable",
+        component: OfferTable
     },
 ];
 

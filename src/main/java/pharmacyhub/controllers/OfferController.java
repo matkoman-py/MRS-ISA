@@ -32,4 +32,9 @@ public class OfferController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(offerService.search(offerSearchDto, pageable), HttpStatus.OK);
 	}
+	
+	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OfferDto> makeOffer(@RequestBody OfferDto offerDto) throws Exception{
+		return new ResponseEntity<>(offerService.makeOffer(offerDto), HttpStatus.OK);
+	}
 }

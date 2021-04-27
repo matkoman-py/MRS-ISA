@@ -83,9 +83,18 @@
           "Pharmacist": [],
           "Dermatologist": [],
           "Supplier": [{
-            name: "Stock",
-            path: "/supplier-stock"
-          }, ],
+              name: "Stock",
+              path: "/supplier-stock"
+            },
+            {
+              name: "Orders",
+              path: "/supplier-orders"
+            },
+            {
+              name: "Offers",
+              path: "/supplier-offers"
+            },
+          ],
           "Patient": [],
         },
         commonRoutes: [{
