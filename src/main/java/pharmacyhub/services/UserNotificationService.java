@@ -49,11 +49,15 @@ public class UserNotificationService {
 	}
 
     @Async
-	public void sendReservationConfirmation(String email) throws MessagingException {
+	public void sendReservationConfirmation(String email, String type) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
-		String emailContent = "You have succesfully reserved a dermatologist appointment";
-
+		
+		
+		String emailContent = "You have succesfully reserved a"+ type +" appointment";
+		
+			
+		
 		helper = new MimeMessageHelper(message, true);
 		helper.setFrom("notification@pharmacyhub.com");
 		helper.setTo(email);

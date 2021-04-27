@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,5 +71,18 @@ public class DermatologistAppointmentController {
 	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointments(
 			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointments(dermatologistId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/end-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<DermatologistAppointment> endAppointment(
+			@RequestParam (value = "dermatologistAppointmentId", required=false,  defaultValue = "0") String appointmentId,
+			@RequestParam (value = "appointmentReport", required=false,  defaultValue = "0") String appointmentReport) throws Exception {
+		return new ResponseEntity<>(dermatologistAppointmentService.endAppointment(appointmentId,appointmentReport), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-derm-done", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointmentsDone(
+			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsDone(dermatologistId), HttpStatus.OK);
 	}
 }
