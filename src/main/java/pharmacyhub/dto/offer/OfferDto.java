@@ -1,45 +1,24 @@
-package pharmacyhub.domain;
+package pharmacyhub.dto.offer;
 
 import java.sql.Date;
 import java.sql.Time;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
 import pharmacyhub.domain.enums.OfferStatus;
 
-@Entity
-@Table(name = "offer")
-@SQLDelete(sql = "UPDATE offer SET deleted = true WHERE id = ?")
-@Where(clause = "deleted = false")
-public class Offer extends BaseEntity {
+public class OfferDto {
 
-	@ManyToOne
-	private DrugOrder drugOrder;
-
-	@Column(nullable = false)
+	private String drugOrderId;
 	private int price;
-
-	@Column(nullable = false)
 	private OfferStatus status;
-
-	@Column(nullable = false)
 	private Date deliveryDate;
-
-	@Column(nullable = false)
 	private Time deliveryTime;
 
-	public DrugOrder getDrugOrder() {
-		return drugOrder;
+	public String getDrugOrderId() {
+		return drugOrderId;
 	}
 
-	public void setDrugOrder(DrugOrder drugOrder) {
-		this.drugOrder = drugOrder;
+	public void setDrugOrderId(String drugOrderId) {
+		this.drugOrderId = drugOrderId;
 	}
 
 	public int getPrice() {

@@ -1,40 +1,20 @@
-package pharmacyhub.domain;
+package pharmacyhub.dto.drugOrder;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
+import pharmacyhub.domain.OrderStock;
 import pharmacyhub.domain.enums.OrderStatus;
 
-@Entity
-@Table(name = "drug_order")
-@SQLDelete(sql = "UPDATE drug_order SET deleted = true WHERE id = ?")
-@Where(clause = "deleted = false")
-public class DrugOrder extends BaseEntity {
+public class DrugOrderDto {
 
-	@OneToMany
 	private List<OrderStock> stock;
-
-	@Column(nullable = false)
 	private Date deadlineDate;
-
-	@Column(nullable = false)
 	private Time deadlineTime;
-
-	@Column(nullable = false)
 	private OrderStatus status;
-
-	@ManyToOne
-	private Drugstore drugstore;
+	private String drugstoreId;
+	private String drugstoreName;
 
 	public List<OrderStock> getStock() {
 		return stock;
@@ -68,12 +48,20 @@ public class DrugOrder extends BaseEntity {
 		this.status = status;
 	}
 
-	public Drugstore getDrugstore() {
-		return drugstore;
+	public String getDrugstoreId() {
+		return drugstoreId;
 	}
 
-	public void setDrugstore(Drugstore drugstore) {
-		this.drugstore = drugstore;
+	public void setDrugstoreId(String drugstoreId) {
+		this.drugstoreId = drugstoreId;
+	}
+
+	public String getDrugstoreName() {
+		return drugstoreName;
+	}
+
+	public void setDrugstoreName(String drugstoreName) {
+		this.drugstoreName = drugstoreName;
 	}
 
 }
