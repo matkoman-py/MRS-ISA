@@ -29,6 +29,7 @@ import AdminUserTable from "./components/tables/AdminUserTable"
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment"
 import PharmacistOverview from "./views/PharmacistOverview"
 import DermatologistOverview from "./views/DermatologistOverview"
+import SupplierStockTable from "./components/tables/SupplierStockTable"
 
 import LoginPage from "./views/LoginPage"
 
@@ -184,6 +185,11 @@ const routes = [
         path: '/dermatologist-overview',
         name: "DermatologistOverview",
         component: DermatologistOverview
+    },
+    {
+        path: '/supplier-stock',
+        name: "SupplierStockTable",
+        component: SupplierStockTable
     },
 ];
 

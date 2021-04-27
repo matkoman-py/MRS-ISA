@@ -37,6 +37,7 @@ public class SupplierStockService {
 		supplierStockDto.setDrugName(supplierStock.getDrug().getName());
 		supplierStockDto.setSupplierId(supplierStock.getSupplier().getId());
 		supplierStockDto.setId(supplierStock.getId());
+		supplierStockDto.setAmount(supplierStock.getAmount());
 		
 		return supplierStockDto;
 	}
