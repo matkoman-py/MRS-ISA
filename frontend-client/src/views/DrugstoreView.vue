@@ -98,3 +98,79 @@ export default {
                 drugstoreId : this.drugstore.id
               }
             })
+            .then(response => {
+            this.subscribed = response.data;
+            })
+        },
+        getCurrentDrugstore() {
+            this.$http.get('http://localhost:8081/drugstores/' + this.currentDrugstoreId, {
+                    })
+                    .then(response => {
+                        this.drugstore = response.data;
+                        this.checkSubscription();
+                    })
+                    .catch(error => console.log(error));
+        }, getAllDermatologists() {
+        this.$http.get("http://localhost:8081/employment/dermatologist-employments", {
+                params: {
+                            drugstoreId: this.currentDrugstoreId
+                        }})
+            .then(response => {
+            this.dermatologists = response.data.map(employment => 
+            (
+                    {
+                        name: employment.name,
+                        surname: employment.surname,
+                        worksFrom: employment.workingHoursFrom,
+                        worksTo: employment.workingHoursTo
+                    }
+                ));
+            })
+            .catch(error => console.log(error));
+    }, getAllPharmacists() {
+        this.$http.get("http://localhost:8081/employment/pharmacist-employments", {
+                params: {
+                            drugstoreId: this.currentDrugstoreId
+                        }})
+            .then(response => {
+            this.pharmacists = response.data.map(employment => 
+            (
+                    {
+                        name: employment.name,
+                        surname: employment.surname,
+                        worksFrom: employment.workingHoursFrom,
+                        worksTo: employment.workingHoursTo
+                    }
+                ));
+            })
+            .catch(error => console.log(error));
+    }, getAllEmployees() {
+            this.getAllDermatologists();
+            this.getAllPharmacists();
+    }, subscribe() {
+        this.$http.post("http://localhost:8081/subscription/subscribe", 
+            {
+                patientId: this.user.id,
+                drugstoreId: this.drugstore.id
+            })
+            .then(response => {
+            this.subscribed = response.data;
+            })
+    }, unsubscribe() {
+        this.$http.post("http://localhost:8081/subscription/unsubscribe", 
+            {
+                patientId: this.user.id,
+                drugstoreId: this.drugstore.id
+            })
+            .then(response => {
+            this.subscribed = response.data;
+            })
+    }
+    },
+    mounted: function(){
+        this.getDrugstoreId();
+        this.getCurrentDrugstore();
+        this.getAllEmployees();
+    }
+  }
+</script>

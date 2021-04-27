@@ -55,7 +55,7 @@ public class DrugReservationService {
 				return "Succes!";
 			}
 		}
-		userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail());
+		userNotificationService.sendReservationConfirmationDrug(patientRepository.getById(patientId).getEmail());
 		return "Succes!";
 	}
 }

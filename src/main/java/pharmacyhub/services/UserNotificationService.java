@@ -84,6 +84,25 @@ public class UserNotificationService {
 	}
     
     @Async
+	public void sendReservationConfirmationDrug(String email) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		
+		
+		String emailContent = "You have succesfully reserved a drug";
+		
+			
+		
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setTo(email);
+		helper.setSubject("Account details");
+		helper.setText(emailContent, true);
+
+		javaMailSender.send(message);	
+	}
+    
+    @Async
 	public void notifySubscribers(CreateNewPriceForDrugDto newPromotion) throws MessagingException {
     	MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
