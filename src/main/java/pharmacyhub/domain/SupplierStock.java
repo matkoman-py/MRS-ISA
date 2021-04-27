@@ -7,12 +7,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import pharmacyhub.domain.users.Supplier;
 
 @Entity
 @Table(name = "supplierstock")
 @SQLDelete(sql = "UPDATE supplierstock SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class SupplierStock extends BaseEntity{
 
 	@ManyToOne

@@ -60,7 +60,7 @@ import { mapState } from 'vuex';
                 .then(response => {
                     this.$emit("add-stock-success", response.data);
                 })
-                .catch(error => this.$toastr.e(error));
+                .catch(error => this.$toastr.e(error.message));
             }
         },
         mounted: function () {

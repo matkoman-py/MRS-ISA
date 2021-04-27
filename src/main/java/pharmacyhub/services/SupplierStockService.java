@@ -62,6 +62,14 @@ public class SupplierStockService {
 			throw new Exception("No such supplier");
 		}
 		
+		SupplierStock existingSupplierStock = supplierStockRepository.findByDrugAndSupplier(drug, supplier);
+		
+		if(existingSupplierStock != null) {
+			existingSupplierStock.setAmount(existingSupplierStock.getAmount() + supplierStockToAdd.getAmount());
+			supplierStockRepository.save(existingSupplierStock);
+			return getSupplierStockDto(existingSupplierStock);
+		}
+		
 		if(supplierStockToAdd.getAmount() < 0) {
 			throw new Exception("Supplier stock amount can not be negative");
 		}
@@ -95,6 +103,8 @@ public class SupplierStockService {
 		if(supplierStock == null) {
 			throw new Exception("No such supplier stock");
 		}
+		
+		supplierStock.setAmount(editedSupplierStock.getAmount());
 		
 		SupplierStock editedStock = supplierStockRepository.save(supplierStock);
 		return getSupplierStockDto(editedStock);

@@ -16,7 +16,7 @@ public class SupplierStockSpecifications {
 			List<Predicate> predicates = new ArrayList<>();
 			
 			if(supplierStockSearchDto.getDrugName() != null && !supplierStockSearchDto.getDrugName().isBlank()) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + supplierStockSearchDto.getDrugName().toLowerCase() + "%"));
+				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("drug").get("name")), "%" + supplierStockSearchDto.getDrugName().toLowerCase() + "%"));
 			}
 			
 			if(supplierStockSearchDto.getSupplierId() != null && !supplierStockSearchDto.getSupplierId().isBlank()) {
