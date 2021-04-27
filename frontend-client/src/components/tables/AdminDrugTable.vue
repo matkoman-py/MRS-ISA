@@ -3,25 +3,50 @@
     <b-container>
         <b-table id="drug-table" striped hover :items="drugs" :fields="fields">
             <template #cell(actions)="row">
-                <b-button size="sm" @click="showEditModal(row.item, $event.target)" class="mr-1">
+                <b-button size="sm" @click="showEditModal(row.item, $event.target)" class="mr-1" variant="outline-hub">
                     Edit
                 </b-button>
-                <b-button size="sm" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
+                <b-button size="sm" @click="showDeleteModal(row.item, $event.target)" class="mr-1" variant="outline-hub">
                     Delete
                 </b-button>
             </template>
         </b-table>
-        <b-button size="sm" @click="showAddModal($event.target)" class="mr-1">
+        <b-button size="sm" @click="showAddModal($event.target)" class="mr-1" variant="outline-hub">
                     Add
         </b-button>
     </b-container>
-    <b-modal :id="addModal.id" :title="addModal.title" ok-only v-on:ok='addDrug' @hide="resetAddModal" size="xl">
+    <b-modal 
+        :id="addModal.id" 
+        :title="addModal.title" 
+        ok-only 
+        v-on:ok='addDrug' 
+        ok-variant="outline-hub"
+        @hide="resetAddModal" 
+        size="lg">
         <add-drug-form ref='add-drug-form'></add-drug-form>
     </b-modal>
-    <b-modal :id="editModal.id" :title="editModal.title" ok-only v-on:ok='edit' @hide="resetEditModal" size="xl">
-        <edit-drug-form ref='edit-drug-form' :form="this.editModal.drug"></edit-drug-form>
+    <b-modal 
+        :id="editModal.id" 
+        :title="editModal.title" 
+        ok-only 
+        ok-variant="outline-hub"
+        v-on:ok='edit' 
+        @hide="resetEditModal" 
+        size="lg">
+        <edit-drug-form 
+            ref='edit-drug-form' 
+            :form="this.editModal.drug"
+            v-on:update-drug-success="updateDrugInTable">
+        </edit-drug-form>
     </b-modal>
-    <b-modal :id="deleteModal.id" :title="deleteModal.title" ok-only v-on:ok='deleteDrug' @hide="resetDeleteModal" size="xl">
+    <b-modal 
+        :id="deleteModal.id" 
+        :title="deleteModal.title" 
+        ok-only 
+        ok-variant="outline-hub"
+        v-on:ok='deleteDrug' 
+        @hide="resetDeleteModal" 
+        size="lg">
         Are you sure that you want to delete this drug?
     </b-modal>
   </div>
@@ -89,7 +114,6 @@ export default {
       showDeleteModal: function(rowItem, button){
             this.deleteModal.title = `drug: ${rowItem.name}`;
             this.deleteModal.drug = JSON.parse(JSON.stringify(rowItem));
-            console.log(this.deleteModal.drug);
             this.$root.$emit('bv::show::modal', this.deleteModal.id, button);
       },
       resetDeleteModal: function() {
@@ -102,15 +126,20 @@ export default {
                 this.drugs.splice(index, 1);
                 alert("success", response);
             })
-            .catch(error => console.log(error));
+            .catch(error => this.$toastr.e(error));
       },
       getDrugs: function () {
             this.$http.get('http://localhost:8081/drugs')
             .then(response => {
                 this.drugs = response.data;
             })
-            .catch(error => console.log(error));
+            .catch(error => this.$toastr.e(error));
        },
+       updateDrugInTable: function(updatedDrug) {
+            const index = this.drugs.findIndex(drug => drug.id == updatedDrug.id);
+            this.$set(this.drugs, index, updatedDrug);
+            this.$root.$emit('bv::hide::modal', this.editModal.id);
+       }
     },
     mounted: function(){
         this.getDrugs();
