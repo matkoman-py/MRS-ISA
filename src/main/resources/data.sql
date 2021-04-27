@@ -170,8 +170,8 @@ INSERT INTO public.order_stock VALUES ('8b941ec0-a753-11eb-bcbc-0242ac130002', f
 --
 -- Data for Name: drug-order; 
 --
-INSERT INTO public.drug_order VALUES ('c93555b4-a753-11eb-bcbc-0242ac130002', false, '2021-05-22', '12:00:00', 0);
-INSERT INTO public.drug_order VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', false, '2021-04-22', '12:00:00', 1);
+INSERT INTO public.drug_order VALUES ('c93555b4-a753-11eb-bcbc-0242ac130002', false, '2021-05-22', '12:00:00', 0, '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.drug_order VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', false, '2021-04-22', '12:00:00', 1, '2bas33e9-6523-463a-974b-ded43ad63843');
 
 --
 -- Data for Name: drug-order-stock; 

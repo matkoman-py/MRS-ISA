@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -31,6 +32,9 @@ public class DrugOrder extends BaseEntity {
 
 	@Column(nullable = false)
 	private OrderStatus status;
+	
+	@ManyToOne
+	private Drugstore drugstore;
 
 	public List<OrderStock> getStock() {
 		return stock;
