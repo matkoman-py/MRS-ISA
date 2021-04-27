@@ -35,14 +35,12 @@ public class PharmacistAppointmentController {
 	@GetMapping(path ="/begin-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PharmacistAppointment> getPharmacistAppointment(@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String pharmacistAppointmentId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findAppointment(pharmacistAppointmentId), HttpStatus.OK);
-		//return new ResponseEntity<>("Vratio",HttpStatus.OK);
 	}
 	
 	@GetMapping(path ="/get-drugstores", produces = MediaType.APPLICATION_JSON_VALUE)
 	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<Drugstore>> getDrugstores(@RequestParam (value = "pharmacistAppointmentDate", required=false,  defaultValue = "0") String pharmacistAppointmentDate,
 															   @RequestParam (value = "pharmacistAppointmentTime", required=false,  defaultValue = "0") String pharmacistAppointmentTime) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findDrugstores(pharmacistAppointmentTime,pharmacistAppointmentDate), HttpStatus.OK);
-		//return new ResponseEntity<>("Vratio",HttpStatus.OK);
 	}
 	
 	@GetMapping(path ="/get-pharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,7 +48,6 @@ public class PharmacistAppointmentController {
 			@RequestParam (value = "pharmacistAppointmentDate", required=false,  defaultValue = "0") String pharmacistAppointmentDate,
 			   @RequestParam (value = "pharmacistAppointmentTime", required=false,  defaultValue = "0") String pharmacistAppointmentTime) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findPharmacists(drugstoreId,pharmacistAppointmentDate,pharmacistAppointmentTime), HttpStatus.OK);
-		//return new ResponseEntity<>("Vratio",HttpStatus.OK);
 	}
 	
 	@GetMapping(path ="/get-appointments", produces = MediaType.APPLICATION_JSON_VALUE)

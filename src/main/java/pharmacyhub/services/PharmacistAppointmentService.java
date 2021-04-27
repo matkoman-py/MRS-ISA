@@ -58,12 +58,9 @@ public class PharmacistAppointmentService {
 		long vremePocetak = vreme.getTime();
 		vreme.setMinutes(pharmacistAppointmentPatientDto.getTime().getMinutes()+pharmacistAppointmentPatientDto.getDuration());
 		long vremeKraj = vreme.getTime();
-		System.out.println("vreme poc: "+ vremePocetak+ "vreme kraj:" + vremeKraj);
 		
 		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
 		for(PharmacistAppointment pa : pharmacistAppointments) {
-			System.out.println(pa.getDate());
-			System.out.println(pa.getTime());
 			Date pVreme = pa.getDate();
 			pVreme.setHours(pa.getTime().getHours());
 			pVreme.setMinutes(pa.getTime().getMinutes());
@@ -71,17 +68,12 @@ public class PharmacistAppointmentService {
 			pVreme.setHours(pa.getTimeEnd().getHours());
 			pVreme.setMinutes(pa.getTimeEnd().getMinutes());
 			long pvremeKraj = pVreme.getTime();
-			System.out.println("pvreme poc: "+ pvremePocetak+ "pvreme kraj:" + pvremeKraj);
 			
 			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
-				System.out.println("USO JE 1");
 				throw new Exception("Patient already has an appointment at that time.");
-				// kako throw exception
 			}
 			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
-				System.out.println("USO JE 2");
 				throw new Exception("Patient already has an appointment at that time.");
-				// kako throw exception
 			}
 		}
 		
@@ -97,17 +89,12 @@ public class PharmacistAppointmentService {
 			pVreme.setHours(pa.getTimeEnd().getHours());
 			pVreme.setMinutes(pa.getTimeEnd().getMinutes());
 			long pvremeKraj = pVreme.getTime();
-			System.out.println("pvreme poc: "+ pvremePocetak+ "pvreme kraj:" + pvremeKraj);
 			
 			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
-				System.out.println("USO JE 1");
 				throw new Exception("Patient already has an appointment at that time.");
-				// kako throw exception
 			}
 			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
-				System.out.println("USO JE 2");
 				throw new Exception("Patient already has an appointment at that time.");
-				// kako throw exception
 			}
 		}
 		
@@ -121,19 +108,13 @@ public class PharmacistAppointmentService {
 			pVreme.setHours(da.getTimeEnd().getHours());
 			pVreme.setMinutes(da.getTimeEnd().getMinutes());
 			long pvremeKraj = pVreme.getTime();
-			System.out.println("3 pvreme poc: "+ pvremePocetak+ "pvreme kraj:" + pvremeKraj);
 			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
-				System.out.println("USO JE 5");
 				throw new Exception("Patient already has an appointment at that time.");
-				// kako throw exception
 			}
 			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
-				System.out.println("USO JE 6");
 				throw new Exception("Patient already has an appointment at that time.");
-				// kako throw exception
 			}
 		}
-		
     	userNotificationService.sendReservationConfirmation(patientRepository.getById(pharmacistAppointmentPatientDto.getPatientId()).getEmail(), "pharmacist");
 		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null,false));
 	}
@@ -166,7 +147,9 @@ public class PharmacistAppointmentService {
 			
 			if(inputTime > workingFrom && inputTime < workingTo) {
 				if(!wantedDrugstores.contains(drugstoreRepository.findById(ph.getDrugstore().getId()).orElse(null))){
-					wantedDrugstores.add(drugstoreRepository.findById(ph.getDrugstore().getId()).orElse(null));
+					if(findPharmacists(ph.getDrugstore().getId(),pharmacistAppointmentDate,pharmacistAppointmentTime).size() > 0) {
+						wantedDrugstores.add(drugstoreRepository.findById(ph.getDrugstore().getId()).orElse(null));
+					}
 				}
 			}
 		}
@@ -179,10 +162,6 @@ public class PharmacistAppointmentService {
 		
 		pharmacistAppointmentRepository.findAll();
 		Time in = new Time(Integer.parseInt(pharmacistAppointmentTime.substring(0,2)),Integer.parseInt(pharmacistAppointmentTime.substring(3,5)),0);
-		//String hours = pharmacistAppointmentTime.substring(0,2);
-		//int inputTime = Integer.parseInt(hours) * 3600;
-		//String minutes = pharmacistAppointmentTime.substring(3,5);
-		//inputTime += Integer.parseInt(minutes) * 60;
 		long inputTime = in.getTime();
 		
 		for(Pharmacist ph:allPharmacists) {
@@ -190,13 +169,10 @@ public class PharmacistAppointmentService {
 			List<PharmacistAppointment> Appointments = pharmacistAppointmentRepository.findByPharmacistId(ph.getId());
 			for(PharmacistAppointment Appointment:Appointments) {
 				if(Appointment.getDate().toString().contains(pharmacistAppointmentDate)) {
+					
 					long busyFrom = Appointment.getTime().getTime();
-
 					long busyTo = busyFrom + Appointment.getDuration()*60000;
 					
-					System.out.println(inputTime);
-					System.out.println(busyFrom);
-					System.out.println(busyTo);
 					if(inputTime >= busyFrom && inputTime <= busyTo) {
 						free = false;
 					}
@@ -229,17 +205,12 @@ public class PharmacistAppointmentService {
 	public List<PharmacistAppointment> findAllPharmacistAppointmentsDone(String pharmacistId) {
 		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
 		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
-		
-		//long sad = new Date().getTime();
+
 		for(PharmacistAppointment appointment : allAppointments) {
-//			Date vreme = appointment.getDate();
-//			vreme.setHours(appointment.getTime().getHours());
-//			vreme.setMinutes(appointment.getTime().getMinutes());
-//			long vremee = vreme.getTime();
+
 			if(appointment.getPharmacist().getId().equals(pharmacistId) && appointment.isProcessed())
 				wantedAppontments.add(appointment);
 		}
-		System.out.println(wantedAppontments);
 		return wantedAppontments;
 	}
 }
