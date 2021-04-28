@@ -85,6 +85,7 @@
                     price: 0,
                     date: "",
                     time: "",
+                    title: ''
                 },
                 stockFields: [{
                         key: 'drug.name',
@@ -121,7 +122,7 @@
         },
         methods: {
             showDetailsModal: function (rowItem, button) {
-                this.detailsModal.title = `drug: ${rowItem.drugName}`;
+                this.detailsModal.title = `drug: ${rowItem.drugstoreName}`;
                 this.detailsModal.order = JSON.parse(JSON.stringify(rowItem));
                 this.$root.$emit('bv::show::modal', this.detailsModal.id, button);
             },

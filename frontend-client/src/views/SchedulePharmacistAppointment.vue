@@ -20,9 +20,9 @@
         </b-form>
         <br>
         <h1 v-if="searched == 1 & drugstores.length == 0">Sorry, there are no available pharmacists at this time.</h1>
-        <b-table v-if="employees.length == 0 & drugstores.length != 0" :items="drugstores" :fields="fieldsDrugstores"
+        <b-table hover v-if="employees.length == 0 & drugstores.length != 0" :items="drugstores" :fields="fieldsDrugstores"
             @row-clicked="getPharmacists"></b-table>
-        <b-table v-if="employees.length != 0" :items="employees" :fields="fieldsPharmacists"
+        <b-table hover v-if="employees.length != 0" :items="employees" :fields="fieldsPharmacists"
             @row-clicked="saveAppointment"></b-table>
     </b-container>
 </template>
@@ -93,7 +93,7 @@
                         console.log(response);
                         alert("New appointment is successfully created.");
                         this.$router.push({
-                            path: 'patient/id'
+                            path: 'patient'
                         });
                     })
                     .catch(error => console.log(error));

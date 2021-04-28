@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="sm" type="light" variant="outline-hub">
+  <b-navbar sticky style="background-color:white;" toggleable="sm" type="light" variant="outline-hub">
     <b-navbar-nav>
       <b-navbar-brand>
         <router-link to="/">
