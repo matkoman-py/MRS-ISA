@@ -13,33 +13,99 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="profile-head">
-                            <h5>
-                                {{name}}
-                            </h5>
-                            <h6>
-                                {{employee.type}}
-                            </h6>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Points</label>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>{{employee.points}}</h6>
-                            </div>
-                        </div>
+                    <div>
+                        <b-card no-body>
+                            <b-tabs>
+                                <b-tab style="height: 370px;" title="Profile" active>
+                                    <div class="profile-head">
+                                        <br>
+                                        <h5>
+                                            {{name}}
+                                        </h5>
+                                        <h6>
+                                            {{employee.type}}
+                                        </h6>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Points</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{employee.points}}</h6>
+                                        </div>
+                                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Category</label>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>{{employee.category}}</h6>
-                                <h6 v-if="employee.category == null">Undefined</h6>
-                            </div>
-                        </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Category</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{employee.category}}</h6>
+                                            <h6 v-if="employee.category == null">Undefined</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="name-input"
+                                                v-model="employee.name" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Surname</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="surname-input"
+                                                v-model="employee.surname" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="email-input" type="email"
+                                                v-model="employee.email" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Phone</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="phonenumber-input"
+                                                v-model="employee.phoneNumber" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <b-button class="dugme" type="button" variant="outline-hub"
+                                                :disabled="!editEnabled" @click="handleEdit">Edit info
+                                            </b-button>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <b-button class="dugme" type="submit" variant="outline-hub"
+                                                :disabled="editEnabled">
+                                                Save
+                                                info</b-button>
+                                        </div>
+                                    </div>
+                                </b-tab>
+                                <b-tab style="height: 370px;" title="Pharmacist appointments">
+                                    <b-table striped hover :items="appointments"></b-table>
+                                </b-tab>
+                                <b-tab style="height: 370px;" title="Dermatology appointments">
+                                    <b-table striped hover :items="appointments"></b-table>
+                                </b-tab>
+                                <b-tab style="height: 370px;" title="Drug reservations">
+                                    <b-table striped hover :items="appointments"></b-table>
+                                </b-tab>
+                            </b-tabs>
+                        </b-card>
                     </div>
 
                 </div>
@@ -49,60 +115,12 @@
                             <b-button variant="outline-hub">Schedule pharmacist
                                 appointment</b-button>
                         </router-link>
-                        <!-- <br>
-                        <br>
-                        <router-link :to="'/drug-reservation'">
-                            <b-button variant="outline-hub">Create drug reservation
-                                appointment</b-button>
-                        </router-link>
-                        <br>
-                        <br> -->
-                        <!-- <h6 class="mt-3">My appointments</h6>
-                        <b-table :items="appointments"></b-table> -->
-                        <b-dropdown text="My pharmacist appointments" class="m-2" variant="outline-hub">
-                            <b-dropdown-header id="dropdown-header-label">Pharmacist Date Time</b-dropdown-header>
-                            <b-dropdown-item-button v-for="item in appointments" :key="item">{{item.pharmacist}}    {{item.date}}    {{item.time}}</b-dropdown-item-button>
-                        </b-dropdown>
                     </div>
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Name</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="name-input" v-model="employee.name"
-                                            required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Surname</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="surname-input"
-                                            v-model="employee.surname" required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Email</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="email-input" type="email"
-                                            v-model="employee.email" required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Phone</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="phonenumber-input"
-                                            v-model="employee.phoneNumber" required></b-form-input>
-                                    </div>
-                                </div>
+
+
                                 <!-- <div class="row">
                                     <div class="col-md-6">
                                         <label>Password</label>
@@ -161,67 +179,6 @@
                                                 ></b-form-input>
                                             </div>
                                         </div>-->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <b-button class="dugme" type="button" variant="outline-hub"
-                                            :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
-                                    </div>
-                                    <div class="col-md-6">
-
-                                        <b-button class="dugme" type="submit" variant="outline-hub" :disabled="editEnabled">
-                                            Save
-                                            info</b-button>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Experience</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>Expert</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Hourly Rate</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>10$/hr</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Total Projects</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>230</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>English Level</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>Expert</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Availability</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>6 months</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label>Your Bio</label><br />
-                                        <p>Your detail description</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

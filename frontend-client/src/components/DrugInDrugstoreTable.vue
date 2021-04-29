@@ -34,23 +34,45 @@
 
       <b-col>
         <b-table head-variant="outline-hub" striped hover :items="drugs" :fields="fields" sticky-header="400px">
-            <template #cell(actions)="row">
-                <b-button variant="outline-hub" v-if="row.item" size="sm" class="mr-1">
-                    Reserve
-                </b-button>
-            </template>
+          <template #cell(actions)="row">
+            <b-button variant="outline-hub" v-if="row.item" size="sm"
+              @click="showModal(row.item, row.index, $event.target)" class="mr-1">
+              Choose pharmacy
+            </b-button>
+          </template>
         </b-table>
         <h1 v-if="drugs.length == 0"> There are no drugs that fit the search parameters</h1>
       </b-col>
     </b-row>
+    <!-- -->
+    <b-modal id="my-modal" title="Almost done!" hide-footer>
+      <p>Before you finish the reservation process you must select the date to wait for your order</p>
+      <b-form @submit="makeReservation">
+        <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
+        <br>
+        <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
+      </b-form>
+    </b-modal>
+
   </b-container>
 </template>
 
 <script>
+  import {
+    mapState
+  } from 'vuex'
+
   export default {
     name: "DrugTable",
+
     data: function () {
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const minDate = new Date(today)
       return {
+        selecteddrug: '',
+        minDate: minDate,
+        date: '',
         currentDrugstoreId: '',
         name: '',
         type: '',
@@ -65,56 +87,81 @@
         ingrediants: [],
         substitutions: [],
         fields: [
-                   
-                    {
-                        key: 'name',
-                    },
-                    {
-                        key: 'type',
-                    },
-                    {
-                        key: 'form',
-                    },
-                    {
-                        key: 'manufacturer',
-                    },
-                    {
-                        key: 'receipt',
-                    },
-                    {
-                        key: 'amountAvailable',
-                    },
-                    {
-                        key: 'actions',
-                        label: ''
-                    }
-                ]
+          {
+            key: 'name',
+          },
+          {
+            key: 'type',
+          },
+          {
+            key: 'form',
+          },
+          {
+            key: 'manufacturer',
+          },
+          {
+            key: 'receipt',
+          },
+          {
+            key: 'amountAvailable',
+          },
+          {
+            key: 'actions',
+            label: ''
+          }
+        ]
       }
     },
     methods: {
+      makeReservation() {
+        //alert(this.selecteddrug);
+        //alert(this.currentDrugstoreId);
+        //alert(this.user.id);
+        //alert(this.date);
+        this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+            patientId: this.user.id,
+            drugstoreId: this.currentDrugstoreId,
+            drugId: this.selecteddrug,
+            date: this.date
+          })
+          .then(response => {
+            alert(response.data);
+            this.getAllDrugsOfDrugstore();
+            this.$root.$emit('bv::hide::modal', 'my-modal');
+          })
+          .catch(error => console.log(error));
+      },
+      showModal(item) {
+        if (this.user == null) {
+          alert("You must be logged in to reserve a drug!");
+          return;
+        }
+        //alert(item.name);
+        this.selecteddrug = item.id;
+        this.$root.$emit('bv::show::modal', 'my-modal');
+      },
       getDrugstoreId() {
-        this.currentDrugstoreId =  this.$route.path.slice(12, this.$route.path.length);
+        this.currentDrugstoreId = this.$route.path.slice(12, this.$route.path.length);
       },
       getDrugs: function () {
         console.log({
           name: this.name,
-              type: this.type.name,
-              form: this.form,
-              manufacturerId: this.manufacturer.id,
-              receipt: this.receipt,
+          type: this.type.name,
+          form: this.form,
+          manufacturerId: this.manufacturer.id,
+          receipt: this.receipt,
         })
-        this.$http.post('http://localhost:8081/drugs/search', 
-            {
-              name: this.name,
-              type: this.type.name,
-              form: this.form,
-              manufacturerId: this.manufacturer.id,
-              receipt: this.receipt,
-            }
-          )
+        this.$http.post('http://localhost:8081/drugs/search', {
+            name: this.name,
+            type: this.type.name,
+            form: this.form,
+            manufacturerId: this.manufacturer.id,
+            receipt: this.receipt,
+          })
           .then(response => {
             this.drugs = response.data.map(drug =>
               ({
+                id: drug.id,
                 name: drug.name,
                 form: drug.form,
                 type: drug.type.name,
@@ -164,16 +211,16 @@
           .catch(error => console.log(error));
       },
       getAllDrugsOfDrugstore: function () {
-        this.$http.get('http://localhost:8081/drugs/in-drugstore/' + this.currentDrugstoreId, 
-        {
-          params: {
-            size : 5,
-            page : 0
-          }
-        })
+        this.$http.get('http://localhost:8081/drugs/in-drugstore/' + this.currentDrugstoreId, {
+            params: {
+              size: 5,
+              page: 0
+            }
+          })
           .then(response => {
             this.drugs = response.data.map(drug =>
               ({
+                id: drug.id,
                 name: drug.name,
                 form: drug.form,
                 type: drug.type.name,
@@ -192,6 +239,13 @@
       this.getSubstitutionDrugs();
       this.getDrugTypes();
       this.getAllDrugsOfDrugstore();
-    }
+    },
+    computed: {
+      ...mapState({
+        user: state => state.userModule.loggedInUser,
+        email: state => state.userModule.loggedInUser.email,
+        role: state => state.userModule.loggedInUser.type
+      }),
+    },
   }
 </script>
