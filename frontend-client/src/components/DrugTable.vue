@@ -154,7 +154,7 @@
           alert("You must be logged in to reserve a drug!");
           return;
         }
-        alert(data.id);
+        //alert(data.id);
         this.selectedDrug = {
           id: data.id,
           name: data.name,

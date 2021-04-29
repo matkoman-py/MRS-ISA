@@ -95,14 +95,46 @@
                                         </div>
                                     </div>
                                 </b-tab>
+                                <!--@click="cancelDrugReservation(row.item, row.index, $event.target)"-->
+
                                 <b-tab style="height: 370px;" title="Pharmacist appointments">
-                                    <b-table striped hover :items="appointments"></b-table>
+                                    <b-table v-if="pharmacistappointments.length != 0" striped hover
+                                        :fields="pharmacistappointmentfields" :items="pharmacistappointments">
+                                        <template #cell(actions)="row">
+                                            <b-button variant="outline-danger" v-if="row.item" size="sm" class="mr-1">
+                                                Cancel appointment
+                                            </b-button>
+                                        </template>
+                                    </b-table>
+                                    <br><br>
+                                    <h3 v-if="pharmacistappointments.length == 0">You have no pharmacist appointments
+                                        scheduled
+                                    </h3>
                                 </b-tab>
                                 <b-tab style="height: 370px;" title="Dermatology appointments">
-                                    <b-table striped hover :items="appointments"></b-table>
+                                    <b-table v-if="dermatologistappointments.length != 0" striped hover
+                                        :items="dermatologistappointments">
+                                    </b-table>
+                                    <br><br>
+                                    <h3 v-if="dermatologistappointments.length == 0">You have no dermatologist
+                                        appointments scheduled
+                                    </h3>
                                 </b-tab>
                                 <b-tab style="height: 370px;" title="Drug reservations">
-                                    <b-table striped hover :items="appointments"></b-table>
+
+                                    <b-table v-if="drugReservations.length != 0" striped hover
+                                        :fields="drugReservationFields" :items="drugReservations">
+                                        <template #cell(actions)="row">
+                                            <b-button variant="outline-danger" v-if="row.item" size="sm"
+                                                @click="cancelDrugReservation(row.item, row.index, $event.target)"
+                                                class="mr-1">
+                                                Cancel reservation
+                                            </b-button>
+                                        </template>
+                                    </b-table>
+                                    <br><br>
+                                    <h3 v-if="drugReservations.length == 0">You have no drug reservations</h3>
+
                                 </b-tab>
                             </b-tabs>
                         </b-card>
@@ -196,6 +228,8 @@
     export default {
         data: function () {
             return {
+                dermatologistappointments: [],
+                drugReservations: [],
                 employee: {},
                 editEnabled: true,
                 validationPassword: '',
@@ -204,10 +238,57 @@
                     date: '',
                     time: '',
                 },
-                appointments: [],
+                pharmacistappointmentfields: [
+                    {
+                        key: 'pharmacist',
+                        label: 'Pharmacist'
+                    },
+                    {
+                        key: 'date',
+                    },
+                    {
+                        key: 'time',
+                    },
+                    {
+                        key: 'actions',
+                        label: ''
+                    }
+                ],
+                drugReservationFields: [{
+                        key: 'drug',
+                    },
+                    {
+                        key: 'drugstore',
+                    },
+                    {
+                        key: 'date',
+                    },
+                    {
+                        key: 'actions',
+                        label: ''
+                    },
+                ],
+                pharmacistappointments: [],
+                itemm: {},
             }
         },
         methods: {
+            cancelDrugReservation(item) {
+                //alert(item.id);
+                this.$http.put("http://localhost:8081/drugReservation/cancelReservation", {
+                    drugReservationId: item.id,
+                    patientId: this.user.id
+                }).then(response => {
+                    this.drugReservations = response.data.map(drugReservation => ({
+                        id: drugReservation.id,
+                        drug: drugReservation.drug.name,
+                        drugstore: drugReservation.drugstore.name,
+                        date: drugReservation.date
+                    }))
+                }).then(
+                    alert("Drug reservation succesfully canceled!")
+                ).catch(error => console.log(error));
+            },
             handleClose() {
                 this.$root.$emit('bv::hide::modal', 'my-modal');
             },
@@ -251,23 +332,40 @@
             validatePassword: function () {
                 return this.employee.password == this.validationPassword;
             },
+            getDrugReservations: function () {
+                this.$http.get("http://localhost:8081/drugReservation/getPatientReservations", {
+                        params: {
+                            patientId: this.user.id
+                        }
+                    }).then(response => {
+                        this.drugReservations = response.data.map(drugReservation => ({
+                            id: drugReservation.id,
+                            drug: drugReservation.drug.name,
+                            drugstore: drugReservation.drugstore.name,
+                            date: drugReservation.date
+                        }))
+                    })
+                    .catch(error => console.log(error));
+            },
             getAppointments: function () {
                 //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
                 this.$http.get("http://localhost:8081/pharmacist-appointment/get-appointments", {
-                    params: {
-                        patientId: this.user.id
-                    }
-                }).then(response => {
-                    this.appointments = response.data.map(appointment => ({
-                        pharmacist: appointment.pharmacist.name,
-                        date: appointment.date.slice(0, 10),
-                        time: appointment.time.slice(0, 5)
-                    }))
-                })
+                        params: {
+                            patientId: this.user.id
+                        }
+                    }).then(response => {
+                        this.pharmacistappointments = response.data.map(appointment => ({
+                            pharmacist: appointment.pharmacist.name,
+                            date: appointment.date.slice(0, 10),
+                            time: appointment.time.slice(0, 5)
+                        }))
+                    })
+                    .catch(error => console.log(error));
             }
         },
         mounted: function () {
             //appointments
+            this.getDrugReservations();
             this.getEmployee();
             this.getAppointments();
         },
