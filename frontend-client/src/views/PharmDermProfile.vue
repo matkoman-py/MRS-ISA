@@ -169,14 +169,17 @@
                                             </div>
                                         
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <b-button class="dugme" type="button" variant="outline-hub" :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 
                                                 <b-button class="dugme" type="submit" variant="outline-hub" :disabled="editEnabled">Save info</b-button>
                                             </div>
-                                            
+                                            <div class="col-md-4">
+                                                
+                                                <b-button class="dugme" type="submit" variant="outline-hub" @click="handlePassword" >Change password</b-button>
+                                            </div>
                                         </div> 
                             </div>
                             <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="profile-tab">
@@ -230,7 +233,36 @@
                         </div>
                     </div>
                 </div>
-            </form>           
+            </form>
+
+            <b-modal id="my-modal" title="Change password" hide-footer>
+            <b-form @submit="changePassword">
+                <b-form-input id="password-input1"
+                              v-model="oldPasswordInput"
+                              type="password"
+                              required
+                              :state="validationOldPasswordState"
+                              placeholder="Old password"
+                ></b-form-input>
+                <br>
+                <b-form-input id="password-input2"
+                              v-model="newPasswordInput"
+                              type="password"
+                              required
+                              placeholder="New password"
+                ></b-form-input>
+                <br>
+                <b-form-input id="password-input3"
+                              v-model="newPasswordValidateInput"
+                              type="password"
+                              required
+                              :state="validationState"
+                              placeholder="Repeat new password"
+                ></b-form-input>
+                <br>
+                <b-button type="submit" variant="outline-hub">Save</b-button>
+            </b-form>
+            </b-modal>        
         </div>
 
 </template>
@@ -240,14 +272,13 @@ import { mapState } from 'vuex'
 export default {
     computed:{
         validationState: function(){
-            if(this.editEnabled)
-                return null
-            return this.employee.password == this.validationPassword;
+            return this.newPasswordInput == this.newPasswordValidateInput;
+        },
+        validationOldPasswordState: function(){
+            return this.employee.password == this.oldPasswordInput;
         },
         ...mapState({
         user: state => state.userModule.loggedInUser,
-        //email: state => state.userModule.loggedInUser.email,
-        //role: state => state.userModule.loggedInUser.type
         }),
     },
     data: function(){
@@ -256,6 +287,9 @@ export default {
             editEnabled: true,
             validationPassword:'',
             name:'',
+            oldPasswordInput: '',
+            newPasswordInput: '',
+            newPasswordValidateInput: '',
         }
     },
     methods: {
@@ -278,11 +312,11 @@ export default {
         handleEdit: function(){
             this.editEnabled = false;
         },
+        handlePassword: function(){
+            this.$root.$emit('bv::show::modal', 'my-modal');
+        },
         handleSubmit: function(event){
             event.preventDefault();
-            // if(!this.validatePassword()){
-            //         return;
-            // }
             this.name = this.employee.name;
             this.editEnabled = true;
             this.$http.put("http://localhost:8081/employees", this.employee)
@@ -294,6 +328,17 @@ export default {
         },
         validatePassword: function(){
             return this.employee.password == this.validationPassword;
+        },
+        changePassword: function(){
+            //pozvati na beku, ali prvo validacija svega
+            alert(this.oldPasswordInput);
+            //this.oldPasswordValidate();
+            //this.validatePassword();
+            //pustiti na bek
+            this.$root.$emit('bv::hide::modal', 'my-modal');
+            this.oldPasswordInput= '';
+            this.newPasswordInput= '';
+            this.newPasswordValidateInput= '';
         },
     },
     created: function(){
