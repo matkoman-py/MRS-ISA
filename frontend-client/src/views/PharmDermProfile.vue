@@ -275,7 +275,9 @@ export default {
             return this.newPasswordInput == this.newPasswordValidateInput;
         },
         validationOldPasswordState: function(){
-            return this.employee.password == this.oldPasswordInput;
+            var bcrypt = require('bcryptjs');
+            var hash = bcrypt.hashSync(this.oldPasswordInput, 10);
+            return this.employee.password == hash;
         },
         ...mapState({
         user: state => state.userModule.loggedInUser,
@@ -297,7 +299,7 @@ export default {
             
             this.$http.get('http://localhost:8081/employees/id', {
                         params: {
-                            employeeId: this.user.id //"68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
+                            employeeId: this.user.id
                         }
                     })
                     .then(response => {
@@ -327,18 +329,41 @@ export default {
                 .catch(error => console.log(error));
         },
         validatePassword: function(){
-            return this.employee.password == this.validationPassword;
+            return this.newPasswordInput == this.newPasswordValidateInput;
+        },
+        oldPasswordValidate: function(){
+            var bcrypt = require('bcryptjs');
+            var hash = bcrypt.hashSync(this.oldPasswordInput, 10);
+            console.log(this.employee.password);
+            console.log(hash);
+            return bcrypt.compareSync(this.employee.password,hash);
         },
         changePassword: function(){
             //pozvati na beku, ali prvo validacija svega
-            alert(this.oldPasswordInput);
-            //this.oldPasswordValidate();
-            //this.validatePassword();
+            //alert(this.oldPasswordInput);
+            if(this.oldPasswordValidate()){
+                alert("iste su");
+            }
+            if(this.validatePassword()){
+                this.employee.password = this.newPasswordInput;
+                this.$http.put("http://localhost:8081/employees", this.employee)
+                .then(response => {
+                console.log(response);
+                console.log("ovde");
+                })
+                .catch(error => console.log(error));
+
+                this.$root.$emit('bv::hide::modal', 'my-modal');
+                this.oldPasswordInput= '';
+                this.newPasswordInput= '';
+                this.newPasswordValidateInput= '';
+            }
+            else{
+                alert("New/old password does not match match!");
+            }
+            
             //pustiti na bek
-            this.$root.$emit('bv::hide::modal', 'my-modal');
-            this.oldPasswordInput= '';
-            this.newPasswordInput= '';
-            this.newPasswordValidateInput= '';
+            
         },
     },
     created: function(){

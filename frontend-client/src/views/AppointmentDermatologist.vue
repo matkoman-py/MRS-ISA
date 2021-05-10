@@ -102,21 +102,24 @@
         </b-modal>
         
         <b-modal id="reservemodal" size="xl" title="Reserve a drug" hide-footer>
-            <h1>Available drugs</h1>
-            <DrugInDrugstoreTable :passedDrugstoreId="currentAppointment.drugstore.id" :passedPatientId="currentAppointment.patient.id"/>
+            <h1>Drugs</h1>
+            <!-- <DrugInDrugstoreTable :passedDrugstoreId="currentAppointment.drugstore.id" :passedPatientId="currentAppointment.patient.id"/> -->
+            <DrugTable :passedDrugstoreId="currentAppointment.drugstore.id" :passedPatientId="currentAppointment.patient.id" />
         </b-modal>
     </b-container>
 </template>
 
 <script>
-import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable"
+//import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable"
+import DrugTable from "@/components/DrugTable"
 export default {
     name: "AppointmentDermatologist",
     props:{
         passedId: String,
     },
     components:{
-        DrugInDrugstoreTable,
+       // DrugInDrugstoreTable,
+        DrugTable,
     },  
     data: function () {
             const now = new Date()

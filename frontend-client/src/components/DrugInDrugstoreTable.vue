@@ -37,7 +37,7 @@
           <template #cell(actions)="row">
             <b-button variant="outline-hub" v-if="row.item" size="sm"
               @click="showModal(row.item, row.index, $event.target)" class="mr-1">
-              Choose pharmacy
+              Reserve
             </b-button>
           </template>
         </b-table>

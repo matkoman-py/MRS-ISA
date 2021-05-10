@@ -1,7 +1,8 @@
 <template>
   <b-container>
     <h1 v-if="reserved == 1">Drug: {{selecteddrug.name}}</h1>
-    <h1 v-if="drugstores.length == 0 & reserved == 1">Sorry, there are no pharmacies with that drug in stock :(</h1>
+    <h1 v-if="drugstores.length == 0 & reserved == 1 & patientId == user.id">Sorry, there are no pharmacies with that drug in stock :(</h1>
+    <h1 v-if="drugstores.length == 0 & reserved == 1 & patientId != user.id">Sorry, the selected drug is not on stock in this pharmacy :(</h1>
 
     <b-table head-variant="dark" striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
       :items="drugstores">
@@ -38,7 +39,7 @@
         role: state => state.userModule.loggedInUser.type
       }),
     },
-    props: ['drugstores', 'reserved', 'selecteddrug'],
+    props: ['drugstores', 'reserved', 'selecteddrug', 'patientId'],
     data: function () {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -78,7 +79,7 @@
         //alert(this.user.id);
         //alert(this.date);
         this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
-            patientId: this.user.id,
+            patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selecteddrug.id,
             date: this.date
