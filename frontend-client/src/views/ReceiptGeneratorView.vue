@@ -55,8 +55,12 @@
                     <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
                 </b-card>
                 <b-card class="mt-3">
-                    <qrcode-vue :value="JSON.stringify(eReceipt)" :size="200" level="M"></qrcode-vue>
-                    {{eReceipt}}
+                    <qrcode-vue :value="JSON.stringify(eReceipt)" :size="300" level="M" ref="canvas"></qrcode-vue>
+                    <b-button variant="outline-hub" size="sm"
+                                @click="downloadQrCode"
+                                class="mr-1">
+                                Download as image
+                    </b-button>
                 </b-card>
             </b-col>
         </b-row>
@@ -148,6 +152,14 @@
             }
         },
         methods: {
+            downloadQrCode: function(event){
+                event.preventDefault();
+                var link = document.createElement('a');
+                link.download = 'qrcode.png';
+                link.href = document.getElementsByTagName("canvas")[0].toDataURL()
+                link.click();
+                link.delete;
+            },
             addToReceipt: function (drug) {
                 if (this.eReceipt.includes(drug.id)) {
                     return;
