@@ -69,4 +69,10 @@ public class DrugController {
 	public ResponseEntity<Boolean> deleteDrug(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(drugService.delete(id), HttpStatus.OK);
 	}
+	
+	@GetMapping(path="/substitutions", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Drug>> getSubstituteDrugs(@RequestParam(value = "drugId", required = false, defaultValue = "0") String drugId) {
+		
+		return new ResponseEntity<>(drugService.findAllSubstitutes(drugId), HttpStatus.OK);
+	}
 }

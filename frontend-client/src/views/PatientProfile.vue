@@ -3,7 +3,7 @@
         <div class="container emp-profile">
             <form @submit="handleSubmit">
                 <div class="row">
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <div class="profile-img">
                             <img src="https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png"
                                 alt="" />
@@ -12,8 +12,8 @@
                                 <input type="file" name="file" />
                             </div>
                         </div>
-                    </div>
-                    <div>
+                    </div> -->
+                    <div class="col-md-12">
                         <b-card no-body>
                             <b-tabs>
                                 <b-tab style="height: 370px;" title="Profile" active>
@@ -141,8 +141,9 @@
                     </div>
 
                 </div>
+                <br>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <router-link :to="'/schedule-appointment'">
                             <b-button variant="outline-hub">Schedule pharmacist
                                 appointment</b-button>

@@ -359,5 +359,27 @@ public class EmployeeService {
 		String pharmacistId = pharmacistRepository.findByEmail(pharmacistEmail).getId();
 		pharmacistAppointmentRepository.deleteByPharmacist((Pharmacist)pharmacistRepository.findByEmail(pharmacistEmail)); //treba samo one koji predstoje?
 	}
-
+	
+	public boolean passwordValid(String employeeId, String passwordInput) {
+		
+		if(dermatologistRepository.findById(employeeId).equals(null)) {
+			Pharmacist ph = pharmacistRepository.findById(employeeId).orElse(null);
+			if(ph.getPassword().equals(passwordEncoder.encode(passwordInput))) {
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			Dermatologist ph = dermatologistRepository.findById(employeeId).orElse(null);
+			System.out.println(ph.getPassword());
+			System.out.println(passwordInput);
+			System.out.println(passwordEncoder.encode(passwordInput));
+			System.out.println(passwordEncoder.matches(passwordInput, ph.getPassword()));
+			if(ph.getPassword().equals(passwordEncoder.encode(passwordInput))) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+	}
 }

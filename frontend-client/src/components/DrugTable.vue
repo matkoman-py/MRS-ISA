@@ -52,7 +52,7 @@
           <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
         </b-card>
         <b-card v-if="reserved" class="mt-3">
-          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores" :patientId="patientId">
+          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores" :patientId="patientId" :passedDrugstoreId="passedDrugstoreId">
           </drug-reservation>
           <h1 v-if="drugs.length == 0"> There are no drugs that fit the search parameters</h1>
         </b-card>
@@ -264,12 +264,12 @@
       mapDrugs: function (response) {
         return response.data.map(drug =>
           ({
-            id: drug.id,
-            name: drug.name,
-            form: drug.form,
-            type: drug.type.name,
-            receipt: drug.receipt ? "Yes" : "No",
-            manufacturer: drug.manufacturer.name,
+              id: drug.id,
+              name: drug.name,
+              form: drug.form,
+              type: drug.type.name,
+              receipt: drug.receipt ? "Yes" : "No",
+              manufacturer: drug.manufacturer.name,
             substitutions: (!drug.substitutions || drug.substitutions.length == 0) ?
               "No substitute" : drug.substitutions.map(sub => sub.name).join(", "),
             ingredients: drug.ingredients.map(ingredient => ingredient.name).join(", "),

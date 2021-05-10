@@ -103,5 +103,10 @@ public class EmployeeController {
 	public ResponseEntity<String> deletePharmacist(@RequestParam (value = "pharmacistEmail") String pharmacistEmail) throws Exception {
 		return new ResponseEntity<>(employeeService.deletePharmacist(pharmacistEmail), HttpStatus.OK);
 	}
-
+	
+	@GetMapping(path ="/password",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> passwordValid(@RequestParam (value = "employeeId") String employeeId,
+			@RequestParam (value = "passwordInput") String passwordInput) throws Exception {
+		return new ResponseEntity<>(employeeService.passwordValid(employeeId, passwordInput), HttpStatus.OK);
+	}
 }

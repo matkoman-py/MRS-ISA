@@ -3,7 +3,7 @@
 <div class="container emp-profile"  v-if="employee && Object.keys(employee).length !== 0">
             <form @submit="handleSubmit">
                 <div class="row">
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <div class="profile-img">
                             <img src="https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png" alt=""/>
                             <div class="file btn btn-lg btn-primary">
@@ -11,8 +11,8 @@
                                 <input type="file" name="file"/>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
+                    </div> -->
+                    <div class="col-md-12">
                         <div class="profile-head">
                                     <h5>
                                         {{name}}
@@ -31,17 +31,17 @@
                             </ul> -->
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                         
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <div class="profile-work">
                             
                         </div>
-                    </div>
-                    <div class="col-md-8">
+                    </div> -->
+                    <div class="col-md-12">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row">
@@ -241,7 +241,6 @@
                               v-model="oldPasswordInput"
                               type="password"
                               required
-                              :state="validationOldPasswordState"
                               placeholder="Old password"
                 ></b-form-input>
                 <br>
@@ -273,11 +272,6 @@ export default {
     computed:{
         validationState: function(){
             return this.newPasswordInput == this.newPasswordValidateInput;
-        },
-        validationOldPasswordState: function(){
-            var bcrypt = require('bcryptjs');
-            var hash = bcrypt.hashSync(this.oldPasswordInput, 10);
-            return this.employee.password == hash;
         },
         ...mapState({
         user: state => state.userModule.loggedInUser,
@@ -332,11 +326,19 @@ export default {
             return this.newPasswordInput == this.newPasswordValidateInput;
         },
         oldPasswordValidate: function(){
-            var bcrypt = require('bcryptjs');
-            var hash = bcrypt.hashSync(this.oldPasswordInput, 10);
-            console.log(this.employee.password);
-            console.log(hash);
-            return bcrypt.compareSync(this.employee.password,hash);
+            var valid = false;
+            this.$http.get('http://localhost:8081/employees/password', {
+                        params: {
+                            employeeId: this.user.id,
+                            passwordInput: this.oldPasswordInput
+                        }
+                    })
+                    .then(response => {
+                        valid = response.data;
+                        console.log(valid);
+                        return valid;
+                    })
+                    .catch(error => console.log(error));
         },
         changePassword: function(){
             //pozvati na beku, ali prvo validacija svega
