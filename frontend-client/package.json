@@ -20,6 +20,7 @@
     "fullcalendar-year-view": "0.0.3",
     "jquery": "^3.6.0",
     "promise": "^8.1.0",
+    "qrcode.vue": "^1.7.0",
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
     "vue": "^2.6.12",
