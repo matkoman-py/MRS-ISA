@@ -64,7 +64,7 @@ import { mapState } from 'vuex';
                 for (var i = 0; i < this.drugstores.length; i += 4) {
                     chunkArray.push(this.drugstores.slice(i, i + 4));
                 }
-                return chunkArray
+                return chunkArray;
 
             },
             handleUnsubscribe: function() {

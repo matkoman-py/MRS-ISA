@@ -13,7 +13,7 @@
         </b-card-body>
 
         <div style="text-align:center;padding:0.5rem;">
-            <router-link :to="'drugstores/' + subscription.drugstoreId">
+            <router-link :to="'drugstores/' + subscription.id">
                 <b-button variant="outline-hub" style="width:50%;">Visit</b-button>
             </router-link>
         </div>
@@ -39,7 +39,6 @@
         methods: {
             unsubscribe: function (event) {
                 event.preventDefault();
-                console.log(this.patientId, this.subscription.drugstoreId);
                 this.$http.post(`http://localhost:8081/subscription/unsubscribe/`, {
                         patientId: this.patientId,
                         drugstoreId: this.subscription.id
