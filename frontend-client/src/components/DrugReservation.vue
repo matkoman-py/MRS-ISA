@@ -1,9 +1,8 @@
 <template>
   <b-container>
-    <h1 v-if="reserved == 1">Drug: {{selecteddrug.name}}</h1>
-    <h1 v-if="drugstores.length == 0 & reserved == 1">Sorry, there are no pharmacies with that drug in stock :(</h1>
-
-    <b-table head-variant="dark" striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
+    <h3 v-if="reserved == 1 & drugstores.length != 0">Drugstores with {{selecteddrug.name}} in stock </h3>
+    <h3 v-if="drugstores.length == 0 & reserved == 1">Sorry, there are no pharmacies with that drug in stock :(</h3>
+    <b-table  striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
       :items="drugstores">
       <template #cell(actions)="row">
         <b-button variant="outline-hub" v-if="row.item" size="sm"
