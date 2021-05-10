@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,8 +40,8 @@ public class SubscriptionController {
 		return new ResponseEntity<>(subscriptionService.unsubscribe(subscriptionDto.getPatientId(), subscriptionDto.getDrugstoreId()), HttpStatus.OK);
 	}
 	
-	@GetMapping(path="/patient", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<SubscriptionDetailsDto>> getSubsForUser(@RequestParam(value = "patientId") String patientId) throws Exception{
+	@GetMapping(path="/patient/{patientId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SubscriptionDetailsDto>> getSubsForUser(@PathVariable (value = "patientId") String patientId) throws Exception{
 		return new ResponseEntity<>(subscriptionService.readUserSpecificSubs(patientId), HttpStatus.OK);
 	}
 

@@ -53,6 +53,7 @@ public class SubscriptionService {
 		subscriptionDeatilsDto.setName(subscription.getDrugstore().getName());
 		subscriptionDeatilsDto.setWorkingHoursFrom(subscription.getDrugstore().getWorkingHoursFrom());
 		subscriptionDeatilsDto.setWorkingHoursTo(subscription.getDrugstore().getWorkingHoursTo());
+		subscriptionDeatilsDto.setId(subscription.getId());
 
 		return subscriptionDeatilsDto;
 	}

@@ -4,6 +4,7 @@ import pharmacyhub.domain.Location;
 
 public class SubscriptionDetailsDto {
 
+	private String id;
 	private String patientId;
 	private String drugstoreId;
 	private String name;
@@ -12,6 +13,14 @@ public class SubscriptionDetailsDto {
 	private double averageRating;
 	private String workingHoursFrom;
 	private String workingHoursTo;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getPatientId() {
 		return patientId;
