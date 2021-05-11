@@ -30,6 +30,10 @@ public class Drugstore extends BaseEntity {
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Employment> employements;
+	
+	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<DrugStock> drugStock;
 
 	@Column
 	private String workingHoursFrom;
