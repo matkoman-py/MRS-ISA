@@ -63,6 +63,7 @@ public class DrugReservationService {
 		for (DrugStock stok : drst) {
 			if (stok.getDrugstore().getId().equals(drugstoreId)) {
 				stok.setAmount(stok.getAmount() - 1);
+				drugstockRepository.save(stok);
 			}
 		}
 

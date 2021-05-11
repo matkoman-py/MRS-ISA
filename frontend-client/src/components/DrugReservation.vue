@@ -15,7 +15,7 @@
     <b-modal id="my-modal" title="Almost done!" hide-footer>
       <p>Before you finish the reservation process you must select the date to wait for your order</p>
       <b-form @submit="makeReservation">
-        <b-form-datepicker id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
+        <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
         <br>
         <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
       </b-form>
@@ -38,7 +38,11 @@
     },
     props: ['drugstores', 'reserved', 'selecteddrug'],
     data: function () {
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const minDate = new Date(today)
       return {
+        minDate : minDate,
         drugstoreId: '',
         date: '',
         drugstoreFields: [{
@@ -84,6 +88,7 @@
           })
           .then(response => {
             alert(response.data);
+            this.$root.$emit('bv::hide::modal', 'my-modal');
           })
           .catch(error => console.log(error));
       }

@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="sm" type="light" variant="outline-hub">
+  <b-navbar sticky style="background-color:white;" toggleable="sm" type="light" variant="outline-hub">
     <b-navbar-nav>
       <b-navbar-brand>
         <router-link to="/">
@@ -29,6 +29,11 @@
                   </b-navbar-brand>
                 </template>
                 
+             <template v-if="!$helpers.isObjectEmpty(user) && role == 'Patient'">
+              <b-navbar-brand v-for="route in userSpecificRoutes['Patient']" :key="route.name" tag="h3" class="nav-link">
+                <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
+              </b-navbar-brand>
+            </template>
 
             <template v-if="!$helpers.isObjectEmpty(user) && role == 'Supplier'">
               <b-navbar-brand v-for="route in userSpecificRoutes['Supplier']" :key="route.name" tag="h3" class="nav-link">
@@ -134,7 +139,9 @@
             {name: "Patients", path: "/patientoverview"},
             {name: "Treated patients", path: "/treated"},
           ],
-          "Patient":[],
+          "Patient":[
+            {name: "Subscriptions", path: "/subscriptions"}
+          ],
         },
         commonRoutes: [{
             name: "Drugstores",

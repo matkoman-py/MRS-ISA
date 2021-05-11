@@ -63,9 +63,9 @@ INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54
 --
 -- Data for Name: Patient;
 --
-INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', false, NULL, 'marko@markoviccc.com', 'Marko', '$2a$12$unh6kPZiK0naKYjUQQTKCeTewEPE7/FhS5SjcfZMvUIwDm3bQGXYa', NULL, true, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
-INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', false, NULL, 'mirko@mirkovic.com', 'Mirko', '$2a$12$Fq8JFCN1p2pQAyBKEIHA7enwqoDgZLdKFLJJ3mJKZ04PdXsgRgTnG', NULL, true, 'Mirkovic', NULL, NULL, 0, 0, NULL, NULL);
-INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', false, NULL, 'petar@markovic.com', 'Petar', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, true, 'Markovic', NULL, NULL, 0, 0, NULL, NULL);
+INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', false, NULL, 'marko@markoviccc.com', 'Marko', '$2a$12$unh6kPZiK0naKYjUQQTKCeTewEPE7/FhS5SjcfZMvUIwDm3bQGXYa', '060123456123', true, 'Markovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', false, NULL, 'mirko@mirkovic.com', 'Mirko', '$2a$12$Fq8JFCN1p2pQAyBKEIHA7enwqoDgZLdKFLJJ3mJKZ04PdXsgRgTnG', '060555522555', true, 'Mirkovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', false, NULL, 'petar@markovic.com', 'Petar', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', '06512345432', true, 'Markovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
 
 
 --

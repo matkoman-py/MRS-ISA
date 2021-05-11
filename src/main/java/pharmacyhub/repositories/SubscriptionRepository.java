@@ -15,4 +15,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Stri
 	List<Subscription> findByDrugstore(Drugstore drugstore);
 	@Transactional
 	void deleteByPatientAndDrugstore(Patient patient, Drugstore drugstore);
+	List<Subscription> findByPatient(Patient patinet);
+
 }
