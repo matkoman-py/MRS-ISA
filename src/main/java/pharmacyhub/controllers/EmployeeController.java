@@ -109,4 +109,9 @@ public class EmployeeController {
 			@RequestParam (value = "passwordInput") String passwordInput) throws Exception {
 		return new ResponseEntity<>(employeeService.passwordValid(employeeId, passwordInput), HttpStatus.OK);
 	}
+	
+	@PutMapping(path = "/updatepassword",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Employee>> updatePassword(@RequestBody Employee employee) throws Exception {
+		return new ResponseEntity<>(employeeService.updatePassword(employee), HttpStatus.OK);
+	}
 }

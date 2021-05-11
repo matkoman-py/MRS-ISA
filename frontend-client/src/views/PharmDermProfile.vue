@@ -75,7 +75,7 @@
                                                 <label>Email</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
+                                                <b-form-input disabled
                                                 id="email-input"
                                                 type="email"
                                                 v-model="employee.email"
@@ -97,36 +97,6 @@
                                                 ></b-form-input>
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Password</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="password-input"
-                                                v-model="employee.password"
-                                                type="password"
-
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Validate</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input 
-                                                :disabled="editEnabled"
-                                                :state="validationState"
-                                                id="validatepassword-input"
-                                                v-model="validationPassword"
-                                                type="password"
-
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div> -->
                                         
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -178,7 +148,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 
-                                                <b-button class="dugme" type="submit" variant="outline-hub" @click="handlePassword" >Change password</b-button>
+                                                <b-button class="dugme" variant="outline-hub" @click="handlePassword" >Change password</b-button>
                                             </div>
                                         </div> 
                             </div>
@@ -236,7 +206,7 @@
             </form>
 
             <b-modal id="my-modal" title="Change password" hide-footer>
-            <b-form @submit="changePassword">
+            <b-form  @submit="oldPasswordValidate">
                 <b-form-input id="password-input1"
                               v-model="oldPasswordInput"
                               type="password"
@@ -259,7 +229,7 @@
                               placeholder="Repeat new password"
                 ></b-form-input>
                 <br>
-                <b-button type="submit" variant="outline-hub">Save</b-button>
+                <b-button type="submit" variant="outline-hub"  >Save</b-button>
             </b-form>
             </b-modal>        
         </div>
@@ -325,7 +295,8 @@ export default {
         validatePassword: function(){
             return this.newPasswordInput == this.newPasswordValidateInput;
         },
-        oldPasswordValidate: function(){
+        oldPasswordValidate: function(event){
+            event.preventDefault();
             var valid = false;
             this.$http.get('http://localhost:8081/employees/password', {
                         params: {
@@ -335,20 +306,21 @@ export default {
                     })
                     .then(response => {
                         valid = response.data;
-                        console.log(valid);
-                        return valid;
+                        if(valid){
+                            this.changePassword();
+                        }else{
+                            alert("Old password does not match!");
+
+                        }
                     })
                     .catch(error => console.log(error));
         },
         changePassword: function(){
-            //pozvati na beku, ali prvo validacija svega
-            //alert(this.oldPasswordInput);
-            if(this.oldPasswordValidate()){
-                alert("iste su");
-            }
+            
+            
             if(this.validatePassword()){
                 this.employee.password = this.newPasswordInput;
-                this.$http.put("http://localhost:8081/employees", this.employee)
+                this.$http.put("http://localhost:8081/employees/updatepassword", this.employee)
                 .then(response => {
                 console.log(response);
                 console.log("ovde");
@@ -359,13 +331,10 @@ export default {
                 this.oldPasswordInput= '';
                 this.newPasswordInput= '';
                 this.newPasswordValidateInput= '';
-            }
-            else{
-                alert("New/old password does not match match!");
-            }
-            
-            //pustiti na bek
-            
+            }else{
+                alert("New passwords not ok!");
+
+            }   
         },
     },
     created: function(){
