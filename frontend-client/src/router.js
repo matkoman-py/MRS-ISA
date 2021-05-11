@@ -35,6 +35,7 @@ import OfferTable from "./components/tables/OfferTable"
 import TreatedPatients from "./views/TreatedPatients"
 import LoginPage from "./views/LoginPage"
 import ReceiptGeneratorView from "./views/ReceiptGeneratorView"
+import ReceiptScannerView from "./views/ReceiptScannerView"
 
 Vue.use(VueRouter)
 
@@ -215,6 +216,11 @@ const routes = [
         path: '/receipt-generator',
         name: "ReceiptGeneratorView",
         component: ReceiptGeneratorView
+    },
+    {     
+        path: '/receipt-scanner',
+        name: "ReceiptScannerView",
+        component: ReceiptScannerView
     },
 ];
 
