@@ -2,7 +2,6 @@
     <b-container>
         <b-row>
             <b-col>
-                <h1>Drug Table</h1>
                 <DrugTable/>
             </b-col>
         </b-row>    

@@ -9,8 +9,8 @@
                  <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
                  <p style="margin:20px"><b>Average rating</b>: {{drugstore.averageRating}}</p>
                  <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
-                 <b-button variant="outline-primary" style="margin:20px" v-if="subscribed == false" @click="subscribe">Subscribe</b-button>
-                 <b-button variant="outline-primary" style="margin:20px" v-if="subscribed == true" @click="unsubscribe">Unsubscribe</b-button>
+                 <b-button variant="outline-hub" style="margin:20px" v-if="subscribed == false" @click="subscribe">Subscribe</b-button>
+                 <b-button variant="outline-hub" style="margin:20px" v-if="subscribed == true" @click="unsubscribe">Unsubscribe</b-button>
                 </div>
             </b-col>
         </b-row>
@@ -41,12 +41,12 @@
         <b-row>
             <b-col style="margin:20px;">
                 <router-link :to="'/dermatologist-appointments/'+currentDrugstoreId">
-                    <b-button variant="outline-primary" style="margin:30px">Make appointment with dermatologist</b-button>
+                    <b-button variant="outline-hub" style="margin:30px">Make appointment with dermatologist</b-button>
                 </router-link>
             </b-col>
             <b-col style="margin:20px">
                 <router-link :to="'/pharmacist-appointments/'+currentDrugstoreId">
-                    <b-button variant="outline-primary" style="margin:30px">Make appointment with pharmacist</b-button>
+                    <b-button variant="outline-hub" style="margin:30px">Make appointment with pharmacist</b-button>
                 </router-link>
             </b-col>
         </b-row>

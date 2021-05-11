@@ -37,8 +37,8 @@
         </b-row>
 
         <b-row align-h="center">
-            <b-button type="reset" style="margin:40px" variant="outline-primary" size="lg" @click="onReset">Reset</b-button>
-            <b-button type="submit" style="margin:40px" variant="outline-primary" size="lg" @click="onSubmit">Submit</b-button>
+            <b-button type="reset" style="margin:40px" variant="outline-hub" size="lg" @click="onReset">Reset</b-button>
+            <b-button type="submit" style="margin:40px" variant="outline-hub" size="lg" @click="onSubmit">Submit</b-button>
         </b-row>
 
 

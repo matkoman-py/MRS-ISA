@@ -3,15 +3,15 @@
     <b-container>
         <b-table id="user-table" striped hover :items="users" :fields="fields">
             <template #cell(actions)="row">
-                <b-button size="sm" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
+                <b-button size="sm" variant="outline-hub" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
                     Delete
                 </b-button>
             </template>
         </b-table>
-        <b-button size="sm" @click="showAddModal($event.target, 'Supplier')" class="mr-1">
+        <b-button size="sm" variant="outline-hub" @click="showAddModal($event.target, 'Supplier')" class="mr-1">
                     Add Supplier
         </b-button>
-        <b-button size="sm" @click="showAddModal($event.target, 'DrugstoreAdmin')" class="mr-1">
+        <b-button size="sm" variant="outline-hub" @click="showAddModal($event.target, 'DrugstoreAdmin')" class="mr-1">
                     Add Drugstore Admin
         </b-button>
     </b-container>

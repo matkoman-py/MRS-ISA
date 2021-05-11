@@ -7,14 +7,14 @@
     </div>
     <div>
         <router-link to="/drug-stock-create-order">
-          <b-button style="margin-right:50px" variant="success">Create order</b-button>
+          <b-button style="margin-right:50px" variant="outline-hub">Create order</b-button>
         </router-link>
         <router-link to="/drug-stock-check-offers">
-          <b-button style="margin-left:50px; margin-right:50px" variant="success">Check offers</b-button>
+          <b-button style="margin-left:50px; margin-right:50px" variant="outline-hub">Check offers</b-button>
         </router-link>
-          <b-button style="margin-left:50px; margin-right:50px" @click="newPriceAssign" variant="success">Assign new price</b-button>
+          <b-button style="margin-left:50px; margin-right:50px" @click="newPriceAssign" variant="outline-hub">Assign new price</b-button>
         <router-link to="#">
-          <b-button style="margin-left:50px" @click="newPromotion" variant="success">Create promotion</b-button>
+          <b-button style="margin-left:50px" @click="newPromotion" variant="outline-hub">Create promotion</b-button>
         </router-link>
     </div>
     <b-container style="margin:15px">
@@ -23,7 +23,7 @@
                 <p style="margin-top:20px">Search text:</p>
                 <b-form-input v-model="searchText" placeholder="Enter text for search"></b-form-input>
                 <div>
-                <b-button type="button" style="margin:40px" variant="outline-primary" size="lg" @click="search">Search</b-button>
+                <b-button type="button" style="margin:40px" variant="outline-hub" size="lg" @click="search">Search</b-button>
                 </div>
             </b-form>
         </b-row>
@@ -56,8 +56,8 @@
           </b-form-datepicker>
         </b-form-group>
 
-        <b-button type="button" variant="primary" @click="addNewPrice">Save</b-button>
-        <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
+        <b-button type="button" variant="outline-hub" @click="addNewPrice">Save</b-button>
+        <b-button type="button" variant="outline-hub" @click="handleClose" >Cancel</b-button>
 
       </b-form>
     </b-modal>
@@ -89,8 +89,8 @@
           </b-form-datepicker>
         </b-form-group>
 
-        <b-button type="button" variant="primary" @click="createNewPromotion">Save</b-button>
-        <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
+        <b-button type="button" variant="outline-hub" @click="createNewPromotion">Save</b-button>
+        <b-button type="button" variant="outline-hub" @click="handleClose">Cancel</b-button>
 
       </b-form>
     </b-modal>

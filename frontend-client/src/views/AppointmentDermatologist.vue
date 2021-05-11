@@ -25,13 +25,13 @@
             </div> -->
             
             <b-col>
-                <b-button variant="info">Reserve drug</b-button>
+                <b-button variant="outline-hub">Reserve drug</b-button>
             </b-col>
             <b-col>
-                <b-button variant="info" @click="showAppointmentModal">New appointment</b-button>
+                <b-button variant="outline-hub" @click="showAppointmentModal">New appointment</b-button>
             </b-col>
             <b-col>
-                <b-button variant="success" @click="endAppointment">End appointment</b-button>
+                <b-button variant="outline-hub" @click="endAppointment">End appointment</b-button>
             </b-col>
         </b-row>
         
@@ -39,7 +39,7 @@
             <h1>Available appointments</h1>
             <b-table v-if="appointments.length > 0" :items="appointments" :fields="fields">
             <template #cell(actions)="row">
-                <b-button variant="outline-info" v-if="row.item" size="sm" @click="createReservation(row.item, row.index, $event.target)" class="mr-1">
+                <b-button variant="outline-hub" v-if="row.item" size="sm" @click="createReservation(row.item, row.index, $event.target)" class="mr-1">
                     Reserve
                 </b-button>
             </template>
@@ -95,8 +95,8 @@
                     </b-form-input>
                 </b-form-group>
 
-                <b-button type="button" variant="primary" @click="addNewApointment">Save</b-button>
-                <b-button type="button" variant="danger" @click="handleClose" >Cancel</b-button>
+                <b-button type="button" variant="outline-hub" @click="addNewApointment">Save</b-button>
+                <b-button type="button" variant="outline-hub" @click="handleClose" >Cancel</b-button>
 
             </b-form>
         </b-modal>

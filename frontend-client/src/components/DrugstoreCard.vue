@@ -28,7 +28,7 @@
     </b-list-group>
     <div style="text-align:center;padding:0.5rem;">
       <router-link :to="'drugstores/'+drugstore.id">
-        <b-button variant="primary" style="width:50%;">Visit</b-button>
+        <b-button variant="outline-hub" style="width:50%;">Visit</b-button>
       </router-link>
     </div>
     

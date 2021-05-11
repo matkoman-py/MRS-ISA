@@ -54,8 +54,8 @@
           <p>Start: {{selected.start}}</p>
           <p>Duration: {{selected.extendedProps.durationn}} minutes</p>
         </div>
-        <b-button class="mt-3" variant="danger" :disabled="!patientNotNull || !timeValid" block @click="patientNotShowup"  >Patient did not show up!</b-button>
-        <b-button class="mt-2" variant="success" :disabled="!patientNotNull || !timeValid" block @click="startApp">Start appointment!</b-button>
+        <b-button class="mt-3" variant="outline-hub" :disabled="!patientNotNull || !timeValid" block @click="patientNotShowup"  >Patient did not show up!</b-button>
+        <b-button class="mt-2" variant="outline-hub" :disabled="!patientNotNull || !timeValid" block @click="startApp">Start appointment!</b-button>
       </b-modal>
     </div>
 
@@ -70,7 +70,7 @@
           <p>Start: {{selected.start}}</p>
           <p>Duration: {{selected.extendedProps.durationn}} minutes</p>
         </div>
-        <b-button class="mt-3" variant="danger" block @click="close"  >Close</b-button>
+        <b-button class="mt-3" variant="outline-hub" block @click="close"  >Close</b-button>
         
       </b-modal>
     </div>

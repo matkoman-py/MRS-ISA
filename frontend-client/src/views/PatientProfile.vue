@@ -46,20 +46,20 @@
                 <div class="row">
                     <div class="col-md-4">
                         <router-link :to="'/schedule-appointment'">
-                            <b-button variant="primary">Schedule pharmacist
+                            <b-button variant="outline-hub">Schedule pharmacist
                                 appointment</b-button>
                         </router-link>
-                        <br>
+                        <!-- <br>
                         <br>
                         <router-link :to="'/drug-reservation'">
-                            <b-button variant="primary">Create drug reservation
+                            <b-button variant="outline-hub">Create drug reservation
                                 appointment</b-button>
                         </router-link>
                         <br>
-                        <br>
-                        <!--<h6>My appointments</h6>
-                        <b-table :items="appointments"></b-table>-->
-                        <b-dropdown text="My pharmacist appointments" class="m-2" variant="primary">
+                        <br> -->
+                        <!-- <h6 class="mt-3">My appointments</h6>
+                        <b-table :items="appointments"></b-table> -->
+                        <b-dropdown text="My pharmacist appointments" class="m-2" variant="outline-hub">
                             <b-dropdown-header id="dropdown-header-label">Pharmacist Date Time</b-dropdown-header>
                             <b-dropdown-item-button v-for="item in appointments" :key="item">{{item.pharmacist}}    {{item.date}}    {{item.time}}</b-dropdown-item-button>
                         </b-dropdown>
@@ -103,7 +103,7 @@
                                             v-model="employee.phoneNumber" required></b-form-input>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-6">
                                         <label>Password</label>
                                     </div>
@@ -121,7 +121,7 @@
                                             id="validatepassword-input" v-model="validationPassword" type="password"
                                             required></b-form-input>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- <div class="row">
                                             <div class="col-md-6">
                                                 <label>Adress</label>
@@ -163,12 +163,12 @@
                                         </div>-->
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <b-button class="dugme" type="button" variant="secondary"
+                                        <b-button class="dugme" type="button" variant="outline-hub"
                                             :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
                                     </div>
                                     <div class="col-md-6">
 
-                                        <b-button class="dugme" type="submit" variant="primary" :disabled="editEnabled">
+                                        <b-button class="dugme" type="submit" variant="outline-hub" :disabled="editEnabled">
                                             Save
                                             info</b-button>
                                     </div>
@@ -279,9 +279,9 @@
             },
             handleSubmit: function (event) {
                 event.preventDefault();
-                if (!this.validatePassword()) {
-                    return;
-                }
+                // if (!this.validatePassword()) {
+                //     return;
+                // }
                 this.name = this.employee.name;
                 this.editEnabled = true;
                 this.$http.put("http://localhost:8081/patients", this.employee)

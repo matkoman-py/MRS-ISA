@@ -29,6 +29,9 @@ import AdminUserTable from "./components/tables/AdminUserTable"
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment"
 import PharmacistOverview from "./views/PharmacistOverview"
 import DermatologistOverview from "./views/DermatologistOverview"
+import SupplierStockTable from "./components/tables/SupplierStockTable"
+import DrugOrderTable from "./components/tables/DrugOrderTable"
+import OfferTable from "./components/tables/OfferTable"
 import TreatedPatients from "./views/TreatedPatients"
 import LoginPage from "./views/LoginPage"
 
@@ -143,7 +146,7 @@ const routes = [
         component: PharmDermProfile
     },
     {
-        path: '/patient/:id',
+        path: '/patient/',
         name: "PatientProfile",
         component: PatientProfile 
     },
@@ -188,6 +191,21 @@ const routes = [
         component: DermatologistOverview
     },
     {
+        path: '/supplier-stock',
+        name: "SupplierStockTable",
+        component: SupplierStockTable
+    },
+    {
+        path: '/supplier-orders',
+        name: "DrugOrderTable",
+        component: DrugOrderTable
+    },
+    {
+        path: '/supplier-offers',
+        name: "OfferTable",
+        component: OfferTable
+    },
+    {     
         path: '/treated',
         name: "Treated",
         component: TreatedPatients

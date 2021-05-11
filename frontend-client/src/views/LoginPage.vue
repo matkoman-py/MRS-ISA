@@ -32,7 +32,7 @@
                         ></b-form-input>
                     </b-form-group>
             
-                    <b-button class="float-right" type="login" variant="primary" v-on:click="loginUser">Login</b-button>
+                    <b-button class="float-right" type="login" variant="outline-hub" v-on:click="loginUser">Login</b-button>
                 </b-form>
                 </b-card>
             </b-col>

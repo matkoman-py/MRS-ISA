@@ -78,8 +78,8 @@
             </div>
           </b-form-group>
           <div style="margin:25px">
-          <b-button type="submit" variant="primary">Submit</b-button>
-          <b-button type="reset" variant="danger">Reset</b-button>
+          <b-button type="submit" variant="outline-hub">Submit</b-button>
+          <b-button type="reset" variant="outline-hub">Reset</b-button>
           </div>  
         </b-form>
       </b-col>

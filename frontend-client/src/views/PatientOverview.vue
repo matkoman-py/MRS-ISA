@@ -23,8 +23,8 @@
                     :data="substitutions" v-model="selected.substitutions">
                 </searchable-tags> -->
 
-                <b-button type="submit" variant="primary">Save</b-button>
-                <b-button type="button" variant="danger" @click="handleClose">Cancel</b-button>
+                <b-button type="submit" variant="outline-hub">Save</b-button>
+                <b-button type="button" variant="outline-hub" @click="handleClose">Cancel</b-button>
             </b-form>
         </b-modal>
  
@@ -45,7 +45,7 @@
                             <b-form-input id="input-4" v-model="form.surname" placeholder="Enter surname">
                             </b-form-input>
                         </b-form-group>
-                        <b-button type="submit" variant="primary">Search</b-button>
+                        <b-button type="submit" variant="outline-hub">Search</b-button>
                     </b-form>
 
                 </div>

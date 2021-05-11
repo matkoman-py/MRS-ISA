@@ -2,7 +2,7 @@
     <b-container>
         <b-table v-if="appointments.length > 0" :items="appointments" :fields="fields">
             <template #cell(actions)="row">
-                <b-button variant="outline-info" v-if="row.item" size="sm" @click="createReservation(row.item, row.index, $event.target)" class="mr-1">
+                <b-button variant="outline-hub" v-if="row.item" size="sm" @click="createReservation(row.item, row.index, $event.target)" class="mr-1">
                     Reserve
                 </b-button>
             </template>

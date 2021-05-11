@@ -7,12 +7,12 @@
     </div>
     <div>
         <router-link to="/addPharmacistForm">
-           <b-button style="margin-right:50px" variant="success">Add pharmacist</b-button>
+           <b-button style="margin-right:50px" variant="outline-hub">Add pharmacist</b-button>
         </router-link>
         <router-link to="/addDermatologistForm">
-                <b-button style="margin-left:50px; margin-right:50px" variant="success">Add dermatologist</b-button>
+                <b-button style="margin-left:50px; margin-right:50px" variant="outline-hub">Add dermatologist</b-button>
         </router-link>
-        <b-button style="margin-left:50px" variant="danger" @click="showModal">Delete employee</b-button>
+        <b-button style="margin-left:50px" variant="outline-hub" @click="showModal">Delete employee</b-button>
     </div>
     <b-container style="margin:15px">
         <b-row align-h="center">
@@ -30,8 +30,8 @@
                 <p style="margin-top:20px">Filter employees by workplace:</p>
                 <b-form-select v-model="selected" :options="options"></b-form-select>
                 <div>
-                <b-button type="reset" style="margin:40px" variant="outline-primary" size="lg">Reset</b-button>
-                <b-button type="submit" style="margin:40px" variant="outline-primary" size="lg">Submit</b-button>
+                <b-button type="reset" style="margin:40px" variant="outline-hub" size="lg">Reset</b-button>
+                <b-button type="submit" style="margin:40px" variant="outline-hub" size="lg">Submit</b-button>
                 </div>
             </b-form>
         </b-row>
@@ -45,8 +45,8 @@
         <b-label> Are you sure that you want to delete this employee?</b-label>
         </b-row>
         <b-row align-h="center">
-        <b-button style="margin:20px" type="button" variant="primary" @click="deleteEmployee">Continue</b-button>
-        <b-button style="margin:20px" type="button" variant="primary" @click="cancel" >Cancel</b-button>
+        <b-button style="margin:20px" type="button" variant="outline-hub" @click="deleteEmployee">Continue</b-button>
+        <b-button style="margin:20px" type="button" variant="outline-hub" @click="cancel" >Cancel</b-button>
         </b-row>
       </b-form>
     </b-modal>
