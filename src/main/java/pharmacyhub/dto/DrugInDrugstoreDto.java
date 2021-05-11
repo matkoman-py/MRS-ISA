@@ -5,6 +5,8 @@ import pharmacyhub.domain.Manufacturer;
 
 public class DrugInDrugstoreDto {
 	
+	private String id;
+	
 	private String name;
 	
 	private String form;
@@ -21,7 +23,15 @@ public class DrugInDrugstoreDto {
 		
 	}
 
-	public DrugInDrugstoreDto(String name, String form, boolean receipt, DrugType type, Manufacturer manufacturer,
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public DrugInDrugstoreDto(String id,String name, String form, boolean receipt, DrugType type, Manufacturer manufacturer,
 			int amount) {
 		super();
 		this.name = name;
@@ -30,6 +40,7 @@ public class DrugInDrugstoreDto {
 		this.type = type;
 		this.manufacturer = manufacturer;
 		this.amount = amount;
+		this.id = id;
 	}
 
 	public String getName() {

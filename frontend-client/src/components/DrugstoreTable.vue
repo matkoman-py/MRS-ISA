@@ -1,9 +1,7 @@
 <template>
-
     <b-container>
         <b-row>
             <b-col>
-                <h1>Drugstore search: </h1>
                 <b-form @submit="searchDrugstores">
                     <b-form-group id="input-group-1" label="Drugstore name:" label-for="input-1">
                         <b-form-input id="input-1" v-model="searchForm.name" type="text" placeholder="Enter drugstore name">
@@ -19,8 +17,6 @@
                         <b-form-input id="input-3" v-model="searchForm.location.country" type="text" placeholder="Enter country">
                         </b-form-input>
                     </b-form-group>
-
-
                     <b-button type="submit" variant="outline-hub">Submit</b-button>
                     <br><br><br>
                 </b-form>
@@ -28,7 +24,7 @@
         </b-row>
         <b-row align-h="center">
             <b-col>
-
+                
                 <template v-for="(chunk, index) in getCardDrugstores()">
                     <b-row cols-lg="4" :key="index">
                         <b-col style="padding:20px; text-align:center" v-for="drugstore in chunk" :key="drugstore.id">

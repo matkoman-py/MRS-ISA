@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="sm" type="light" variant="outline-hub">
+  <b-navbar sticky style="background-color:white;" toggleable="sm" type="light" variant="outline-hub">
     <b-navbar-nav>
       <b-navbar-brand>
         <router-link to="/">
@@ -17,6 +17,7 @@
                 <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
               </b-dropdown-item>
             </b-nav-item-dropdown>
+
                 <template v-if="!$helpers.isObjectEmpty(user) && role == 'Pharmacist'">
                   <b-navbar-brand v-for="route in userSpecificRoutes['Pharmacist']" :key="route.name" tag="h3" class="nav-link">
                         <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
@@ -29,6 +30,11 @@
                   </b-navbar-brand>
                 </template>
                 
+             <template v-if="!$helpers.isObjectEmpty(user) && role == 'Patient'">
+              <b-navbar-brand v-for="route in userSpecificRoutes['Patient']" :key="route.name" tag="h3" class="nav-link">
+                <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
+              </b-navbar-brand>
+            </template>
 
             <template v-if="!$helpers.isObjectEmpty(user) && role == 'Supplier'">
               <b-navbar-brand v-for="route in userSpecificRoutes['Supplier']" :key="route.name" tag="h3" class="nav-link">
@@ -42,11 +48,7 @@
               </b-navbar-brand>
             </template>
 
-            <template v-if="!$helpers.isObjectEmpty(user) && role == 'Pharmacist'">
-              <b-navbar-brand v-for="route in userSpecificRoutes['Pharmacist']" :key="route.name" tag="h3" class="nav-link">
-                    <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
-              </b-navbar-brand>
-            </template>
+            
                 
 
             </b-navbar-nav>
@@ -123,6 +125,7 @@
           "DrugstoreAdmin":[
             {name: "Employees", path: "/employeesOverview"},
             {name: "Drug stock", path: "/drug-stock-overview"},
+            {name: "Create order", path: "/create-drug-order"},
           ],
           "Pharmacist":[
             {name: "Schedule", path: "/schedule-pharm"},
@@ -134,7 +137,9 @@
             {name: "Patients", path: "/patientoverview"},
             {name: "Treated patients", path: "/treated"},
           ],
-          "Patient":[],
+          "Patient":[
+            {name: "Subscriptions", path: "/subscriptions"}
+          ],
         },
         commonRoutes: [{
             name: "Drugstores",

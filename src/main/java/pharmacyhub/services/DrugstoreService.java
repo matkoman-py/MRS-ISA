@@ -1,16 +1,20 @@
 package pharmacyhub.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.repositories.DrugPriceRepository;
+import pharmacyhub.repositories.DrugRepository;
+import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
@@ -39,6 +43,11 @@ public class DrugstoreService {
 	@Autowired
 	private DrugstoreAdminRepository drugstoreAdminRepository;
 	
+	@Autowired
+	private DrugRequestRepository drugRequestRepository;
+	
+	@Autowired
+	private DrugRepository drugRepository;
 	
 	public List<Drugstore> findAll() {
 		return drugstoreRepository.findAll();
@@ -90,9 +99,25 @@ public class DrugstoreService {
 		return drugstoreRepository.findById(drugstoreId).orElse(null);
 	}
 
-	public List<DrugStock> findDrugstores(String id/*, Pageable pageable*/) {
-		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugId(id/*, pageable*/);
+	public List<DrugStock> findDrugstores(String id, Pageable pageable) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugId(id, pageable);
 		return drugsOnStock;
+	}
+
+	public List<DrugStock> findDrugstoreEmployee(String drugId, String drugstoreId) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugId(drugId/*, pageable*/);
+		List<DrugStock> wanted = new ArrayList<DrugStock>();
+		for(DrugStock ds : drugsOnStock) {
+			if(ds.getDrugstore().getId().equals(drugstoreId)) {
+				wanted.add(ds);
+			}
+		}
+		if(wanted.isEmpty()) {
+			//napravi drug request
+			DrugRequest dr = new DrugRequest(drugstoreRepository.findById(drugstoreId).orElse(null),drugRepository.findById(drugId).orElse(null),false);
+			drugRequestRepository.save(dr);
+		}
+		return wanted;
 	}
 }
 

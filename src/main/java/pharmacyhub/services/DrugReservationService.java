@@ -7,10 +7,12 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.DrugReservationDto;
+import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugReservationRepository;
 import pharmacyhub.repositories.DrugStockRepository;
@@ -60,13 +62,44 @@ public class DrugReservationService {
 
 		drugreservationRespository.save(drr);
 		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
-		for (DrugStock stok : drst) {
-			if (stok.getDrugstore().getId().equals(drugstoreId)) {
-				stok.setAmount(stok.getAmount() - 1);
+		for(DrugStock stok:drst) {
+			if(stok.getDrugstore().getId().equals(drugstoreId)) {
+				if(stok.getAmount()-1>=0) {
+					stok.setAmount(stok.getAmount() - 1);
+					drugstockRepository.save(stok);
+				}
+				else {
+					//NAPRAVITI DRUG REQUEST !!!
+					return "Drug not on stock!";
+				}
 			}
 		}
-
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), drr.getConfirmationCode());
 		return "Success!";
 	}
+
+	public List<DrugReservation> getPatientReservations(String patientId) {
+		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
+		return reservations;
+	}
+
+	public List<DrugReservation> cancelReservation(DrugReservationCancelDto drugreservationcancelDto) {
+		String drugReservationId = drugreservationcancelDto.getDrugReservationId();
+		String patientId = drugreservationcancelDto.getPatientId();
+		String drugId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrug().getId();
+		String drugstoreId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrugstore().getId();
+		
+		drugreservationRespository.deleteById(drugReservationId);
+		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
+		for(DrugStock stok:drst) {
+			if(stok.getDrugstore().getId().equals(drugstoreId)) {
+				stok.setAmount(stok.getAmount() + 1);
+				drugstockRepository.save(stok);
+			}
+		}
+		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
+		System.out.println(reservations.size());
+		return reservations;
+	}
+
 }

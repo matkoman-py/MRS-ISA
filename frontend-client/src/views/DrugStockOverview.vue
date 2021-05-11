@@ -7,10 +7,10 @@
     </div>
     <div>
         <router-link to="/drug-stock-create-order">
-          <b-button style="margin-right:50px" variant="outline-hub">Create order</b-button>
+          <b-button style="margin-right:50px" @click="newDrug" variant="outline-hub">Add new drug to stock</b-button>
         </router-link>
         <router-link to="/drug-stock-check-offers">
-          <b-button style="margin-left:50px; margin-right:50px" variant="outline-hub">Check offers</b-button>
+          <b-button style="margin-left:50px; margin-right:50px" @click="deleteDrug" variant="outline-hub">Delete drug from stock</b-button>
         </router-link>
           <b-button style="margin-left:50px; margin-right:50px" @click="newPriceAssign" variant="outline-hub">Assign new price</b-button>
         <router-link to="#">
@@ -95,12 +95,63 @@
       </b-form>
     </b-modal>
 
+    <b-modal id="addNewDrugModal" title="Add new drug to stock" hide-footer>
+      <b-form>
+        <b-form-group id="input-group-1" label="Drug" label-for="input-1">
+          <multiselect v-model="inputValuesForNewDrug.selectedDrug" track-by="id" label="name"
+              placeholder="Select one" :options="drugs" :searchable="true" :allow-empty="false" select-label="">
+          </multiselect>
+        </b-form-group>
+
+        <b-form-group
+          label="Initial price"
+          label-for="price-input"
+          invalid-feedback="Price is required">
+          <b-form-input
+            id="price-input"
+            v-model="inputValuesForNewDrug.price" 
+            required
+            :min=0
+            type="number"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          label="Price expiration date"
+          label-for="date-input"
+          invalid-feedback="Expiration date is required">
+          <b-form-datepicker
+            id="date-input"
+            v-model="inputValuesForNewDrug.endDate"
+            :min="minDate"
+            required >
+          </b-form-datepicker>
+        </b-form-group>
+
+        <b-button type="button" variant="outline-hub" @click="addNewDrugToDrugstore">Add</b-button>
+        <b-button type="button" variant="outline-hub" @click="handleClose" >Cancel</b-button>
+
+      </b-form>
+    </b-modal>
+
+    <b-modal id="deleteConfirmation" title="Warning! This drug is going to be removed from drugstore stock!" align="center" hide-footer>
+      <b-form>
+        <b-row align-h="center">
+        <b-label> Are you sure that you want to remove this drug?</b-label>
+        </b-row>
+        <b-row align-h="center">
+        <b-button style="margin:20px" type="button" variant="outline-hub" @click="deleteDrugFromStock">Continue</b-button>
+        <b-button style="margin:20px" type="button" variant="outline-hub" @click="cancel" >Cancel</b-button>
+        </b-row>
+      </b-form>
+    </b-modal>
+
   </b-container>
   
 </template>
 
 <script>
-
+  import Multiselect from "vue-multiselect";
   import { mapState } from 'vuex'
   export default {
     computed: {
@@ -108,11 +159,15 @@
         user: state => state.userModule.loggedInUser,
       }),
     },
+    components: {
+      Multiselect
+    },
     data: function() {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
       const minDate = new Date(today)
       return {
+        drugs: [],
         drugStocks: [],
         searchText: '',
         selected: [],
@@ -131,6 +186,13 @@
           drugStoreId: '',
           startDate: minDate,
           endDate: ''
+        },
+        inputValuesForNewDrug: {
+          drugStoreId: '',
+          selectedDrug: '',
+          price: '',
+          startDate: minDate,
+          endDate: ''
         }
       }
     },
@@ -144,8 +206,10 @@
               .then(response => {
               this.inputValuesForNewPrice.drugStoreId = response.data.id;
               this.inputValuesForNewPromotion.drugStoreId = response.data.id;
+              this.inputValuesForNewDrug.drugStoreId = response.data.id;
               this.drugstoreId = response.data.id;
               this.getDrugStockForDrugstore();
+              this.getDrugsNotOnStock();
               })
               .catch(error => console.log(error));
         },
@@ -166,6 +230,17 @@
                 ));
             })
             .catch(error => console.log(error));
+        },
+        getDrugsNotOnStock: function () {
+          this.$http.get("http://localhost:8081/drugs/notOnStock", {
+            params: {
+              drugstoreId: this.drugstoreId
+            }
+          })
+              .then(response => {
+                  this.drugs = response.data;
+              })
+              .catch(error => this.$toastr.e(error));
         },
         onRowSelected(item) {
             this.selected = item
@@ -207,6 +282,17 @@
               this.$root.$emit('bv::show::modal', 'newPromotionModal');
             }        
           },
+        newDrug(event) {
+          event.preventDefault();
+          this.$root.$emit('bv::show::modal', 'addNewDrugModal');
+        }, deleteDrug(event) {
+          event.preventDefault();
+          if (this.selected.length == 0) {
+            alert("You need to select the drug that you want to delete.")
+          } else {
+            this.$root.$emit('bv::show::modal', 'deleteConfirmation');
+          }
+        },
         addNewPrice(event) {
           event.preventDefault();
           this.inputValuesForNewPrice.drugName = this.selected[0].drug
@@ -229,11 +315,35 @@
               .catch(error => console.log(error));
           this.$root.$emit('bv::hide::modal', 'newPromotionModal');
         },
+        addNewDrugToDrugstore(event) {
+          event.preventDefault();
+          this.$http.post("http://localhost:8081/drug-stock", JSON.parse(JSON.stringify(this.inputValuesForNewDrug)))
+              .then(() => {
+                alert("New drug '" + this.inputValuesForNewDrug.selectedDrug.drugName + "' is successfully added to stock.");
+                this.getDrugStockForDrugstore();
+                this.getDrugsNotOnStock();
+              })
+              .catch(error => console.log(error));
+          this.$root.$emit('bv::hide::modal', 'addNewDrugModal');
+        },
         handleClose(){
             this.$root.$emit('bv::hide::modal', 'newPriceModal');
             this.$root.$emit('bv::hide::modal', 'newPromotionModal');
-        }
+            this.$root.$emit('bv::hide::modal', 'addNewDrugModal');
         },
+         cancel() {
+            this.$root.$emit('bv::hide::modal', 'deleteConfirmation');
+        }, deleteDrugFromStock(event) {
+            event.preventDefault();
+              this.$http.delete("http://localhost:8081/drug-stock/delete/", {data :{ drugName: this.selected[0].drug, drugStoreId: this.drugstoreId}})
+              .then((response) => {
+                alert(response.data)
+                this.getDrugStockForDrugstore();
+                this.getDrugsNotOnStock();
+              }).catch(error => console.log(error));
+            this.$root.$emit('bv::hide::modal', 'deleteConfirmation');
+        }
+  },
     mounted: function(){
         this.initialize();
     }

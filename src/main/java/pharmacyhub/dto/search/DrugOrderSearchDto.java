@@ -4,6 +4,16 @@ public class DrugOrderSearchDto {
 
 	private String drugstoreId;
 	private String orderStatus;
+	
+	public DrugOrderSearchDto() {
+		
+	}
+
+	public DrugOrderSearchDto(String drugstoreId, String orderStatus) {
+		super();
+		this.drugstoreId = drugstoreId;
+		this.orderStatus = orderStatus;
+	}
 
 	public String getDrugstoreId() {
 		return drugstoreId;
