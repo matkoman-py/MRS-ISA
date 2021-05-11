@@ -16,6 +16,22 @@ public class DrugOrderDto {
 	private OrderStatus status;
 	private String drugstoreId;
 	private String drugstoreName;
+	
+	public DrugOrderDto() {
+		
+	}
+
+	public DrugOrderDto(String id, List<OrderStock> stock, Date deadlineDate, Time deadlineTime, OrderStatus status,
+			String drugstoreId, String drugstoreName) {
+		super();
+		this.id = id;
+		this.stock = stock;
+		this.deadlineDate = deadlineDate;
+		this.deadlineTime = deadlineTime;
+		this.status = status;
+		this.drugstoreId = drugstoreId;
+		this.drugstoreName = drugstoreName;
+	}
 
 	public String getId() {
 		return id;

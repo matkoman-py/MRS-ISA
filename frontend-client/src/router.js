@@ -35,6 +35,7 @@ import OfferTable from "./components/tables/OfferTable"
 import TreatedPatients from "./views/TreatedPatients"
 import LoginPage from "./views/LoginPage"
 import SubscriptionsView from "./views/SubscriptionsView"
+import CreateDrugOrder from "./views/CreateDrugOrder"
 
 Vue.use(VueRouter)
 
@@ -215,6 +216,11 @@ const routes = [
         path: '/subscriptions',
         name: "SubscriptionsView",
         component: SubscriptionsView
+    },
+    {
+        path: '/create-drug-order',
+        name: "CreateDrugOrder",
+        component: CreateDrugOrder
     },
 ];
 
