@@ -5,7 +5,6 @@
     <router-view />
     </div>
     <footer class="bg-light text-center text-lg-start footer">
-
     <div class="text-center p-3">
       © 2021 Copyright:
       <a class="text-dark"><i>Usijani Momci (Nekromantija)</i></a>

@@ -99,8 +99,8 @@ public class DrugstoreService {
 		return drugstoreRepository.findById(drugstoreId).orElse(null);
 	}
 
-	public List<DrugStock> findDrugstores(String id/*, Pageable pageable*/) {
-		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugId(id/*, pageable*/);
+	public List<DrugStock> findDrugstores(String id, Pageable pageable) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugId(id, pageable);
 		return drugsOnStock;
 	}
 

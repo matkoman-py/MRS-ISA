@@ -1,4 +1,4 @@
-package pharmacyhub.dto;
+package pharmacyhub.dto.subscriptions;
 
 public class SubscriptionDto {
 	

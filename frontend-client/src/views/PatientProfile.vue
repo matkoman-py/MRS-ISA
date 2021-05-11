@@ -17,7 +17,9 @@
                         <b-card no-body>
                             <b-tabs>
                                 <b-tab style="height: 370px;" title="Profile" active>
+                                    <b-card style="border: none;">
                                     <div class="profile-head">
+                                    
                                         <br>
                                         <h5>
                                             {{name}}
@@ -94,10 +96,12 @@
                                                 info</b-button>
                                         </div>
                                     </div>
+                                    </b-card>
                                 </b-tab>
                                 <!--@click="cancelDrugReservation(row.item, row.index, $event.target)"-->
 
                                 <b-tab style="height: 370px;" title="Pharmacist appointments">
+                                    <b-card style="border: none;">
                                     <b-table v-if="pharmacistappointments.length != 0" striped hover
                                         :fields="pharmacistappointmentfields" :items="pharmacistappointments">
                                         <template #cell(actions)="row">
@@ -106,22 +110,30 @@
                                             </b-button>
                                         </template>
                                     </b-table>
-                                    <br><br>
+                                    <br>
                                     <h3 v-if="pharmacistappointments.length == 0">You have no pharmacist appointments
                                         scheduled
                                     </h3>
+                                    </b-card>
                                 </b-tab>
                                 <b-tab style="height: 370px;" title="Dermatology appointments">
+                                    <b-card style="border: none;">
                                     <b-table v-if="dermatologistappointments.length != 0" striped hover
-                                        :items="dermatologistappointments">
+                                        :items="dermatologistappointments" :fields="dermAppFields">
+                                        <template #cell(actions)="row">
+                                            <b-button variant="outline-danger" v-if="row.item" size="sm" class="mr-1">
+                                                Cancel appointment
+                                            </b-button>
+                                        </template>
                                     </b-table>
-                                    <br><br>
+                                    <br>
                                     <h3 v-if="dermatologistappointments.length == 0">You have no dermatologist
                                         appointments scheduled
                                     </h3>
+                                    </b-card>
                                 </b-tab>
                                 <b-tab style="height: 370px;" title="Drug reservations">
-
+                                    <b-card style="border: none;">
                                     <b-table v-if="drugReservations.length != 0" striped hover
                                         :fields="drugReservationFields" :items="drugReservations">
                                         <template #cell(actions)="row">
@@ -132,9 +144,9 @@
                                             </b-button>
                                         </template>
                                     </b-table>
-                                    <br><br>
+                                    <br>
                                     <h3 v-if="drugReservations.length == 0">You have no drug reservations</h3>
-
+                                    </b-card>
                                 </b-tab>
                             </b-tabs>
                         </b-card>
@@ -242,7 +254,23 @@
                 pharmacistappointmentfields: [
                     {
                         key: 'pharmacist',
-                        label: 'Pharmacist'
+                        
+                    },
+                    {
+                        key: 'date',
+                    },
+                    {
+                        key: 'time',
+                    },
+                    {
+                        key: 'actions',
+                        label: ''
+                    }
+                ],
+                dermAppFields: [
+                    {
+                        key: 'dermatologist',
+                        
                     },
                     {
                         key: 'date',
@@ -362,6 +390,21 @@
                         }))
                     })
                     .catch(error => console.log(error));
+            },
+            getDermatologyAppointments: function () {
+                //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
+                this.$http.get("http://localhost:8081/dermatologist-appointment/returnAppointments", {
+                        params: {
+                            patientId: this.user.id
+                        }
+                    }).then(response => {
+                        this.dermatologistappointments = response.data.map(appointment => ({
+                            dermatologist: appointment.dermatologist.name,
+                            date: appointment.date.slice(0, 10),
+                            time: appointment.time.slice(0, 5)
+                        }))
+                    })
+                    .catch(error => console.log(error));
             }
         },
         mounted: function () {
@@ -369,6 +412,7 @@
             this.getDrugReservations();
             this.getEmployee();
             this.getAppointments();
+            this.getDermatologyAppointments();
         },
         computed: {
             ...mapState({
@@ -386,6 +430,7 @@
 </script>
 
 <style>
+    
     .emp-profile {
         padding: 3%;
         margin-top: 3%;
