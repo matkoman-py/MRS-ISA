@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
+import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.services.DrugstoreService;
 
 @Controller
@@ -57,6 +58,15 @@ public class DrugstoreController {
 			@RequestBody DrugstoreSearchDto drugstoreSearchDto) throws Exception {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugstoreSearchDto, pageable), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/search-receipt", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Drugstore>> searchReceipt(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size, 
+			@RequestBody EReceiptSearchDto eReceiptSearchDto) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(drugstoreService.eReceiptSearch(eReceiptSearchDto, pageable), HttpStatus.OK);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -93,6 +93,8 @@ INSERT INTO public.drugstock VALUES ('1', false, 922, 'a329071d-b38c-4014-9fa3-2
 INSERT INTO public.drugstock VALUES ('2', false, 82, 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.drugstock VALUES ('3', false, 27, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843');
 INSERT INTO public.drugstock VALUES ('4', false, 25, 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.drugstock VALUES ('5', false, 25, 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6523-463a-974b-ded43ad63843');
+
 
 --
 -- Data for Name: DrugPrice;

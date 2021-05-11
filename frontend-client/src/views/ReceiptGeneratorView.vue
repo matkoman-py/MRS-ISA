@@ -55,6 +55,20 @@
                     <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
                 </b-card>
                 <b-card class="mt-3">
+                    <!-- <b-list-group style="margin: 3px;">
+                        <b-list-group-item >
+                            Primary list group item
+                        </b-list-group-item>
+
+                    </b-list-group> -->
+                    <b-button variant="outline-hub" size="sm"
+                                @click="clearReceipt"
+                                class="mt-0"
+                                >
+                                Clear eReceipt
+                    </b-button>
+                </b-card>
+                <b-card class="mt-3">
                     <qrcode-vue :value="JSON.stringify(eReceipt)" :size="300" level="M" ref="canvas"></qrcode-vue>
                     <b-button variant="outline-hub" size="sm"
                                 @click="downloadQrCode"
@@ -149,9 +163,14 @@
                 suppress: false,
                 currentSearch: {},
                 eReceipt: "",
+                eReceiptArray: [],
             }
         },
         methods: {
+            clearReceipt: function(event){
+                event.preventDefault();
+                this.eReceipt = "";
+            },
             downloadQrCode: function(event){
                 event.preventDefault();
                 var link = document.createElement('a');

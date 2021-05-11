@@ -10,6 +10,7 @@ import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
+import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
@@ -83,6 +84,11 @@ public class DrugstoreService {
 	public List<Drugstore> returnDrugStores(DrugstoreSearchDto drugstoreSearchDto, Pageable pageable) {
 		
 		return drugstoreRepository.findAll(DrugstoreSpecifications.withSearch(drugstoreSearchDto), pageable).toList();
+	}
+	
+	public List<Drugstore> eReceiptSearch(EReceiptSearchDto eReceiptSearchDto, Pageable pageable) {
+		
+		return drugstoreRepository.findAll(DrugstoreSpecifications.eReceiptSearch(eReceiptSearchDto), pageable).toList();
 	}
 	
 	public Drugstore findDrugstore(String drugstoreId) throws Exception {
