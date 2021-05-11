@@ -1,10 +1,19 @@
 <template>
-
   <b-container>
+    
+
     <b-row class="mt-3">
       <b-col cols="4">
         <b-card>
-          <h3>Search</h3>
+          <b-card style="border: none;">
+          <img 
+            class="center img-fluid w-10"
+            width="100"
+            height="100"
+            src="static/pharmacy.png"
+            alt="image slot"
+          >
+          </b-card>
           <b-form @submit="searchDrugs">
             <b-form-group id="input-group-1" label="Drug name:" label-for="input-1">
               <b-form-input id="input-1" v-model="searchForm.name" type="text" placeholder="Enter drug name">
@@ -54,7 +63,7 @@
         <b-card v-if="reserved" class="mt-3">
           <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores">
           </drug-reservation>
-          <h1 v-if="drugs.length == 0"> There are no drugs that fit the search parameters</h1>
+          <h1 v-if="drugs.length == 0">There are no drugs that fit the search parameters</h1>
         </b-card>
       </b-col>
     </b-row>
@@ -154,6 +163,7 @@
           alert("You must be logged in to reserve a drug!");
           return;
         }
+        //alert(data.id);
         this.selectedDrug = {
           id: data.id,
           name: data.name,

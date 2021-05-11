@@ -1,8 +1,8 @@
 <template>
   <b-container>
-    <h1 v-if="reserved == 1">Drug: {{selecteddrug.name}}</h1>
-    <h1 v-if="drugstores.length == 0 & reserved == 1">Sorry, there are no pharmacies with that drug in stock :(</h1>
-    <b-table head-variant="dark" striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
+    <h3 v-if="reserved == 1 & drugstores.length != 0">Drugstores with {{selecteddrug.name}} in stock </h3>
+    <h3 v-if="drugstores.length == 0 & reserved == 1">Sorry, there are no pharmacies with that drug in stock :(</h3>
+    <b-table  striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
       :items="drugstores">
       <template #cell(actions)="row">
         <b-button variant="outline-hub" v-if="row.item" size="sm"
@@ -20,6 +20,7 @@
         <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
       </b-form>
     </b-modal>
+    
   </b-container>
 </template>
 
@@ -68,12 +69,7 @@
       showModal(item) {
         this.drugstoreId = item.id;
         this.$root.$emit('bv::show::modal', 'my-modal');
-        //this.selected = JSON.parse(JSON.stringify(item));
-        //this.selected.repeatPassword = "";
         this.modified = item;
-      },
-      handleClose() {
-        this.$root.$emit('bv::hide::modal', 'my-modal');
       },
       makeReservation() {
         //alert(this.selecteddrug.id);

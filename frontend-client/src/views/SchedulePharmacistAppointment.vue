@@ -20,9 +20,9 @@
         </b-form>
         <br>
         <h1 v-if="searched == 1 & drugstores.length == 0">Sorry, there are no available pharmacists at this time.</h1>
-        <b-table hover v-if="employees.length == 0 & drugstores.length != 0" :items="drugstores" :fields="fieldsDrugstores"
+        <b-table striped hover v-if="employees.length == 0 & drugstores.length != 0" :items="drugstores" :fields="fieldsDrugstores"
             @row-clicked="getPharmacists"></b-table>
-        <b-table hover v-if="employees.length != 0" :items="employees" :fields="fieldsPharmacists"
+        <b-table striped hover v-if="employees.length != 0" :items="employees" :fields="fieldsPharmacists"
             @row-clicked="saveAppointment"></b-table>
     </b-container>
 </template>
@@ -74,7 +74,6 @@
                     },
                     {
                         key: 'rating',
-                        value: 10,
                         sortable: true,
                     }
                 ]
@@ -96,7 +95,10 @@
                             path: 'patient'
                         });
                     })
-                    .catch(error => console.log(error));
+                    .catch(error => {
+                        alert("You already have an appointment at that time.");
+                        console.log(error);
+                    })
             },
             getPharmacists: function (data) {
                 this.$http.get('http://localhost:8081/pharmacist-appointment/get-pharmacists', {

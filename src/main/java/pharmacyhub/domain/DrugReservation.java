@@ -6,14 +6,18 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import pharmacyhub.domain.users.Patient;
 
 @Entity
-@SQLDelete(sql = "UPDATE drug_price SET deleted = true WHERE id = ?")
-public class DrugReservation extends BaseEntity {
+@Table(name = "drug_reservation")
+@SQLDelete(sql = "UPDATE drug_reservation SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
+public class DrugReservation extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(name = "drug_fk")

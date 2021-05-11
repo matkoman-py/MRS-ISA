@@ -75,7 +75,7 @@ public class DrugService {
 		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), pageable);
 		List<DrugInDrugstoreDto> drugsInDrugstore = new ArrayList<DrugInDrugstoreDto>();
 		for (DrugStock ds : drugsOnStock) {
-			drugsInDrugstore.add(new DrugInDrugstoreDto(ds.getDrug().getName(), ds.getDrug().getForm(), ds.getDrug().isReceipt(), ds.getDrug().getType(), ds.getDrug().getManufacturer(), ds.getAmount()));
+			drugsInDrugstore.add(new DrugInDrugstoreDto(ds.getDrug().getId(),ds.getDrug().getName(), ds.getDrug().getForm(), ds.getDrug().isReceipt(), ds.getDrug().getType(), ds.getDrug().getManufacturer(), ds.getAmount()));
 		}
 		return drugsInDrugstore;
   }
