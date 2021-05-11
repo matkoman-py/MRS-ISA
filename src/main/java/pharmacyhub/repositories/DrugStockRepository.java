@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.users.Dermatologist;
 
 public interface DrugStockRepository extends JpaRepository<DrugStock, String>{
 	List<DrugStock> findByDrugstore(Drugstore drugstore, Pageable pageable);
@@ -20,4 +21,6 @@ public interface DrugStockRepository extends JpaRepository<DrugStock, String>{
 
 	List<DrugStock> deleteByDrugstore(Drugstore drugstoreToDelete);
 
+	@Transactional
+	void deleteByDrugAndDrugstore(Drug drug, Drugstore drugstore);
 }

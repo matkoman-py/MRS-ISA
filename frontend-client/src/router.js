@@ -34,6 +34,7 @@ import DrugOrderTable from "./components/tables/DrugOrderTable"
 import OfferTable from "./components/tables/OfferTable"
 import TreatedPatients from "./views/TreatedPatients"
 import LoginPage from "./views/LoginPage"
+import CreateDrugOrder from "./views/CreateDrugOrder"
 
 Vue.use(VueRouter)
 
@@ -209,6 +210,11 @@ const routes = [
         path: '/treated',
         name: "Treated",
         component: TreatedPatients
+    },
+    {     
+        path: '/create-drug-order',
+        name: "CreateDrugOrder",
+        component: CreateDrugOrder
     },
 ];
 
