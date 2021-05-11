@@ -125,6 +125,7 @@
           "DrugstoreAdmin":[
             {name: "Employees", path: "/employeesOverview"},
             {name: "Drug stock", path: "/drug-stock-overview"},
+            {name: "Create order", path: "/create-drug-order"},
           ],
           "Pharmacist":[
             {name: "Schedule", path: "/schedule-pharm"},

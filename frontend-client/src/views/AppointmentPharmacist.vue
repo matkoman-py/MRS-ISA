@@ -77,7 +77,7 @@
         <b-modal id="reservemodal" size="xl" title="Reserve a drug" hide-footer>
             <h1>Drugs</h1>
             <!-- <DrugInDrugstoreTable :passedDrugstoreId="currentAppointment.drugstore.id" :passedPatientId="currentAppointment.patient.id"/> -->
-            <DrugTable :passedDrugstoreId="currentAppointment.pharmacist.drugstore.id" :passedPatientId="currentAppointment.patient.id" />
+            <DrugTable align="center" :passedDrugstoreId="currentAppointment.pharmacist.drugstore.id" :passedPatientId="currentAppointment.patient.id" />
         </b-modal>
 
     </b-container>

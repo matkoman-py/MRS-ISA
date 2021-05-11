@@ -72,7 +72,8 @@ public class DrugReservationService {
 					//NAPRAVITI DRUG REQUEST !!!
 					return "Drug not on stock!";
 				}
-
+			}
+		}
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), drr.getConfirmationCode());
 		return "Success!";
 	}
