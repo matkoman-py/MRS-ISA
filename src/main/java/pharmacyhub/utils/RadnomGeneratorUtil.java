@@ -8,6 +8,10 @@ public class RadnomGeneratorUtil {
 		return generateRandomString(60);
 	}
 	
+	public static String generateDrugReservationCode(String patientEmail) {
+		return patientEmail + "/" + generateRandomString(10);
+	}
+	
 	public static String generateEmployeePassword() {
 		return generateRandomString(20);
 	}
@@ -22,4 +26,6 @@ public class RadnomGeneratorUtil {
 		}
 		return sb.toString();
 	}
+	
+	
 }
