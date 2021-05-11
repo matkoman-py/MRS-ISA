@@ -3,7 +3,7 @@
 <div class="container emp-profile"  v-if="employee && Object.keys(employee).length !== 0">
             <form @submit="handleSubmit">
                 <div class="row">
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <div class="profile-img">
                             <img src="https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png" alt=""/>
                             <div class="file btn btn-lg btn-primary">
@@ -11,8 +11,8 @@
                                 <input type="file" name="file"/>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
+                    </div> -->
+                    <div class="col-md-12">
                         <div class="profile-head">
                                     <h5>
                                         {{name}}
@@ -31,17 +31,17 @@
                             </ul> -->
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                         
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <div class="profile-work">
                             
                         </div>
-                    </div>
-                    <div class="col-md-8">
+                    </div> -->
+                    <div class="col-md-12">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row">
@@ -75,7 +75,7 @@
                                                 <label>Email</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
+                                                <b-form-input disabled
                                                 id="email-input"
                                                 type="email"
                                                 v-model="employee.email"
@@ -97,36 +97,6 @@
                                                 ></b-form-input>
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Password</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="password-input"
-                                                v-model="employee.password"
-                                                type="password"
-
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Validate</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input 
-                                                :disabled="editEnabled"
-                                                :state="validationState"
-                                                id="validatepassword-input"
-                                                v-model="validationPassword"
-                                                type="password"
-
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div> -->
                                         
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -169,14 +139,17 @@
                                             </div>
                                         
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <b-button class="dugme" type="button" variant="outline-hub" :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 
                                                 <b-button class="dugme" type="submit" variant="outline-hub" :disabled="editEnabled">Save info</b-button>
                                             </div>
-                                            
+                                            <div class="col-md-4">
+                                                
+                                                <b-button class="dugme" variant="outline-hub" @click="handlePassword" >Change password</b-button>
+                                            </div>
                                         </div> 
                             </div>
                             <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="profile-tab">
@@ -230,7 +203,35 @@
                         </div>
                     </div>
                 </div>
-            </form>           
+            </form>
+
+            <b-modal id="my-modal" title="Change password" hide-footer>
+            <b-form  @submit="oldPasswordValidate">
+                <b-form-input id="password-input1"
+                              v-model="oldPasswordInput"
+                              type="password"
+                              required
+                              placeholder="Old password"
+                ></b-form-input>
+                <br>
+                <b-form-input id="password-input2"
+                              v-model="newPasswordInput"
+                              type="password"
+                              required
+                              placeholder="New password"
+                ></b-form-input>
+                <br>
+                <b-form-input id="password-input3"
+                              v-model="newPasswordValidateInput"
+                              type="password"
+                              required
+                              :state="validationState"
+                              placeholder="Repeat new password"
+                ></b-form-input>
+                <br>
+                <b-button type="submit" variant="outline-hub"  >Save</b-button>
+            </b-form>
+            </b-modal>        
         </div>
 
 </template>
@@ -240,14 +241,10 @@ import { mapState } from 'vuex'
 export default {
     computed:{
         validationState: function(){
-            if(this.editEnabled)
-                return null
-            return this.employee.password == this.validationPassword;
+            return this.newPasswordInput == this.newPasswordValidateInput;
         },
         ...mapState({
         user: state => state.userModule.loggedInUser,
-        //email: state => state.userModule.loggedInUser.email,
-        //role: state => state.userModule.loggedInUser.type
         }),
     },
     data: function(){
@@ -256,6 +253,9 @@ export default {
             editEnabled: true,
             validationPassword:'',
             name:'',
+            oldPasswordInput: '',
+            newPasswordInput: '',
+            newPasswordValidateInput: '',
         }
     },
     methods: {
@@ -263,7 +263,7 @@ export default {
             
             this.$http.get('http://localhost:8081/employees/id', {
                         params: {
-                            employeeId: this.user.id //"68eec890-3bc5-47e3-8a5b-d3544ebbfeb3"
+                            employeeId: this.user.id
                         }
                     })
                     .then(response => {
@@ -278,11 +278,11 @@ export default {
         handleEdit: function(){
             this.editEnabled = false;
         },
+        handlePassword: function(){
+            this.$root.$emit('bv::show::modal', 'my-modal');
+        },
         handleSubmit: function(event){
             event.preventDefault();
-            // if(!this.validatePassword()){
-            //         return;
-            // }
             this.name = this.employee.name;
             this.editEnabled = true;
             this.$http.put("http://localhost:8081/employees", this.employee)
@@ -293,7 +293,48 @@ export default {
                 .catch(error => console.log(error));
         },
         validatePassword: function(){
-            return this.employee.password == this.validationPassword;
+            return this.newPasswordInput == this.newPasswordValidateInput;
+        },
+        oldPasswordValidate: function(event){
+            event.preventDefault();
+            var valid = false;
+            this.$http.get('http://localhost:8081/employees/password', {
+                        params: {
+                            employeeId: this.user.id,
+                            passwordInput: this.oldPasswordInput
+                        }
+                    })
+                    .then(response => {
+                        valid = response.data;
+                        if(valid){
+                            this.changePassword();
+                        }else{
+                            alert("Old password does not match!");
+
+                        }
+                    })
+                    .catch(error => console.log(error));
+        },
+        changePassword: function(){
+            
+            
+            if(this.validatePassword()){
+                this.employee.password = this.newPasswordInput;
+                this.$http.put("http://localhost:8081/employees/updatepassword", this.employee)
+                .then(response => {
+                console.log(response);
+                console.log("ovde");
+                })
+                .catch(error => console.log(error));
+
+                this.$root.$emit('bv::hide::modal', 'my-modal');
+                this.oldPasswordInput= '';
+                this.newPasswordInput= '';
+                this.newPasswordValidateInput= '';
+            }else{
+                alert("New passwords not ok!");
+
+            }   
         },
     },
     created: function(){

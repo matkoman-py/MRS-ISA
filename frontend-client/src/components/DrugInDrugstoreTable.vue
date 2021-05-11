@@ -37,7 +37,7 @@
           <template #cell(actions)="row">
             <b-button variant="outline-hub" v-if="row.item" size="sm"
               @click="showModal(row.item, row.index, $event.target)" class="mr-1">
-              Choose pharmacy
+              Reserve
             </b-button>
           </template>
         </b-table>
@@ -64,7 +64,10 @@
 
   export default {
     name: "DrugTable",
-
+    props:{
+      passedDrugstoreId: String,
+      passedPatientId: String,
+    },
     data: function () {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -118,18 +121,34 @@
         //alert(this.currentDrugstoreId);
         //alert(this.user.id);
         //alert(this.date);
-        this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
-            patientId: this.user.id,
-            drugstoreId: this.currentDrugstoreId,
-            drugId: this.selecteddrug,
-            date: this.date
-          })
-          .then(response => {
-            alert(response.data);
-            this.getAllDrugsOfDrugstore();
-            this.$root.$emit('bv::hide::modal', 'my-modal');
-          })
-          .catch(error => console.log(error));
+        
+        if(this.passedDrugstoreId != null){
+                  this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+                    patientId: this.passedPatientId,
+                    drugstoreId: this.currentDrugstoreId,
+                    drugId: this.selecteddrug,
+                    date: this.date
+                  })
+                  .then(response => {
+                    alert(response.data);
+                    this.getAllDrugsOfDrugstore();
+                    this.$root.$emit('bv::hide::modal', 'my-modal');
+                  })
+                  .catch(error => console.log(error));
+        }else{
+                  this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+                    patientId: this.user.id,
+                    drugstoreId: this.currentDrugstoreId,
+                    drugId: this.selecteddrug,
+                    date: this.date
+                  })
+                  .then(response => {
+                    alert(response.data);
+                    this.getAllDrugsOfDrugstore();
+                    this.$root.$emit('bv::hide::modal', 'my-modal');
+                  })
+                  .catch(error => console.log(error));
+        }
       },
       showModal(item) {
         if (this.user == null) {
@@ -141,7 +160,11 @@
         this.$root.$emit('bv::show::modal', 'my-modal');
       },
       getDrugstoreId() {
-        this.currentDrugstoreId = this.$route.path.slice(12, this.$route.path.length);
+        if(this.passedDrugstoreId != null){
+          this.currentDrugstoreId = this.passedDrugstoreId ;
+        }else{
+                  this.currentDrugstoreId = this.$route.path.slice(12, this.$route.path.length);
+        }
       },
       getDrugs: function () {
         console.log({

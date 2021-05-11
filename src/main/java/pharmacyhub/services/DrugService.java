@@ -101,4 +101,10 @@ public class DrugService {
 		return save(drug);
 	}
 
+	public List<Drug> findAllSubstitutes(String drugId) {
+		Drug drug = drugRepository.findById(drugId).orElse(null);
+		//return drug.getSubstitutions();
+		return drugRepository.findAll();
+	}
+
 }

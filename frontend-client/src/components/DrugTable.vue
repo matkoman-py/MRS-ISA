@@ -61,7 +61,7 @@
           <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
         </b-card>
         <b-card v-if="reserved" class="mt-3">
-          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores">
+          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores" :patientId="patientId" :passedDrugstoreId="passedDrugstoreId">
           </drug-reservation>
           <h1 v-if="drugs.length == 0">There are no drugs that fit the search parameters</h1>
         </b-card>
@@ -80,6 +80,10 @@
     name: "DrugTable",
     components: {
       DrugReservation
+    },
+    props:{
+      passedDrugstoreId: String,
+      passedPatientId: String,
     },
     computed: {
       ...mapState({
@@ -154,7 +158,7 @@
         currentPage: 1,
         suppress: false,
         currentSearch: {},
-
+        patientId: '',
       }
     },
     methods: {
@@ -163,6 +167,11 @@
           alert("You must be logged in to reserve a drug!");
           return;
         }
+        if(this.passedPatientId == null){
+          this.patientId=this.user.id;
+        }else{
+          this.patientId = this.passedPatientId;
+        }
         //alert(data.id);
         this.selectedDrug = {
           id: data.id,
@@ -170,6 +179,8 @@
           type: data.type
         }
         this.reserved = 1;
+        if(this.passedDrugstoreId == null){
+        
         this.$http.get('http://localhost:8081/drugstores/reserve', {
             params: {
               drugId: data.id
@@ -185,6 +196,24 @@
                 rating: stock.drugstore.averageRating
               }));
           })
+          }else{
+            this.$http.get('http://localhost:8081/drugstores/reserveEmployee', {
+            params: {
+              drugId: data.id,
+              drugstoreId: this.passedDrugstoreId,
+            }
+          })
+          .then(response => {
+            this.drugstores = response.data.map(stock =>
+              ({
+                id: stock.drugstore.id,
+                name: stock.drugstore.name,
+                address: stock.drugstore.location.address,
+                city: stock.drugstore.location.city,
+                rating: stock.drugstore.averageRating
+              }));
+          })
+          }
       },
       searchDrugs: function () {
         this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
@@ -244,12 +273,12 @@
       mapDrugs: function (response) {
         return response.data.map(drug =>
           ({
-            id: drug.id,
-            name: drug.name,
-            form: drug.form,
-            type: drug.type.name,
-            receipt: drug.receipt ? "Yes" : "No",
-            manufacturer: drug.manufacturer.name,
+              id: drug.id,
+              name: drug.name,
+              form: drug.form,
+              type: drug.type.name,
+              receipt: drug.receipt ? "Yes" : "No",
+              manufacturer: drug.manufacturer.name,
             substitutions: (!drug.substitutions || drug.substitutions.length == 0) ?
               "No substitute" : drug.substitutions.map(sub => sub.name).join(", "),
             ingredients: drug.ingredients.map(ingredient => ingredient.name).join(", "),

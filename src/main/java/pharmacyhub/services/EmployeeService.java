@@ -139,6 +139,43 @@ public class EmployeeService {
 			
 			derm.setLocation(locationRepository.save(employee.getLocation()));
 			derm.setName(employee.getName());
+			derm.setPassword(employee.getPassword());
+			derm.setPhoneNumber(employee.getPhoneNumber());
+			derm.setSurname(employee.getSurname());
+			dermatologistRepository.save(derm);
+
+			System.out.println(dermatologistRepository.findById(employee.getId()));
+		} else {
+			Pharmacist pharm = pharmacistRepository.findById(employee.getId()).orElse(null);
+			if (pharm.equals(null)) {
+				throw new Exception("This pharmacist does not exist!");
+			}
+
+			pharm.setEmail(employee.getEmail());
+			pharm.setLocation(locationRepository.save(employee.getLocation()));
+			pharm.setName(employee.getName());
+			pharm.setPassword(employee.getPassword());
+			pharm.setPhoneNumber(employee.getPhoneNumber());
+			pharm.setSurname(employee.getSurname());
+			pharmacistRepository.save(pharm);
+
+			System.out.println(pharmacistRepository.findById(employee.getId()));
+
+		}
+		return findAll();
+	}
+	
+	public List<Employee> updatePassword(Employee employee) throws Exception {
+
+		if (employee.getType().equals(UserType.Dermatologist)) {
+			Dermatologist derm = dermatologistRepository.findById(employee.getId()).orElse(null);
+			if (derm.equals(null)) {
+				throw new Exception("This dermatologist does not exist!");
+			}
+			derm.setEmail(employee.getEmail());
+			
+			derm.setLocation(locationRepository.save(employee.getLocation()));
+			derm.setName(employee.getName());
 			derm.setPassword(passwordEncoder.encode(employee.getPassword()));
 			derm.setPhoneNumber(employee.getPhoneNumber());
 			derm.setSurname(employee.getSurname());
@@ -165,7 +202,6 @@ public class EmployeeService {
 		return findAll();
 	}
 	
-
 	public Employee findOne(String employeeId) {
 		if(pharmacistRepository.findById(employeeId).orElse(null) == null) {
 			  Employee employee = dermatologistRepository.findById(employeeId).orElse(null);
@@ -339,12 +375,13 @@ public class EmployeeService {
 		}
 		Drugstore dg = drugstoreRepository.findById(pharmacist.getDrugstore().getId()).orElse(null);
 		locationRepository.save(pharmacist.getLocation());
-		Pharmacist p = new Pharmacist(pharmacist.getEmail(), RadnomGeneratorUtil.generateEmployeePassword(),
+		String rawPassword = RadnomGeneratorUtil.generateEmployeePassword();
+		Pharmacist p = new Pharmacist(pharmacist.getEmail(), passwordEncoder.encode(rawPassword),
 				pharmacist.getName(), pharmacist.getSurname(), pharmacist.getPhoneNumber(), pharmacist.getLocation(),
 				pharmacist.getWorkingHoursFrom(), pharmacist.getWorkingHoursTo(), dg);
 
 		pharmacistRepository.save(p);
-		userNotificationService.sendEmployeeInitialPassword(p.getEmail(), p.getPassword());
+		userNotificationService.sendEmployeeInitialPassword(p.getEmail(), rawPassword);
 				
 		return null;
 	}
@@ -359,5 +396,15 @@ public class EmployeeService {
 		String pharmacistId = pharmacistRepository.findByEmail(pharmacistEmail).getId();
 		pharmacistAppointmentRepository.deleteByPharmacist((Pharmacist)pharmacistRepository.findByEmail(pharmacistEmail)); //treba samo one koji predstoje?
 	}
-
+	
+	public boolean passwordValid(String employeeId, String passwordInput) {
+		
+		if(pharmacistRepository.findById(employeeId).orElse(null) != null) {
+			Pharmacist ph = pharmacistRepository.findById(employeeId).orElse(null);
+			return passwordEncoder.matches(passwordInput, ph.getPassword());
+		}else {
+			Dermatologist ph = dermatologistRepository.findById(employeeId).orElse(null);
+			return passwordEncoder.matches(passwordInput, ph.getPassword());
+		}
+	}
 }

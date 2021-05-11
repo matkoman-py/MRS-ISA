@@ -62,12 +62,16 @@ public class DrugReservationService {
 
 		drugreservationRespository.save(drr);
 		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
-		for (DrugStock stok : drst) {
-			if (stok.getDrugstore().getId().equals(drugstoreId)) {
-				stok.setAmount(stok.getAmount() - 1);
-				drugstockRepository.save(stok);
-			}
-		}
+		for(DrugStock stok:drst) {
+			if(stok.getDrugstore().getId().equals(drugstoreId)) {
+				if(stok.getAmount()-1>=0) {
+					stok.setAmount(stok.getAmount() - 1);
+					drugstockRepository.save(stok);
+				}
+				else {
+					//NAPRAVITI DRUG REQUEST !!!
+					return "Drug not on stock!";
+				}
 
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), drr.getConfirmationCode());
 		return "Success!";

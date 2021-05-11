@@ -17,6 +17,7 @@
                 <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
               </b-dropdown-item>
             </b-nav-item-dropdown>
+
                 <template v-if="!$helpers.isObjectEmpty(user) && role == 'Pharmacist'">
                   <b-navbar-brand v-for="route in userSpecificRoutes['Pharmacist']" :key="route.name" tag="h3" class="nav-link">
                         <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
@@ -47,11 +48,7 @@
               </b-navbar-brand>
             </template>
 
-            <template v-if="!$helpers.isObjectEmpty(user) && role == 'Pharmacist'">
-              <b-navbar-brand v-for="route in userSpecificRoutes['Pharmacist']" :key="route.name" tag="h3" class="nav-link">
-                    <router-link :to="route.path" class="link-font">{{route.name}}</router-link>
-              </b-navbar-brand>
-            </template>
+            
                 
 
             </b-navbar-nav>
