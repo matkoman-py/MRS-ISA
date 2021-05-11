@@ -20,12 +20,12 @@
 
       <!-- Slides with custom text -->
       <b-carousel-slide img-src="static/slider2.jpg">
-        <h1></h1>
+        <h1>Zdravlje nema cenu!</h1>
       </b-carousel-slide>
 
       <!-- Slides with image only -->
       <b-carousel-slide img-src="static/nekaSlika.jpg">
-      <h1></h1>
+      <h1>Dostava lekova na kucnu adresu</h1>
       </b-carousel-slide>
 
       <!-- Slides with img slot -->
@@ -39,7 +39,7 @@
             src="static/slider3.jpg"
             alt="image slot"
           >
-        </template>
+        </template><h1>Preko 5000 pozitivnih korisnika.</h1>
       </b-carousel-slide>
 
       <!-- Slide with blank fluid image to maintain slide aspect ratio -->

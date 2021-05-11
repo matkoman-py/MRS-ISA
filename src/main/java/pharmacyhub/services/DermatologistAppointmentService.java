@@ -208,6 +208,11 @@ public class DermatologistAppointmentService {
 		return da;
 	}
 	
+	public List<DermatologistAppointment> returnAppointments(String patientId) {
+		List<DermatologistAppointment> da = dermatologistAppointmentRepository.findByPatientId(patientId);
+		return da;
+	}
+	
 	public List<DermatologistAppointment> findAvailable(String drugstoreId, String dermatologistId) {
 		List<DermatologistAppointment> allAppointments = findAll();
 		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();

@@ -83,11 +83,21 @@ public class DrugstoreController {
 	}
 	
 	@GetMapping(path = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<DrugStock>> getDrugstores(@RequestParam("drugId") String id)
+	public ResponseEntity<Collection<DrugStock>> getDrugstores(@RequestParam("drugId") String id,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size) 
+			throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(drugstoreService.findDrugstores(id,pageable), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/reserveEmployee", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DrugStock>> getDrugstoresEmployee(@RequestParam("drugId") String drugId,
+			@RequestParam("drugstoreId") String drugstoreId)
 			//@RequestParam(value = "page", required = false) Integer page,
 			//@RequestParam(value = "size", required = false) Integer size) 
 			throws Exception {
 		//Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
-		return new ResponseEntity<>(drugstoreService.findDrugstores(id/*pageable*/), HttpStatus.OK);
+		return new ResponseEntity<>(drugstoreService.findDrugstoreEmployee(drugId,drugstoreId/*pageable*/), HttpStatus.OK);
 	}
 }

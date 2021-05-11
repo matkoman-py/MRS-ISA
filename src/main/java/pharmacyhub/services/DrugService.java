@@ -10,12 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
+import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Ingredient;
+import pharmacyhub.dto.CreateDrugOrderDto;
 import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.dto.search.DrugSearchDto;
 import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.DrugRepository;
+import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.IngredientRepository;
@@ -38,6 +42,9 @@ public class DrugService {
 	
 	@Autowired
 	private DrugPriceRepository drugPriceRepository;
+	
+	@Autowired
+	private DrugRequestRepository drugRequestRepository;
 
 	public List<Drug> findAll(Pageable pageable) {
 		return drugRepository.findAll(pageable).toList();
@@ -75,7 +82,7 @@ public class DrugService {
 		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), pageable);
 		List<DrugInDrugstoreDto> drugsInDrugstore = new ArrayList<DrugInDrugstoreDto>();
 		for (DrugStock ds : drugsOnStock) {
-			drugsInDrugstore.add(new DrugInDrugstoreDto(ds.getDrug().getName(), ds.getDrug().getForm(), ds.getDrug().isReceipt(), ds.getDrug().getType(), ds.getDrug().getManufacturer(), ds.getAmount()));
+			drugsInDrugstore.add(new DrugInDrugstoreDto(ds.getDrug().getId(),ds.getDrug().getName(), ds.getDrug().getForm(), ds.getDrug().isReceipt(), ds.getDrug().getType(), ds.getDrug().getManufacturer(), ds.getAmount()));
 		}
 		return drugsInDrugstore;
   }
@@ -99,6 +106,39 @@ public class DrugService {
 			throw new Exception("Drug doesn't exists");
 		}
 		return save(drug);
+	}
+
+	public List<Drug> findAllSubstitutes(String drugId) {
+		Drug drug = drugRepository.findById(drugId).orElse(null);
+		//return drug.getSubstitutions();
+		return drugRepository.findAll();
+	}
+
+	public List<Drug> getDrugsNotOnStock(String drugstoreId) {
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), null);
+		List<Drug> drugs = drugRepository.findAll();
+		for (DrugStock ds : drugsOnStock) {
+			drugs.remove(ds.getDrug());
+		}
+		return drugs;
+	}
+
+	public List<CreateDrugOrderDto> getDrugsForCreateOrderView(String drugstoreId, String drugsToBeShown) {
+		List<Drug> drugsNotOnStock = getDrugsNotOnStock(drugstoreId);
+		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), null);
+		List<CreateDrugOrderDto> returnValue = new ArrayList<CreateDrugOrderDto>();
+		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
+		for (Drug drug : drugsNotOnStock) {
+			List<DrugRequest> dr = drugRequestRepository.findByDrugAndDrugstore(drug, drugstore);
+			if (drugsToBeShown.equals("All_Drugs") || !dr.isEmpty())
+				returnValue.add(new CreateDrugOrderDto(drug.getName(), false, 0, !dr.isEmpty()));
+		}
+		for (DrugStock ds : drugsOnStock) {
+			List<DrugRequest> dr = drugRequestRepository.findByDrugAndDrugstore(ds.getDrug(), drugstore);
+			if (drugsToBeShown.equals("All_Drugs") || !dr.isEmpty())
+				returnValue.add(new CreateDrugOrderDto(ds.getDrug().getName(), true, ds.getAmount(), !dr.isEmpty()));
+		}
+		return returnValue;
 	}
 
 }

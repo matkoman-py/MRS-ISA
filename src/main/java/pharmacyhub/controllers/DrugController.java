@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.Drug;
+import pharmacyhub.dto.CreateDrugOrderDto;
 import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.dto.search.DrugSearchDto;
 import pharmacyhub.services.DrugService;
@@ -46,6 +47,14 @@ public class DrugController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.findAll(pageable), HttpStatus.OK);
 	}
+	
+	@GetMapping(path = "/notOnStock", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Drug>> getDrugsNotOnStock(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam(value = "drugstoreId", required = true) String drugstoreId){
+		return new ResponseEntity<>(drugService.getDrugsNotOnStock(drugstoreId), HttpStatus.OK);
+	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drug> add(@RequestBody Drug drug) throws Exception {
@@ -68,5 +77,18 @@ public class DrugController {
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Boolean> deleteDrug(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(drugService.delete(id), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/substitutions", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Drug>> getSubstituteDrugs(@RequestParam(value = "drugId", required = false, defaultValue = "0") String drugId) {
+		
+		return new ResponseEntity<>(drugService.findAllSubstitutes(drugId), HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/createOrderView", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<CreateDrugOrderDto>> getDrugsForCreateOrderView(
+			@RequestParam(value = "drugstoreId", required = true) String drugstoreId,
+			@RequestParam(value = "drugsToBeShown", required = true) String drugsToBeShown) {
+		return new ResponseEntity<>(drugService.getDrugsForCreateOrderView(drugstoreId, drugsToBeShown), HttpStatus.OK);
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pharmacyhub.dto.CreateOrderDto;
 import pharmacyhub.dto.drugOrder.DrugOrderDto;
 import pharmacyhub.dto.search.DrugOrderSearchDto;
 import pharmacyhub.services.DrugOrderService;
@@ -32,5 +33,10 @@ public class DrugOrderController {
 			@RequestBody DrugOrderSearchDto drugOrderSearchDto){
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugOrderService.search(drugOrderSearchDto, pageable), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> create(@RequestBody CreateOrderDto createOrderDto){
+		return new ResponseEntity<>(drugOrderService.createNewOrder(createOrderDto), HttpStatus.OK);
 	}
 }

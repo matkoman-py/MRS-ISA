@@ -15,6 +15,16 @@ public class OrderStock extends BaseEntity {
 	
 	@Column(nullable = false)
 	private int amount;
+	
+	public OrderStock() {
+		
+	}
+
+	public OrderStock(Drug drug, int amount) {
+		super();
+		this.drug = drug;
+		this.amount = amount;
+	}
 
 	public Drug getDrug() {
 		return drug;

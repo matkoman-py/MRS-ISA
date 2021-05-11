@@ -2,7 +2,7 @@
     <div>
         <b-card title="Search">
             <b-form class="text-left" @submit="submitSearch()">
-                <b-form-group id="input-group-1" label="Drug name:" label-for="input-1">
+                <b-form-group id="input-group-1" label="Order status:" label-for="input-1">
                     <b-form-select v-model="selected" :options="options"></b-form-select>
                 </b-form-group>
                 <div class="text-center">

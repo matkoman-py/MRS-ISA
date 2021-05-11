@@ -49,6 +49,11 @@ public class DermatologistAppointmentController {
 		  return new ResponseEntity<>(dermatologistAppointmentService.createReservation(patientId, appointmentId,drugstoreId), HttpStatus.OK);	
 	}
 	
+	@GetMapping(path ="/returnAppointments", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> returnAppointments(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		  return new ResponseEntity<>(dermatologistAppointmentService.returnAppointments(patientId), HttpStatus.OK);	
+	}
+	
 	@GetMapping(path ="/begin-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DermatologistAppointment> getDermatologistAppointment(@RequestParam (value = "dermatologistAppointmentId", required=false,  defaultValue = "0") String dermatologistAppointmentId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAppointment(dermatologistAppointmentId), HttpStatus.OK);

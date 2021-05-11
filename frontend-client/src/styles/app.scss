@@ -70,6 +70,11 @@ $theme-colors:
 (
     hub: $hub,
 );
+.text-hub:hover{
+  background-color: #2f52ad !important;
+  border-radius: 40% !important;
+  color: #fdfdfd !important;
+}
 
 
 @import 'node_modules/bootstrap/scss/bootstrap.scss';

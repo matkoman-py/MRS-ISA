@@ -39,7 +39,7 @@
 
 
 
-    <b-modal id="deleteConfirmation" title="Warning! This emoloyee is going to be removed from this drugstore!" align="center" hide-footer>
+    <b-modal id="deleteConfirmation" title="Warning! This employee is going to be removed from this drugstore!" align="center" hide-footer>
       <b-form>
         <b-row align-h="center">
         <b-label> Are you sure that you want to delete this employee?</b-label>

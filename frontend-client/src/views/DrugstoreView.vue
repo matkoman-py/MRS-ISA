@@ -58,7 +58,7 @@
                 <DrugInDrugstoreTable/>
             </b-tab>
             <b-tab title="From my e-receipt only">
-                <DrugInDrugstoreTable/>
+                <!--<DrugInDrugstoreTable/>-->
             </b-tab>
             </b-tabs>
         </b-card>
