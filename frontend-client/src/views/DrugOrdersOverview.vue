@@ -195,6 +195,7 @@
               .then(() => {
                 this.getDrugOrders();
                 this.showOferrs = false;
+                alert("You successfully accepted offer!");
               })
               .catch(error => console.log(error));
           }

@@ -125,7 +125,8 @@
                         name: drug.drugName,
                         available_in_this_drugstore: drug.available ? "Yes" : "No",
                         amount_available : drug.available ? drug.availableAmount : "/",
-                        requested : drug.requested ? "Yes" : "No"
+                        requested : drug.requested ? "Yes" : "No",
+                        active_order: drug.activeOrder ? "Yes" : "No"
                     }
                 ));
             })

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DrugOrder;
+import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Offer;
@@ -26,6 +27,7 @@ import pharmacyhub.dto.drugOrder.DrugOrderDto;
 import pharmacyhub.dto.search.DrugOrderSearchDto;
 import pharmacyhub.repositories.DrugOrderRepository;
 import pharmacyhub.repositories.DrugRepository;
+import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.OfferRepository;
@@ -52,6 +54,9 @@ public class DrugOrderService {
 	
 	@Autowired
 	private DrugStockRepository drugStockRepository;
+	
+	@Autowired
+	private DrugRequestRepository drugRequestRepository;
 	
 	@Autowired
 	private UserNotificationService userNotificationService;
@@ -138,6 +143,9 @@ public class DrugOrderService {
 			DrugStock drugStock = drugStockRepository.findByDrugAndDrugstore(stock.getDrug(), drugstore);
 			drugStock.setAmount(drugStock.getAmount() + stock.getAmount());
 			drugStockRepository.save(drugStock);
+			
+			//logicki obrisati requestove za ove lekove koji su naruceni
+			drugRequestRepository.deleteByDrugstoreAndDrug(drugstore, stock.getDrug());	
 		}
 		drugOrderRepository.save(order);
 		return true;
