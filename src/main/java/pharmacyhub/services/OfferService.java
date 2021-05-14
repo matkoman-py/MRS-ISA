@@ -103,4 +103,9 @@ public class OfferService {
 		}
 		return true;
 	}
+
+	public List<Offer> getOffersForOrder(String orderId) {
+		DrugOrder order = drugOrderRepository.findById(orderId).orElse(null);
+		return offerRepository.findByDrugOrder(order);
+	}
 }

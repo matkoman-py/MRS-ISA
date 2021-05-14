@@ -38,6 +38,8 @@ import ReceiptGeneratorView from "./views/ReceiptGeneratorView"
 import ReceiptScannerView from "./views/ReceiptScannerView"
 import SubscriptionsView from "./views/SubscriptionsView"
 import CreateDrugOrder from "./views/CreateDrugOrder"
+import DrugOrdersOverview from "./views/DrugOrdersOverview"
+import DrugstoreAdministratorProfile from "./views/DrugstoreAdministratorProfile"
 
 Vue.use(VueRouter)
 
@@ -233,6 +235,16 @@ const routes = [
         path: '/create-drug-order',
         name: "CreateDrugOrder",
         component: CreateDrugOrder
+    },
+    {
+        path: '/drug-orders-overview',
+        name: "DrugOrdersOverview",
+        component: DrugOrdersOverview
+    },
+    {
+        path: '/drugstore-administrator-profile',
+        name: "DrugstoreAdministratorProfile",
+        component: DrugstoreAdministratorProfile
     },
 ];
 

@@ -16,6 +16,7 @@ public interface DrugStockRepository extends JpaRepository<DrugStock, String>{
 	List<DrugStock> findByDrugstore(Drugstore drugstore, Pageable pageable);
 	List<DrugStock> findByDrugId(String drugId, Pageable pageable);
 	List<DrugStock> findByDrugId(String drugId);
+	DrugStock findByDrugAndDrugstore(Drug drug, Drugstore drugstore);
 
 	@Transactional
 	void deleteByDrug(Drug drug);

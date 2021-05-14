@@ -66,7 +66,6 @@
 
       </b-form>
     </b-modal>
-    {{orderAtributtes}}
     </b-container>
 </template>
 

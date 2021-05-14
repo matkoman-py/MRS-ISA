@@ -65,6 +65,7 @@
                 <b-navbar-brand tag="h3" class="nav-link">
                   <router-link v-if="role == 'Dermatologist' || role == 'Pharmacist'" to="/pharm-derm-profile">{{email}}</router-link>
                   <router-link v-else-if="role == 'Patient'" to="/patient">{{email}}</router-link>
+                  <router-link v-else-if="role == 'DrugstoreAdmin'" to="/drugstore-administrator-profile">{{email}}</router-link>
                   <router-link v-else to="/">{{email}}</router-link>
                   
                 </b-navbar-brand> 
@@ -125,6 +126,7 @@
           "DrugstoreAdmin":[
             {name: "Employees", path: "/employeesOverview"},
             {name: "Drug stock", path: "/drug-stock-overview"},
+            {name: "Orders", path: "/drug-orders-overview"},
             {name: "Create order", path: "/create-drug-order"},
           ],
           "Pharmacist":[

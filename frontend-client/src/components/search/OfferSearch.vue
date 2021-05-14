@@ -40,7 +40,7 @@
                 nextPageData: [],
                 options: [
                     //Active, Pending, Rejected
-                    { value: "Active", text: "Active"},
+                    { value: "Accepted", text: "Accepted"},
                     { value: "Pending", text: "Pending"},
                     { value: "Rejected", text: "Rejected"},
                 ],
