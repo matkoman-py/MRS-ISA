@@ -131,6 +131,7 @@
             {name: "Schedule", path: "/schedule-pharm"},
             {name: "Patients", path: "/patientoverview"},
             {name: "Treated patients", path: "/treated"},
+            {name: "Drug issuing", path: "/drug-issuing"},
           ],
           "Dermatologist":[
             {name: "Schedule", path: "/schedule"},

@@ -48,4 +48,16 @@ public class DrugReservationController {
 
 		return new ResponseEntity<>(drugReservationService.cancelReservation(drugreservationcancelDto), HttpStatus.OK);
 	}
+	
+	@GetMapping(path = "/getPatientReservationsInDrugstore",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DrugReservation>> getPatientReservationsInDrugstore(@RequestParam(value = "patientEmail", required = false, defaultValue = "0") String patientEmail,
+			@RequestParam(value = "pharmacistId", required = false, defaultValue = "0") String pharmacistId) throws Exception {
+		return new ResponseEntity<>(drugReservationService.getPatientReservationsInDrugstore(patientEmail, pharmacistId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/issueReservation",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> issueReservation(@RequestParam(value = "reservationId", required = false, defaultValue = "0") String reservationId,
+			@RequestParam(value = "confirmationCode", required = false, defaultValue = "0") String confirmationCode) throws Exception {
+		return new ResponseEntity<>(drugReservationService.issueReservation(reservationId,confirmationCode), HttpStatus.OK);
+	}
 }
