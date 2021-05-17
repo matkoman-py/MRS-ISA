@@ -39,6 +39,7 @@ import ReceiptScannerView from "./views/ReceiptScannerView"
 import SubscriptionsView from "./views/SubscriptionsView"
 import CreateDrugOrder from "./views/CreateDrugOrder"
 import DrugIssuing from "./views/DrugIssuing"
+import AbsenceRequest from "./views/AbsenceRequest"
 
 Vue.use(VueRouter)
 
@@ -239,6 +240,11 @@ const routes = [
         path: '/drug-issuing',
         name: "DrugIssuing",
         component: DrugIssuing
+    },
+    {
+        path: '/absence-request',
+        name: "AbsenceRequest",
+        component: AbsenceRequest
     },
 ];
 
