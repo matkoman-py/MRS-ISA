@@ -1,9 +1,5 @@
 <template>
-  <b-container style="width: 40%" align-h="center">
-    <b-row>
-      <b-col>
         <b-form>
-
           <b-form-group label="Name:" label-for="name-input">
             <b-form-input
               id="name-input"
@@ -73,10 +69,6 @@
             ></b-form-select>
           </b-form-group>
         </b-form>
-      </b-col>
-    </b-row>
-    
-  </b-container>
 </template>
 
 <script>
@@ -119,7 +111,6 @@ export default {
             .catch(error => console.log(error));
       },
     getDrugstores(){
-        console.log("het")
         this.$http.get("http://localhost:8081/drugstores/")
             .then(response => {
                 console.log(response.data);
