@@ -1,65 +1,84 @@
 <template>
         <b-form>
-          <b-form-group label="Name:" label-for="name-input">
-            <b-form-input
-              id="name-input"
-              v-model="form.name"
-              placeholder="Enter name"
-              required
-            ></b-form-input>
-          </b-form-group>
+            <b-form-row>
+              <b-col>
+                <b-form-group label="Name:" label-for="name-input">
+                <b-form-input
+                  id="name-input"
+                  v-model="form.name"
+                  placeholder="Enter name"
+                  required
+                ></b-form-input>
+                </b-form-group>
+              </b-col>
+              
+              <b-col>
+                <b-form-group label="Surname:" label-for="surname-input">
+                  <b-form-input
+                    id="surname-input"
+                    v-model="form.surname"
+                    placeholder="Enter surname"
+                    required
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-form-row>
+          
+          <b-form-row>
+            <b-col cols="6">
+            <b-form-group label="Email:" label-for="email-input">
+              <b-form-input
+                id="email-input"
+                v-model="form.email"
+                placeholder="Enter email address"
+                type="email"
+                required
+              ></b-form-input>
+            </b-form-group>
+            </b-col>
+            <b-col cols="6">
+            <b-form-group label="Phone Number:" label-for="phoneNumber-input">
+              <b-form-input
+                id="phoneNumber-input"
+                v-model="form.phoneNumber"
+                placeholder="Enter phone number"
+                required
+              ></b-form-input>
+            </b-form-group>
+            </b-col>
+          </b-form-row>
 
-          <b-form-group label="Surname:" label-for="surname-input">
-            <b-form-input
-              id="surname-input"
-              v-model="form.surname"
-              placeholder="Enter surname"
-              required
-            ></b-form-input>
-          </b-form-group>
+          <b-form-row>
+            <b-col>
+              <b-form-group label="Address:" label-for="address-input">
+                <b-form-input
+                  id="address-input"
+                  v-model="form.location.address"
+                  placeholder="Enter address"
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="City:" label-for="city-input">
+                <b-form-input
+                  id="city-input"
+                  v-model="form.location.city"
+                  placeholder="Enter city"
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
 
-          <b-form-group label="Email:" label-for="email-input">
-            <b-form-input
-              id="email-input"
-              v-model="form.email"
-              placeholder="Enter email address"
-              type="email"
-              required
-            ></b-form-input>
-          </b-form-group>
+            <b-col>
+              <b-form-group label="Country:" label-for="country-input">
+                <b-form-input
+                  id="country-input"
+                  v-model="form.location.country"
+                  placeholder="Enter country"
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
+          </b-form-row>
 
-          <b-form-group label="Phone Number:" label-for="phoneNumber-input">
-            <b-form-input
-              id="phoneNumber-input"
-              v-model="form.phoneNumber"
-              placeholder="Enter phone number"
-              required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group label="Address:" label-for="address-input">
-            <b-form-input
-              id="address-input"
-              v-model="form.location.address"
-              placeholder="Enter address"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group label="City:" label-for="city-input">
-            <b-form-input
-              id="city-input"
-              v-model="form.location.city"
-              placeholder="Enter city"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group label="Country:" label-for="country-input">
-            <b-form-input
-              id="country-input"
-              v-model="form.location.country"
-              placeholder="Enter country"
-            ></b-form-input>
-          </b-form-group>
 
           <b-form-group v-if="type == 'DrugstoreAdmin'" label="Drugstore:" label-for="drugstore-input">
             <b-form-select
