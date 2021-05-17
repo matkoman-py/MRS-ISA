@@ -1,26 +1,23 @@
 package pharmacyhub.services;
 
 import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.users.Pharmacist;
-import pharmacyhub.dto.DermatologistAppointmentPatientDto;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
-import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
@@ -116,7 +113,15 @@ public class PharmacistAppointmentService {
 			}
 		}
     	userNotificationService.sendReservationConfirmation(patientRepository.getById(pharmacistAppointmentPatientDto.getPatientId()).getEmail(), "pharmacist");
-		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null,false));
+    	PharmacistAppointment pharmacistAppointment = new PharmacistAppointment(
+    			pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),
+    			pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(),
+    			pharmacistAppointmentPatientDto.getDuration(),
+    			patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null),
+    			null,
+    			false,
+    			0);
+		return pharmacistAppointmentRepository.save(pharmacistAppointment);
 	}
 	
 	public PharmacistAppointment findAppointment(String pharmacistAppointmentId) {
