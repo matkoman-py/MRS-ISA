@@ -21,7 +21,7 @@
                 <b-card>
                     <b-table id="user-table" striped hover :items="users" :fields="fields">
                         <template #cell(actions)="row">
-                            <b-button size="sm" variant="outline-hub" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
+                            <b-button size="sm" variant="outline-hub" v-if="row.item.type != 'SystemAdmin'" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
                                 Delete
                             </b-button>
                         </template>
