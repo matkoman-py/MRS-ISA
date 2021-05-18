@@ -21,7 +21,7 @@
                         Subscribe</b-button>
                     <b-button variant="outline-hub" style="margin:20px" v-if="subscribed == true" @click="unsubscribe">
                         Unsubscribe</b-button>
-                    <b-button style="margin:20px" variant="outline-hub" size="sm" @click="showModal()" class="mr-1">
+                    <b-button style="margin:20px" variant="outline-hub" @click="showModal()" class="mr-1">
                         Rate drugstore
                     </b-button>
                 </div>

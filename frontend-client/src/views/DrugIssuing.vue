@@ -123,8 +123,6 @@
             },
             onSubmit(event) {
                 event.preventDefault();
-                alert(this.reservationId);
-                alert(this.confirmationCode);
                 this.$http.get('http://localhost:8081/drugReservation/issueReservation', {
                         params: {
                             reservationId: this.reservationId,

@@ -82,7 +82,6 @@ export default {
                 alert("End date must be after start date!");
                 return;
             }
-            alert("Prosao" + this.startDate+ this.endDate+ this.user.id);
             var dto = {
                 startDate:this.startDate,
                 endDate:this.endDate,
