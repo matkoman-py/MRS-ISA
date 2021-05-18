@@ -127,6 +127,7 @@
         //this.modified = item;
       },
       showSubstituteModal(item){
+        
         this.selecteddrug.id = item.id;
         this.drugstoreId = this.passedDrugstoreId;
         this.$root.$emit('bv::show::modal', 'my-modal');
@@ -150,8 +151,14 @@
       }
     },
     mounted: function(){
-        this.$http.get("http://localhost:8081/drugs/substitutions", {
-            drugId: this.selecteddrug.id 
+        //alert(this.passedDrugstoreId);
+        if(this.passedDrugstoreId != null){
+        this.$http.get("http://localhost:8081/drugs/substitutionsDrugstore", {
+            params:
+            {
+            drugId: this.selecteddrug.id,
+            drugstoreId: this.passedDrugstoreId,
+            }
           })
           .then(response => {
             this.drugSubstitutions = response.data.map(drug =>
@@ -165,6 +172,7 @@
                             }));
           })
           .catch(error => console.log(error));
+        }
     }
   }
 </script>

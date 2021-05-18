@@ -18,9 +18,11 @@ public class DrugStock extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name = "drug_fk")
 	private Drug drug;
+	
 	@ManyToOne
 	@JoinColumn(name = "drugstore_fk")
 	private Drugstore drugstore;
+	
 	@Column(nullable = false)
 	private int amount;
 	

@@ -57,16 +57,32 @@
                 Reserve
               </b-button>
             </template>
+            <template #cell(rateAction)="row">
+              <b-button variant="outline-hub" v-if="row.item" size="sm"
+                @click="showModal(row.item, row.index, $event.target)" class="mr-1">
+                Rate drug
+              </b-button>
+            </template>
           </b-table>
           <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
         </b-card>
         <b-card v-if="reserved" class="mt-3">
-          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores" :patientId="patientId" :passedDrugstoreId="passedDrugstoreId">
+          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores" :patientId="patientId" :passedDrugstoreId="passedDrugstoreId" :drugSubstitutions="drugSubstitutions">
           </drug-reservation>
           <h1 v-if="drugs.length == 0">There are no drugs that fit the search parameters</h1>
         </b-card>
       </b-col>
     </b-row>
+    <b-modal id="my-modalR" title="Rate drug" hide-footer>
+      <b-form @submit="saveRating">
+        <label v-if="canRate" style="margin:20px"><b>Rate us: </b></label>
+          <b-form-rating v-if="canRate" id="rate" inline value=userRating v-model="userRating"></b-form-rating>
+          <label v-if="canRate == false" style="margin:20px"><b>Rate us: </b></label>
+          <b-form-rating v-if="canRate == false" id="cant-rate" inline disabled value="2.75"></b-form-rating>
+          <br>
+        <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
+      </b-form>
+    </b-modal>
   </b-container>
 </template>
 
@@ -106,8 +122,11 @@
     },
     data: function () {
       return {
+        userRating: '1',
+        canRate: false,
         reserved: 0,
         drugstores: [],
+        drugSubstitutions: [],
         searchForm: {
           name: '',
           type: '',
@@ -133,6 +152,10 @@
           {
             key: 'actions',
             label: ''
+          },
+          {
+            key: 'rateAction',
+            label: ''
           }
         ],
         receiptOptions: [{
@@ -148,6 +171,7 @@
             text: 'No'
           },
         ],
+        drugReservations:[],
         selectedDrug: null,
         drugs: [],
         drugType: [],
@@ -162,6 +186,46 @@
       }
     },
     methods: {
+      saveRating(){
+        return true;
+      },
+      showModal(item) {
+        if (this.user == null) {
+          alert("You must be logged in to rate a drug!");
+          return;
+        }
+        //alert(item.name);
+        this.getDrugReservations();
+        this.selecteddrug = item.id;
+        var i;
+        var x = 1;
+                for (i = 0; i < this.drugReservations.length; i++) {
+                    alert(this.drugReservations[i].drug);
+                    alert(item.name);
+                        if(this.drugReservations[i].drug == item.name) {
+                            //alert("JUPI");
+                            this.canRate = true;
+                            x = 0;
+                        }
+                }
+        if(x == 1) this.canRate = false;
+        this.$root.$emit('bv::show::modal', 'my-modalR');
+      },
+      getDrugReservations: function () {
+                this.$http.get("http://localhost:8081/drugReservation/getPatientReservations", {
+                        params: {
+                            patientId: this.user.id
+                        }
+                    }).then(response => {
+                        this.drugReservations = response.data.map(drugReservation => ({
+                            id: drugReservation.id,
+                            drug: drugReservation.drug.name,
+                            drugstore: drugReservation.drugstore.name,
+                            date: drugReservation.date
+                        }))
+                    })
+                    .catch(error => console.log(error));
+            },
       getDrugstores: function (data) {
         if (this.user == null) {
           alert("You must be logged in to reserve a drug!");
@@ -213,6 +277,7 @@
                 rating: stock.drugstore.averageRating
               }));
           })
+          
           }
       },
       searchDrugs: function () {
@@ -287,6 +352,7 @@
     },
 
     mounted: function () {
+      this.getDrugReservations();
       this.getManufacturers();
       this.getIngrediants();
       this.getSubstitutionDrugs();

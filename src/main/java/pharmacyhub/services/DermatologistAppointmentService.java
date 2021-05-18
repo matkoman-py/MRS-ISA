@@ -10,12 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
+import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Patient;
+import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DermatologistAppointmentPatientDto;
+import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PatientRepository;
@@ -40,6 +45,9 @@ public class DermatologistAppointmentService {
     
     @Autowired
     private PharmacistAppointmentRepository pharmacistAppointmentRepository;
+    
+    @Autowired
+    private EmploymentRepository employmentRepository;
 	
 	public List<DermatologistAppointment> findAll(){
 		return dermatologistAppointmentRepository.findAll();
@@ -69,13 +77,31 @@ public class DermatologistAppointmentService {
 			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
 				System.out.println("USO JE 1");
 				throw new Exception("Dermatologist already has an appointment at that time.");
-				// kako throw exception
 			}
 			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
 				System.out.println("USO JE 2");
 				throw new Exception("Dermatologist already has an appointment at that time.");
-				// kako throw exception
 			}
+		}
+		
+		Employment ph = employmentRepository.findByDermatologistIdAndDrugstoreId(dermatologistAppointmentDto.getDermatologist().getId(),dermatologistAppointmentDto.getDrugstoreId());
+		String hours1 = ph.getWorkingHoursFrom().substring(0,2);
+		int workingFrom = Integer.parseInt(hours1) * 3600;
+		String minutes1 = ph.getWorkingHoursFrom().substring(3,5);
+		workingFrom += Integer.parseInt(minutes1) * 60;
+		
+		String hours2 = ph.getWorkingHoursTo().substring(0,2);
+		int workingTo = Integer.parseInt(hours2) * 3600;
+		String minutes2 = ph.getWorkingHoursTo().substring(3,5);
+		workingTo += Integer.parseInt(minutes2) * 60;
+		
+		int hours = dermatologistAppointmentDto.getTime().getHours();
+		int inputTime = hours * 3600;
+		int minutes = dermatologistAppointmentDto.getTime().getMinutes();
+		inputTime += minutes * 60;
+		
+		if(inputTime<=workingFrom || inputTime>=workingTo) {
+			throw new Exception("Dermatologist is not working at that time.");
 		}
 		
 		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistAppointmentDto.getDermatologist(), drugstoreRepository.findById(dermatologistAppointmentDto.getDrugstoreId()).orElse(null), dermatologistAppointmentDto.getDate(), dermatologistAppointmentDto.getTime(), dermatologistAppointmentDto.getDuration(), null, null, dermatologistAppointmentDto.getPrice(),false));
@@ -163,6 +189,26 @@ public class DermatologistAppointmentService {
 				throw new Exception("Patient already has an appointment at that time.");
 				// kako throw exception
 			}
+		}
+		
+		Employment ph = employmentRepository.findByDermatologistIdAndDrugstoreId(dermatologistAppointmentPatientDto.getDermatologistId(),dermatologistAppointmentPatientDto.getDrugstoreId());
+		String hours1 = ph.getWorkingHoursFrom().substring(0,2);
+		int workingFrom = Integer.parseInt(hours1) * 3600;
+		String minutes1 = ph.getWorkingHoursFrom().substring(3,5);
+		workingFrom += Integer.parseInt(minutes1) * 60;
+		
+		String hours2 = ph.getWorkingHoursTo().substring(0,2);
+		int workingTo = Integer.parseInt(hours2) * 3600;
+		String minutes2 = ph.getWorkingHoursTo().substring(3,5);
+		workingTo += Integer.parseInt(minutes2) * 60;
+		
+		int hours = dermatologistAppointmentPatientDto.getTime().getHours();
+		int inputTime = hours * 3600;
+		int minutes = dermatologistAppointmentPatientDto.getTime().getMinutes();
+		inputTime += minutes * 60;
+		
+		if(inputTime<=workingFrom || inputTime>=workingTo) {
+			throw new Exception("Dermatologist is not working at that time.");
 		}
 		
 		userNotificationService.sendReservationConfirmation(patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null).getEmail(), "dermatologist");
@@ -276,10 +322,13 @@ public class DermatologistAppointmentService {
 		System.out.println(wantedAppontments);
 		return wantedAppontments;
 	}
+
+	public List<DermatologistAppointment> cancelAppointment(String appointmentId) {
+		DermatologistAppointment da = dermatologistAppointmentRepository.findById(appointmentId).orElse(null);
+		String patientId = da.getPatient().getId();
+		da.setPatient(null);
+		dermatologistAppointmentRepository.save(da);
+		return dermatologistAppointmentRepository.findByPatientId(patientId);
+	}
 	
 }
-
-
-
-
-

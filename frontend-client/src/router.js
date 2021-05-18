@@ -1,230 +1,272 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import EmployeeTable from "./components/EmployeeTable";
+import SelectDermatologistForm from "./components/forms/SelectDermatologistForm";
+import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable";
+import AdminDrugTable from "./components/tables/AdminDrugTable";
+import AdminUserTable from "./components/tables/AdminUserTable";
+import DrugOrderTable from "./components/tables/DrugOrderTable";
+import OfferTable from "./components/tables/OfferTable";
+import SupplierStockTable from "./components/tables/SupplierStockTable";
+import AbsenceRequest from "./views/AbsenceRequest";
+import AddDermatologistForm from "./views/AddDermatologistForm";
+import AddDrugstoreForm from "./views/AddDrugstoreForm";
+import AddPharmacistForm from "./views/AddPharmacistForm";
+import AppointmentDermatologist from "./views/AppointmentDermatologist";
+import AppointmentPharmacist from "./views/AppointmentPharmacist";
+import AppointmentsOverview from "./views/AppointmentsOverview";
+import CreateDrugOrder from "./views/CreateDrugOrder";
+import DermatologistAppointments from "./views/DermatologistAppointments";
+import DermatologistOverview from "./views/DermatologistOverview";
+import DrugIssuing from "./views/DrugIssuing";
+import DrugOrdersOverview from "./views/DrugOrdersOverview";
+import DrugOverview from "./views/DrugOverview";
+import DrugStockOverview from "./views/DrugStockOverview";
+import DrugstoreAdministratorProfile from "./views/DrugstoreAdministratorProfile";
+import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate";
+import DrugstoreSearch from "./views/DrugstoreSearch";
+import DrugstoreView from "./views/DrugstoreView";
+import DrugViewSearch from "./views/DrugViewSearch";
+import EmployeesOverview from "./views/EmployeesOverview";
+import ReceiptGeneratorView from "./views/eReceipt/ReceiptGeneratorView";
+import ReceiptScannerView from "./views/eReceipt/ReceiptScannerView";
 import HomePage from "./views/HomePage";
-import EmployeesOverview from "./views/EmployeesOverview"
-import PatientOverview from "./views/PatientOverview"
-import RegistrationPage from "./views/RegistrationPage"
-import DrugOverview from "./views/DrugOverview"
-import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate"
-import AddPharmacistForm from "./views/AddPharmacistForm"
-import DrugViewSearch from "./views/DrugViewSearch"
-import DrugstoreSearch from "./views/DrugstoreSearch"
-import EmployeeTable from "./components/EmployeeTable"
-import AddDrugstoreForm from "./views/AddDrugstoreForm"
-import AddDermatologistForm from "./views/AddDermatologistForm"
-import DrugStockOverview from "./views/DrugStockOverview"
-import AppointmentsOverview from "./views/AppointmentsOverview"
-import SelectDermatologistForm from "./components/forms/SelectDermatologistForm"
-import AdminDrugstoreTable from "./components/tables/AdminDrugstoreTable"
-import AppointmentDermatologist from "./views/AppointmentDermatologist"
-import AppointmentPharmacist from "./views/AppointmentPharmacist"
-import PharmDermProfile from "./views/PharmDermProfile"
-import Schedule from "./views/Schedule"
-import SchedulePharmacist from "./views/SchedulePharmacist"
-import DrugstoreView from "./views/DrugstoreView"
-import DermatologistAppointments from "./views/DermatologistAppointments"
-import PatientProfile from "./views/PatientProfile"
-import AdminDrugTable from "./components/tables/AdminDrugTable"
-import AdminUserTable from "./components/tables/AdminUserTable"
-import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment"
-import PharmacistOverview from "./views/PharmacistOverview"
-import DermatologistOverview from "./views/DermatologistOverview"
-import SupplierStockTable from "./components/tables/SupplierStockTable"
-import DrugOrderTable from "./components/tables/DrugOrderTable"
-import OfferTable from "./components/tables/OfferTable"
-import TreatedPatients from "./views/TreatedPatients"
-import LoginPage from "./views/LoginPage"
-import SubscriptionsView from "./views/SubscriptionsView"
-import CreateDrugOrder from "./views/CreateDrugOrder"
+import LoginPage from "./views/LoginPage";
+import MyDrugstore from "./views/MyDrugstore";
+import PatientOverview from "./views/PatientOverview";
+import PatientProfile from "./views/PatientProfile";
+import PharmacistOverview from "./views/PharmacistOverview";
+import PharmDermProfile from "./views/PharmDermProfile";
+import RegistrationPage from "./views/RegistrationPage";
+import Schedule from "./views/Schedule";
+import SchedulePharmacist from "./views/SchedulePharmacist";
+import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
+import SubscriptionsView from "./views/SubscriptionsView";
+import TreatedPatients from "./views/TreatedPatients";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/',
+        path: "/",
         name: "HomePage",
-        component: HomePage
+        component: HomePage,
     },
     {
-        path: '/register',
+        path: "/register",
         name: "RegistrationPage",
-        component: RegistrationPage
+        component: RegistrationPage,
     },
     {
-        path: '/patientoverview',
+        path: "/patientoverview",
         name: "PatientOverview",
-        component: PatientOverview
+        component: PatientOverview,
     },
     {
-        path: '/employeesOverview',
+        path: "/employeesOverview",
         name: "EmployeesOverview",
-        component: EmployeesOverview
+        component: EmployeesOverview,
     },
     {
-        path: '/drugs-overview',
+        path: "/drugs-overview",
         name: "DrugOverview",
-        component: DrugOverview
+        component: DrugOverview,
     },
     {
-        path: '/drugstoreUpdate',
+        path: "/drugstoreUpdate",
         name: "drugstoreUpdate",
-        component: DrugstoreUpdate
+        component: DrugstoreUpdate,
     },
     {
-        path: '/addPharmacistForm',
+        path: "/addPharmacistForm",
         name: "addPharmacistForm",
-        component: AddPharmacistForm
+        component: AddPharmacistForm,
     },
     {
-        path: '/AddDermatologistForm',
+        path: "/AddDermatologistForm",
         name: "AddDermatologistForm",
-        component: AddDermatologistForm
+        component: AddDermatologistForm,
     },
     {
-        path: '/SelectDermatologistForm',
+        path: "/SelectDermatologistForm",
         name: "SelectDermatologistForm",
-        component: SelectDermatologistForm
+        component: SelectDermatologistForm,
     },
     {
-        path:'/drugSearch',
+        path: "/drugSearch",
         name: "DrugSearch",
-        component: DrugViewSearch
+        component: DrugViewSearch,
     },
     {
-        path: '/drugstoreSearch',
+        path: "/drugstoreSearch",
         name: "DrugstoreSearch",
-        component: DrugstoreSearch
+        component: DrugstoreSearch,
     },
     {
-        path: '/employeeprofiles',
+        path: "/employeeprofiles",
         name: "EmployeeProfiles",
-        component: EmployeeTable
+        component: EmployeeTable,
     },
     {
-        path: '/add-drugstore-form',
+        path: "/add-drugstore-form",
         name: "AddDrugstoreForm",
-        component: AddDrugstoreForm
+        component: AddDrugstoreForm,
     },
     {
-        path: '/drug-stock-overview',
+        path: "/drug-stock-overview",
         name: "DrugStockOverview",
-        component: DrugStockOverview
+        component: DrugStockOverview,
     },
     {
-        path: '/appointments-overview',
+        path: "/appointments-overview",
         name: "AppointmentsOverview",
-        component: AppointmentsOverview
+        component: AppointmentsOverview,
     },
     {
-        path: '/admin-drugstore-table',
+        path: "/admin-drugstore-table",
         name: "AdminDrugstoreTable",
-        component: AdminDrugstoreTable
+        component: AdminDrugstoreTable,
     },
     {
-        path: '/appointment-dermatologist',
+        path: "/appointment-dermatologist",
         name: "AppointmentDermatologist",
         component: AppointmentDermatologist,
-        props: true
+        props: true,
     },
     {
-        path: '/drugstores/:id',
+        path: "/drugstores/:id",
         name: "DrugstoreView",
-        component: DrugstoreView
+        component: DrugstoreView,
     },
     {
-        path: '/dermatologist-appointments/:id',
+        path: "/dermatologist-appointments/:id",
         name: "DeramtologistAppointments",
-        component: DermatologistAppointments 
+        component: DermatologistAppointments,
     },
     {
-        path: '/appointment-pharmacist',
+        path: "/appointment-pharmacist",
         name: "AppointmentPharmacist",
         component: AppointmentPharmacist,
-        props: true
+        props: true,
     },
     {
-        path: '/pharm-derm-profile',
+        path: "/pharm-derm-profile",
         name: "PharmDermProfile",
-        component: PharmDermProfile
+        component: PharmDermProfile,
     },
     {
-        path: '/patient/',
+        path: "/patient/",
         name: "PatientProfile",
-        component: PatientProfile 
+        component: PatientProfile,
     },
-    {  
-        path: '/admin-drug-table',
+    {
+        path: "/admin-drug-table",
         name: "AdminDrugTable",
-        component: AdminDrugTable
+        component: AdminDrugTable,
     },
     {
-        path: '/admin-user-table',
+        path: "/admin-user-table",
         name: "AdminUserTable",
-        component: AdminUserTable
+        component: AdminUserTable,
     },
     {
-        path: '/login',
+        path: "/login",
         name: "LoginPage",
-        component: LoginPage
+        component: LoginPage,
     },
     {
-        path: '/schedule-appointment',
+        path: "/schedule-appointment",
         name: "ScheduleAppointment",
-        component: SchedulePharmacistAppointment
+        component: SchedulePharmacistAppointment,
     },
     {
-        path: '/schedule',
+        path: "/schedule",
         name: "Schedule",
-        component: Schedule
+        component: Schedule,
     },
     {
-        path: '/schedule-pharm',
+        path: "/schedule-pharm",
         name: "SchedulePharmacist",
-        component: SchedulePharmacist
+        component: SchedulePharmacist,
     },
     {
-        path: '/pharmacist-overview',
+        path: "/pharmacist-overview",
         name: "PharmacistOverview",
-        component: PharmacistOverview
+        component: PharmacistOverview,
     },
     {
-        path: '/dermatologist-overview',
+        path: "/dermatologist-overview",
         name: "DermatologistOverview",
-        component: DermatologistOverview
+        component: DermatologistOverview,
     },
     {
-        path: '/supplier-stock',
+        path: "/supplier-stock",
         name: "SupplierStockTable",
-        component: SupplierStockTable
+        component: SupplierStockTable,
     },
     {
-        path: '/supplier-orders',
+        path: "/supplier-orders",
         name: "DrugOrderTable",
-        component: DrugOrderTable
+        component: DrugOrderTable,
     },
     {
-        path: '/supplier-offers',
+        path: "/supplier-offers",
         name: "OfferTable",
-        component: OfferTable
-    },
-    {     
-        path: '/treated',
-        name: "Treated",
-        component: TreatedPatients
-    },
-    {     
-        path: '/subscriptions',
-        name: "SubscriptionsView",
-        component: SubscriptionsView
+        component: OfferTable,
     },
     {
-        path: '/create-drug-order',
+        path: "/treated",
+        name: "Treated",
+        component: TreatedPatients,
+    },
+    {
+        path: "/receipt-generator",
+        name: "ReceiptGeneratorView",
+        component: ReceiptGeneratorView,
+    },
+    {
+        path: "/receipt-scanner",
+        name: "ReceiptScannerView",
+        component: ReceiptScannerView,
+    },
+    {
+        path: "/subscriptions",
+        name: "SubscriptionsView",
+        component: SubscriptionsView,
+    },
+    {
+        path: "/create-drug-order",
         name: "CreateDrugOrder",
-        component: CreateDrugOrder
+        component: CreateDrugOrder,
+    },
+    {
+        path: "/drug-issuing",
+        name: "DrugIssuing",
+        component: DrugIssuing,
+    },
+    {
+        path: "/absence-request",
+        name: "AbsenceRequest",
+        component: AbsenceRequest,
+    },
+    {
+        path: "/drug-orders-overview",
+        name: "DrugOrdersOverview",
+        component: DrugOrdersOverview,
+    },
+    {
+        path: "/drugstore-administrator-profile",
+        name: "DrugstoreAdministratorProfile",
+        component: DrugstoreAdministratorProfile,
+    },
+    {
+        path: "/my-drugstore",
+        name: "MyDrugstore",
+        component: MyDrugstore,
     },
 ];
 
-const router = new VueRouter({ 
+const router = new VueRouter({
     routes,
 });
 

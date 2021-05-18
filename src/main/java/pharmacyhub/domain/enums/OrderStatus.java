@@ -1,5 +1,5 @@
 package pharmacyhub.domain.enums;
 
 public enum OrderStatus {
-	Active, Expiered, Successfull
+	Active, Pending, Expired, Accepted, Declined
 }

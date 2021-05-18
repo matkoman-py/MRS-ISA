@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
+import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.services.DrugstoreService;
 
 @Controller
@@ -58,6 +60,15 @@ public class DrugstoreController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugstoreSearchDto, pageable), HttpStatus.OK);
 	}
+	
+	@PostMapping(path = "/search-receipt", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ReceiptSearchResultsDto> searchReceipt(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size, 
+			@RequestBody EReceiptSearchDto eReceiptSearchDto) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(drugstoreService.eReceiptSearch(eReceiptSearchDto, pageable), HttpStatus.OK);
+	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drugstore>> get(
@@ -89,5 +100,15 @@ public class DrugstoreController {
 			throws Exception {
 		//Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.findDrugstoreEmployee(drugId,drugstoreId/*pageable*/), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/adminsDrugstore", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Drugstore> getAdminsDrugstore(@RequestParam(value = "adminId") String adminId) throws Exception {
+		return new ResponseEntity<>(drugstoreService.getAdminsDrugstore(adminId), HttpStatus.OK);
+	}
+	
+	@PutMapping(path = "/update",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> drugstoreUpdate(@RequestBody Drugstore drugstore) throws Exception {
+		return new ResponseEntity<>(drugstoreService.drugstoreUpdate(drugstore), HttpStatus.OK);
 	}
 }
