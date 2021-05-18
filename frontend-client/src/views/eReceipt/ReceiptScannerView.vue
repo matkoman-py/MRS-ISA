@@ -20,7 +20,8 @@
                             :fields="drugFields"
                             :items="drugs"
                             sticky-header="400px"
-                        ></b-table>
+                        >
+                        </b-table>
                     </b-collapse>
                 </b-card>
 
@@ -33,13 +34,51 @@
                         :fields="drugstoreFields"
                         :items="drugstores"
                         sticky-header="400px"
-                    ></b-table>
+                    >
+                        <template #cell(actions)="row">
+                            <b-button
+                                variant="outline-hub"
+                                v-if="row.item"
+                                size="sm"
+                                @click="
+                                    showModal(
+                                        row.item,
+                                        row.index,
+                                        $event.target
+                                    )
+                                "
+                                class="mr-1"
+                            >
+                                Choose pharmacy
+                            </b-button>
+                        </template></b-table
+                    >
                     <div v-else>
                         There are no drugstores which contain all those drugs.
                     </div>
                 </b-card>
             </b-col>
         </b-row>
+        <b-modal id="my-modal" title="Almost done!" hide-footer>
+            <p>
+                Before you finish the reservation process you must select the
+                date to wait for your order
+            </p>
+            <b-form @submit="makeReservation">
+                <b-form-datepicker
+                    id="example-datepicker"
+                    v-model="reservationDate"
+                    class="mb-2"
+                ></b-form-datepicker>
+                <br />
+                <b-button
+                    :disabled="reservationDate == ''"
+                    type="submit"
+                    variant="outline-hub"
+                    >Save</b-button
+                >
+            </b-form>
+        </b-modal>
     </b-container>
 </template>
 
@@ -64,30 +103,32 @@ export default {
         return {
             drugstores: [],
             drugs: [],
+            reservationDate: "",
+            receipt: {},
+            drugstoreId: "",
             drugstoreFields: [
                 {
                     label: "Name",
                     key: "drugstore.name",
                 },
                 {
-                    label: "Description",
-                    key: "drugstore.description",
+                    label: "Address",
+                    key: "drugstore.location.address",
                 },
                 {
-                    label: "Average Rating",
+                    label: "City",
+                    key: "drugstore.location.city",
+                },
+                {
+                    label: "Rating",
                     key: "drugstore.averageRating",
-                },
-                {
-                    label: "From",
-                    key: "drugstore.workingHoursFrom",
-                },
-                {
-                    label: "To",
-                    key: "drugstore.workingHoursTo",
                 },
                 {
                     label: "Total Price",
                     key: "totalPrice",
+                },
+                {
+                    key: "actions",
                 },
             ],
             drugFields: [
@@ -111,8 +152,16 @@ export default {
         };
     },
     methods: {
+        showModal(item) {
+            this.drugstoreId = item.id;
+            this.$root.$emit("bv::show::modal", "my-modal");
+            this.modified = item;
+        },
+        handleClose() {
+            this.$root.$emit("bv::hide::modal", "my-modal");
+        },
         getReceiptData: function(receipt, searchData) {
-            console.log(searchData);
+            this.receipt = receipt;
             this.$http
                 .post(`http://localhost:8081/drugstores/search-receipt`, {
                     receiptData: receipt,
@@ -121,6 +170,19 @@ export default {
                 .then((response) => {
                     this.drugstores = response.data.drugstores;
                     this.drugs = response.data.drugs;
+                    console.log(response.data);
+                })
+                .catch((error) => console.log(error));
+        },
+        makeReservation: function(event) {
+            event.preventDefault();
+            this.$http
+                .post(`http://localhost:8081/drugstores/search-receipt`, {
+                    receiptData: this.receipt,
+                    drugstoreId: this.drugstoreId,
+                })
+                .then((response) => {
+                    this.$toastr.s("Yay!");
                     console.log(response.data);
                 })
                 .catch((error) => console.log(error));

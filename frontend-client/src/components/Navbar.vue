@@ -37,20 +37,6 @@
                     }}</router-link>
                 </b-dropdown-item>
             </b-nav-item-dropdown>
-            <template
-                v-if="!$helpers.isObjectEmpty(user) && role == 'Pharmacist'"
-            >
-                <b-navbar-brand
-                    v-for="route in userSpecificRoutes['Pharmacist']"
-                    :key="route.name"
-                    tag="h3"
-                    class="nav-link"
-                >
-                    <router-link :to="route.path" class="link-font">{{
-                        route.name
-                    }}</router-link>
-                </b-navbar-brand>
-            </template>
 
             <template
                 v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'"
@@ -125,6 +111,7 @@
                 </b-navbar-brand>
             </template>
         </b-navbar-nav>
+
         <b-navbar-nav class="ml-auto">
             <template v-if="$helpers.isObjectEmpty(user)">
                 <b-navbar-brand tag="h3" class="nav-link">
@@ -205,18 +192,27 @@ export default {
                 DrugstoreAdmin: [
                     { name: "Employees", path: "/employeesOverview" },
                     { name: "Drug stock", path: "/drug-stock-overview" },
+                    { name: "Orders", path: "/drug-orders-overview" },
+                    { name: "Create order", path: "/create-drug-order" },
+                    { name: "My drugstore", path: "/my-drugstore" },
                 ],
                 Pharmacist: [
                     { name: "Schedule", path: "/schedule-pharm" },
                     { name: "Patients", path: "/patientoverview" },
                     { name: "Treated patients", path: "/treated" },
+                    { name: "Drug issuing", path: "/drug-issuing" },
+                    { name: "Absence", path: "/absence-request" },
                 ],
                 Dermatologist: [
                     { name: "Schedule", path: "/schedule" },
                     { name: "Patients", path: "/patientoverview" },
                     { name: "Treated patients", path: "/treated" },
+                    { name: "Absence", path: "/absence-request" },
                 ],
-                Patient: [{ name: "eReceipt", path: "/receipt-scanner" }],
+                Patient: [
+                    { name: "Subscriptions", path: "/subscriptions" },
+                    { name: "eReceipt", path: "/receipt-scanner" },
+                ],
             },
             commonRoutes: [
                 {

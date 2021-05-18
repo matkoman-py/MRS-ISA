@@ -25,7 +25,7 @@
             </div> -->
             
             <b-col>
-                <b-button variant="outline-hub">Reserve drug</b-button>
+                <b-button variant="outline-hub" @click="showReserveModal" >Reserve drug</b-button>
             </b-col>
             <b-col>
                 <b-button variant="outline-hub" @click="showAppointmentModal">New appointment</b-button>
@@ -101,16 +101,26 @@
             </b-form>
         </b-modal>
         
+        <b-modal id="reservemodal" size="xl" title="Reserve a drug" hide-footer>
+            <h1>Drugs</h1>
+            <!-- <DrugInDrugstoreTable :passedDrugstoreId="currentAppointment.drugstore.id" :passedPatientId="currentAppointment.patient.id"/> -->
+            <DrugTable align="center" :passedDrugstoreId="currentAppointment.drugstore.id" :passedPatientId="currentAppointment.patient.id" />
+        </b-modal>
     </b-container>
 </template>
 
 <script>
-
+//import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable"
+import DrugTable from "@/components/DrugTable"
 export default {
     name: "AppointmentDermatologist",
     props:{
         passedId: String,
     },
+    components:{
+       // DrugInDrugstoreTable,
+        DrugTable,
+    },  
     data: function () {
             const now = new Date()
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -182,6 +192,11 @@ export default {
         showAppointmentModal(){
             this.getAllAppointments();
             this.$root.$emit('bv::show::modal', 'appointmentmodal');
+            
+        },
+        showReserveModal(){
+            //this.getAllAppointments();
+            this.$root.$emit('bv::show::modal', 'reservemodal');
             
         },
         getAllAppointments: function () {

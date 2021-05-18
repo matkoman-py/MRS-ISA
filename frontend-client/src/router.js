@@ -8,16 +8,21 @@ import AdminUserTable from "./components/tables/AdminUserTable";
 import DrugOrderTable from "./components/tables/DrugOrderTable";
 import OfferTable from "./components/tables/OfferTable";
 import SupplierStockTable from "./components/tables/SupplierStockTable";
+import AbsenceRequest from "./views/AbsenceRequest";
 import AddDermatologistForm from "./views/AddDermatologistForm";
 import AddDrugstoreForm from "./views/AddDrugstoreForm";
 import AddPharmacistForm from "./views/AddPharmacistForm";
 import AppointmentDermatologist from "./views/AppointmentDermatologist";
 import AppointmentPharmacist from "./views/AppointmentPharmacist";
 import AppointmentsOverview from "./views/AppointmentsOverview";
+import CreateDrugOrder from "./views/CreateDrugOrder";
 import DermatologistAppointments from "./views/DermatologistAppointments";
 import DermatologistOverview from "./views/DermatologistOverview";
+import DrugIssuing from "./views/DrugIssuing";
+import DrugOrdersOverview from "./views/DrugOrdersOverview";
 import DrugOverview from "./views/DrugOverview";
 import DrugStockOverview from "./views/DrugStockOverview";
+import DrugstoreAdministratorProfile from "./views/DrugstoreAdministratorProfile";
 import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate";
 import DrugstoreSearch from "./views/DrugstoreSearch";
 import DrugstoreView from "./views/DrugstoreView";
@@ -27,6 +32,7 @@ import ReceiptGeneratorView from "./views/eReceipt/ReceiptGeneratorView";
 import ReceiptScannerView from "./views/eReceipt/ReceiptScannerView";
 import HomePage from "./views/HomePage";
 import LoginPage from "./views/LoginPage";
+import MyDrugstore from "./views/MyDrugstore";
 import PatientOverview from "./views/PatientOverview";
 import PatientProfile from "./views/PatientProfile";
 import PharmacistOverview from "./views/PharmacistOverview";
@@ -35,6 +41,7 @@ import RegistrationPage from "./views/RegistrationPage";
 import Schedule from "./views/Schedule";
 import SchedulePharmacist from "./views/SchedulePharmacist";
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
+import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
 
 Vue.use(VueRouter);
@@ -221,6 +228,41 @@ const routes = [
         path: "/receipt-scanner",
         name: "ReceiptScannerView",
         component: ReceiptScannerView,
+    },
+    {
+        path: "/subscriptions",
+        name: "SubscriptionsView",
+        component: SubscriptionsView,
+    },
+    {
+        path: "/create-drug-order",
+        name: "CreateDrugOrder",
+        component: CreateDrugOrder,
+    },
+    {
+        path: "/drug-issuing",
+        name: "DrugIssuing",
+        component: DrugIssuing,
+    },
+    {
+        path: "/absence-request",
+        name: "AbsenceRequest",
+        component: AbsenceRequest,
+    },
+    {
+        path: "/drug-orders-overview",
+        name: "DrugOrdersOverview",
+        component: DrugOrdersOverview,
+    },
+    {
+        path: "/drugstore-administrator-profile",
+        name: "DrugstoreAdministratorProfile",
+        component: DrugstoreAdministratorProfile,
+    },
+    {
+        path: "/my-drugstore",
+        name: "MyDrugstore",
+        component: MyDrugstore,
     },
 ];
 

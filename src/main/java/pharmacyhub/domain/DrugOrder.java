@@ -35,6 +35,20 @@ public class DrugOrder extends BaseEntity {
 
 	@ManyToOne
 	private Drugstore drugstore;
+	
+	public DrugOrder() {
+		
+	}
+	
+	public DrugOrder(List<OrderStock> stock, Date deadlineDate, Time deadlineTime, OrderStatus status,
+			Drugstore drugstore) {
+		super();
+		this.stock = stock;
+		this.deadlineDate = deadlineDate;
+		this.deadlineTime = deadlineTime;
+		this.status = status;
+		this.drugstore = drugstore;
+	}
 
 	public List<OrderStock> getStock() {
 		return stock;

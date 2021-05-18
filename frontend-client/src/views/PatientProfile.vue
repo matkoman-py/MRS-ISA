@@ -3,7 +3,7 @@
         <div class="container emp-profile">
             <form @submit="handleSubmit">
                 <div class="row">
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <div class="profile-img">
                             <img src="https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png"
                                 alt="" />
@@ -12,97 +12,162 @@
                                 <input type="file" name="file" />
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="profile-head">
-                            <h5>
-                                {{name}}
-                            </h5>
-                            <h6>
-                                {{employee.type}}
-                            </h6>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Points</label>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>{{employee.points}}</h6>
-                            </div>
-                        </div>
+                    </div> -->
+                    <div class="col-md-12">
+                        <b-card no-body>
+                            <b-tabs>
+                                <b-tab style="height: 370px;" title="Profile" active>
+                                    <b-card style="border: none;">
+                                    <div class="profile-head">
+                                    
+                                        <br>
+                                        <h5>
+                                            {{name}}
+                                        </h5>
+                                        <h6>
+                                            {{employee.type}}
+                                        </h6>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Points</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{employee.points}}</h6>
+                                        </div>
+                                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Category</label>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>{{employee.category}}</h6>
-                                <h6 v-if="employee.category == null">Undefined</h6>
-                            </div>
-                        </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Category</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{employee.category}}</h6>
+                                            <h6 v-if="employee.category == null">Undefined</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="name-input"
+                                                v-model="employee.name" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Surname</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="surname-input"
+                                                v-model="employee.surname" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="email-input" type="email"
+                                                v-model="employee.email" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Phone</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b-form-input :disabled="editEnabled" id="phonenumber-input"
+                                                v-model="employee.phoneNumber" required></b-form-input>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <b-button class="dugme" type="button" variant="outline-hub"
+                                                :disabled="!editEnabled" @click="handleEdit">Edit info
+                                            </b-button>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <b-button class="dugme" type="submit" variant="outline-hub"
+                                                :disabled="editEnabled">
+                                                Save
+                                                info</b-button>
+                                        </div>
+                                    </div>
+                                    </b-card>
+                                </b-tab>
+                                <!--@click="cancelDrugReservation(row.item, row.index, $event.target)"-->
+
+                                <b-tab style="height: 370px;" title="Pharmacist appointments">
+                                    <b-card style="border: none;">
+                                    <b-table v-if="pharmacistappointments.length != 0" striped hover
+                                        :fields="pharmacistappointmentfields" :items="pharmacistappointments">
+                                        <template #cell(actions)="row">
+                                            <b-button variant="outline-danger" v-if="row.item" size="sm" class="mr-1">
+                                                Cancel appointment
+                                            </b-button>
+                                        </template>
+                                    </b-table>
+                                    <br>
+                                    <h3 v-if="pharmacistappointments.length == 0">You have no pharmacist appointments
+                                        scheduled
+                                    </h3>
+                                    </b-card>
+                                </b-tab>
+                                <b-tab style="height: 370px;" title="Dermatology appointments">
+                                    <b-card style="border: none;">
+                                    <b-table v-if="dermatologistappointments.length != 0" striped hover
+                                        :items="dermatologistappointments" :fields="dermAppFields">
+                                        <template #cell(actions)="row">
+                                            <b-button variant="outline-danger" v-if="row.item" size="sm"
+                                                @click="cancelDermatologyAppointment(row.item, row.index, $event.target)"
+                                                class="mr-1">
+                                                Cancel appointment
+                                            </b-button>
+                                        </template>
+                                    </b-table>
+                                    <br>
+                                    <h3 v-if="dermatologistappointments.length == 0">You have no dermatologist
+                                        appointments scheduled
+                                    </h3>
+                                    </b-card>
+                                </b-tab>
+                                <b-tab style="height: 370px;" title="Drug reservations">
+                                    <b-card style="border: none;">
+                                    <b-table v-if="drugReservations.length != 0" striped hover
+                                        :fields="drugReservationFields" :items="drugReservations">
+                                        <template #cell(actions)="row">
+                                            <b-button variant="outline-danger" v-if="row.item" size="sm"
+                                                @click="cancelDrugReservation(row.item, row.index, $event.target)"
+                                                class="mr-1">
+                                                Cancel reservation
+                                            </b-button>
+                                        </template>
+                                    </b-table>
+                                    <br>
+                                    <h3 v-if="drugReservations.length == 0">You have no drug reservations</h3>
+                                    </b-card>
+                                </b-tab>
+                            </b-tabs>
+                        </b-card>
                     </div>
 
                 </div>
+                <br>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <router-link :to="'/schedule-appointment'">
                             <b-button variant="outline-hub">Schedule pharmacist
                                 appointment</b-button>
                         </router-link>
-                        <!-- <br>
-                        <br>
-                        <router-link :to="'/drug-reservation'">
-                            <b-button variant="outline-hub">Create drug reservation
-                                appointment</b-button>
-                        </router-link>
-                        <br>
-                        <br> -->
-                        <!-- <h6 class="mt-3">My appointments</h6>
-                        <b-table :items="appointments"></b-table> -->
-                        <b-dropdown text="My pharmacist appointments" class="m-2" variant="outline-hub">
-                            <b-dropdown-header id="dropdown-header-label">Pharmacist Date Time</b-dropdown-header>
-                            <b-dropdown-item-button v-for="item in appointments" :key="item">{{item.pharmacist}}    {{item.date}}    {{item.time}}</b-dropdown-item-button>
-                        </b-dropdown>
                     </div>
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Name</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="name-input" v-model="employee.name"
-                                            required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Surname</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="surname-input"
-                                            v-model="employee.surname" required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Email</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="email-input" type="email"
-                                            v-model="employee.email" required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Phone</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="phonenumber-input"
-                                            v-model="employee.phoneNumber" required></b-form-input>
-                                    </div>
-                                </div>
+
+
                                 <!-- <div class="row">
                                     <div class="col-md-6">
                                         <label>Password</label>
@@ -161,67 +226,6 @@
                                                 ></b-form-input>
                                             </div>
                                         </div>-->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <b-button class="dugme" type="button" variant="outline-hub"
-                                            :disabled="!editEnabled" @click="handleEdit">Edit info</b-button>
-                                    </div>
-                                    <div class="col-md-6">
-
-                                        <b-button class="dugme" type="submit" variant="outline-hub" :disabled="editEnabled">
-                                            Save
-                                            info</b-button>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Experience</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>Expert</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Hourly Rate</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>10$/hr</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Total Projects</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>230</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>English Level</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>Expert</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Availability</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>6 months</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label>Your Bio</label><br />
-                                        <p>Your detail description</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -239,6 +243,8 @@
     export default {
         data: function () {
             return {
+                dermatologistappointments: [],
+                drugReservations: [],
                 employee: {},
                 editEnabled: true,
                 validationPassword: '',
@@ -247,10 +253,91 @@
                     date: '',
                     time: '',
                 },
-                appointments: [],
+                pharmacistappointmentfields: [
+                    {
+                        key: 'pharmacist',
+                        
+                    },
+                    {
+                        key: 'date',
+                    },
+                    {
+                        key: 'time',
+                    },
+                    {
+                        key: 'actions',
+                        label: ''
+                    }
+                ],
+                dermAppFields: [
+                    {
+                        key: 'dermatologist',
+                        
+                    },
+                    {
+                        key: 'date',
+                    },
+                    {
+                        key: 'time',
+                    },
+                    {
+                        key: 'actions',
+                        label: ''
+                    }
+                ],
+                drugReservationFields: [{
+                        key: 'drug',
+                    },
+                    {
+                        key: 'drugstore',
+                    },
+                    {
+                        key: 'date',
+                    },
+                    {
+                        key: 'actions',
+                        label: ''
+                    },
+                ],
+                pharmacistappointments: [],
+                itemm: {},
             }
         },
         methods: {
+            cancelDermatologyAppointment(item){
+                //alert(item.id);
+                this.$http.get("http://localhost:8081/dermatologist-appointment/cancelAppointment", {
+                        params: {
+                            dermatologistAppointmentId: item.id
+                        }
+                    }).then(response => {
+                        this.dermatologistappointments = response.data.map(appointment => ({
+                            id: appointment.id,
+                            dermatologist: appointment.dermatologist.name,
+                            date: appointment.date.slice(0, 10),
+                            time: appointment.time.slice(0, 5)
+                        }))
+                    }).then(
+                        alert("Dermatology appointment succesfully canceled!")
+                    )
+                    .catch(error => console.log(error));
+            },
+            cancelDrugReservation(item) {
+                //alert(item.id);
+                this.$http.put("http://localhost:8081/drugReservation/cancelReservation", {
+                    drugReservationId: item.id,
+                    patientId: this.user.id
+                }).then(response => {
+                    this.drugReservations = response.data.map(drugReservation => ({
+                        id: drugReservation.id,
+                        drug: drugReservation.drug.name,
+                        drugstore: drugReservation.drugstore.name,
+                        date: drugReservation.date
+                    }))
+                }).then(
+                    alert("Drug reservation succesfully canceled!")
+                ).catch(error => console.log(error));
+            },
             handleClose() {
                 this.$root.$emit('bv::hide::modal', 'my-modal');
             },
@@ -294,25 +381,59 @@
             validatePassword: function () {
                 return this.employee.password == this.validationPassword;
             },
+            getDrugReservations: function () {
+                this.$http.get("http://localhost:8081/drugReservation/getPatientReservations", {
+                        params: {
+                            patientId: this.user.id
+                        }
+                    }).then(response => {
+                        this.drugReservations = response.data.map(drugReservation => ({
+                            id: drugReservation.id,
+                            drug: drugReservation.drug.name,
+                            drugstore: drugReservation.drugstore.name,
+                            date: drugReservation.date
+                        }))
+                    })
+                    .catch(error => console.log(error));
+            },
             getAppointments: function () {
                 //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
                 this.$http.get("http://localhost:8081/pharmacist-appointment/get-appointments", {
-                    params: {
-                        patientId: this.user.id
-                    }
-                }).then(response => {
-                    this.appointments = response.data.map(appointment => ({
-                        pharmacist: appointment.pharmacist.name,
-                        date: appointment.date.slice(0, 10),
-                        time: appointment.time.slice(0, 5)
-                    }))
-                })
+                        params: {
+                            patientId: this.user.id
+                        }
+                    }).then(response => {
+                        this.pharmacistappointments = response.data.map(appointment => ({
+                            pharmacist: appointment.pharmacist.name,
+                            date: appointment.date.slice(0, 10),
+                            time: appointment.time.slice(0, 5)
+                        }))
+                    })
+                    .catch(error => console.log(error));
+            },
+            getDermatologyAppointments: function () {
+                //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
+                this.$http.get("http://localhost:8081/dermatologist-appointment/returnAppointments", {
+                        params: {
+                            patientId: this.user.id
+                        }
+                    }).then(response => {
+                        this.dermatologistappointments = response.data.map(appointment => ({
+                            id: appointment.id,
+                            dermatologist: appointment.dermatologist.name,
+                            date: appointment.date.slice(0, 10),
+                            time: appointment.time.slice(0, 5)
+                        }))
+                    })
+                    .catch(error => console.log(error));
             }
         },
         mounted: function () {
             //appointments
+            this.getDrugReservations();
             this.getEmployee();
             this.getAppointments();
+            this.getDermatologyAppointments();
         },
         computed: {
             ...mapState({
@@ -330,6 +451,7 @@
 </script>
 
 <style>
+    
     .emp-profile {
         padding: 3%;
         margin-top: 3%;
