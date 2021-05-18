@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.Offer;
+import pharmacyhub.domain.OrderStock;
 import pharmacyhub.domain.Subscription;
+import pharmacyhub.domain.enums.OfferStatus;
 import pharmacyhub.dto.CreateNewPriceForDrugDto;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.SubscriptionRepository;
@@ -136,8 +139,34 @@ public class UserNotificationService {
 		helper.setFrom("notification@pharmacyhub.com");
 		helper.setTo(email);
 		helper.setSubject("Drug pickup confirmation");
+    helper.setText(emailContent, true);
+		javaMailSender.send(message);
+  }
+  
+  @Async
+	public void notifySupplier(Offer offer) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		String emailContent;
+		String orderContent = "";
+		for (OrderStock stock : offer.getDrugOrder().getStock()) {
+			orderContent += "Drug:		" + stock.getDrug().getName() + "	Amount:		" + stock.getAmount() + "\n\t";
+		}
+		if (offer.getStatus() == OfferStatus.Accepted) {
+			String address =  offer.getDrugOrder().getDrugstore().getLocation().getAddress() + ", " +  offer.getDrugOrder().getDrugstore().getLocation().getCity() + ", " +  offer.getDrugOrder().getDrugstore().getLocation().getCountry();
+			emailContent = "Dear " + offer.getSupplier().getName() + ",\nYour offer for order " + orderContent + "\n\t is accepted! Please deliver " +
+			" the shipement by " + offer.getDeliveryDate() + ", at " + offer.getDeliveryTime() + " to " + address + ".\nAll the best, your '" + offer.getDrugOrder().getDrugstore().getName() + "'!";
+		} else {
+			emailContent = "Dear " + offer.getSupplier().getName() + ",\nUnfortunately, your offer for order \n\t" + orderContent + "\n\t is declined...\\nAll the best, your '" + offer.getDrugOrder().getDrugstore().getName() + "'!";
+		}
+
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setTo(offer.getSupplier().getEmail());
+		helper.setSubject("Offer for order in '" + offer.getDrugOrder().getDrugstore().getName() + "'");
 		helper.setText(emailContent, true);
 
 		javaMailSender.send(message);
 	}
+  
 }

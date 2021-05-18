@@ -40,6 +40,10 @@ import SubscriptionsView from "./views/SubscriptionsView"
 import CreateDrugOrder from "./views/CreateDrugOrder"
 import DrugIssuing from "./views/DrugIssuing"
 import AbsenceRequest from "./views/AbsenceRequest"
+import DrugOrdersOverview from "./views/DrugOrdersOverview"
+import DrugstoreAdministratorProfile from "./views/DrugstoreAdministratorProfile"
+import MyDrugstore from "./views/MyDrugstore"
+
 
 Vue.use(VueRouter)
 
@@ -245,6 +249,21 @@ const routes = [
         path: '/absence-request',
         name: "AbsenceRequest",
         component: AbsenceRequest
+    },
+    {
+        path: '/drug-orders-overview',
+        name: "DrugOrdersOverview",
+        component: DrugOrdersOverview
+    },
+    {
+        path: '/drugstore-administrator-profile',
+        name: "DrugstoreAdministratorProfile",
+        component: DrugstoreAdministratorProfile
+    },
+    {
+        path: '/my-drugstore',
+        name: "MyDrugstore",
+        component: MyDrugstore
     },
 ];
 

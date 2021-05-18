@@ -70,6 +70,7 @@ public class DrugStockService {
 		}
 		if (promotion != null)
 			return promotion;
+		System.out.println(dpList.size());
 		return Collections.max(dpList, Comparator.comparing(ds -> ds.getEndDate()));
 	}
 	

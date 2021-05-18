@@ -10,13 +10,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
+import pharmacyhub.domain.DrugOrder;
 import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Ingredient;
+import pharmacyhub.domain.OrderStock;
+import pharmacyhub.domain.enums.OrderStatus;
 import pharmacyhub.dto.CreateDrugOrderDto;
 import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.dto.search.DrugSearchDto;
+import pharmacyhub.repositories.DrugOrderRepository;
 import pharmacyhub.repositories.DrugPriceRepository;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugRequestRepository;
@@ -45,6 +49,9 @@ public class DrugService {
 	
 	@Autowired
 	private DrugRequestRepository drugRequestRepository;
+	
+	@Autowired
+	private DrugOrderRepository drugOrderRepository;
 
 	public List<Drug> findAll(Pageable pageable) {
 		return drugRepository.findAll(pageable).toList();
@@ -149,15 +156,49 @@ public class DrugService {
 		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), null);
 		List<CreateDrugOrderDto> returnValue = new ArrayList<CreateDrugOrderDto>();
 		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
+		
+		
 		for (Drug drug : drugsNotOnStock) {
 			List<DrugRequest> dr = drugRequestRepository.findByDrugAndDrugstore(drug, drugstore);
-			if (drugsToBeShown.equals("All_Drugs") || !dr.isEmpty())
-				returnValue.add(new CreateDrugOrderDto(drug.getName(), false, 0, !dr.isEmpty()));
+			if (drugsToBeShown.equals("All_Drugs") || !dr.isEmpty()) {
+				List<DrugOrder> orders = drugOrderRepository.findByDrugstore(drugstore);
+				boolean flag = false;
+				for (DrugOrder order : orders) {
+					if (order.getStatus() == OrderStatus.Active || order.getStatus() == OrderStatus.Pending) {
+						for (OrderStock stock : order.getStock()) {
+							if (stock.getDrug() == drug) {
+								flag = true;
+								break;
+							}
+						}
+						if (flag) 
+							break;
+					}
+				}
+				returnValue.add(new CreateDrugOrderDto(drug.getName(), false, 0, !dr.isEmpty(), flag));
+			}
 		}
+		
+		
 		for (DrugStock ds : drugsOnStock) {
 			List<DrugRequest> dr = drugRequestRepository.findByDrugAndDrugstore(ds.getDrug(), drugstore);
-			if (drugsToBeShown.equals("All_Drugs") || !dr.isEmpty())
-				returnValue.add(new CreateDrugOrderDto(ds.getDrug().getName(), true, ds.getAmount(), !dr.isEmpty()));
+			if (drugsToBeShown.equals("All_Drugs") || !dr.isEmpty()) {
+					List<DrugOrder> orders = drugOrderRepository.findByDrugstore(drugstore);
+					boolean flag = false;
+					for (DrugOrder order : orders) {
+						if (order.getStatus() == OrderStatus.Active || order.getStatus() == OrderStatus.Pending) {
+							for (OrderStock stock : order.getStock()) {
+								if (stock.getDrug() == ds.getDrug()) {
+									flag = true;
+									break;
+								}
+							}
+							if (flag) 
+								break;
+						}
+					}
+				returnValue.add(new CreateDrugOrderDto(ds.getDrug().getName(), true, ds.getAmount(), !dr.isEmpty(), flag));
+			}
 		}
 		return returnValue;
 	}

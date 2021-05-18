@@ -6,17 +6,27 @@ public class CreateDrugOrderDto {
 	boolean available;
 	int availableAmount;
 	boolean requested;
+	boolean activeOrder;
 	
 	public CreateDrugOrderDto() {
 		
 	}
 	
-	public CreateDrugOrderDto(String drugName, boolean available, int availableAmount, boolean requested) {
+	public CreateDrugOrderDto(String drugName, boolean available, int availableAmount, boolean requested, boolean activeOrder) {
 		super();
 		this.drugName = drugName;
 		this.available = available;
 		this.availableAmount = availableAmount;
 		this.requested = requested;
+		this.activeOrder = activeOrder;
+	}
+
+	public boolean isActiveOrder() {
+		return activeOrder;
+	}
+
+	public void setActiveOrder(boolean activeOrder) {
+		this.activeOrder = activeOrder;
 	}
 
 	public String getDrugName() {

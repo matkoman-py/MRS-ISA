@@ -17,6 +17,7 @@ import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DermatologistAppointmentPatientDto;
+import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
@@ -321,10 +322,13 @@ public class DermatologistAppointmentService {
 		System.out.println(wantedAppontments);
 		return wantedAppontments;
 	}
+
+	public List<DermatologistAppointment> cancelAppointment(String appointmentId) {
+		DermatologistAppointment da = dermatologistAppointmentRepository.findById(appointmentId).orElse(null);
+		String patientId = da.getPatient().getId();
+		da.setPatient(null);
+		dermatologistAppointmentRepository.save(da);
+		return dermatologistAppointmentRepository.findByPatientId(patientId);
+	}
 	
 }
-
-
-
-
-
