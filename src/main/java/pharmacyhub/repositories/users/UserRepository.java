@@ -13,6 +13,6 @@ public interface UserRepository extends AbstractUserRepository<User> {
 
 	@Query("from User where type like 'Supplier%' or "
 			+ "type like 'DrugstoreAdmin%' or "
-			+ "type like 'Admin%'")
+			+ "type like 'SystemAdmin%'")
 	List<User> findSuppliersAndAdmins();
 }

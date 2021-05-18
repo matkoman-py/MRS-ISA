@@ -1,24 +1,41 @@
 <template>
   <div>
     <b-container>
-        <b-table id="user-table" striped hover :items="users" :fields="fields">
-            <template #cell(actions)="row">
-                <b-button size="sm" variant="outline-hub" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
-                    Delete
-                </b-button>
-            </template>
-        </b-table>
-        <b-button size="sm" variant="outline-hub" @click="showAddModal($event.target, 'Supplier')" class="mr-1">
-                    Add Supplier
-        </b-button>
-        <b-button size="sm" variant="outline-hub" @click="showAddModal($event.target, 'DrugstoreAdmin')" class="mr-1">
-                    Add Drugstore Admin
-        </b-button>
+        <b-row>
+            <b-col cols="4">
+                <b-card>
+                    <b-button-group vertical>
+                    <b-button size="sm" variant="outline-hub" @click="showAddModal($event.target, 'Supplier')" class="mr-1">
+                                Add Supplier
+                    </b-button>
+                    <b-button size="sm" variant="outline-hub" @click="showAddModal($event.target, 'DrugstoreAdmin')" class="mr-1">
+                                Add Drugstore Admin
+                    </b-button>
+                    <b-button size="sm" variant="outline-hub" @click="showAddModal($event.target, 'SystemAdmin')" class="mr-1">
+                                Add System Admin
+                    </b-button>
+                    </b-button-group>
+                </b-card>
+            </b-col>
+            <b-col cols="8">
+                <b-card>
+                    <b-table id="user-table" striped hover :items="users" :fields="fields">
+                        <template #cell(actions)="row">
+                            <b-button size="sm" variant="outline-hub" v-if="row.item.type != 'SystemAdmin'" @click="showDeleteModal(row.item, $event.target)" class="mr-1">
+                                Delete
+                            </b-button>
+                        </template>
+                    </b-table>
+                </b-card>
+            </b-col>
+        </b-row>
+        
+        
     </b-container>
-    <b-modal :id="addModal.id" :title="addModal.title" ok-only v-on:ok='addUser' size="xl">
+    <b-modal :id="addModal.id" :title="addModal.title" ok-only v-on:ok='addUser' size="lg">
         <add-user-form :type="addModal.type" v-on:added-user="handleSuccess" ref='add-user-form'></add-user-form>
     </b-modal>
-    <b-modal :id="deleteModal.id" :title="deleteModal.title" ok-only v-on:ok='deleteUser' @hide="resetDeleteModal" size="xl">
+    <b-modal :id="deleteModal.id" :title="deleteModal.title" ok-only v-on:ok='deleteUser' @hide="resetDeleteModal" size="lg">
         Are you sure that you want to delete this user?
     </b-modal>
   </div>
