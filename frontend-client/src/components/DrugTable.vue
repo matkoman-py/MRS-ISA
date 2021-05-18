@@ -67,7 +67,7 @@
           <b-pagination v-model="currentPage" per-page=3 :total-rows="rows"></b-pagination>
         </b-card>
         <b-card v-if="reserved" class="mt-3">
-          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores" :patientId="patientId" :passedDrugstoreId="passedDrugstoreId">
+          <drug-reservation :selecteddrug="selectedDrug" :reserved="reserved" :drugstores="drugstores" :patientId="patientId" :passedDrugstoreId="passedDrugstoreId" :drugSubstitutions="drugSubstitutions">
           </drug-reservation>
           <h1 v-if="drugs.length == 0">There are no drugs that fit the search parameters</h1>
         </b-card>
@@ -126,6 +126,7 @@
         canRate: false,
         reserved: 0,
         drugstores: [],
+        drugSubstitutions: [],
         searchForm: {
           name: '',
           type: '',
@@ -276,6 +277,7 @@
                 rating: stock.drugstore.averageRating
               }));
           })
+          
           }
       },
       searchDrugs: function () {

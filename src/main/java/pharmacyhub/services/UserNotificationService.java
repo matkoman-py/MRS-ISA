@@ -1,5 +1,6 @@
 package pharmacyhub.services;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -11,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Offer;
 import pharmacyhub.domain.OrderStock;
@@ -126,6 +128,22 @@ public class UserNotificationService {
 	}
 	
 	@Async
+	public void sendPickUpConfirmation(String email,String drug, String date) throws MessagingException {
+		// TODO Auto-generated method stub
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+
+		String emailContent = "You have succesfully picked up "+ drug+" at: "+ date +"!";
+
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setTo(email);
+		helper.setSubject("Drug pickup confirmation");
+    helper.setText(emailContent, true);
+		javaMailSender.send(message);
+  }
+  
+  @Async
 	public void notifySupplier(Offer offer) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
@@ -150,4 +168,5 @@ public class UserNotificationService {
 
 		javaMailSender.send(message);
 	}
+  
 }

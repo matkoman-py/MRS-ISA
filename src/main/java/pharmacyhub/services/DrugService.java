@@ -120,6 +120,27 @@ public class DrugService {
 		//return drug.getSubstitutions();
 		return drugRepository.findAll();
 	}
+	
+	public List<Drug> findAllSubstitutesDrugstore(String drugId, String drugstoreId) {
+		Drug drug = drugRepository.findById(drugId).orElse(null);
+		//List<Drug> drugList =  drug.getSubstitutions();
+		
+		List<Drug> drugList = drugRepository.findAll();
+
+		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
+		List<DrugStock> drugStockList = drugStockRepository.findByDrugstore(drugstore);
+
+		ArrayList<Drug> wanted = new ArrayList<Drug>();
+		for(DrugStock ds : drugStockList) {
+			
+			for(Drug d : drugList) {
+				if(ds.getDrug().getId().equals(d.getId()) && ds.getAmount()>0) {
+					wanted.add(d);
+				}
+			}
+		}
+		return wanted;
+	}
 
 	public List<Drug> getDrugsNotOnStock(String drugstoreId) {
 		List<DrugStock> drugsOnStock = drugStockRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null), null);
