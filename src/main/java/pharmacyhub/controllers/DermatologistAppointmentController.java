@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DermatologistAppointment;
+import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DermatologistAppointmentPatientDto;
+import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.services.DermatologistAppointmentService;
 
 @Controller
@@ -89,5 +91,11 @@ public class DermatologistAppointmentController {
 	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointmentsDone(
 			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsDone(dermatologistId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/cancelAppointment",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> cancelReservation(@RequestParam (value = "dermatologistAppointmentId", required=false,  defaultValue = "0") String appointmentId) throws Exception {
+
+		return new ResponseEntity<>(dermatologistAppointmentService.cancelAppointment(appointmentId), HttpStatus.OK);
 	}
 }

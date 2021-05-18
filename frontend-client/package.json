@@ -30,6 +30,7 @@
     "vue-multiselect": "^2.1.6",
     "vue-phone-number-input": "^1.1.10",
     "vue-router": "^3.5.1",
+    "vue-star-rating": "^2.1.0",
     "vue-tel-input": "^5.1.0",
     "vue-toastr": "^2.1.2",
     "vuex": "^3.6.2",
