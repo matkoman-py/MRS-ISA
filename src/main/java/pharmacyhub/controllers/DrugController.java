@@ -84,7 +84,14 @@ public class DrugController {
 		
 		return new ResponseEntity<>(drugService.findAllSubstitutes(drugId), HttpStatus.OK);
 	}
-
+	
+	@GetMapping(path="/substitutionsDrugstore", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Drug>> getSubstituteDrugs(@RequestParam(value = "drugId", required = false, defaultValue = "0") String drugId,
+			@RequestParam(value = "drugstoreId", required = false, defaultValue = "0") String drugstoreId) {
+		
+		return new ResponseEntity<>(drugService.findAllSubstitutesDrugstore(drugId,drugstoreId), HttpStatus.OK);
+	}
+	
 	@GetMapping(path = "/createOrderView", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<CreateDrugOrderDto>> getDrugsForCreateOrderView(
 			@RequestParam(value = "drugstoreId", required = true) String drugstoreId,

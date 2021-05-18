@@ -37,7 +37,7 @@ public class PatientService {
 	
 	public List<Patient> update(Patient patient) throws Exception {
 
-			Patient pat = (Patient) patientRepository.findByEmail(patient.getEmail());
+			Patient pat = (Patient) patientRepository.findById(patient.getId()).orElse(null);
 			if (pat.equals(null)) {
 				throw new Exception("This patient does not exist!");
 			}
