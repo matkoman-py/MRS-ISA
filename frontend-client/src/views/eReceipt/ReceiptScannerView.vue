@@ -153,7 +153,7 @@ export default {
     },
     methods: {
         showModal(item) {
-            this.drugstoreId = item.id;
+            this.drugstoreId = item.drugstore.id;
             this.$root.$emit("bv::show::modal", "my-modal");
             this.modified = item;
         },
@@ -177,15 +177,34 @@ export default {
         makeReservation: function(event) {
             event.preventDefault();
             this.$http
-                .post(`http://localhost:8081/drugstores/search-receipt`, {
-                    receiptData: this.receipt,
-                    drugstoreId: this.drugstoreId,
-                })
+                .post(
+                    `http://localhost:8081/drugReservation/saveMultipleReservations`,
+                    this.makeReservationRequestBody()
+                )
                 .then((response) => {
                     this.$toastr.s("Yay!");
                     console.log(response.data);
                 })
                 .catch((error) => console.log(error));
+        },
+        makeReservationRequestBody: function() {
+            const requestBodyData = [];
+            let counter = 0;
+            for (let drug of Object.keys(this.receipt)) {
+                requestBodyData.push({
+                    patientId: this.user.id,
+                    drugstoreId: this.drugstoreId,
+                    drugId: drug,
+                    date: this.reservationDate,
+                });
+                counter += 1;
+                console.log(counter);
+            }
+            console.log(Object.keys(this.receipt));
+            console.log(this.receipt);
+            console.log(requestBodyData);
+
+            return requestBodyData;
         },
     },
 };

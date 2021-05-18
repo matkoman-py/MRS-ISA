@@ -156,6 +156,9 @@ export default {
             const parts = JSON.parse(qrCode).split(";");
             const result = {};
             for (let part of parts) {
+                if (!part) {
+                    continue;
+                }
                 const [key, amount] = part.split(",");
                 result[key] = amount;
             }
