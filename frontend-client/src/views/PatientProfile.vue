@@ -121,7 +121,9 @@
                                     <b-table v-if="dermatologistappointments.length != 0" striped hover
                                         :items="dermatologistappointments" :fields="dermAppFields">
                                         <template #cell(actions)="row">
-                                            <b-button variant="outline-danger" v-if="row.item" size="sm" class="mr-1">
+                                            <b-button variant="outline-danger" v-if="row.item" size="sm"
+                                                @click="cancelDermatologyAppointment(row.item, row.index, $event.target)"
+                                                class="mr-1">
                                                 Cancel appointment
                                             </b-button>
                                         </template>
@@ -302,6 +304,24 @@
             }
         },
         methods: {
+            cancelDermatologyAppointment(item){
+                //alert(item.id);
+                this.$http.get("http://localhost:8081/dermatologist-appointment/cancelAppointment", {
+                        params: {
+                            dermatologistAppointmentId: item.id
+                        }
+                    }).then(response => {
+                        this.dermatologistappointments = response.data.map(appointment => ({
+                            id: appointment.id,
+                            dermatologist: appointment.dermatologist.name,
+                            date: appointment.date.slice(0, 10),
+                            time: appointment.time.slice(0, 5)
+                        }))
+                    }).then(
+                        alert("Dermatology appointment succesfully canceled!")
+                    )
+                    .catch(error => console.log(error));
+            },
             cancelDrugReservation(item) {
                 //alert(item.id);
                 this.$http.put("http://localhost:8081/drugReservation/cancelReservation", {
@@ -399,6 +419,7 @@
                         }
                     }).then(response => {
                         this.dermatologistappointments = response.data.map(appointment => ({
+                            id: appointment.id,
                             dermatologist: appointment.dermatologist.name,
                             date: appointment.date.slice(0, 10),
                             time: appointment.time.slice(0, 5)

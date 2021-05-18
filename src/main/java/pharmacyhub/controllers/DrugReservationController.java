@@ -37,7 +37,7 @@ public class DrugReservationController {
 	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationDto drugreservationDto) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveReservation(drugreservationDto), HttpStatus.OK);
 	}
-	//cancelReservation
+
 	@GetMapping(path = "/getPatientReservations",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugReservation>> getPatientReservations(@RequestParam(value = "patientId", required = false, defaultValue = "0") String patientId) throws Exception {
 		return new ResponseEntity<>(drugReservationService.getPatientReservations(patientId), HttpStatus.OK);
