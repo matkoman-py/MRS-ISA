@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
+import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.users.Patient;
@@ -19,6 +20,7 @@ import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DrugReservationDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.repositories.DrugRepository;
+import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugReservationRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
@@ -49,6 +51,9 @@ public class DrugReservationService {
 
 	@Autowired
 	private UserNotificationService userNotificationService;
+	
+	@Autowired
+	private DrugRequestRepository drugRequestRepository;
 
 	public List<DrugReservation> findAll() {
 		return drugreservationRespository.findAll();
@@ -79,6 +84,8 @@ public class DrugReservationService {
 				}
 				else {
 					//NAPRAVITI DRUG REQUEST !!!
+					DrugRequest dr = new DrugRequest(drugstoreRepository.findById(drugstoreId).orElse(null),drugRepository.findById(drugId).orElse(null),false);
+					drugRequestRepository.save(dr);
 					return "Drug not on stock!";
 				}
 			}
@@ -119,9 +126,6 @@ public class DrugReservationService {
 		ArrayList<DrugReservation> wanted = new ArrayList<DrugReservation>();
 		for(DrugReservation dr : allPatient) {
 			Date dateRes=new SimpleDateFormat("yyyy-MM-dd").parse(dr.getDate()); 
-			
-			
-			
 			Date dateNow = new Date(System.currentTimeMillis()-24*60*60*1000);
 			
 			if(dateRes.after(dateNow)) {

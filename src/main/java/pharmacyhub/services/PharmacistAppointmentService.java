@@ -91,10 +91,10 @@ public class PharmacistAppointmentService {
 			long pvremeKraj = pVreme.getTime();
 			
 			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
-				throw new Exception("Patient already has an appointment at that time.");
+				throw new Exception("Pharmacist already has an appointment at that time.");
 			}
 			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
-				throw new Exception("Patient already has an appointment at that time.");
+				throw new Exception("Pharmacist already has an appointment at that time.");
 			}
 		}
 		
@@ -115,6 +115,27 @@ public class PharmacistAppointmentService {
 				throw new Exception("Patient already has an appointment at that time.");
 			}
 		}
+		
+		Pharmacist ph = pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null);
+		String hours1 = ph.getWorkingHoursFrom().substring(0,2);
+		int workingFrom = Integer.parseInt(hours1) * 3600;
+		String minutes1 = ph.getWorkingHoursFrom().substring(3,5);
+		workingFrom += Integer.parseInt(minutes1) * 60;
+		
+		String hours2 = ph.getWorkingHoursTo().substring(0,2);
+		int workingTo = Integer.parseInt(hours2) * 3600;
+		String minutes2 = ph.getWorkingHoursTo().substring(3,5);
+		workingTo += Integer.parseInt(minutes2) * 60;
+		
+		int hours = pharmacistAppointmentPatientDto.getTime().getHours();
+		int inputTime = hours * 3600;
+		int minutes = pharmacistAppointmentPatientDto.getTime().getMinutes();
+		inputTime += minutes * 60;
+		
+		if(inputTime<=workingFrom || inputTime>=workingTo) {
+			throw new Exception("Pharmacist is not working at that time.");
+		}
+		
     	userNotificationService.sendReservationConfirmation(patientRepository.getById(pharmacistAppointmentPatientDto.getPatientId()).getEmail(), "pharmacist");
 		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null,false));
 	}
