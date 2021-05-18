@@ -30,7 +30,7 @@ public class Drugstore extends BaseEntity {
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Employment> employements;
-	
+
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<DrugStock> drugStock;
@@ -40,7 +40,7 @@ public class Drugstore extends BaseEntity {
 
 	@Column
 	private String workingHoursTo;
-	
+
 	@Column
 	private int pharmacistAppointmentPrice;
 
@@ -48,7 +48,8 @@ public class Drugstore extends BaseEntity {
 		super();
 	}
 
-	public Drugstore(String name, Location location, String decription, double averageRating, int pharmacistAppointmentPrice) {
+	public Drugstore(String name, Location location, String decription, double averageRating,
+			int pharmacistAppointmentPrice) {
 		super();
 		this.name = name;
 		this.location = location;

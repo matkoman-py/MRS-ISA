@@ -51,7 +51,7 @@ public class DrugStockService {
 		for (DrugStock ds : drugStocks) {
 			List<DrugPrice> dpList = drugPriceRepository.findByDrugAndDrugstore(ds.getDrug(), ds.getDrugstore());
 			DrugPrice dp = getLastPrice(dpList);
-			drugsStockPriceDto.add(new DrugStockPriceDto(ds.getDrug().getName(), ds.getAmount(), dp.getPrice(), dp.getEndDate()));
+			drugsStockPriceDto.add(new DrugStockPriceDto(ds.getDrug().getId(), ds.getDrug().getName(), ds.getAmount(), dp.getPrice(), dp.getEndDate()));
 		}
 		return drugsStockPriceDto;
 	}

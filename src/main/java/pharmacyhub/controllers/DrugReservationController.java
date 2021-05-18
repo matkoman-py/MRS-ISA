@@ -1,6 +1,7 @@
 package pharmacyhub.controllers;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.dto.DrugReservationDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
-import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.services.DrugReservationService;
 
 @Controller
@@ -36,6 +35,11 @@ public class DrugReservationController {
 	@PostMapping(path = "/saveReservation",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationDto drugreservationDto) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveReservation(drugreservationDto), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/saveMultipleReservations", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> saveMultipleReservations(@RequestBody List<DrugReservationDto> drugreservationDtos) throws Exception {
+		return new ResponseEntity<>(drugReservationService.saveMultipleReservations(drugreservationDtos), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/getPatientReservations",produces = MediaType.APPLICATION_JSON_VALUE)

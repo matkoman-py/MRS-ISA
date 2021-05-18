@@ -45,11 +45,11 @@ INSERT INTO public.drug VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', false, '
 --
 -- Data for Name: Drugstore;
 --
-INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-ded43ad63843', false, 10, 'Description', 'Lav', '500', '08:00', '18:00', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
-INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-dedascs63843', false, 9, 'Description', 'Sombor pharmacy','550', '07:50', '18:40', '9c7face6-d759-46bd-439a-6469ae471067');
-INSERT INTO public.drugstore VALUES ('2b7933e9-6as3-463a-974b-ded43ad63843', false, 8, 'Description', 'Belgrade Health', '200', '09:00', '19:00','9c7face6-d759-46bd-439a-6469ae471067');
-INSERT INTO public.drugstore VALUES ('2bas33e9-6523-463a-974b-ded43ad63843', false, 7, 'Description', 'Pejin medicine', '220', '12:00', '21:00','9c7face6-d759-412d-839a-6469ae471067');
-INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', false, 6, 'Description', 'Prirodnjacka medicina', '950', '14:00', '22:00','71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
+INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-ded43ad63843', false, 4, 'Description', 'Lav', 2000, '08:00', '18:00', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
+INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-dedascs63843', false, 3, 'Description', 'Sombor pharmacy', 2500, '07:50', '18:40', '9c7face6-d759-46bd-439a-6469ae471067');
+INSERT INTO public.drugstore VALUES ('2b7933e9-6as3-463a-974b-ded43ad63843', false, 2, 'Description', 'Belgrade Health', 1000, '09:00', '19:00','9c7face6-d759-46bd-439a-6469ae471067');
+INSERT INTO public.drugstore VALUES ('2bas33e9-6523-463a-974b-ded43ad63843', false, 1, 'Description', 'Pejin medicine', 800, '12:00', '21:00','9c7face6-d759-412d-839a-6469ae471067');
+INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', false, 5, 'Description', 'Prirodnjacka medicina', 8000, '14:00', '22:00','71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
 
 --
 -- Data for Name: Employee;
@@ -104,7 +104,8 @@ INSERT INTO public.drug_price VALUES ('1', false, '2021-01-22', false, 300, '202
 INSERT INTO public.drug_price VALUES ('2', false, '2021-01-22', false, 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.drug_price VALUES ('3', false, '2021-01-25', false, 500, '2021-01-22', 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843');
 INSERT INTO public.drug_price VALUES ('4', false, '2021-01-22', false, 5500, '2021-01-22', 'a3ew071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.drug_price VALUES ('5', false, '2021-01-22', false, 400, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.drug_price VALUES ('5', false, '2021-01-22', false, 5500, '2021-01-22', 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6523-463a-974b-ded43ad63843');
+
 
 --
 -- Data for Name: DermatologistEmployment

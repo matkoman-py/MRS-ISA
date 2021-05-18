@@ -39,15 +39,30 @@ public class DrugstoreSpecifications {
 		return (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
 			
+			if(eReceiptSearchDto.getDrugstoreName() != null && !eReceiptSearchDto.getDrugstoreName().isBlank()) {
+				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + eReceiptSearchDto.getDrugstoreName().toLowerCase() + "%"));
+			}
 			
-//			drugStocksJoin.on(criteriaBuilder.equal(drugStocksJoin.get("drugstore").get("id"), root.get("id")));
+			if(eReceiptSearchDto.getDrugstoreCity() != null && !eReceiptSearchDto.getDrugstoreCity().isBlank()) {
+				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("location").get("city")), "%" + eReceiptSearchDto.getDrugstoreCity().toLowerCase() + "%"));
+			}
+			
+			if(eReceiptSearchDto.getMinimumRating() != null) {
+				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("averageRating"), eReceiptSearchDto.getMinimumRating()));
+			}
+			
 			
 			for (String drugId : eReceiptSearchDto.getReceiptData().keySet()) {
 				Join<Drugstore, DrugStock> drugStocksJoin = root.join("drugStock");
 
+				
 				Predicate equalPredicate = criteriaBuilder.equal(drugStocksJoin.get("drug").get("id"), drugId);
+				Predicate onStockPredicate = criteriaBuilder.greaterThan(drugStocksJoin.get("amount"), eReceiptSearchDto.getReceiptData().get(drugId));
+
 				predicates.add(equalPredicate);
+				predicates.add(onStockPredicate);
 			}
+			
 						
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 			
