@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.services.DrugstoreService;
@@ -61,7 +62,7 @@ public class DrugstoreController {
 	}
 	
 	@PostMapping(path = "/search-receipt", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drugstore>> searchReceipt(
+	public ResponseEntity<ReceiptSearchResultsDto> searchReceipt(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size, 
 			@RequestBody EReceiptSearchDto eReceiptSearchDto) throws Exception {

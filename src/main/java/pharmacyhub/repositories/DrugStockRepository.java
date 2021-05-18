@@ -19,5 +19,5 @@ public interface DrugStockRepository extends JpaRepository<DrugStock, String>{
 	void deleteByDrug(Drug drug);
 
 	List<DrugStock> deleteByDrugstore(Drugstore drugstoreToDelete);
-
+	
 }

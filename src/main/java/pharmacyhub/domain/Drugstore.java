@@ -109,4 +109,14 @@ public class Drugstore extends BaseEntity {
 		this.workingHoursTo = workingHoursTo;
 	}
 
+	public List<DrugStock> getDrugStock() {
+		return drugStock;
+	}
+
+	public void setDrugStock(List<DrugStock> drugStock) {
+		this.drugStock = drugStock;
+	}
+	
+	
+
 }
