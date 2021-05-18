@@ -128,6 +128,7 @@
             {name: "Drug stock", path: "/drug-stock-overview"},
             {name: "Orders", path: "/drug-orders-overview"},
             {name: "Create order", path: "/create-drug-order"},
+            {name: "My drugstore", path: "/my-drugstore"},
           ],
           "Pharmacist":[
             {name: "Schedule", path: "/schedule-pharm"},

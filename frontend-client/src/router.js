@@ -40,6 +40,7 @@ import SubscriptionsView from "./views/SubscriptionsView"
 import CreateDrugOrder from "./views/CreateDrugOrder"
 import DrugOrdersOverview from "./views/DrugOrdersOverview"
 import DrugstoreAdministratorProfile from "./views/DrugstoreAdministratorProfile"
+import MyDrugstore from "./views/MyDrugstore"
 
 Vue.use(VueRouter)
 
@@ -245,6 +246,11 @@ const routes = [
         path: '/drugstore-administrator-profile',
         name: "DrugstoreAdministratorProfile",
         component: DrugstoreAdministratorProfile
+    },
+    {
+        path: '/my-drugstore',
+        name: "MyDrugstore",
+        component: MyDrugstore
     },
 ];
 

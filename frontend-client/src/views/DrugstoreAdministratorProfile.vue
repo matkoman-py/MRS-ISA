@@ -1,58 +1,29 @@
 <template>
     <b-card>
-        <div class="container emp-profile">
+        <div style = "width:750px; padding:20px;" class="container emp-profile">
             <form @submit="handleSubmit">
-                <div class="row">
-                    <!-- <div class="col-md-4">
-                        <div class="profile-img">
-                            <img src="https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png"
-                                alt="" />
-                            <div class="file btn btn-lg btn-primary">
-                                Change Photo
-                                <input type="file" name="file" />
-                            </div>
-                        </div>
-                    </div> -->
-                    <div class="col-md-12">
-                        <b-card no-body>
-                            <b-tabs>
-                                <b-tab style="height: 370px;" title="Profile" active>
-                                    <b-card style="border: none;">
-                                    <div class="profile-head">
+                <div style="padding=20px" align="center" class="row">
+                    <div style="padding:20px" align="center" class="col-md-12">
+                        <b-card style="padding:20px" no-body>
+                            <h1> Profile overview </h1>
+                                    <div align="center" class="profile-head">
                                     
                                         <br>
                                         <h5>
-                                            {{name}}
+                                            {{user.name}}
                                         </h5>
                                         <h6>
-                                            {{employee.type}}
                                         </h6>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>Points</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h6>{{employee.points}}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>Category</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h6>{{employee.category}}</h6>
-                                            <h6 v-if="employee.category == null">Undefined</h6>
-                                        </div>
-                                    </div>
+                                    <div align-h="center">
+                                    
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label>Name</label>
                                         </div>
                                         <div class="col-md-6">
                                             <b-form-input :disabled="editEnabled" id="name-input"
-                                                v-model="employee.name" required></b-form-input>
+                                                v-model="profile.name" required></b-form-input>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -61,7 +32,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <b-form-input :disabled="editEnabled" id="surname-input"
-                                                v-model="employee.surname" required></b-form-input>
+                                                v-model="profile.surname" required></b-form-input>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -70,7 +41,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <b-form-input :disabled="editEnabled" id="email-input" type="email"
-                                                v-model="employee.email" required></b-form-input>
+                                                v-model="profile.email" required></b-form-input>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -79,156 +50,60 @@
                                         </div>
                                         <div class="col-md-6">
                                             <b-form-input :disabled="editEnabled" id="phonenumber-input"
-                                                v-model="employee.phoneNumber" required></b-form-input>
+                                                v-model="profile.phoneNumber" required></b-form-input>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <b-button class="dugme" type="button" variant="outline-hub"
                                                 :disabled="!editEnabled" @click="handleEdit">Edit info
                                             </b-button>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
 
                                             <b-button class="dugme" type="submit" variant="outline-hub"
                                                 :disabled="editEnabled">
                                                 Save
                                                 info</b-button>
                                         </div>
-                                    </div>
-                                    </b-card>
-                                </b-tab>
-                                <!--@click="cancelDrugReservation(row.item, row.index, $event.target)"-->
-
-                                <b-tab style="height: 370px;" title="Pharmacist appointments">
-                                    <b-card style="border: none;">
-                                    <b-table v-if="pharmacistappointments.length != 0" striped hover
-                                        :fields="pharmacistappointmentfields" :items="pharmacistappointments">
-                                        <template #cell(actions)="row">
-                                            <b-button variant="outline-danger" v-if="row.item" size="sm" class="mr-1">
-                                                Cancel appointment
-                                            </b-button>
-                                        </template>
-                                    </b-table>
-                                    <br>
-                                    <h3 v-if="pharmacistappointments.length == 0">You have no pharmacist appointments
-                                        scheduled
-                                    </h3>
-                                    </b-card>
-                                </b-tab>
-                                <b-tab style="height: 370px;" title="Dermatology appointments">
-                                    <b-card style="border: none;">
-                                    <b-table v-if="dermatologistappointments.length != 0" striped hover
-                                        :items="dermatologistappointments" :fields="dermAppFields">
-                                        <template #cell(actions)="row">
-                                            <b-button variant="outline-danger" v-if="row.item" size="sm" class="mr-1">
-                                                Cancel appointment
-                                            </b-button>
-                                        </template>
-                                    </b-table>
-                                    <br>
-                                    <h3 v-if="dermatologistappointments.length == 0">You have no dermatologist
-                                        appointments scheduled
-                                    </h3>
-                                    </b-card>
-                                </b-tab>
-                                <b-tab style="height: 370px;" title="Drug reservations">
-                                    <b-card style="border: none;">
-                                    <b-table v-if="drugReservations.length != 0" striped hover
-                                        :fields="drugReservationFields" :items="drugReservations">
-                                        <template #cell(actions)="row">
-                                            <b-button variant="outline-danger" v-if="row.item" size="sm"
-                                                @click="cancelDrugReservation(row.item, row.index, $event.target)"
-                                                class="mr-1">
-                                                Cancel reservation
-                                            </b-button>
-                                        </template>
-                                    </b-table>
-                                    <br>
-                                    <h3 v-if="drugReservations.length == 0">You have no drug reservations</h3>
-                                    </b-card>
-                                </b-tab>
-                            </b-tabs>
-                        </b-card>
-                    </div>
-
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-12">
-                        <router-link :to="'/schedule-appointment'">
-                            <b-button variant="outline-hub">Schedule pharmacist
-                                appointment</b-button>
-                        </router-link>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="tab-content profile-tab" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-
-                                <!-- <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Password</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="password-input"
-                                            v-model="employee.password" type="password" required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Validate</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" :state="validationState"
-                                            id="validatepassword-input" v-model="validationPassword" type="password"
-                                            required></b-form-input>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Adress</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.address"
+                                        <div class="col-md-4">
                                                 
-                                                required
-                                                ></b-form-input>
+                                                <b-button class="dugme" variant="outline-hub" @click="handlePassword" >Change password</b-button>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>City</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.city"
-                                                
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Country</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.country"
-    
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>-->
-                            </div>
-                        </div>
+                                    </div>
+                                    </div>
+                                    </b-card> 
+                        
                     </div>
                 </div>
             </form>
+            <b-modal id="my-modal" title="Change password" hide-footer>
+            <b-form  @submit="oldPasswordValidate">
+                <b-form-input id="password-input1"
+                              v-model="oldPasswordInput"
+                              type="password"
+                              required
+                              placeholder="Old password"
+                ></b-form-input>
+                <br>
+                <b-form-input id="password-input2"
+                              v-model="newPasswordInput"
+                              type="password"
+                              required
+                              placeholder="New password"
+                ></b-form-input>
+                <br>
+                <b-form-input id="password-input3"
+                              v-model="newPasswordValidateInput"
+                              type="password"
+                              required
+                              :state="validationState"
+                              placeholder="Repeat new password"
+                ></b-form-input>
+                <br>
+                <b-button type="submit" variant="outline-hub"  >Save</b-button>
+            </b-form>
+            </b-modal> 
         </div>
     </b-card>
 </template>
@@ -239,104 +114,33 @@
     } from 'vuex'
 
     export default {
+        computed: {
+            ...mapState({
+                user: state => state.userModule.loggedInUser,
+            }),
+            validationState: function () {
+                if (this.editEnabled)
+                    return null
+                return this.employee.password == this.validationPassword;
+            },
+        },
         data: function () {
             return {
-                dermatologistappointments: [],
-                drugReservations: [],
-                employee: {},
+                profile: {},
                 editEnabled: true,
                 validationPassword: '',
-                name: '',
-                inputValues: {
-                    date: '',
-                    time: '',
-                },
-                pharmacistappointmentfields: [
-                    {
-                        key: 'pharmacist',
-                        
-                    },
-                    {
-                        key: 'date',
-                    },
-                    {
-                        key: 'time',
-                    },
-                    {
-                        key: 'actions',
-                        label: ''
-                    }
-                ],
-                dermAppFields: [
-                    {
-                        key: 'dermatologist',
-                        
-                    },
-                    {
-                        key: 'date',
-                    },
-                    {
-                        key: 'time',
-                    },
-                    {
-                        key: 'actions',
-                        label: ''
-                    }
-                ],
-                drugReservationFields: [{
-                        key: 'drug',
-                    },
-                    {
-                        key: 'drugstore',
-                    },
-                    {
-                        key: 'date',
-                    },
-                    {
-                        key: 'actions',
-                        label: ''
-                    },
-                ],
-                pharmacistappointments: [],
-                itemm: {},
+                
             }
         },
         methods: {
-            cancelDrugReservation(item) {
-                //alert(item.id);
-                this.$http.put("http://localhost:8081/drugReservation/cancelReservation", {
-                    drugReservationId: item.id,
-                    patientId: this.user.id
-                }).then(response => {
-                    this.drugReservations = response.data.map(drugReservation => ({
-                        id: drugReservation.id,
-                        drug: drugReservation.drug.name,
-                        drugstore: drugReservation.drugstore.name,
-                        date: drugReservation.date
-                    }))
-                }).then(
-                    alert("Drug reservation succesfully canceled!")
-                ).catch(error => console.log(error));
-            },
-            handleClose() {
-                this.$root.$emit('bv::hide::modal', 'my-modal');
-            },
-            showForm(event) {
-                event.preventDefault()
-                this.$root.$emit('bv::show::modal', 'my-modal');
-            },
-            getEmployee: function () {
-                this.employee.id = this.user.id;
-
-                this.$http.get('http://localhost:8081/patients/id', {
+            getProfile: function () {
+                this.$http.get('http://localhost:8081/drugstoreAdmin', {
                         params: {
-                            patientId: this.employee.id
+                            drugstoreAdminId: this.user.id
                         }
                     })
                     .then(response => {
-                        this.employee = response.data;
-                        this.name = this.employee.name;
-                        //this.employee.location = {};
+                        this.profile = response.data;
                     })
                     .catch(error => console.log(error));
 
@@ -346,86 +150,60 @@
             },
             handleSubmit: function (event) {
                 event.preventDefault();
-                // if (!this.validatePassword()) {
-                //     return;
-                // }
-                this.name = this.employee.name;
                 this.editEnabled = true;
-                this.$http.put("http://localhost:8081/patients", this.employee)
-                    .then(response => {
-                        console.log(response);
-                        console.log("ovde");
+                this.$http.put("http://localhost:8081/drugstoreAdminUpdate", this.profile)
+                    .then(() => {
+                        alert("You succesfully updated your profile informations!")
                     })
                     .catch(error => console.log(error));
             },
-            validatePassword: function () {
-                return this.employee.password == this.validationPassword;
+            handlePassword: function(){
+            this.$root.$emit('bv::show::modal', 'my-modal');
             },
-            getDrugReservations: function () {
-                this.$http.get("http://localhost:8081/drugReservation/getPatientReservations", {
-                        params: {
-                            patientId: this.user.id
-                        }
-                    }).then(response => {
-                        this.drugReservations = response.data.map(drugReservation => ({
-                            id: drugReservation.id,
-                            drug: drugReservation.drug.name,
-                            drugstore: drugReservation.drugstore.name,
-                            date: drugReservation.date
-                        }))
+            validatePassword: function(){
+                return this.newPasswordInput == this.newPasswordValidateInput;
+            },
+            oldPasswordValidate: function(event){
+                event.preventDefault();
+                var valid = false;
+                this.$http.get('http://localhost:8081/drugstoreAdmin/password', {
+                            params: {
+                                drugstoreAdminId: this.user.id,
+                                passwordInput: this.oldPasswordInput
+                            }
+                        })
+                        .then(response => {
+                            valid = response.data;
+                            if(valid){
+                                this.changePassword();
+                            }else{
+                                alert("Old password does not match!");
+                            }
+                        })
+                        .catch(error => console.log(error));
+            },
+            changePassword: function(){
+                if(this.validatePassword()){
+                    this.profile.password = this.newPasswordInput;
+                    this.$http.put("http://localhost:8081/drugstoreAdmin/updatepassword", this.profile)
+                    .then(() => {
+                        alert("You succesfully updated your password!");
+                        this.$root.$emit('bv::hide::modal', 'my-modal');
                     })
                     .catch(error => console.log(error));
+
+                    this.oldPasswordInput= '';
+                    this.newPasswordInput= '';
+                    this.newPasswordValidateInput= '';
+                }else{
+                    alert("New passwords not ok!");
+
+                }   
             },
-            getAppointments: function () {
-                //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
-                this.$http.get("http://localhost:8081/pharmacist-appointment/get-appointments", {
-                        params: {
-                            patientId: this.user.id
-                        }
-                    }).then(response => {
-                        this.pharmacistappointments = response.data.map(appointment => ({
-                            pharmacist: appointment.pharmacist.name,
-                            date: appointment.date.slice(0, 10),
-                            time: appointment.time.slice(0, 5)
-                        }))
-                    })
-                    .catch(error => console.log(error));
-            },
-            getDermatologyAppointments: function () {
-                //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
-                this.$http.get("http://localhost:8081/dermatologist-appointment/returnAppointments", {
-                        params: {
-                            patientId: this.user.id
-                        }
-                    }).then(response => {
-                        this.dermatologistappointments = response.data.map(appointment => ({
-                            dermatologist: appointment.dermatologist.name,
-                            date: appointment.date.slice(0, 10),
-                            time: appointment.time.slice(0, 5)
-                        }))
-                    })
-                    .catch(error => console.log(error));
-            }
         },
         mounted: function () {
-            //appointments
-            this.getDrugReservations();
-            this.getEmployee();
-            this.getAppointments();
-            this.getDermatologyAppointments();
+            this.getProfile();
         },
-        computed: {
-            ...mapState({
-                user: state => state.userModule.loggedInUser,
-                email: state => state.userModule.loggedInUser.email,
-                role: state => state.userModule.loggedInUser.type
-            }),
-            validationState: function () {
-                if (this.editEnabled)
-                    return null
-                return this.employee.password == this.validationPassword;
-            },
-        }
     }
 </script>
 
