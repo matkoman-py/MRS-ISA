@@ -26,6 +26,13 @@ public class PatientCategoryService {
 	@Autowired
 	private LoyaltyConfigurationRepository loyaltyConfigurationRepository;
 	
+	public List<PatientCategory> getAll(){
+		return patientCategoryRepository.findAll();
+	}
+	
+	public LoyaltyConfiguration getLoyaltyConfiguration(){
+		return loyaltyConfigurationRepository.findById(1).orElse(null);
+	}
 	
 	public boolean updatePatientCategoryFromAppointment(Patient patient, String type) {
 		LoyaltyConfiguration loyaltyConfiguration = loyaltyConfigurationRepository.findById(1).orElse(null);
@@ -73,5 +80,16 @@ public class PatientCategoryService {
 		}
 		double priceWithDiscount = price * (100-patient.getCategory().getDiscount()) / 100;
 		return priceWithDiscount;
+	}
+
+	public PatientCategory updatePatientCategory(PatientCategory patientCategory) {
+		return patientCategoryRepository.save(patientCategory);
+	}
+
+	public LoyaltyConfiguration updateLoyaltyConfiguration(LoyaltyConfiguration loyaltyConfiguration) {
+		LoyaltyConfiguration loyaltyConfigurationToUpdate = loyaltyConfigurationRepository.findById(1).orElse(null);
+		loyaltyConfigurationToUpdate.setDermatologistPointsGained(loyaltyConfiguration.getDermatologistPointsGained());
+		loyaltyConfigurationToUpdate.setPharmacistPointsGained(loyaltyConfiguration.getPharmacistPointsGained());
+		return loyaltyConfigurationRepository.save(loyaltyConfigurationToUpdate);
 	}
 }
