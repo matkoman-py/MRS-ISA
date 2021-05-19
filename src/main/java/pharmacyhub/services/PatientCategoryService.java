@@ -37,9 +37,7 @@ public class PatientCategoryService {
 	public boolean updatePatientCategory(Patient patient, int pointsGained) {
 		patient.setPoints(patient.getPoints() + pointsGained);
 		
-		List<PatientCategory> categories = patientCategoryRepository.findByRequieredPointsGreaterThanOrderByRequieredPointsAsc(patient.getPoints() + pointsGained);
-				
-		System.out.println(categories.size());
+		List<PatientCategory> categories = patientCategoryRepository.findAllByOrderByRequieredPointsAsc();
 
 		if (categories.isEmpty()) {
 			patientRepository.save(patient);
@@ -48,14 +46,26 @@ public class PatientCategoryService {
 
 		System.out.println(patient.getPoints());
 		
-		if (categories.get(0).getRequieredPoints() > patient.getPoints() + pointsGained) {
-			patientRepository.save(patient);
-			return false;
-		}
+		PatientCategory newCategory = findFittingPatientCategory(patient);
+//		if (newCategory.getId().equals(patient.getCategory().getId())) {
+		patient.setCategory(newCategory);
+//		}
 		
-		patient.setCategory(categories.get(0));
 		patientRepository.save(patient);
 		
 		return true;
+	}
+	
+	private PatientCategory findFittingPatientCategory(Patient patient) {
+		List<PatientCategory> categories = patientCategoryRepository.findAllByOrderByRequieredPointsAsc();
+		
+		PatientCategory temp = null;
+		for (PatientCategory category : categories) {
+			if(patient.getPoints() < category.getRequieredPoints()) {
+				return temp;
+			}
+			temp = category;
+		}
+		return temp;
 	}
 }
