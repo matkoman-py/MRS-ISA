@@ -174,6 +174,10 @@ export default {
                         name: "User CRUD",
                         path: "/admin-user-table",
                     },
+                    {
+                        name: "Patient Categories CRUD",
+                        path: "/admin-patient-categories",
+                    },
                 ],
                 Supplier: [
                     {

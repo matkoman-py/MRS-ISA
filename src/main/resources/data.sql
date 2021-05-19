@@ -35,7 +35,7 @@ INSERT INTO public.ingredient VALUES ('0e940928-4756-403e-b624-6fe00578448f', fa
 --
 -- Data for Name: drug;
 --
-INSERT INTO public.drug VALUES ('d7d2d173-9f15-4bd2-979c-6933746f6be4', false, 'a', 'tablet', 'Zanax', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug VALUES ('d7d2d173-9f15-4bd2-979c-6933746f6be4', false, 'a', 'tablet', 'Zanax', 200, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
 INSERT INTO public.drug VALUES ('6602618d-067d-487b-95f1-21cee6bb6e43', false, 'a', 'tablet', 'Prostamol uno', 0, false, 'b137c265-6e12-4b59-947e-ab5504335dc4', 'cb22173a-4b0b-4f98-9c03-e19682520ff2');
 INSERT INTO public.drug VALUES ('a329071d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'vaccine', 'Pfizer', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
 INSERT INTO public.drug VALUES ('a32asd1d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'herb', 'Caj od nane', 0, true, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
@@ -121,7 +121,7 @@ INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b
 --
 -- Data for Name: pharmacist_appointment; 
 --
-INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3,true, '12:00:00', '13:00:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
+INSERT INTO public.pharmacist_appointment VALUES ('2229dbcb-7f36-4e4e-81f5-656ce14a553a', false, NULL, '2021-04-06 02:00:00', 3, 1000, true, '12:00:00', '13:00:00', '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
 
 --
 -- Data for Name: roles; 
@@ -187,6 +187,15 @@ INSERT INTO public.drug_order_stock VALUES ('c93555b4-a753-11eb-bcbc-0242ac13000
 
 INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', '87ac4d96-a753-11eb-bcbc-0242ac130002');
 INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', '8b941ec0-a753-11eb-bcbc-0242ac130002');
+
+
+INSERT INTO public.loyalty_configuration VALUES (1, 10, 20);
+
+
+INSERT INTO public.patient_category VALUES ('55038a9a-a754-11eb-bcbc-0242ac130002', false, 0, 'Basic', 0);
+INSERT INTO public.patient_category VALUES ('444038a9a-a754-11eb-bcbc-0242ac130002', false, 5, 'Bronze', 200);
+INSERT INTO public.patient_category VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 10, 'Silver', 500);
+INSERT INTO public.patient_category VALUES ('22038a9a-a754-11eb-bcbc-0242ac130002', false, 15, 'Gold', 700);
 
 
 
