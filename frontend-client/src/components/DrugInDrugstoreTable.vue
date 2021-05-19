@@ -117,11 +117,6 @@
     },
     methods: {
       makeReservation() {
-        //alert(this.selecteddrug);
-        //alert(this.currentDrugstoreId);
-        //alert(this.user.id);
-        //alert(this.date);
-        
         if(this.passedDrugstoreId != null){
                   this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
                     patientId: this.passedPatientId,
