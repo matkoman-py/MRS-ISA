@@ -53,6 +53,9 @@ public class DrugReservationService {
 	
 	@Autowired
 	private DrugRequestRepository drugRequestRepository;
+	
+	@Autowired
+	private PatientCategoryService patientCategoryService;
 
 	public List<DrugReservation> findAll() {
 		return drugreservationRespository.findAll();
@@ -158,6 +161,7 @@ public class DrugReservationService {
 			Date dateNow = new Date(System.currentTimeMillis()+24*60*60*1000);
 			if(dateRes.after(dateNow)) {
 				userNotificationService.sendPickUpConfirmation(dr.getPatient().getEmail(),dr.getDrug().getName(), new Date().toString());
+				patientCategoryService.updatePatientCategory(dr.getPatient(), dr.getDrug().getPoint());
 				return "Confirmation code is valid, drug is issued!";
 			}
 			return "Pick up date is in the next 24h! Drug not issued!";

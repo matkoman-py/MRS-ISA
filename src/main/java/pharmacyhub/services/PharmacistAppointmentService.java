@@ -41,6 +41,10 @@ public class PharmacistAppointmentService {
 	
     @Autowired
 	private UserNotificationService userNotificationService;
+    
+	@Autowired
+	private PatientCategoryService patientCategoryService;
+
 	
     public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
     	userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
@@ -225,6 +229,7 @@ public class PharmacistAppointmentService {
 		da.setAppointmentReport(appointmentReport);
 		da.setProcessed(true);
 		pharmacistAppointmentRepository.save(da);
+		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "pharmacist");
 		return da;
 	}
   	

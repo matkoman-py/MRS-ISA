@@ -48,6 +48,10 @@ public class DermatologistAppointmentService {
     
     @Autowired
     private EmploymentRepository employmentRepository;
+    
+	@Autowired
+	private PatientCategoryService patientCategoryService;
+
 	
 	public List<DermatologistAppointment> findAll(){
 		return dermatologistAppointmentRepository.findAll();
@@ -303,6 +307,7 @@ public class DermatologistAppointmentService {
 		da.setAppointmentReport(appointmentReport);
 		da.setProcessed(true);
 		dermatologistAppointmentRepository.save(da);
+		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "dermatologist");
 		return da;
 	}
 

@@ -189,4 +189,13 @@ INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac13000
 INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', '8b941ec0-a753-11eb-bcbc-0242ac130002');
 
 
+INSERT INTO public.loyalty_configuration VALUES (1, 10, 20);
+
+
+INSERT INTO public.patient_category VALUES ('55038a9a-a754-11eb-bcbc-0242ac130002', false, 0, 'Basic', 0);
+INSERT INTO public.patient_category VALUES ('444038a9a-a754-11eb-bcbc-0242ac130002', false, 5, 'Bronze', 200);
+INSERT INTO public.patient_category VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 10, 'Silver', 500);
+INSERT INTO public.patient_category VALUES ('22038a9a-a754-11eb-bcbc-0242ac130002', false, 15, 'Gold', 700);
+
+
 
