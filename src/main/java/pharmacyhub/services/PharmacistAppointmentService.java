@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
@@ -137,15 +138,19 @@ public class PharmacistAppointmentService {
 			throw new Exception("Pharmacist is not working at that time.");
 		}
 		
+		Pharmacist pharmacist = pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null);
+		Patient patient = patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null);
+		
     	userNotificationService.sendReservationConfirmation(patientRepository.getById(pharmacistAppointmentPatientDto.getPatientId()).getEmail(), "pharmacist");
     	PharmacistAppointment pharmacistAppointment = new PharmacistAppointment(
-    			pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),
-    			pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(),
+    			pharmacist,
+    			pharmacistAppointmentPatientDto.getDate(), 
+    			pharmacistAppointmentPatientDto.getTime(),
     			pharmacistAppointmentPatientDto.getDuration(),
-    			patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null),
+    			patient,
     			null,
     			false,
-    			0);
+    			patientCategoryService.getPriceWithDiscount(patient, pharmacist.getDrugstore().getPharmacistAppointmentPrice()));
 		return pharmacistAppointmentRepository.save(pharmacistAppointment);
 	}
 	
