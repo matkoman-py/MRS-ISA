@@ -41,17 +41,22 @@
             @hide="resetEditModal"
             size="xl"
         >
-            Hej cao {[editModal.category]}
+            <edit-patient-category
+                :form="editModal.category"
+                v-on:update-category-success="getCategories"
+            ></edit-patient-category>
         </b-modal>
     </div>
 </template>
 
 <script>
 import EditConfigurationForm from "../forms/patient-category/EditConfigurationForm.vue";
+import EditPatientCategory from "../forms/patient-category/EditPatientCategory.vue";
 export default {
     name: "PatientCategoryTable",
     components: {
         EditConfigurationForm,
+        EditPatientCategory,
     },
     data: function() {
         return {
