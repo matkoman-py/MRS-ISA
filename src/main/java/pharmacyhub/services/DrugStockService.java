@@ -56,6 +56,11 @@ public class DrugStockService {
 		return drugsStockPriceDto;
 	}
 	
+	public DrugPrice getLastPriceByDrugAndDrugStore(Drug drug, Drugstore drugstore) {
+		List<DrugPrice> drugPrices = drugPriceRepository.findByDrugAndDrugstore(drug, drugstore);
+		return getLastPrice(drugPrices);
+	}
+	
 	public DrugPrice getLastPrice(List<DrugPrice> dpList) {
 		int currentPrice = Integer.MAX_VALUE;
 		DrugPrice promotion = null;

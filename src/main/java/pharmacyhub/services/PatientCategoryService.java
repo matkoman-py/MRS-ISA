@@ -47,9 +47,7 @@ public class PatientCategoryService {
 		System.out.println(patient.getPoints());
 		
 		PatientCategory newCategory = findFittingPatientCategory(patient);
-//		if (newCategory.getId().equals(patient.getCategory().getId())) {
 		patient.setCategory(newCategory);
-//		}
 		
 		patientRepository.save(patient);
 		
@@ -67,5 +65,13 @@ public class PatientCategoryService {
 			temp = category;
 		}
 		return temp;
+	}
+	
+	public double getPriceWithDiscount(Patient patient, double price) {
+		if (patient.getCategory() == null) {
+			return price;
+		}
+		double priceWithDiscount = price * (100-patient.getCategory().getDiscount()) / 100;
+		return priceWithDiscount;
 	}
 }
