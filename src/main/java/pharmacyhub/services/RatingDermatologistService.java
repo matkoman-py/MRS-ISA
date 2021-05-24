@@ -35,14 +35,14 @@ public class RatingDermatologistService {
 		Dermatologist dermatologist = dermatologistRepository.findById(dermatologistId).orElse(null);
 		int ratingg = Integer.parseInt(rating);
 		
-		RatingDermatologist rtd = ratingDermatologistRepository.findByDermatologistAndPatient(patient,dermatologist);
+		RatingDermatologist rtd = ratingDermatologistRepository.findByDermatologistAndPatient(dermatologist,patient);
 		if(rtd == null) {
 			rtd = new RatingDermatologist(patient,dermatologist,ratingg);
 		}
 		else {
 			rtd.setRating(ratingg);
-			ratingDermatologistRepository.save(rtd);
 		}
+		ratingDermatologistRepository.save(rtd);
 		return null;
 	}
 

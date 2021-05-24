@@ -7,5 +7,5 @@ import pharmacyhub.domain.RatingDrugstore;
 import pharmacyhub.domain.users.Patient;
 
 public interface RatingDrugstoreRepository extends JpaRepository<RatingDrugstore, String>{
-	RatingDrugstore findByDrugstoreAndPatient(Patient patient, Drugstore drugstore);
+	RatingDrugstore findByDrugstoreAndPatient(Drugstore drugstore,Patient patient);
 }

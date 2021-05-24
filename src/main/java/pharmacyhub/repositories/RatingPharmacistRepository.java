@@ -8,6 +8,6 @@ import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 
 public interface RatingPharmacistRepository extends JpaRepository<RatingPharmacist, String>{
-	RatingPharmacist findByPharmacistAndPatient(Patient patient, Pharmacist pharmacist);
+	RatingPharmacist findByPharmacistAndPatient(Pharmacist pharmacist,Patient patient);
 
 }
