@@ -202,5 +202,20 @@ public void notifyPharmacistAboutApproving(AbsenceRequest request) throws Messag
 
 	javaMailSender.send(message);
 }
+
+public void notifyPharmacistAboutRejection(AbsenceRequest request) throws MessagingException {
+	MimeMessage message = javaMailSender.createMimeMessage();
+	MimeMessageHelper helper;
+	
+	String emailContent = "Dear " + request.getEmployee().getName() + ",\nUnfortunately, we have to inform you that your absence request from " + request.getStartDate() + " to " + request.getEndDate() + " is rejected.\nReason for that is: '" + request.getAdminComment() + "' \nAll the best, your " + ((Pharmacist)request.getEmployee()).getDrugstore().getName() + "!";
+	
+	helper = new MimeMessageHelper(message, true);
+	helper.setFrom("notification@pharmacyhub.com");
+	helper.setTo(request.getEmployee().getEmail());
+	helper.setSubject("Status of your absence request changed.");
+	helper.setText(emailContent, true);
+
+	javaMailSender.send(message);
+}
   
 }

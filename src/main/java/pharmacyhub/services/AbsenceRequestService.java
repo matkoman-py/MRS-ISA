@@ -15,6 +15,7 @@ import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.AbsenceRequestDto;
+import pharmacyhub.dto.PharmacistRequestRejectionDto;
 import pharmacyhub.repositories.AbsenceRequestRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.UserRepository;
@@ -44,7 +45,6 @@ public class AbsenceRequestService {
 	}
 
 	public String approveRequest(String requestId) throws MessagingException {
-		System.out.println(requestId);
 		AbsenceRequest request = absenceRequestRepository.findById(requestId).orElse(null);
 		// otkazi sve preglede u datom terminu i obavesti pacijente o tome
 		List<PharmacistAppointment> appointments = pharmacistAppointmentRepository.findByPharmacistAndProcessed((Pharmacist)request.getEmployee(), false);
@@ -62,6 +62,17 @@ public class AbsenceRequestService {
 		// posalji mejl
 		userNotificationService.notifyPharmacistAboutApproving(request);
 		return "You succesfully approved absence request for " + request.getEmployee().getName() + " " + request.getEmployee().getSurname() + "!";
+	}
+
+	public String rejectRequest(PharmacistRequestRejectionDto pharmacistRequestRejectionDto) throws MessagingException {
+		AbsenceRequest request = absenceRequestRepository.findById(pharmacistRequestRejectionDto.getRequestId()).orElse(null);
+		// oznaci kao odbijen
+		request.setStatus(AbsenceRequestStatus.Rejected);
+		request.setAdminComment(pharmacistRequestRejectionDto.getReasonOfRejection());
+		absenceRequestRepository.save(request);
+		// posalji mejl
+		userNotificationService.notifyPharmacistAboutRejection(request);
+		return "You succesfully rejected absence request for " + request.getEmployee().getName() + " " + request.getEmployee().getSurname() + "!";
 	}
 
 }

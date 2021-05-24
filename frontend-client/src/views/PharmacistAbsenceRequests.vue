@@ -114,7 +114,16 @@
                 this.$root.$emit('bv::show::modal', 'rejectConfirmation');
           }
         }, reject() {
-            //posalji post ili put
+            this.$http.post('http://localhost:8081/absence-request/reject', {
+                    requestId: this.selectedRequest[0].requestId,
+                    reasonOfRejection: this.reasonOfRejection
+            })
+                  .then(response => {
+                    alert(response.data); // zasto se ne prikaze ovo??
+                    this.getRequests();
+                    this.$root.$emit('bv::hide::modal', 'rejectConfirmation');
+                  })
+                  .catch(error => console.log(error));
         }, cancel() {
             this.$root.$emit('bv::hide::modal', 'rejectConfirmation');
         }, onRowSelected(item) {

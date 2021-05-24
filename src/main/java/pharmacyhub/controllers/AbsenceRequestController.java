@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.dto.AbsenceRequestDto;
+import pharmacyhub.dto.PharmacistRequestRejectionDto;
 import pharmacyhub.services.AbsenceRequestService;
 
 
@@ -32,7 +32,12 @@ public class AbsenceRequestController {
 	}
 	
 	@PostMapping(path = "/approve/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> create(@PathVariable("requestId") String requestId) throws ParseException, MessagingException{
+	public ResponseEntity<String> approveRequestForPharmacist(@PathVariable("requestId") String requestId) throws ParseException, MessagingException{
 		return new ResponseEntity<>(absenceRequestService.approveRequest(requestId), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/reject", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> rejectRequestForPharmacist(@RequestBody PharmacistRequestRejectionDto pharmacistRequestRejectionDto) throws ParseException, MessagingException{
+		return new ResponseEntity<>(absenceRequestService.rejectRequest(pharmacistRequestRejectionDto), HttpStatus.OK);
 	}
 }
