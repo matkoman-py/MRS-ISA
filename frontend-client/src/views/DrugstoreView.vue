@@ -20,8 +20,11 @@
                     <p style="margin:20px">
                         <b>Description</b>: {{ drugstore.description }}
                     </p>
-                    <p style="margin:20px">
-                        <b>Average rating</b>: {{ drugstore.averageRating }}
+                    <p v-if="drugstore.averageRate != null" style="margin:20px">
+                        <b>Average rating</b>: {{ drugstore.averageRate }}(From {{drugstore.numberOfRates}} rates)
+                    </p>
+                    <p v-if="drugstore.averageRate == null" style="margin:20px">
+                        <b>Average rating</b>: There are currently no rates for this drugstore
                     </p>
                     <p style="margin:20px">
                         <b>Working hours</b>: {{ drugstore.workingHoursFrom }} -
@@ -465,9 +468,22 @@ export default {
                 )
                 .then((response) => {
                     this.drugstore = response.data;
+                    this.getAverageRating();
                     this.checkSubscription();
                 })
                 .catch((error) => console.log(error));
+        }, getAverageRating() {
+                this.$http.get("http://localhost:8081/drugstores/averageRate", {
+                    params: {
+                        drugstoreId: this.drugstore.id
+                    }
+                })
+                .then((response) => {
+                    this.drugstore.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
+                    this.drugstore.numberOfRates = response.data.numberOfRates;
+                })
+                .catch((error) => console.log(error));
+
         },
         getAllDermatologists() {
             this.$http

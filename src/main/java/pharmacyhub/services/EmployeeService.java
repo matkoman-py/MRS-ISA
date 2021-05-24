@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
+import pharmacyhub.domain.RatingDermatologist;
+import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
@@ -30,6 +32,8 @@ import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
+import pharmacyhub.repositories.RatingDermatologistRepository;
+import pharmacyhub.repositories.RatingPharmacistRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.repositories.users.UserRepository;
@@ -64,6 +68,12 @@ public class EmployeeService {
 	
 	@Autowired
 	private AbsenceRequestRepository abensceRequestRepository;
+	
+	@Autowired
+	private RatingDermatologistRepository ratingDermatologistRepository;
+	
+	@Autowired
+	private RatingPharmacistRepository ratingPharmacistRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -224,10 +234,33 @@ public class EmployeeService {
 		List<Employment> dermatologistEmployments = employmentRepository.findByDrugstoreId(drugstoreId);		
 		List<EmployeeOverviewDto> employees = new ArrayList<EmployeeOverviewDto>();
 		
-		for (Employee e : pharmacists)
-			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), 10, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+		for (Employee e : pharmacists) {
+			//izracunaj average rate
+			int ratesScore = 0;
+			int numberOfRates = 0;
+			List<RatingPharmacist> rates = ratingPharmacistRepository.findByPharmacist((Pharmacist)e);
+			for (RatingPharmacist rate : rates) {
+				ratesScore += rate.getRating();
+				numberOfRates++;
+			}
+			double averageRate = 0;
+			if (numberOfRates > 0)
+				averageRate = ratesScore / numberOfRates;
+			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), averageRate, numberOfRates, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+		}
 		for (Employment e : dermatologistEmployments) {
-			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), 10, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
+			//izracunaj average rate
+			int ratesScore = 0;
+			int numberOfRates = 0;
+			List<RatingDermatologist> rates = ratingDermatologistRepository.findByDermatologist(e.getDermatologist());
+			for (RatingDermatologist rate : rates) {
+				ratesScore += rate.getRating();
+				numberOfRates++;
+			}
+			double averageRate = 0;
+			if (numberOfRates > 0)
+				averageRate = ratesScore / numberOfRates;
+			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), averageRate, numberOfRates, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
 		}
 		return employees;
 	}
@@ -252,14 +285,36 @@ public class EmployeeService {
 		for (Employee e : pharmacists) {
 			if (checkIfSearchedTextIsIncluded(searchText, e)) {
 				if (minRate <= 10 && maxRate >= 10) { //ovo treba ispraviti
-					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), 10, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+					//izracunaj average rate
+					int ratesScore = 0;
+					int numberOfRates = 0;
+					List<RatingPharmacist> rates = ratingPharmacistRepository.findByPharmacist((Pharmacist)e);
+					for (RatingPharmacist rate : rates) {
+						ratesScore += rate.getRating();
+						numberOfRates++;
+					}
+					double averageRate = 0;
+					if (numberOfRates > 0)
+						averageRate = ratesScore / numberOfRates;
+					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), averageRate, numberOfRates, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
 				}
 			}
 		}
 		for (Employment e : dermatologistEmployments) {
 			if (checkIfSearchedTextIsIncluded(searchText, e.getDermatologist())) {
 				if (minRate <= 10 && maxRate >= 10) { //ovo treba ispraviti
-					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), 10, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
+					//izracunaj average rate
+					int ratesScore = 0;
+					int numberOfRates = 0;
+					List<RatingDermatologist> rates = ratingDermatologistRepository.findByDermatologist(e.getDermatologist());
+					for (RatingDermatologist rate : rates) {
+						ratesScore += rate.getRating();
+						numberOfRates++;
+					}
+					double averageRate = 0;
+					if (numberOfRates > 0)
+						averageRate = ratesScore / numberOfRates;
+					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), averageRate, numberOfRates, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
 				}
 			}
 		}

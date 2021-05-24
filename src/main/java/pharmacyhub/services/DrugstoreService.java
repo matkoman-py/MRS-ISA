@@ -12,8 +12,11 @@ import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
+import pharmacyhub.domain.RatingDrugstore;
+import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.dto.DrugStockPriceDto;
+import pharmacyhub.dto.DrugstoreAverageRatingDto;
 import pharmacyhub.dto.ereceipt.DrugstoreAndPriceDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
@@ -24,6 +27,7 @@ import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
+import pharmacyhub.repositories.RatingDrugstoreRepository;
 import pharmacyhub.repositories.specifications.drugstores.DrugstoreSpecifications;
 import pharmacyhub.repositories.users.DrugstoreAdminRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
@@ -61,6 +65,9 @@ public class DrugstoreService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RatingDrugstoreRepository ratingDrugstoreRepository;
 	
 	public List<Drugstore> findAll() {
 		return drugstoreRepository.findAll();
@@ -218,6 +225,21 @@ public class DrugstoreService {
 		
 		drugstoreRepository.save(d);
 		return true;
+	}
+	
+	public DrugstoreAverageRatingDto calculateAverageRate(String drugstoreId) {
+		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
+		int ratesScore = 0;
+		int numberOfRates = 0;
+		List<RatingDrugstore> rates = ratingDrugstoreRepository.findByDrugstore(drugstore);
+		for (RatingDrugstore rate : rates) {
+			ratesScore += rate.getRating();
+			numberOfRates++;
+		}
+		double averageRate = 0;
+		if (numberOfRates > 0)
+			averageRate = ratesScore / numberOfRates;
+		return new DrugstoreAverageRatingDto(averageRate, numberOfRates);
 	}
 }
 

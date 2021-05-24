@@ -101,10 +101,10 @@
                     {
                         name: employee.name,
                         surname: employee.surname,
-                        averageRate: employee.averageRate,
+                        averageRate: employee.numberOfRates > 0 ? employee.averageRate + " (From " + employee.numberOfRates + " rates)" : "No rates",
                         email: employee.email, 
                         phoneNumber: employee.phoneNumber,
-                        address: employee.location ? employee.location.address : null,
+                        address: employee.location ? employee.location.address : null,//+ ", " + employee.location.city + ", " + employee.location.country: null,
                         city: employee.location ? employee.location.city : null,
                         country: employee.location ? employee.location.country : null,
                         type: employee.type,
