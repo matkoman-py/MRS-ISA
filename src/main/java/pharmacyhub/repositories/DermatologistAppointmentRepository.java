@@ -12,6 +12,7 @@ import pharmacyhub.domain.Drug;
 
 public interface DermatologistAppointmentRepository  extends JpaRepository<DermatologistAppointment, String> {
 	DermatologistAppointment findByDrugstoreId(String drugstoreId);
+	List<DermatologistAppointment> findByDermatologistAndProcessed(Dermatologist dermatologist, boolean processed);
 	@Transactional
 	void deleteByDermatologist(Dermatologist dermatologist);
 	List<DermatologistAppointment> findByDermatologistId(String dermatologistId);

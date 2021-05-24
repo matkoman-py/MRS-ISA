@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pharmacyhub.dto.AbsenceRequestDto;
-import pharmacyhub.dto.PharmacistRequestRejectionDto;
+import pharmacyhub.dto.RequestRejectionDto;
 import pharmacyhub.services.AbsenceRequestService;
 
 
@@ -31,13 +31,18 @@ public class AbsenceRequestController {
 		return new ResponseEntity<>(absenceRequestService.createNewRequest(createAbsenceRequestDto), HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/approve/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/approvePharmacist/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> approveRequestForPharmacist(@PathVariable("requestId") String requestId) throws ParseException, MessagingException{
 		return new ResponseEntity<>(absenceRequestService.approveRequest(requestId), HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/reject", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> rejectRequestForPharmacist(@RequestBody PharmacistRequestRejectionDto pharmacistRequestRejectionDto) throws ParseException, MessagingException{
-		return new ResponseEntity<>(absenceRequestService.rejectRequest(pharmacistRequestRejectionDto), HttpStatus.OK);
+	public ResponseEntity<String> rejectRequestForPharmacist(@RequestBody RequestRejectionDto requestRejectionDto) throws ParseException, MessagingException{
+		return new ResponseEntity<>(absenceRequestService.rejectRequest(requestRejectionDto), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/approveDermatologist/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> approveRequestForDermatologist(@PathVariable("requestId") String requestId) throws ParseException, MessagingException{
+		return new ResponseEntity<>(absenceRequestService.approveRequestForDermatologist(requestId), HttpStatus.OK);
 	}
 }

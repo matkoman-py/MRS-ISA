@@ -11,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.AbsenceRequest;
+import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.enums.AbsenceRequestStatus;
+import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.AbsenceRequestDto;
-import pharmacyhub.dto.PharmacistRequestRejectionDto;
+import pharmacyhub.dto.RequestRejectionDto;
 import pharmacyhub.repositories.AbsenceRequestRepository;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.UserRepository;
 
@@ -34,6 +37,9 @@ public class AbsenceRequestService {
 	
 	@Autowired
 	PharmacistAppointmentRepository pharmacistAppointmentRepository;
+	
+	@Autowired
+	DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	
 	public String createNewRequest(AbsenceRequestDto createAbsenceRequestDto) throws ParseException {
 		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(createAbsenceRequestDto.getStartDate());
@@ -64,15 +70,36 @@ public class AbsenceRequestService {
 		return "You succesfully approved absence request for " + request.getEmployee().getName() + " " + request.getEmployee().getSurname() + "!";
 	}
 
-	public String rejectRequest(PharmacistRequestRejectionDto pharmacistRequestRejectionDto) throws MessagingException {
+	public String rejectRequest(RequestRejectionDto pharmacistRequestRejectionDto) throws MessagingException {
 		AbsenceRequest request = absenceRequestRepository.findById(pharmacistRequestRejectionDto.getRequestId()).orElse(null);
 		// oznaci kao odbijen
 		request.setStatus(AbsenceRequestStatus.Rejected);
 		request.setAdminComment(pharmacistRequestRejectionDto.getReasonOfRejection());
 		absenceRequestRepository.save(request);
 		// posalji mejl
-		userNotificationService.notifyPharmacistAboutRejection(request);
+		userNotificationService.notifyAboutRejection(request);
 		return "You succesfully rejected absence request for " + request.getEmployee().getName() + " " + request.getEmployee().getSurname() + "!";
+	}
+
+	public String approveRequestForDermatologist(String requestId) throws MessagingException {
+		AbsenceRequest request = absenceRequestRepository.findById(requestId).orElse(null);
+		// otkazi sve preglede u datom terminu i obavesti pacijente o tome
+		List<DermatologistAppointment> appointments = dermatologistAppointmentRepository.findByDermatologistAndProcessed((Dermatologist)request.getEmployee(), false);
+		for (DermatologistAppointment appointment : appointments) {
+			if ((appointment.getDate().equals(request.getStartDate()) || appointment.getDate().after(request.getStartDate())) && (appointment.getDate().equals(request.getEndDate()) || appointment.getDate().before(request.getEndDate()))) {
+				appointment.setAppointmentReport("Appointment canceled due to pharmacist absence.");
+				appointment.setProcessed(true);
+				dermatologistAppointmentRepository.save(appointment);
+				userNotificationService.notifyPatientAboutCancelation(appointment);
+			}
+		}
+		// oznaci kao prihvacen
+		request.setStatus(AbsenceRequestStatus.Approved);
+		absenceRequestRepository.save(request);
+		// posalji mejl
+		userNotificationService.notifyDermatologistAboutApproving(request);
+		return "You succesfully approved absence request for " + request.getEmployee().getName() + " " + request.getEmployee().getSurname() + "!";
+
 	}
 
 }

@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1> Pharmacist absence requests overview </h1>
+    <h1> Dermatologist absence requests overview </h1>
     <div style="margin:40px; border-style:solid;">
         <b-table striped hover :items="requests" :fields="fields" selectable select-mode='single' @row-selected="onRowSelected"></b-table>
         <p v-if="requests.length == 0"> There are no absence requests at the moment. </p>
@@ -41,7 +41,6 @@
     },
     data: function() {
       return {
-        drugstoreId: '',
         selectedRequest:[],
         requests: [],
         reasonOfRejection: '',        
@@ -58,48 +57,36 @@
                   },
                   {
                       key: 'absence_end_date',
+                  },
+                  {
+                      key: 'drugstores',
                   }
               ]
       }
     },
     methods: {
-        getDrugstoreAndEmployees() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
-              params: {
-                drugstoreAdminId: this.user.id
-              }
-              })
-              .then(response => {
-              this.drugstoreId = response.data.id;
-              this.getRequests();
-              })
-              .catch(error => console.log(error));
-        },
         getRequests : function(){
-            this.$http.get('http://localhost:8081/employees/pharmacistRequests', {
-              params: {
-                drugstoreId: this.drugstoreId
-            }
-            })
+            this.$http.get('http://localhost:8081/employment/dermatologistRequests')
             .then(response => {
-            this.requests = response.data.map(request => 
-            (
-                    {
-                        name: request.pharmacistName,
-                        surname: request.pharmacistSurname,
-                        absence_start_date: request.startDate.slice(0,10),
-                        absence_end_date: request.endDate.slice(0,10),
-                        reason: request.reason,
-                        requestId: request.requestId
-                    }
-                ));
+              this.requests = response.data.map(request => 
+              (
+                      {
+                          name: request.pharmacistName,
+                          surname: request.pharmacistSurname,
+                          absence_start_date: request.startDate.slice(0,10),
+                          absence_end_date: request.endDate.slice(0,10),
+                          reason: request.reason,
+                          requestId: request.requestId,
+                          drugstores: request.drugstores
+                      }
+                  ));
             })
             .catch(error => console.log(error));
         }, acceptRequest() {
             if (this.selectedRequest.length == 0) {
                 alert("You need to select absence request that you want to accept.")
           } else {
-                this.$http.post('http://localhost:8081/absence-request/approvePharmacist/' + this.selectedRequest[0].requestId)
+                this.$http.post('http://localhost:8081/absence-request/approveDermatologist/' + this.selectedRequest[0].requestId)
                   .then(response => {
                     alert(response.data); // zasto se ne prikaze ovo??
                     this.getRequests();
@@ -131,7 +118,7 @@
         }
     },
     mounted: function(){
-        this.getDrugstoreAndEmployees();
+        this.getRequests();
     }
   }
 </script>

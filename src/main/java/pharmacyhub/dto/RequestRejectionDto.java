@@ -1,15 +1,15 @@
 package pharmacyhub.dto;
 
-public class PharmacistRequestRejectionDto {
+public class RequestRejectionDto {
 	
 	private String requestId;
 	private String reasonOfRejection;
 	
-	private PharmacistRequestRejectionDto() {
+	private RequestRejectionDto() {
 		
 	}
 
-	public PharmacistRequestRejectionDto(String requestId, String reasonOfRejection) {
+	public RequestRejectionDto(String requestId, String reasonOfRejection) {
 		super();
 		this.requestId = requestId;
 		this.reasonOfRejection = reasonOfRejection;

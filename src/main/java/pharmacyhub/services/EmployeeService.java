@@ -416,12 +416,10 @@ public class EmployeeService {
 
 	public List<PharmacistAbsenceRequestDto> getPharmacistRequests(String drugstoreId) {
 		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));	
-		System.out.println(pharmacists.size());
 		List<PharmacistAbsenceRequestDto> requests = new ArrayList<PharmacistAbsenceRequestDto>();
 		for (Pharmacist pharmacist : pharmacists) {
 			List<AbsenceRequest> requestsForCurrentPharmacist = abensceRequestRepository.findByEmployeeAndStatus(pharmacist, AbsenceRequestStatus.Pending);
 			for (AbsenceRequest absenceRequest : requestsForCurrentPharmacist) {
-				System.out.println(requestsForCurrentPharmacist.size());
 				requests.add(new PharmacistAbsenceRequestDto(absenceRequest.getEmployee().getName(), absenceRequest.getEmployee().getSurname(), absenceRequest.getStartDate(), absenceRequest.getEndDate(), absenceRequest.getReason(), absenceRequest.getId()));
 			}
 		}
