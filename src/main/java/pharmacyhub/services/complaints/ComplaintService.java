@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
@@ -56,8 +57,8 @@ public class ComplaintService {
 		return complaintDto;
 	}
 	
-	public List<ComplaintDto> getComplaints(){
-		return complaintRepository.findAll().stream()
+	public List<ComplaintDto> getComplaints(Pageable pageable){
+		return complaintRepository.findAll(pageable).stream()
 				.map(complaint -> toComplaintDto(complaint))
 				.collect(Collectors.toList());
 	}
