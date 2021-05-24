@@ -11,9 +11,12 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.Drug;
+import pharmacyhub.domain.DrugPrice;
 import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.DrugStock;
+import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DrugReservationDto;
@@ -53,31 +56,41 @@ public class DrugReservationService {
 	
 	@Autowired
 	private DrugRequestRepository drugRequestRepository;
+	
+	@Autowired
+	private PatientCategoryService patientCategoryService;
+	
+	@Autowired
+	private DrugStockService drugStockService;
 
 	public List<DrugReservation> findAll() {
 		return drugreservationRespository.findAll();
 	}
 	
-	private String saveSingleReservation(DrugReservationDto drugreservationDto, Patient patient) {
+	private String saveSingleReservation(DrugReservationDto drugreservationDto) {
 		String drugId = drugreservationDto.getDrugId();
 		String drugstoreId = drugreservationDto.getDrugstoreId();
 		String patientId = drugreservationDto.getPatientId();
 		String date = drugreservationDto.getDate();
 
+		
+		Drug drug = drugRepository.findById(drugId).orElse(null);
+		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
+		Patient patient = patientRepository.findById(patientId).orElse(null);
 		String confirmationCode = RadnomGeneratorUtil.generateDrugReservationCode(patient.getEmail());
 
-		DrugReservation drr = new DrugReservation(drugRepository.findById(drugId).orElse(null),
-				drugstoreRepository.findById(drugstoreId).orElse(null), 1,
-				patientRepository.findById(patientId).orElse(null), date);
+		
+		DrugReservation drr = new DrugReservation(drug, drugstore, 1, patient, date);
 		drr.setConfirmationCode(confirmationCode);
 
-		drugreservationRespository.save(drr);
+
 		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
 		for(DrugStock stok:drst) {
 			if(stok.getDrugstore().getId().equals(drugstoreId)) {
 				if(stok.getAmount()-1>=0) {
 					stok.setAmount(stok.getAmount() - 1);
 					drugstockRepository.save(stok);
+					break;
 				}
 				else {
 					//NAPRAVITI DRUG REQUEST !!!
@@ -87,6 +100,10 @@ public class DrugReservationService {
 				}
 			}
 		}
+		DrugPrice drugPrice = drugStockService.getLastPriceByDrugAndDrugStore(drug, drugstore);
+		drr.setPrice(patientCategoryService.getPriceWithDiscount(patient, drugPrice.getPrice()));
+		drugreservationRespository.save(drr);
+		
 		return drr.getConfirmationCode();
 	}
 	
@@ -97,15 +114,15 @@ public class DrugReservationService {
 		}
 		Patient patient = patientRepository.findById(drugReservationDtos.get(0).getPatientId()).orElse(null);
 		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
-			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto, patient);
+			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto);
 		}
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCodes);
 		return "Success!";
 	}
 
 	public String saveReservation(DrugReservationDto drugreservationDto) throws MessagingException {
+		String confirmationCode = saveSingleReservation(drugreservationDto);
 		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
-		String confirmationCode = saveSingleReservation(drugreservationDto, patient);
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
 		return "Success!";
 	}
@@ -158,6 +175,7 @@ public class DrugReservationService {
 			Date dateNow = new Date(System.currentTimeMillis()+24*60*60*1000);
 			if(dateRes.after(dateNow)) {
 				userNotificationService.sendPickUpConfirmation(dr.getPatient().getEmail(),dr.getDrug().getName(), new Date().toString());
+				patientCategoryService.updatePatientCategory(dr.getPatient(), dr.getDrug().getPoint());
 				return "Confirmation code is valid, drug is issued!";
 			}
 			return "Pick up date is in the next 24h! Drug not issued!";

@@ -19,8 +19,8 @@ import pharmacyhub.domain.users.Patient;
 @Entity
 @SQLDelete(sql = "UPDATE dermatologist_appointment SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class DermatologistAppointment extends BaseEntity{
-	
+public class DermatologistAppointment extends BaseEntity {
+
 	@ManyToOne
 	@JoinColumn(name = "dermatologist_fk", nullable = false)
 	private Dermatologist dermatologist;
@@ -32,24 +32,25 @@ public class DermatologistAppointment extends BaseEntity{
 	@Column(nullable = false)
 	private Time time;
 	@Column(nullable = false)
-	private int duration;	
+	private int duration;
 	@OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "patient_id",nullable = true)
-	private Patient patient; //bice patient objekat
+	@JoinColumn(name = "patient_id", nullable = true)
+	private Patient patient; // bice patient objekat
 	@Column(nullable = true)
-	private String appointmentReport; //bice appointmentReport objekat
+	private String appointmentReport; // bice appointmentReport objekat
 	@Column(nullable = false)
-	private int price;
+	private double price;
 	@Column(nullable = true)
 	private Time timeEnd;
 	@Column(nullable = true)
 	private boolean processed;
+
 	public DermatologistAppointment() {
-		
+
 	}
-	
+
 	public DermatologistAppointment(Dermatologist dermatologist, Drugstore drugstore, Date date, Time time,
-			int duration, Patient patient, String appointmentReport, int price, boolean processed) {
+			int duration, Patient patient, String appointmentReport, double price, boolean processed) {
 		super();
 		this.dermatologist = dermatologist;
 		this.drugstore = drugstore;
@@ -59,7 +60,7 @@ public class DermatologistAppointment extends BaseEntity{
 		this.patient = patient;
 		this.appointmentReport = appointmentReport;
 		this.price = price;
-		this.timeEnd = new Time(time.getTime()+(60000*this.duration));
+		this.timeEnd = new Time(time.getTime() + (60000 * this.duration));
 		this.processed = processed;
 	}
 
@@ -71,11 +72,11 @@ public class DermatologistAppointment extends BaseEntity{
 		this.processed = processed;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -142,6 +143,5 @@ public class DermatologistAppointment extends BaseEntity{
 	public void setTimeEnd(Time timeEnd) {
 		this.timeEnd = timeEnd;
 	}
-	
-	
+
 }

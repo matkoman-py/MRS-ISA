@@ -18,7 +18,6 @@ import pharmacyhub.dto.RemoveDermatologistDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
-import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 

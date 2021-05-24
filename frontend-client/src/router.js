@@ -7,6 +7,7 @@ import AdminDrugTable from "./components/tables/AdminDrugTable";
 import AdminUserTable from "./components/tables/AdminUserTable";
 import DrugOrderTable from "./components/tables/DrugOrderTable";
 import OfferTable from "./components/tables/OfferTable";
+import PatientCategoryTable from "./components/tables/PatientCategoryTable";
 import SupplierStockTable from "./components/tables/SupplierStockTable";
 import AbsenceRequest from "./views/AbsenceRequest";
 import AddDermatologistForm from "./views/AddDermatologistForm";
@@ -263,6 +264,11 @@ const routes = [
         path: "/my-drugstore",
         name: "MyDrugstore",
         component: MyDrugstore,
+    },
+    {
+        path: "/admin-patient-categories",
+        name: "Patient Categories",
+        component: PatientCategoryTable,
     },
 ];
 

@@ -42,6 +42,8 @@ public class Patient extends User {
 			   joinColumns = @JoinColumn(name = "patient_id"), 
 			   inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private PatientCategory category;
+	
+	
 
 	public Patient() {
 		super();

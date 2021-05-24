@@ -12,12 +12,9 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.PharmacistAppointment;
-import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Patient;
-import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DermatologistAppointmentPatientDto;
-import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
@@ -48,6 +45,10 @@ public class DermatologistAppointmentService {
     
     @Autowired
     private EmploymentRepository employmentRepository;
+    
+	@Autowired
+	private PatientCategoryService patientCategoryService;
+
 	
 	public List<DermatologistAppointment> findAll(){
 		return dermatologistAppointmentRepository.findAll();
@@ -104,7 +105,17 @@ public class DermatologistAppointmentService {
 			throw new Exception("Dermatologist is not working at that time.");
 		}
 		
-		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistAppointmentDto.getDermatologist(), drugstoreRepository.findById(dermatologistAppointmentDto.getDrugstoreId()).orElse(null), dermatologistAppointmentDto.getDate(), dermatologistAppointmentDto.getTime(), dermatologistAppointmentDto.getDuration(), null, null, dermatologistAppointmentDto.getPrice(),false));
+		return dermatologistAppointmentRepository.save(
+				new DermatologistAppointment(
+						dermatologistAppointmentDto.getDermatologist(),
+						drugstoreRepository.findById(dermatologistAppointmentDto.getDrugstoreId()).orElse(null), 
+						dermatologistAppointmentDto.getDate(), 
+						dermatologistAppointmentDto.getTime(), 
+						dermatologistAppointmentDto.getDuration(), 
+						null, 
+						null, 
+						dermatologistAppointmentDto.getPrice(),
+						false));
 	}
 	
 	public DermatologistAppointment saveWithPatient(DermatologistAppointmentPatientDto dermatologistAppointmentPatientDto) throws Exception {
@@ -211,8 +222,20 @@ public class DermatologistAppointmentService {
 			throw new Exception("Dermatologist is not working at that time.");
 		}
 		
+		Patient patient = patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null);
+		
 		userNotificationService.sendReservationConfirmation(patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null).getEmail(), "dermatologist");
-		return dermatologistAppointmentRepository.save(new DermatologistAppointment(dermatologistRepository.findById(dermatologistAppointmentPatientDto.getDermatologistId()).orElse(null), drugstoreRepository.findById(dermatologistAppointmentPatientDto.getDrugstoreId()).orElse(null), dermatologistAppointmentPatientDto.getDate(), dermatologistAppointmentPatientDto.getTime(), dermatologistAppointmentPatientDto.getDuration(), patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null), null, dermatologistAppointmentPatientDto.getPrice(),false));
+		return dermatologistAppointmentRepository.save(
+				new DermatologistAppointment(
+						dermatologistRepository.findById(dermatologistAppointmentPatientDto.getDermatologistId()).orElse(null), 
+						drugstoreRepository.findById(dermatologistAppointmentPatientDto.getDrugstoreId()).orElse(null), 
+						dermatologistAppointmentPatientDto.getDate(), 
+						dermatologistAppointmentPatientDto.getTime(), 
+						dermatologistAppointmentPatientDto.getDuration(), 
+						patient, 
+						null, 
+						patientCategoryService.getPriceWithDiscount(patient, dermatologistAppointmentPatientDto.getPrice()),
+						false));
 	}
 	
 	//List<DermatologistAppointment>
@@ -303,6 +326,7 @@ public class DermatologistAppointmentService {
 		da.setAppointmentReport(appointmentReport);
 		da.setProcessed(true);
 		dermatologistAppointmentRepository.save(da);
+		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "dermatologist");
 		return da;
 	}
 

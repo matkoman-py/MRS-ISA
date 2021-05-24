@@ -22,7 +22,6 @@ import pharmacyhub.dto.DermatologistOverviewDto;
 import pharmacyhub.dto.EmployeeOverviewDto;
 import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
-import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
