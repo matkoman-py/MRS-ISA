@@ -301,8 +301,8 @@ export default {
             var i;
             var x = 1;
             for (i = 0; i < this.drugReservations.length; i++) {
-                alert(this.drugReservations[i].drug);
-                alert(item.name);
+                //alert(this.drugReservations[i].drug);
+               // alert(item.name);
                 if (this.drugReservations[i].drug == item.name) {
                     //alert("JUPI");
                     this.canRate = true;

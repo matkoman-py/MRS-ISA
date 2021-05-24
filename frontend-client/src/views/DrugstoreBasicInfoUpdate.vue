@@ -13,7 +13,6 @@
                     >Cancel</b-button
                 >
             </router-link>
-            <router-link to="/my-drugstore">
                 <b-button
                     style="margin-top:40px; margin-bottom:40px; margin-left:100px;"
                     type="button"
@@ -22,7 +21,6 @@
                     size="lg"
                     >Save changes</b-button
                 >
-            </router-link>
         </div>
     </b-container>
 </template>
@@ -59,6 +57,7 @@ export default {
             this.$http
                 .put("http://localhost:8081/drugstores/update", this.drugstore)
                 .then(() => {
+                    this.$router.push('my-drugstore');
                     alert("You succesfully updated drugstore informations!");
                 })
                 .catch((error) => console.log(error));
