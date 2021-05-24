@@ -170,13 +170,15 @@ INSERT INTO public.order_stock VALUES ('82bd5b90-a753-11eb-bcbc-0242ac130002', f
 
 INSERT INTO public.order_stock VALUES ('87ac4d96-a753-11eb-bcbc-0242ac130002', false, 100, 'd7d2d173-9f15-4bd2-979c-6933746f6be4');
 INSERT INTO public.order_stock VALUES ('8b941ec0-a753-11eb-bcbc-0242ac130002', false, 1000, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49');
+INSERT INTO public.order_stock VALUES ('8b941ec0-a753-11eb-bcbc-0242ac130005', false, 255, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49');
 
 
 --
 -- Data for Name: drug-order; 
 --
 INSERT INTO public.drug_order VALUES ('c93555b4-a753-11eb-bcbc-0242ac130002', false, '2021-05-12', '12:00:00', 0, '2b7933e9-6523-463a-974b-ded43ad63843');
-INSERT INTO public.drug_order VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', false, '2021-04-22', '12:00:00', 1, '2bas33e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.drug_order VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', false, '2021-04-22', '12:00:00', 1, '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.drug_order VALUES ('85038a9a-a754-11eb-bcbc-0242ac130003', false, '2021-05-22', '12:00:00', 1, '2bas33e9-6523-463a-974b-ded43ad63843');
 
 --
 -- Data for Name: drug-order-stock; 
@@ -188,6 +190,15 @@ INSERT INTO public.drug_order_stock VALUES ('c93555b4-a753-11eb-bcbc-0242ac13000
 INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', '87ac4d96-a753-11eb-bcbc-0242ac130002');
 INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130002', '8b941ec0-a753-11eb-bcbc-0242ac130002');
 
+INSERT INTO public.drug_order_stock VALUES ('85038a9a-a754-11eb-bcbc-0242ac130003', '8b941ec0-a753-11eb-bcbc-0242ac130005');
+
+--
+-- Data for Name: offers; 
+--
+INSERT INTO public.offer VALUES ('1', false, '2021-05-28', '12:00:00', 2500, 1, '85038a9a-a754-11eb-bcbc-0242ac130002',  '4f3bgfza-fda8-4a50-aa05-be2be4fb2884');
+INSERT INTO public.offer VALUES ('2', false, '2021-05-29', '12:00:00', 5500, 1, '85038a9a-a754-11eb-bcbc-0242ac130002',  '4f3bgfza-fda8-4a50-aa05-be2be4fb2884');
+
+
 
 INSERT INTO public.loyalty_configuration VALUES (1, 10, 20);
 
@@ -197,5 +208,15 @@ INSERT INTO public.patient_category VALUES ('444038a9a-a754-11eb-bcbc-0242ac1300
 INSERT INTO public.patient_category VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 10, 'Silver', 500);
 INSERT INTO public.patient_category VALUES ('22038a9a-a754-11eb-bcbc-0242ac130002', false, 15, 'Gold', 700);
 
+-- Data for dermatology rates
+
+INSERT INTO public.rating_dermatologist VALUES ('1', false, 2, '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '8128d806-c29b-4086-aae6-877d17eeb6fa');
+INSERT INTO public.rating_dermatologist VALUES ('2', false, 5, '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '664783ca-84a1-4a2b-ae27-a2b820bc3c71');
+
+-- Data for pharmacy rates
+
+INSERT INTO public.rating_pharmacist VALUES ('3', false, 2, '8128d806-c29b-4086-aae6-877d17eeb6fa', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
+INSERT INTO public.rating_pharmacist VALUES ('4', false, 2, '664783ca-84a1-4a2b-ae27-a2b820bc3c71', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
+INSERT INTO public.rating_pharmacist VALUES ('5', false, 5, '393dca36-3778-4802-939c-de7a0a265c9d', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
 
 

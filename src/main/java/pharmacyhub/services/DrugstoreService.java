@@ -238,7 +238,8 @@ public class DrugstoreService {
 		}
 		double averageRate = 0;
 		if (numberOfRates > 0)
-			averageRate = ratesScore / numberOfRates;
+			averageRate = (double)ratesScore / (double)numberOfRates;
+		System.out.println(numberOfRates);
 		return new DrugstoreAverageRatingDto(averageRate, numberOfRates);
 	}
 }

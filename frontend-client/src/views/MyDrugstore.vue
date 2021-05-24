@@ -7,8 +7,8 @@
                     <p style="margin:20px"><b>Name</b>: {{drugstore.name}}</p>
                     <p style="margin:20px"><b>Address</b>: {{drugstore.location.address}}, {{drugstore.location.city}}, {{drugstore.location.country}}</p>
                     <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
-                    <p v-if="drugstore.averageRate != null" style="margin:20px"><b>Average rating</b>: {{ drugstore.averageRate }}(From {{drugstore.numberOfRates}} rates)</p>
-                    <p v-if="drugstore.averageRate == null" style="margin:20px"><b>Average rating</b>: There are currently no rates for your drugstore</p>
+                    <p v-if="averageRate != null" style="margin:20px"><b>Average rating</b>: {{ averageRate.toFixed(2) }} (From {{numberOfRates}} rates)</p>
+                    <p v-if="averageRate == null" style="margin:20px"><b>Average rating</b>: There are currently no rates for your drugstore</p>
                     <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
                     <p style="margin:20px"><b>Pharmacist appointment price</b>: {{drugstore.pharmacistAppointmentPrice}}</p>
                 </div>
@@ -37,7 +37,9 @@ export default {
     },
     data: function() {
       return {
-        drugstore: {}
+        drugstore: {},
+        averageRate:0,
+        numberOfRates:0
       }
     },
     methods: {
@@ -59,8 +61,8 @@ export default {
                     }
                 })
                 .then((response) => {
-                    this.drugstore.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
-                    this.drugstore.numberOfRates = response.data.numberOfRates;
+                    this.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
+                    this.numberOfRates = response.data.numberOfRates;
                 })
                 .catch((error) => console.log(error));
 

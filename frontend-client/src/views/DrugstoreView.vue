@@ -20,10 +20,10 @@
                     <p style="margin:20px">
                         <b>Description</b>: {{ drugstore.description }}
                     </p>
-                    <p v-if="drugstore.averageRate != null" style="margin:20px">
-                        <b>Average rating</b>: {{ drugstore.averageRate }}(From {{drugstore.numberOfRates}} rates)
+                    <p v-if="averageRate != null" style="margin:20px">
+                        <b>Average rating</b>: {{ averageRate.toFixed(2) }} (From {{numberOfRates}} rates)
                     </p>
-                    <p v-if="drugstore.averageRate == null" style="margin:20px">
+                    <p v-if="averageRate == null" style="margin:20px">
                         <b>Average rating</b>: There are currently no rates for this drugstore
                     </p>
                     <p style="margin:20px">
@@ -261,6 +261,8 @@ export default {
             dermatologists: [],
             pharmacists: [],
             date: "",
+            averageRate:0,
+            numberOfRates:0,
             pTableFields: [
                 {
                     key: "name",
@@ -518,9 +520,9 @@ export default {
                         drugstoreId: this.drugstore.id
                     }
                 })
-                .then((response) => {
-                    this.drugstore.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
-                    this.drugstore.numberOfRates = response.data.numberOfRates;
+                .then(response => {
+                    this.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
+                    this.numberOfRates = response.data.numberOfRates;
                 })
                 .catch((error) => console.log(error));
 

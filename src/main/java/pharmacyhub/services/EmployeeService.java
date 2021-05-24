@@ -245,7 +245,7 @@ public class EmployeeService {
 			}
 			double averageRate = 0;
 			if (numberOfRates > 0)
-				averageRate = ratesScore / numberOfRates;
+				averageRate = (double)ratesScore / (double)numberOfRates;
 			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), averageRate, numberOfRates, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
 		}
 		for (Employment e : dermatologistEmployments) {
@@ -259,7 +259,7 @@ public class EmployeeService {
 			}
 			double averageRate = 0;
 			if (numberOfRates > 0)
-				averageRate = ratesScore / numberOfRates;
+				averageRate = (double)ratesScore / (double)numberOfRates;
 			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), averageRate, numberOfRates, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
 		}
 		return employees;
@@ -295,7 +295,7 @@ public class EmployeeService {
 					}
 					double averageRate = 0;
 					if (numberOfRates > 0)
-						averageRate = ratesScore / numberOfRates;
+						averageRate = (double)ratesScore / (double)numberOfRates;
 					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), averageRate, numberOfRates, e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
 				}
 			}
@@ -313,7 +313,7 @@ public class EmployeeService {
 					}
 					double averageRate = 0;
 					if (numberOfRates > 0)
-						averageRate = ratesScore / numberOfRates;
+						averageRate = (double)ratesScore / (double)numberOfRates;
 					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), averageRate, numberOfRates, e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
 				}
 			}
