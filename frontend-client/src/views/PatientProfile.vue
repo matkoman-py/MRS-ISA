@@ -45,16 +45,18 @@
                                                 <label>Category</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <h6>
-                                                    {{ employee.category.name }}
-                                                </h6>
                                                 <h6
                                                     v-if="
                                                         employee.category ==
-                                                            null
+                                                            null ||
+                                                            employee.category ==
+                                                                undefined
                                                     "
                                                 >
                                                     Basic
+                                                </h6>
+                                                <h6 v-else>
+                                                    {{ employee.category.name }}
                                                 </h6>
                                             </div>
                                         </div>
