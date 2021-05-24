@@ -135,6 +135,9 @@
                     <router-link v-else-if="role == 'Patient'" to="/patient">{{
                         email
                     }}</router-link>
+                    <router-link v-else-if="role == 'DrugstoreAdmin'" to="/drugstore-administrator-profile">{{
+                        email
+                    }}</router-link>
                     <router-link v-else to="/">{{ email }}</router-link>
                 </b-navbar-brand>
                 <b-navbar-brand tag="h3" class="nav-link" v-on:click="logout">
