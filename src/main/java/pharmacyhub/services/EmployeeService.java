@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
+import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
@@ -20,8 +22,10 @@ import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.DermatologistOverviewDto;
 import pharmacyhub.dto.EmployeeOverviewDto;
+import pharmacyhub.dto.PharmacistAbsenceRequestDto;
 import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
+import pharmacyhub.repositories.AbsenceRequestRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
@@ -57,6 +61,9 @@ public class EmployeeService {
 	
 	@Autowired
 	private PharmacistAppointmentRepository pharmacistAppointmentRepository;
+	
+	@Autowired
+	private AbsenceRequestRepository abensceRequestRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -405,5 +412,19 @@ public class EmployeeService {
 			Dermatologist ph = dermatologistRepository.findById(employeeId).orElse(null);
 			return passwordEncoder.matches(passwordInput, ph.getPassword());
 		}
+	}
+
+	public List<PharmacistAbsenceRequestDto> getPharmacistRequests(String drugstoreId) {
+		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));	
+		System.out.println(pharmacists.size());
+		List<PharmacistAbsenceRequestDto> requests = new ArrayList<PharmacistAbsenceRequestDto>();
+		for (Pharmacist pharmacist : pharmacists) {
+			List<AbsenceRequest> requestsForCurrentPharmacist = abensceRequestRepository.findByEmployeeAndStatus(pharmacist, AbsenceRequestStatus.Pending);
+			for (AbsenceRequest absenceRequest : requestsForCurrentPharmacist) {
+				System.out.println(requestsForCurrentPharmacist.size());
+				requests.add(new PharmacistAbsenceRequestDto(absenceRequest.getEmployee().getName(), absenceRequest.getEmployee().getSurname(), absenceRequest.getStartDate(), absenceRequest.getEndDate(), absenceRequest.getReason(), absenceRequest.getId()));
+			}
+		}
+		return requests;
 	}
 }

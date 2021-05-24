@@ -21,6 +21,7 @@ import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.DermatologistOverviewDto;
 import pharmacyhub.dto.EmployeeOverviewDto;
+import pharmacyhub.dto.PharmacistAbsenceRequestDto;
 import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
 import pharmacyhub.services.EmployeeService;
@@ -35,6 +36,11 @@ public class EmployeeController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<EmployeeOverviewDto>> getAllEmployeesOfDrugstore(@RequestParam(value = "drugstoreAdminId") String drugstoreAdminId) {
 		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstore(drugstoreAdminId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="pharmacistRequests", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PharmacistAbsenceRequestDto>> getPharmacistRequests(@RequestParam(value = "drugstoreId") String drugstoreId) {
+		return new ResponseEntity<>(employeeService.getPharmacistRequests(drugstoreId), HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/search", produces = MediaType.APPLICATION_JSON_VALUE)
