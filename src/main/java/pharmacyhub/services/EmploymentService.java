@@ -98,7 +98,7 @@ public class EmploymentService {
 		List<Employment> employments = employmentRepository.findByDrugstoreId(drugstoreId);
 		List<EmploymentDto> employmentInfo = new ArrayList<EmploymentDto>();
 		for (Employment e : employments) {
-			employmentInfo.add(new EmploymentDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getWorkingHoursFrom(), e.getWorkingHoursTo()));
+			employmentInfo.add(new EmploymentDto(e.getDermatologist().getId(),e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getWorkingHoursFrom(), e.getWorkingHoursTo()));
 		}
 		return employmentInfo;
 	}
@@ -107,7 +107,7 @@ public class EmploymentService {
 		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
 		List<EmploymentDto> employmentInfo = new ArrayList<EmploymentDto>();
 		for (Pharmacist p : pharmacists) {
-			employmentInfo.add(new EmploymentDto(p.getName(), p.getSurname(), p.getWorkingHoursFrom(), p.getWorkingHoursTo()));
+			employmentInfo.add(new EmploymentDto(p.getId(),p.getName(), p.getSurname(), p.getWorkingHoursFrom(), p.getWorkingHoursTo()));
 		}
 		return employmentInfo;
 	}

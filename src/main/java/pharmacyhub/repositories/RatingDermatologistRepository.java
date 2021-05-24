@@ -11,4 +11,5 @@ import pharmacyhub.domain.users.Patient;
 public interface RatingDermatologistRepository extends JpaRepository<RatingDermatologist, String> {
 	RatingDermatologist findByDermatologistAndPatient(Patient patient, Dermatologist dermatologist);
 	List<RatingDermatologist> findByDermatologist(Dermatologist dermatologist);
+	RatingDermatologist findByDermatologistAndPatient(Dermatologist dermatologist, Patient patient);
 }

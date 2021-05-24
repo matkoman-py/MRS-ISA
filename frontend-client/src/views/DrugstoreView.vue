@@ -160,7 +160,7 @@
             </b-card>
         </div>
         <b-modal id="my-modal1" title="Rate drugstore" hide-footer>
-            <b-form @submit="saveRating">
+            <b-form @submit="saveRatingDrugstore(item)">
                 <label v-if="canRate" style="margin:20px"
                     ><b>Rate us: </b></label
                 >
@@ -187,7 +187,7 @@
         </b-modal>
 
         <b-modal id="my-modalP" title="Rate pharmacist" hide-footer>
-            <b-form @submit="saveRating">
+            <b-form @submit="saveRatingPharmacist(item)">
                 <b-form-rating
                     v-if="canRate"
                     id="rate"
@@ -209,7 +209,7 @@
         </b-modal>
 
         <b-modal id="my-modalD" title="Rate dermatologist" hide-footer>
-            <b-form @submit="saveRating">
+            <b-form @submit="saveRatingDermatologist(item)">
                 <b-form-rating
                     v-if="canRate"
                     id="rate"
@@ -247,6 +247,8 @@ export default {
     },
     data: function() {
         return {
+            saveRatingPharmacistId: '',
+            saveRatingDermatologistId: '',
             dermatologistappointments: [],
             pharmacistappointments: [],
             drugReservations: [],
@@ -298,8 +300,44 @@ export default {
         };
     },
     methods: {
-        saveRating() {
-            return true;
+        saveRatingPharmacist() {
+                this.$http.get(
+                    "http://localhost:8081/rating-pharmacist/saveRating",
+                    {
+                        params: {
+                            patientId: this.user.id,
+                            pharmacistId: this.saveRatingPharmacistId,
+                            rating: this.userRating,
+                        },
+                    }
+                )
+                .catch((error) => console.log(error));
+        },
+        saveRatingDermatologist() {
+                this.$http.get(
+                    "http://localhost:8081/rating-dermatologist/saveRating",
+                    {
+                        params: {
+                            patientId: this.user.id,
+                            dermatologistId: this.saveRatingDermatologistId,
+                            rating: this.userRating,
+                        },
+                    }
+                )
+                .catch((error) => console.log(error));
+        },
+        saveRatingDrugstore() {
+            this.$http.get(
+                    "http://localhost:8081/rating-drugsore/saveRating",
+                    {
+                        params: {
+                            patientId: this.user.id,
+                            drugstoreId: this.currentDrugstoreId,
+                            rating: this.userRating,
+                        },
+                    }
+                )
+                .catch((error) => console.log(error));
         },
         showModal() {
             if (this.user == null) {
@@ -323,6 +361,7 @@ export default {
             this.$root.$emit("bv::show::modal", "my-modal1");
         },
         showModalP(item) {
+            this.saveRatingPharmacistId = item.id;
             if (this.user == null) {
                 alert("You must be logged in to rate a pharmacist!");
                 return;
@@ -347,6 +386,7 @@ export default {
             this.$root.$emit("bv::show::modal", "my-modalP");
         },
         showModalD(item) {
+            this.saveRatingDermatologistId = item.id;
             if (this.user == null) {
                 //alert("You must be logged in to rate a pharmacist!");
                 return;
@@ -497,6 +537,7 @@ export default {
                 )
                 .then((response) => {
                     this.dermatologists = response.data.map((employment) => ({
+                        id: employment.id,
                         name: employment.name,
                         surname: employment.surname,
                         worksFrom: employment.workingHoursFrom,
@@ -517,6 +558,7 @@ export default {
                 )
                 .then((response) => {
                     this.pharmacists = response.data.map((employment) => ({
+                        id: employment.id,
                         name: employment.name,
                         surname: employment.surname,
                         worksFrom: employment.workingHoursFrom,
