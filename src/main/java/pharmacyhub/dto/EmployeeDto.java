@@ -5,7 +5,7 @@ import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
 public class EmployeeDto {
-	
+
 	private String email;
 	private String name;
 	private String surname;

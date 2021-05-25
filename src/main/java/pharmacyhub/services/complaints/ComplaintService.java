@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.DermatologistAppointment;
+import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.complaints.Complaint;
 import pharmacyhub.domain.complaints.Reply;
 import pharmacyhub.domain.enums.ComplaintType;
@@ -19,7 +22,10 @@ import pharmacyhub.dto.complaint.MakeComplaintDto;
 import pharmacyhub.dto.complaint.MakeReplyDto;
 import pharmacyhub.dto.complaint.ReplyDto;
 import pharmacyhub.repositories.ComplaintRepository;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
+import pharmacyhub.repositories.DrugReservationRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.ReplyRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.UserRepository;
@@ -41,6 +47,15 @@ public class ComplaintService {
 	
 	@Autowired
 	private DrugstoreRepository drugstoreRepository;
+
+	@Autowired
+	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
+	
+	@Autowired
+	private PharmacistAppointmentRepository pharmacistAppointmentRepository;
+	
+	@Autowired
+	private DrugReservationRepository drugReservationRepository;
 	
 	private ComplaintDto toComplaintDto(Complaint complaint) {
 		ComplaintDto complaintDto = new ComplaintDto();
@@ -73,7 +88,28 @@ public class ComplaintService {
 				.collect(Collectors.toList());
 	}
 	
-	public ComplaintDto makeComplaint(MakeComplaintDto makeComplaintDto) {
+	public boolean patientHasDermatologistAppointment(String patientId, String dermatologistId) {
+		List<DermatologistAppointment> appointments = dermatologistAppointmentRepository.findByPatientIdAndDermatologistIdAndProcessedTrue(patientId, dermatologistId);
+		return appointments.size() > 0;
+	}
+	
+	public boolean patientHasPharmacistAppointment(String patientId, String pharmacistId) {
+		List<PharmacistAppointment> appointments = pharmacistAppointmentRepository.findByPatientIdAndPharmacistIdAndProcessedTrue(patientId, pharmacistId);
+		return appointments.size() > 0;
+	}
+	
+	public boolean patientHasPickedUpDrugInDrugsotre(String patientId, String drugstoreId) {
+		List<DrugReservation> drugReservations = drugReservationRepository.findByDrugstoreIdAndPatientIdAndIssuedTrue(drugstoreId, patientId);
+		return drugReservations.size() > 0;
+	}
+	
+	public boolean patientHasInteractionWithDrugstore(String patientId, String drugstoreId) {
+		boolean hasPharmacistAppointment = pharmacistAppointmentRepository.findByPatientIdAndPharmacistDrugstoreIdAndProcessedTrue(patientId, drugstoreId).size() > 0;
+		boolean hasDermatologistAppointment = dermatologistAppointmentRepository.findByPatientIdAndDrugstoreIdAndProcessedTrue(patientId, drugstoreId).size() > 0;
+		return hasPharmacistAppointment || hasDermatologistAppointment || patientHasPickedUpDrugInDrugsotre(patientId, drugstoreId);
+	}
+	
+	public ComplaintDto makeComplaint(MakeComplaintDto makeComplaintDto) throws Exception {
 				
 		Patient patient = patientRepository.findById(makeComplaintDto.getPatientId()).orElse(null);
 		Drugstore drugstore = drugstoreRepository.findById(makeComplaintDto.getDrugstoreId()).orElse(null);
@@ -84,9 +120,27 @@ public class ComplaintService {
 		complaint.setType(makeComplaintDto.getType());
 		complaint.setText(makeComplaintDto.getText());
 		
+		if(patient == null) {
+			throw new Exception("Given patient doesn't exist!");
+		}
+		
+		if(drugstore == null) {
+			throw new Exception("Given drugstore doesn't exist!");
+		}
+		
 		if(complaint.getType() != ComplaintType.Drugstore) {
 			User employee = userRepository.findById(makeComplaintDto.getEmployeeId()).orElse(null);
 			complaint.setEmployee(employee);
+			
+			if(complaint.getType() == ComplaintType.Dermatologist && !patientHasDermatologistAppointment(patient.getId(), employee.getId())) {
+				throw new Exception("Patient has no appoiontments with given dermatologist!");
+			}
+			
+			if(complaint.getType() == ComplaintType.Pharmacist && !patientHasPharmacistAppointment(patient.getId(), employee.getId())) {
+				throw new Exception("Patient has no appoiontments with given pharmacist!");
+			}
+		}else if(!patientHasInteractionWithDrugstore(makeComplaintDto.getPatientId(), makeComplaintDto.getDrugstoreId())) {
+			throw new Exception("Patient has no interactions with given drugstore!");
 		}
 		
 		complaint = complaintRepository.save(complaint);

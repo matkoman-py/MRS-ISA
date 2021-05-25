@@ -92,6 +92,22 @@
                                 Rate
                             </b-button>
                         </template>
+                        <template #cell(complain)="row">
+                            <b-button
+                                variant="outline-hub"
+                                v-if="row.item"
+                                size="sm"
+                                @click="
+                                    showComplaintModal(
+                                        'Dermatologist',
+                                        row.item
+                                    )
+                                "
+                                class="mr-1"
+                            >
+                                Complain
+                            </b-button>
+                        </template>
                     </b-table>
 
                     <p v-if="dermatologists.length == 0">
@@ -120,6 +136,19 @@
                                 class="mr-1"
                             >
                                 Rate
+                            </b-button>
+                        </template>
+                        <template #cell(complain)="row">
+                            <b-button
+                                variant="outline-hub"
+                                v-if="row.item"
+                                size="sm"
+                                @click="
+                                    showComplaintModal('Pharmacist', row.item)
+                                "
+                                class="mr-1"
+                            >
+                                Complain
                             </b-button>
                         </template>
                     </b-table>
@@ -243,6 +272,7 @@
         >
             <b-form @submit="saveRating">
                 <make-complaint-form
+                    v-on:complaint-success="handleComplaintSuccess"
                     :complaintForm="complaintForm"
                 ></make-complaint-form>
             </b-form>
@@ -296,6 +326,10 @@ export default {
                     key: "rateActionP",
                     label: "",
                 },
+                {
+                    key: "complain",
+                    label: "",
+                },
             ],
             dTableFields: [
                 {
@@ -312,6 +346,10 @@ export default {
                 },
                 {
                     key: "rateActionD",
+                    label: "",
+                },
+                {
+                    key: "complain",
                     label: "",
                 },
             ],
@@ -398,11 +436,21 @@ export default {
             if (x == 1) this.canRate = false;
             this.$root.$emit("bv::show::modal", "my-modalD");
         },
-        showComplaintModal(complaintType) {
+        showComplaintModal(complaintType, employee) {
             this.complaintForm.type = complaintType;
             this.complaintForm.drugstoreId = this.drugstore.id;
             this.complaintForm.patientId = this.user.id;
+
+            if (complaintType != "Drugstore") {
+                this.complaintForm.employeeId = employee.employeeId;
+            }
+
+            console.log(employee);
             this.$root.$emit("bv::show::modal", "complaintModal");
+        },
+        handleComplaintSuccess: function() {
+            console.log("neeeeeeeee");
+            this.$root.$emit("bv::hide::modal", "complaintModal");
         },
         getAppointments: function() {
             //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
@@ -517,6 +565,7 @@ export default {
                 )
                 .then((response) => {
                     this.dermatologists = response.data.map((employment) => ({
+                        employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
                         worksFrom: employment.workingHoursFrom,
@@ -537,6 +586,7 @@ export default {
                 )
                 .then((response) => {
                     this.pharmacists = response.data.map((employment) => ({
+                        employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
                         worksFrom: employment.workingHoursFrom,

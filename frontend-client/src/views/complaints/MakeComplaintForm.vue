@@ -36,8 +36,10 @@ export default {
                 .post("http://localhost:8081/complaints/", this.complaintForm)
                 .then((response) => {
                     alert("Success!");
+                    this.$emit("complaint-success");
                     console.log(response);
-                });
+                })
+                .catch(() => this.$toastr.e("You can't complain about this!"));
         },
     },
     mounted: function() {},
