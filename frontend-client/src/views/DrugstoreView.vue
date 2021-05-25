@@ -51,6 +51,14 @@
                     >
                         Rate drugstore
                     </b-button>
+                    <b-button
+                        style="margin:20px"
+                        variant="outline-hub"
+                        @click="showComplaintModal('Drugstore')"
+                        class="mr-1"
+                    >
+                        Make complaint
+                    </b-button>
                 </div>
             </b-col>
         </b-row>
@@ -226,6 +234,19 @@
                 <b-button type="submit" variant="outline-hub">Save</b-button>
             </b-form>
         </b-modal>
+
+        <b-modal
+            id="complaintModal"
+            title="Make complaint"
+            size="lg"
+            hide-footer
+        >
+            <b-form @submit="saveRating">
+                <make-complaint-form
+                    :complaintForm="complaintForm"
+                ></make-complaint-form>
+            </b-form>
+        </b-modal>
     </b-container>
 </template>
 
@@ -233,6 +254,7 @@
 //Name Surname Works From Works To
 import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable";
 import { mapState } from "vuex";
+import MakeComplaintForm from "./complaints/MakeComplaintForm.vue";
 export default {
     computed: {
         ...mapState({
@@ -241,6 +263,7 @@ export default {
     },
     components: {
         DrugInDrugstoreTable,
+        MakeComplaintForm,
     },
     data: function() {
         return {
@@ -292,6 +315,13 @@ export default {
                     label: "",
                 },
             ],
+            complaintForm: {
+                drugstoreId: "",
+                employeeId: "",
+                type: "",
+                patientId: "",
+                text: "",
+            },
         };
     },
     methods: {
@@ -367,6 +397,12 @@ export default {
             }
             if (x == 1) this.canRate = false;
             this.$root.$emit("bv::show::modal", "my-modalD");
+        },
+        showComplaintModal(complaintType) {
+            this.complaintForm.type = complaintType;
+            this.complaintForm.drugstoreId = this.drugstore.id;
+            this.complaintForm.patientId = this.user.id;
+            this.$root.$emit("bv::show::modal", "complaintModal");
         },
         getAppointments: function() {
             //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"

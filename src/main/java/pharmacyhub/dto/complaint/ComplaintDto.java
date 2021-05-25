@@ -1,6 +1,6 @@
 package pharmacyhub.dto.complaint;
 
-import pharmacyhub.domain.users.ComplaintType;
+import pharmacyhub.domain.enums.ComplaintType;
 
 public class ComplaintDto {
 

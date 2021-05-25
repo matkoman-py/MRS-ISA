@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.dto.complaint.ComplaintDto;
 import pharmacyhub.dto.complaint.MakeComplaintDto;
+import pharmacyhub.dto.complaint.MakeReplyDto;
+import pharmacyhub.dto.complaint.ReplyDto;
 import pharmacyhub.services.complaints.ComplaintService;
 
 @Controller
@@ -37,5 +40,15 @@ public class ComplaintController {
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ComplaintDto> makeComplaint(@RequestBody MakeComplaintDto makeComplaintDto) {
 		return new ResponseEntity<>(complaintService.makeComplaint(makeComplaintDto), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/reply/{complaintId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ReplyDto> getReply(@PathVariable("complaintId") String complaintId) throws Exception {
+		return new ResponseEntity<>(complaintService.getReply(complaintId), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/reply/{complaintId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ReplyDto> getReply(@RequestBody MakeReplyDto makeReplyDto) throws Exception {
+		return new ResponseEntity<>(complaintService.makeReply(makeReplyDto), HttpStatus.OK);
 	}
 }

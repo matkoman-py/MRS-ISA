@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 
 import pharmacyhub.domain.BaseEntity;
 import pharmacyhub.domain.Drugstore;
-import pharmacyhub.domain.users.ComplaintType;
+import pharmacyhub.domain.enums.ComplaintType;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
 
@@ -21,7 +21,7 @@ public class Complaint extends BaseEntity {
 	private Patient patient;
 
 	@ManyToOne
-	@JoinColumn(name = "employee_fk", nullable = false)
+	@JoinColumn(name = "employee_fk", nullable = true)
 	private User employee;
 
 	@ManyToOne

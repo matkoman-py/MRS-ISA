@@ -9,13 +9,18 @@ import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.complaints.Complaint;
-import pharmacyhub.domain.users.ComplaintType;
+import pharmacyhub.domain.complaints.Reply;
+import pharmacyhub.domain.enums.ComplaintType;
+import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.complaint.ComplaintDto;
 import pharmacyhub.dto.complaint.MakeComplaintDto;
+import pharmacyhub.dto.complaint.MakeReplyDto;
+import pharmacyhub.dto.complaint.ReplyDto;
 import pharmacyhub.repositories.ComplaintRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.ReplyRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.UserRepository;
 
@@ -24,6 +29,9 @@ public class ComplaintService {
 
 	@Autowired
 	private ComplaintRepository complaintRepository;
+	
+	@Autowired
+	private ReplyRepository replyRepository;
 
 	@Autowired
 	private PatientRepository patientRepository;
@@ -40,6 +48,8 @@ public class ComplaintService {
 		complaintDto.setId(complaint.getId());
 		complaintDto.setPatientId(complaint.getPatient().getEmail());
 		complaintDto.setPatientEmail(complaint.getPatient().getEmail());
+		complaintDto.setText(complaint.getText());
+		complaintDto.setType(complaint.getType());
 		
 		switch(complaint.getType()) {
 		case Drugstore:
@@ -82,5 +92,36 @@ public class ComplaintService {
 		complaint = complaintRepository.save(complaint);
 		
 		return toComplaintDto(complaint);
+	}
+
+	
+	public ReplyDto getReply(String complaintId) throws Exception {
+		Complaint complaint = complaintRepository.findById(complaintId).orElse(null);
+		
+		if(complaint == null) {
+			throw new Exception("The given complaint doesn't exist!");
+		}
+		Reply reply = replyRepository.findByComplaint(complaint);
+		return (reply != null) ? new ReplyDto(reply) : null;
+	}
+	
+	public ReplyDto makeReply(MakeReplyDto makeReplyDto) throws Exception {
+		Reply alreadyGivenReply = replyRepository.findById(makeReplyDto.getComplaintId()).orElse(null);
+		Complaint complaint = complaintRepository.findById(makeReplyDto.getComplaintId()).orElse(null);
+		User user = userRepository.findById(makeReplyDto.getAdminId()).orElse(null);
+		
+		if(user == null || user.getType() != UserType.SystemAdmin) {
+			throw new Exception("The given system admin doesn't exist!");
+		}
+		
+		if(complaint == null) {
+			throw new Exception("The given complaint doesn't exist!");
+		}
+		
+		if (alreadyGivenReply != null) {
+			throw new Exception("Reply already given!");
+		}
+		
+		return new ReplyDto(replyRepository.save(new Reply(complaint, user, makeReplyDto.getText())));
 	}
 }

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.complaints.Complaint;
-import pharmacyhub.domain.users.ComplaintType;
+import pharmacyhub.domain.enums.ComplaintType;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
 
