@@ -35,11 +35,11 @@ public class DrugOrder extends BaseEntity {
 
 	@ManyToOne
 	private Drugstore drugstore;
-	
+
 	public DrugOrder() {
-		
+
 	}
-	
+
 	public DrugOrder(List<OrderStock> stock, Date deadlineDate, Time deadlineTime, OrderStatus status,
 			Drugstore drugstore) {
 		super();

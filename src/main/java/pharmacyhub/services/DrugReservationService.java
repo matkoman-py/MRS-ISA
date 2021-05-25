@@ -171,9 +171,10 @@ public class DrugReservationService {
 	public String issueReservation(String reservationId,String confirmationCode) throws ParseException, MessagingException {
 		DrugReservation dr = drugreservationRespository.findById(reservationId).orElse(null);
 		if(dr.getConfirmationCode().equals(confirmationCode)) {
-			Date dateRes=new SimpleDateFormat("yyyy-MM-dd").parse(dr.getDate());
+			Date dateRes = new SimpleDateFormat("yyyy-MM-dd").parse(dr.getDate());
 			Date dateNow = new Date(System.currentTimeMillis()+24*60*60*1000);
 			if(dateRes.after(dateNow)) {
+				dr.setIssued(true);
 				userNotificationService.sendPickUpConfirmation(dr.getPatient().getEmail(),dr.getDrug().getName(), new Date().toString());
 				patientCategoryService.updatePatientCategory(dr.getPatient(), dr.getDrug().getPoint());
 				return "Confirmation code is valid, drug is issued!";

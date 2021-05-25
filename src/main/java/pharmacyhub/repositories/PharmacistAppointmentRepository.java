@@ -1,15 +1,12 @@
 package pharmacyhub.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-
 import pharmacyhub.domain.PharmacistAppointment;
-import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Pharmacist;
 
 public interface PharmacistAppointmentRepository extends JpaRepository<PharmacistAppointment, String> {
@@ -18,4 +15,8 @@ public interface PharmacistAppointmentRepository extends JpaRepository<Pharmacis
 	List<PharmacistAppointment> findByPharmacistAndProcessed(Pharmacist pharmacist, boolean processed);
 	@Transactional
 	void deleteByPharmacist(Pharmacist pharmacist);
+	List<PharmacistAppointment> findByPatientIdAndPharmacistIdAndProcessedTrue(String patientId, String pharmacistId);
+	List<PharmacistAppointment> findByPatientIdAndPharmacistDrugstoreIdAndProcessedTrue(String patientId, String drugstoreId);
+
+
 }

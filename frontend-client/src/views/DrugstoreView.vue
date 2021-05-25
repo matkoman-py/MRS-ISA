@@ -54,6 +54,14 @@
                     >
                         Rate drugstore
                     </b-button>
+                    <b-button
+                        style="margin:20px"
+                        variant="outline-hub"
+                        @click="showComplaintModal('Drugstore')"
+                        class="mr-1"
+                    >
+                        Make complaint
+                    </b-button>
                 </div>
             </b-col>
         </b-row>
@@ -87,6 +95,22 @@
                                 Rate
                             </b-button>
                         </template>
+                        <template #cell(complain)="row">
+                            <b-button
+                                variant="outline-hub"
+                                v-if="row.item"
+                                size="sm"
+                                @click="
+                                    showComplaintModal(
+                                        'Dermatologist',
+                                        row.item
+                                    )
+                                "
+                                class="mr-1"
+                            >
+                                Complain
+                            </b-button>
+                        </template>
                     </b-table>
 
                     <p v-if="dermatologists.length == 0">
@@ -115,6 +139,19 @@
                                 class="mr-1"
                             >
                                 Rate
+                            </b-button>
+                        </template>
+                        <template #cell(complain)="row">
+                            <b-button
+                                variant="outline-hub"
+                                v-if="row.item"
+                                size="sm"
+                                @click="
+                                    showComplaintModal('Pharmacist', row.item)
+                                "
+                                class="mr-1"
+                            >
+                                Complain
                             </b-button>
                         </template>
                     </b-table>
@@ -229,6 +266,20 @@
                 <b-button type="submit" variant="outline-hub">Save</b-button>
             </b-form>
         </b-modal>
+
+        <b-modal
+            id="complaintModal"
+            title="Make complaint"
+            size="lg"
+            hide-footer
+        >
+            <b-form @submit="saveRating">
+                <make-complaint-form
+                    v-on:complaint-success="handleComplaintSuccess"
+                    :complaintForm="complaintForm"
+                ></make-complaint-form>
+            </b-form>
+        </b-modal>
     </b-container>
 </template>
 
@@ -236,6 +287,7 @@
 //Name Surname Works From Works To
 import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable";
 import { mapState } from "vuex";
+import MakeComplaintForm from "./complaints/MakeComplaintForm.vue";
 export default {
     computed: {
         ...mapState({
@@ -244,6 +296,7 @@ export default {
     },
     components: {
         DrugInDrugstoreTable,
+        MakeComplaintForm,
     },
     data: function() {
         return {
@@ -280,6 +333,10 @@ export default {
                     key: "rateActionP",
                     label: "",
                 },
+                {
+                    key: "complain",
+                    label: "",
+                },
             ],
             dTableFields: [
                 {
@@ -298,7 +355,18 @@ export default {
                     key: "rateActionD",
                     label: "",
                 },
+                {
+                    key: "complain",
+                    label: "",
+                },
             ],
+            complaintForm: {
+                drugstoreId: "",
+                employeeId: "",
+                type: "",
+                patientId: "",
+                text: "",
+            },
         };
     },
     methods: {
@@ -363,7 +431,7 @@ export default {
             this.$root.$emit("bv::show::modal", "my-modal1");
         },
         showModalP(item) {
-            this.saveRatingPharmacistId = item.id;
+            this.saveRatingPharmacistId = item.employeeId;
             if (this.user == null) {
                 alert("You must be logged in to rate a pharmacist!");
                 return;
@@ -388,7 +456,7 @@ export default {
             this.$root.$emit("bv::show::modal", "my-modalP");
         },
         showModalD(item) {
-            this.saveRatingDermatologistId = item.id;
+            this.saveRatingDermatologistId = item.employeeId;
             if (this.user == null) {
                 //alert("You must be logged in to rate a pharmacist!");
                 return;
@@ -412,6 +480,22 @@ export default {
             }
             if (x == 1) this.canRate = false;
             this.$root.$emit("bv::show::modal", "my-modalD");
+        },
+        showComplaintModal(complaintType, employee) {
+            this.complaintForm.type = complaintType;
+            this.complaintForm.drugstoreId = this.drugstore.id;
+            this.complaintForm.patientId = this.user.id;
+
+            if (complaintType != "Drugstore") {
+                this.complaintForm.employeeId = employee.employeeId;
+            }
+
+            console.log(employee);
+            this.$root.$emit("bv::show::modal", "complaintModal");
+        },
+        handleComplaintSuccess: function() {
+            console.log("neeeeeeeee");
+            this.$root.$emit("bv::hide::modal", "complaintModal");
         },
         getAppointments: function() {
             //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
@@ -539,7 +623,7 @@ export default {
                 )
                 .then((response) => {
                     this.dermatologists = response.data.map((employment) => ({
-                        id: employment.id,
+                        employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
                         worksFrom: employment.workingHoursFrom,
@@ -560,7 +644,7 @@ export default {
                 )
                 .then((response) => {
                     this.pharmacists = response.data.map((employment) => ({
-                        id: employment.id,
+                        employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
                         worksFrom: employment.workingHoursFrom,

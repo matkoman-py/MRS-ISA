@@ -208,6 +208,9 @@ INSERT INTO public.patient_category VALUES ('444038a9a-a754-11eb-bcbc-0242ac1300
 INSERT INTO public.patient_category VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 10, 'Silver', 500);
 INSERT INTO public.patient_category VALUES ('22038a9a-a754-11eb-bcbc-0242ac130002', false, 15, 'Gold', 700);
 
+INSERT INTO public.complaint VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
+INSERT INTO public.complaint VALUES ('11038a9a-a754-11eb-bcbc-0242ac130002', false, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
+
 -- Data for dermatology rates
 
 INSERT INTO public.rating_dermatologist VALUES ('1', false, 2, '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '8128d806-c29b-4086-aae6-877d17eeb6fa');
@@ -219,4 +222,4 @@ INSERT INTO public.rating_pharmacist VALUES ('3', false, 2, '8128d806-c29b-4086-
 INSERT INTO public.rating_pharmacist VALUES ('4', false, 2, '664783ca-84a1-4a2b-ae27-a2b820bc3c71', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
 INSERT INTO public.rating_pharmacist VALUES ('5', false, 5, '393dca36-3778-4802-939c-de7a0a265c9d', 'ccb953a7-d244-48bb-8627-4b2437491dc1');
 
-
+INSERT INTO public.reply VALUES ('99038a9a-a754-11eb-bcbc-0242ac130002', false, 'Uf nzm sta da ti kazem brate', '33038a9a-a754-11eb-bcbc-0242ac130002', '2d2eacbf-fda8-4a50-aa05-be2be4fb2884');

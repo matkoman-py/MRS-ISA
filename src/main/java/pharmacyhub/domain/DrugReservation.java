@@ -36,6 +36,8 @@ public class DrugReservation extends BaseEntity {
 	private String confirmationCode;
 	@Column
 	private double price;
+	@Column(nullable = false)
+	private boolean issued;
 	@Column
 	private boolean eReceipt;
 
@@ -50,6 +52,7 @@ public class DrugReservation extends BaseEntity {
 		this.amount = amount;
 		this.patient = patient;
 		this.date = date;
+		this.issued = false;
 		this.eReceipt = eReceipt;
 	}
 
@@ -63,6 +66,7 @@ public class DrugReservation extends BaseEntity {
 		this.date = date;
 		this.confirmationCode = confirmationCode;
 		this.price = price;
+		this.issued = false;
 	}
 
 	public boolean iseReceipt() {
@@ -129,4 +133,13 @@ public class DrugReservation extends BaseEntity {
 		this.price = price;
 	}
 
+	public boolean isIssued() {
+		return issued;
+	}
+
+	public void setIssued(boolean issued) {
+		this.issued = issued;
+	}
+
+	
 }

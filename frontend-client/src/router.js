@@ -16,6 +16,7 @@ import AddPharmacistForm from "./views/AddPharmacistForm";
 import AppointmentDermatologist from "./views/AppointmentDermatologist";
 import AppointmentPharmacist from "./views/AppointmentPharmacist";
 import AppointmentsOverview from "./views/AppointmentsOverview";
+import AdminComplaintsView from "./views/complaints/AdminComplaintsView";
 import CreateDrugOrder from "./views/CreateDrugOrder";
 import DermatologistAppointments from "./views/DermatologistAppointments";
 import DermatologistOverview from "./views/DermatologistOverview";
@@ -273,6 +274,11 @@ const routes = [
         component: PatientCategoryTable,
     },
     {
+        path: "/admin-complaints",
+        name: "Admin Complaints View",
+        component: AdminComplaintsView,
+    },
+    {        
         path: "/pharmacist-absence-requests",
         name: "PharmacistAbsenceRequests",
         component: PharmacistAbsenceRequests,

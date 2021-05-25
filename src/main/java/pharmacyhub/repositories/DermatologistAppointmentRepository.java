@@ -1,14 +1,13 @@
 package pharmacyhub.repositories;
 
-import javax.transaction.Transactional;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.users.Dermatologist;
-
-import pharmacyhub.domain.Drug;
 
 public interface DermatologistAppointmentRepository  extends JpaRepository<DermatologistAppointment, String> {
 	DermatologistAppointment findByDrugstoreId(String drugstoreId);
@@ -17,4 +16,6 @@ public interface DermatologistAppointmentRepository  extends JpaRepository<Derma
 	void deleteByDermatologist(Dermatologist dermatologist);
 	List<DermatologistAppointment> findByDermatologistId(String dermatologistId);
 	List<DermatologistAppointment> findByPatientId(String patientId);
+	List<DermatologistAppointment> findByPatientIdAndDermatologistIdAndProcessedTrue(String patientId, String dermatologistId);
+	List<DermatologistAppointment> findByPatientIdAndDrugstoreIdAndProcessedTrue(String patientId, String drugstoreId);
 }
