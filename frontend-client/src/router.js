@@ -44,6 +44,8 @@ import SchedulePharmacist from "./views/SchedulePharmacist";
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
 import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
+import PharmacistAbsenceRequests from "./views/PharmacistAbsenceRequests";
+import DermatologistAbsenceRequests from "./views/DermatologistAbsenceRequests";
 
 Vue.use(VueRouter);
 
@@ -269,6 +271,16 @@ const routes = [
         path: "/admin-patient-categories",
         name: "Patient Categories",
         component: PatientCategoryTable,
+    },
+    {
+        path: "/pharmacist-absence-requests",
+        name: "PharmacistAbsenceRequests",
+        component: PharmacistAbsenceRequests,
+    },
+    {
+        path: "/dermatologist-absence-requests",
+        name: "DermatologistAbsenceRequests",
+        component: DermatologistAbsenceRequests,
     },
 ];
 

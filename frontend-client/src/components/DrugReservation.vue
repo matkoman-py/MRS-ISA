@@ -4,7 +4,7 @@
     <h1 v-if="reserved == 1">Drug: {{selecteddrug.name}}</h1>
     <h1 v-if="drugstores.length == 0 & reserved == 1">Sorry, there are no pharmacies with that drug in stock :(</h1>
 
-    <b-table striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
+    <b-table  striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
       :items="drugstores">
       <template #cell(actions)="row">
         <b-button variant="outline-hub" v-if="row.item" size="sm"
@@ -25,7 +25,7 @@
     </template>
     <template v-else>
         <h1 v-if="drugstores.length == 0 & reserved == 1">Sorry, the selected drug is not on stock in this pharmacy :( Substitutes: </h1>
-        <b-table head-variant="dark" striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
+        <!-- <b-table head-variant="dark" striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
           :items="drugstores">
           <template #cell(actions)="row">
             <b-button variant="outline-hub" v-if="row.item" size="sm"
@@ -33,9 +33,9 @@
               Reserve
             </b-button>
           </template>
-        </b-table>
+        </b-table> -->
 
-        <b-table head-variant="dark" striped hover :fields="drugFields" v-if="drugstores.length == 0"
+        <b-table  striped hover :fields="drugFields" v-if="drugstores.length == 0"
           :items="drugSubstitutions">
           <template #cell(actions)="row">
             <b-button variant="outline-hub" v-if="row.item" size="sm"
@@ -133,10 +133,7 @@
         this.$root.$emit('bv::show::modal', 'my-modal');
       },
       makeReservation() {
-        //alert(this.selecteddrug.id);
-        //alert(this.drugstoreId);
-        //alert(this.user.id);
-        //alert(this.date);
+        
         this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
@@ -158,6 +155,7 @@
             {
             drugId: this.selecteddrug.id,
             drugstoreId: this.passedDrugstoreId,
+            patientId: this.patientId,
             }
           })
           .then(response => {

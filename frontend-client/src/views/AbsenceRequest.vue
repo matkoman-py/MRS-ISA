@@ -1,6 +1,6 @@
 <template>
   <b-container  style="margin-top:3rem;" id="appinfo">
-            <h1>Create absence request</h1>
+            <h1>Absence request</h1>
             <b-form @submit="createRequest">
 
                 <b-form-group

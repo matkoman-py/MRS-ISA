@@ -24,8 +24,8 @@ public class Drugstore extends BaseEntity {
 	@Column(nullable = false)
 	public String description;
 
-	@Column(name = "average_rating")
-	public double averageRating;
+	//@Column(name = "average_rating")
+	//public double averageRating;
 
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -54,7 +54,7 @@ public class Drugstore extends BaseEntity {
 		this.name = name;
 		this.location = location;
 		this.description = decription;
-		this.averageRating = averageRating;
+		//this.averageRating = averageRating;
 		this.pharmacistAppointmentPrice = pharmacistAppointmentPrice;
 	}
 
@@ -90,13 +90,13 @@ public class Drugstore extends BaseEntity {
 		this.location = location;
 	}
 
-	public double getAverageRating() {
-		return averageRating;
-	}
+	//public double getAverageRating() {
+	//	return averageRating;
+	//}
 
-	public void setAverageRating(double averageRating) {
-		this.averageRating = averageRating;
-	}
+	//public void setAverageRating(double averageRating) {
+	//	this.averageRating = averageRating;
+	//}
 
 	public String getDescription() {
 		return description;

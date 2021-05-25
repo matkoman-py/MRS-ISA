@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.dto.DrugstoreAverageRatingDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.dto.search.EReceiptSearchDto;
@@ -110,5 +111,10 @@ public class DrugstoreController {
 	@PutMapping(path = "/update",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> drugstoreUpdate(@RequestBody Drugstore drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.drugstoreUpdate(drugstore), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<DrugstoreAverageRatingDto> calculateAverageRate(@RequestParam(value = "drugstoreId") String drugstoreId) throws Exception {
+		return new ResponseEntity<>(drugstoreService.calculateAverageRate(drugstoreId), HttpStatus.OK);
 	}
 }
