@@ -103,7 +103,22 @@
                         <template #cell(actions)="row">
                             <b-button
                                 variant="outline-hub"
-                                v-if="row.item"
+                                v-if="row.item && passedPatientId == null"
+                                size="sm"
+                                @click="
+                                    getDrugstores(
+                                        row.item,
+                                        row.index,
+                                        $event.target
+                                    )
+                                "
+                                class="mr-1"
+                            >
+                                Reserve
+                            </b-button>
+                            <b-button
+                                variant="outline-hub"
+                                v-if="row.item && passedPatientId != null"
                                 size="sm"
                                 @click="
                                     getDrugstores(
@@ -119,8 +134,9 @@
                         </template>
                         <template #cell(rateAction)="row">
                             <b-button
+                                
                                 variant="outline-hub"
-                                v-if="row.item"
+                                v-if="row.item && passedPatientId == null"
                                 size="sm"
                                 @click="
                                     showModal(
@@ -183,6 +199,16 @@
                 <b-button type="submit" variant="outline-hub">Save</b-button>
             </b-form>
         </b-modal>
+
+        <b-modal id="my-modal1" title="Almost done!" hide-footer>
+          <p>Before you finish the reservation process you must select the date to wait for your order</p>
+          <b-form @submit="makeReservation">
+            <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
+            <br>
+            <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
+          </b-form>
+        </b-modal>
+
     </b-container>
 </template>
 
@@ -219,7 +245,11 @@ export default {
         },
     },
     data: function() {
+        const now = new Date()
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        const minDate = new Date(today)
         return {
+            minDate : minDate,
             userRating: "1",
             canRate: false,
             reserved: 0,
@@ -284,6 +314,7 @@ export default {
             suppress: false,
             currentSearch: {},
             patientId: "",
+            selectedDrugId: "",
         };
     },
     methods: {
@@ -311,6 +342,21 @@ export default {
             }
             if (x == 1) this.canRate = false;
             this.$root.$emit("bv::show::modal", "my-modalR");
+        },
+        
+        makeReservation: function() {
+        
+        this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+            patientId: this.patientId,
+            drugstoreId: this.drugstoreId,
+            drugId: this.selectedDrugId,
+            date: this.date
+          })
+          .then(response => {
+            alert(response.data);
+            this.$root.$emit('bv::hide::modal', 'my-modal');
+          })
+          .catch(error => console.log(error));
         },
         getDrugReservations: function() {
             this.$http
@@ -383,6 +429,11 @@ export default {
                             city: stock.drugstore.location.city,
                             rating: stock.drugstore.averageRating,
                         }));
+                        if(this.drugstores.length != 0){
+                        this.selectedDrugId = data.id;
+                        this.drugstoreId = this.passedDrugstoreId;
+                        this.patientId = this.passedPatientId;
+                        this.$root.$emit('bv::show::modal', 'my-modal1');}
                     });
             }
         },
