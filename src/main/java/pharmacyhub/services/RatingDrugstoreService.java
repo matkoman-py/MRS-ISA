@@ -34,14 +34,14 @@ public class RatingDrugstoreService {
 		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
 		int ratingg = Integer.parseInt(rating);
 		
-		RatingDrugstore rtd =  ratingDrugstoreRepository.findByDrugstoreAndPatient(patient,drugstore);
+		RatingDrugstore rtd =  ratingDrugstoreRepository.findByDrugstoreAndPatient(drugstore,patient);
 		if(rtd == null) {
 			rtd = new RatingDrugstore(drugstore,patient,ratingg);
 		}
 		else {
 			rtd.setRating(ratingg);
-			ratingDrugstoreRepository.save(rtd);
 		}
+		ratingDrugstoreRepository.save(rtd);
 		return null;
 	}
 }

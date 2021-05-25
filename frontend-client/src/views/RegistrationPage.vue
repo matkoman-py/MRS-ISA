@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>Registration form</h1>
+        
         <b-container style="width:30%" fluid>
             <b-form @submit="onSubmit" v-if="show">
                 <b-form-row>

@@ -20,8 +20,11 @@
                     <p style="margin:20px">
                         <b>Description</b>: {{ drugstore.description }}
                     </p>
-                    <p style="margin:20px">
-                        <b>Average rating</b>: {{ drugstore.averageRating }}
+                    <p v-if="averageRate != null" style="margin:20px">
+                        <b>Average rating</b>: {{ averageRate.toFixed(2) }} (From {{numberOfRates}} rates)
+                    </p>
+                    <p v-if="averageRate == null" style="margin:20px">
+                        <b>Average rating</b>: There are currently no rates for this drugstore
                     </p>
                     <p style="margin:20px">
                         <b>Working hours</b>: {{ drugstore.workingHoursFrom }} -
@@ -194,7 +197,7 @@
             </b-card>
         </div>
         <b-modal id="my-modal1" title="Rate drugstore" hide-footer>
-            <b-form @submit="saveRating">
+            <b-form @submit="saveRatingDrugstore(item)">
                 <label v-if="canRate" style="margin:20px"
                     ><b>Rate us: </b></label
                 >
@@ -221,7 +224,7 @@
         </b-modal>
 
         <b-modal id="my-modalP" title="Rate pharmacist" hide-footer>
-            <b-form @submit="saveRating">
+            <b-form @submit="saveRatingPharmacist(item)">
                 <b-form-rating
                     v-if="canRate"
                     id="rate"
@@ -243,7 +246,7 @@
         </b-modal>
 
         <b-modal id="my-modalD" title="Rate dermatologist" hide-footer>
-            <b-form @submit="saveRating">
+            <b-form @submit="saveRatingDermatologist(item)">
                 <b-form-rating
                     v-if="canRate"
                     id="rate"
@@ -297,6 +300,8 @@ export default {
     },
     data: function() {
         return {
+            saveRatingPharmacistId: '',
+            saveRatingDermatologistId: '',
             dermatologistappointments: [],
             pharmacistappointments: [],
             drugReservations: [],
@@ -309,6 +314,8 @@ export default {
             dermatologists: [],
             pharmacists: [],
             date: "",
+            averageRate:0,
+            numberOfRates:0,
             pTableFields: [
                 {
                     key: "name",
@@ -363,8 +370,44 @@ export default {
         };
     },
     methods: {
-        saveRating() {
-            return true;
+        saveRatingPharmacist() {
+                this.$http.get(
+                    "http://localhost:8081/rating-pharmacist/saveRating",
+                    {
+                        params: {
+                            patientId: this.user.id,
+                            pharmacistId: this.saveRatingPharmacistId,
+                            rating: this.userRating,
+                        },
+                    }
+                )
+                .catch((error) => console.log(error));
+        },
+        saveRatingDermatologist() {
+                this.$http.get(
+                    "http://localhost:8081/rating-dermatologist/saveRating",
+                    {
+                        params: {
+                            patientId: this.user.id,
+                            dermatologistId: this.saveRatingDermatologistId,
+                            rating: this.userRating,
+                        },
+                    }
+                )
+                .catch((error) => console.log(error));
+        },
+        saveRatingDrugstore() {
+            this.$http.get(
+                    "http://localhost:8081/rating-drugsore/saveRating",
+                    {
+                        params: {
+                            patientId: this.user.id,
+                            drugstoreId: this.currentDrugstoreId,
+                            rating: this.userRating,
+                        },
+                    }
+                )
+                .catch((error) => console.log(error));
         },
         showModal() {
             if (this.user == null) {
@@ -388,6 +431,7 @@ export default {
             this.$root.$emit("bv::show::modal", "my-modal1");
         },
         showModalP(item) {
+            this.saveRatingPharmacistId = item.employeeId;
             if (this.user == null) {
                 alert("You must be logged in to rate a pharmacist!");
                 return;
@@ -412,6 +456,7 @@ export default {
             this.$root.$emit("bv::show::modal", "my-modalP");
         },
         showModalD(item) {
+            this.saveRatingDermatologistId = item.employeeId;
             if (this.user == null) {
                 //alert("You must be logged in to rate a pharmacist!");
                 return;
@@ -549,9 +594,22 @@ export default {
                 )
                 .then((response) => {
                     this.drugstore = response.data;
+                    this.getAverageRating();
                     this.checkSubscription();
                 })
                 .catch((error) => console.log(error));
+        }, getAverageRating() {
+                this.$http.get("http://localhost:8081/drugstores/averageRate", {
+                    params: {
+                        drugstoreId: this.drugstore.id
+                    }
+                })
+                .then(response => {
+                    this.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
+                    this.numberOfRates = response.data.numberOfRates;
+                })
+                .catch((error) => console.log(error));
+
         },
         getAllDermatologists() {
             this.$http

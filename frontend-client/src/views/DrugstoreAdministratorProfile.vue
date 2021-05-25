@@ -10,7 +10,8 @@
                                     
                                         <br>
                                         <h5>
-                                            {{user.name}}
+                                            {{user.name}}  
+
                                         </h5>
                                         <h6>
                                         </h6>
@@ -121,7 +122,7 @@
             validationState: function () {
                 if (this.editEnabled)
                     return null
-                return this.employee.password == this.validationPassword;
+                return this.profile.password == this.validationPassword;
             },
         },
         data: function () {
@@ -129,7 +130,9 @@
                 profile: {},
                 editEnabled: true,
                 validationPassword: '',
-                
+                oldPasswordInput: '',
+                newPasswordInput: '',
+                newPasswordValidateInput: ''
             }
         },
         methods: {

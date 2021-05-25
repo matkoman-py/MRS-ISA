@@ -2,11 +2,16 @@ package pharmacyhub.dto;
 
 import pharmacyhub.domain.Location;
 
+/**
+ * @author djord
+ *
+ */
 public class EmployeeOverviewDto {
 	
 	private String name;
 	private String surname;
 	private double averageRate;
+	private int numberOfRates;
 	private String email;
 	private String phoneNumber;
 	private Location location;
@@ -16,16 +21,25 @@ public class EmployeeOverviewDto {
 		
 	}
 	
-	public EmployeeOverviewDto(String name, String surname, double averageRate, String email, String phoneNumber,
+	public EmployeeOverviewDto(String name, String surname, double averageRate, int numberOfRates, String email, String phoneNumber,
 			Location location, String type) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.averageRate = averageRate;
+		this.numberOfRates = numberOfRates;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.location = location;
 		this.type = type;
+	}
+
+	public int getNumberOfRates() {
+		return numberOfRates;
+	}
+
+	public void setNumberOfRates(int numberOfRates) {
+		this.numberOfRates = numberOfRates;
 	}
 
 	public String getName() {

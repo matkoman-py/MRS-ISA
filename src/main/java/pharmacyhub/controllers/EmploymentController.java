@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
+import pharmacyhub.dto.DermatologistAbsenceRequestDto;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.EmploymentDrugstoreDto;
 import pharmacyhub.dto.EmploymentDto;
@@ -59,6 +60,12 @@ public class EmploymentController {
 	@DeleteMapping(path="/delete", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> removeDermatologistFromDrugstore(@RequestBody RemoveDermatologistDto info) throws Exception {
 		return new ResponseEntity<>(employmentService.removeDermatologistFromDrugstore(info), HttpStatus.OK);
+
+	}
+	
+	@GetMapping(path="/dermatologistRequests", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAbsenceRequestDto>> getDermatologistAbsenceRequests() throws Exception {
+		return new ResponseEntity<>(employmentService.getDermatologistAbsenceRequests(), HttpStatus.OK);
 
 	}
 	

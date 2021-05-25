@@ -67,7 +67,7 @@ public class DrugReservationService {
 		return drugreservationRespository.findAll();
 	}
 	
-	private String saveSingleReservation(DrugReservationDto drugreservationDto) {
+	private String saveSingleReservation(DrugReservationDto drugreservationDto,boolean eReceit) {
 		String drugId = drugreservationDto.getDrugId();
 		String drugstoreId = drugreservationDto.getDrugstoreId();
 		String patientId = drugreservationDto.getPatientId();
@@ -80,7 +80,7 @@ public class DrugReservationService {
 		String confirmationCode = RadnomGeneratorUtil.generateDrugReservationCode(patient.getEmail());
 
 		
-		DrugReservation drr = new DrugReservation(drug, drugstore, 1, patient, date);
+		DrugReservation drr = new DrugReservation(drug, drugstore, 1, patient, date,eReceit);
 		drr.setConfirmationCode(confirmationCode);
 
 
@@ -114,14 +114,14 @@ public class DrugReservationService {
 		}
 		Patient patient = patientRepository.findById(drugReservationDtos.get(0).getPatientId()).orElse(null);
 		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
-			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto);
+			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto,true);
 		}
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCodes);
 		return "Success!";
 	}
 
 	public String saveReservation(DrugReservationDto drugreservationDto) throws MessagingException {
-		String confirmationCode = saveSingleReservation(drugreservationDto);
+		String confirmationCode = saveSingleReservation(drugreservationDto,false);
 		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
 		return "Success!";

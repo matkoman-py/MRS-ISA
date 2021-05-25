@@ -6,15 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
+import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
+import pharmacyhub.dto.DermatologistAbsenceRequestDto;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.EmploymentDrugstoreDto;
 import pharmacyhub.dto.EmploymentDto;
+import pharmacyhub.dto.PharmacistAbsenceRequestDto;
 import pharmacyhub.dto.RemoveDermatologistDto;
+import pharmacyhub.repositories.AbsenceRequestRepository;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
@@ -38,6 +43,9 @@ public class EmploymentService {
 	
 	@Autowired
 	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
+	
+	@Autowired
+	private AbsenceRequestRepository abensceRequestRepository;
 	
 	public List<Dermatologist> getAllDermatologistsForDrugstore(String drugstoreId) {
 		List<Employment> employments = employmentRepository.findByDrugstoreId(drugstoreId);
@@ -90,7 +98,7 @@ public class EmploymentService {
 		List<Employment> employments = employmentRepository.findByDrugstoreId(drugstoreId);
 		List<EmploymentDto> employmentInfo = new ArrayList<EmploymentDto>();
 		for (Employment e : employments) {
-			employmentInfo.add(new EmploymentDto(e.getDermatologist().getId(), e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getWorkingHoursFrom(), e.getWorkingHoursTo()));
+			employmentInfo.add(new EmploymentDto(e.getDermatologist().getId(),e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getWorkingHoursFrom(), e.getWorkingHoursTo()));
 		}
 		return employmentInfo;
 	}
@@ -99,7 +107,7 @@ public class EmploymentService {
 		List<Pharmacist> pharmacists = pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
 		List<EmploymentDto> employmentInfo = new ArrayList<EmploymentDto>();
 		for (Pharmacist p : pharmacists) {
-			employmentInfo.add(new EmploymentDto(p.getId(), p.getName(), p.getSurname(), p.getWorkingHoursFrom(), p.getWorkingHoursTo()));
+			employmentInfo.add(new EmploymentDto(p.getId(),p.getName(), p.getSurname(), p.getWorkingHoursFrom(), p.getWorkingHoursTo()));
 		}
 		return employmentInfo;
 	}
@@ -126,5 +134,22 @@ public class EmploymentService {
 	
 	private void checkFutureDermatologistAppointments(String dermatologistEmail) {
 		dermatologistAppointmentRepository.deleteByDermatologist((Dermatologist)dermatologistRepository.findByEmail(dermatologistEmail)); // treba samo buduce
+	}
+
+	public List<DermatologistAbsenceRequestDto> getDermatologistAbsenceRequests() {
+		List<Dermatologist> dermatologists = dermatologistRepository.findAll();
+		List<DermatologistAbsenceRequestDto> requests = new ArrayList<DermatologistAbsenceRequestDto>();
+		for (Dermatologist dermatologist : dermatologists) {
+			List<AbsenceRequest> requestsForCurrentDermatologist = abensceRequestRepository.findByEmployeeAndStatus(dermatologist, AbsenceRequestStatus.Pending);
+			List<Employment> employments = employmentRepository.findByDermatologistId(dermatologist.getId());
+			if (requestsForCurrentDermatologist.size() > 0 && employments.size() > 0) {
+				String drugstores = "";
+				for (Employment employment : employments) {
+					drugstores += "'" + employment.getDrugstore().getName() + "', ";
+				}
+				requests.add(new DermatologistAbsenceRequestDto(dermatologist.getName(), dermatologist.getSurname(), requestsForCurrentDermatologist.get(0).getStartDate(), requestsForCurrentDermatologist.get(0).getEndDate(), requestsForCurrentDermatologist.get(0).getReason(), requestsForCurrentDermatologist.get(0).getId(), drugstores.substring(0, drugstores.length() - 2)));
+			}
+		}
+		return requests;
 	}
 }

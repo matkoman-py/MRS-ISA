@@ -33,12 +33,12 @@ public class UserSerivce {
 			if (admin.equals(null)) {
 				throw new Exception("This drugstoreAdmin does not exist!");
 			}
-			if(admin.getEmail() != null) admin.setEmail(drugstoreAdmin.getEmail());
+			if(drugstoreAdmin.getEmail() != null) admin.setEmail(drugstoreAdmin.getEmail());
 			//if(admin.getLocation() != null) admin.setLocation(drugstoreAdmin.getLocation());
-			if(admin.getName() != null) admin.setName(drugstoreAdmin.getName());
-			if(admin.getPassword() != null) admin.setPassword(drugstoreAdmin.getPassword());
-			if(admin.getPhoneNumber() != null) admin.setPhoneNumber(drugstoreAdmin.getPhoneNumber());
-			if(admin.getSurname() != null) admin.setSurname(drugstoreAdmin.getSurname());
+			if(drugstoreAdmin.getName() != null) admin.setName(drugstoreAdmin.getName());
+			if(drugstoreAdmin.getPassword() != null) admin.setPassword(drugstoreAdmin.getPassword());
+			if(drugstoreAdmin.getPhoneNumber() != null) admin.setPhoneNumber(drugstoreAdmin.getPhoneNumber());
+			if(drugstoreAdmin.getSurname() != null) admin.setSurname(drugstoreAdmin.getSurname());
 
 			userRepository.save(admin);
 		return true;

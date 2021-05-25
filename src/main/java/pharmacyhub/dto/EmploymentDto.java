@@ -1,7 +1,7 @@
 package pharmacyhub.dto;
 
 public class EmploymentDto {
-
+	private String id;
 	private String name;
 	private String surname;
 	private String workingHoursFrom;
@@ -11,9 +11,8 @@ public class EmploymentDto {
 	public EmploymentDto() {
 
 	}
-
-	public EmploymentDto(String employeeId, String name, String surname, String workingHoursFrom,
-			String workingHoursTo) {
+	
+	public EmploymentDto(String employeeId, String name, String surname, String workingHoursFrom, String workingHoursTo) {
 		super();
 		this.employeeId = employeeId;
 		this.name = name;
@@ -28,7 +27,7 @@ public class EmploymentDto {
 
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
-	}
+  }
 
 	public String getName() {
 		return name;
