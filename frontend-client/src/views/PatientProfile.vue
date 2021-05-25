@@ -161,9 +161,18 @@
                                             <template #cell(actions)="row">
                                                 <b-button
                                                     variant="outline-danger"
-                                                    v-if="row.item"
+                                                    v-if="row.item.processed == 'No'"
                                                     size="sm"
                                                     class="mr-1"
+                                                >
+                                                    Cancel appointment
+                                                </b-button>
+                                                <b-button
+                                                    variant="outline-danger"
+                                                    v-if="row.item.processed == 'Yes'"
+                                                    size="sm"
+                                                    class="mr-1"
+                                                    disabled
                                                 >
                                                     Cancel appointment
                                                 </b-button>
@@ -199,7 +208,7 @@
                                             <template #cell(actions)="row">
                                                 <b-button
                                                     variant="outline-danger"
-                                                    v-if="row.item"
+                                                    v-if="row.item.processed == 'No'"
                                                     size="sm"
                                                     @click="
                                                         cancelDermatologyAppointment(
@@ -209,6 +218,15 @@
                                                         )
                                                     "
                                                     class="mr-1"
+                                                >
+                                                    Cancel appointment
+                                                </b-button>
+                                                <b-button
+                                                    variant="outline-danger"
+                                                    v-if="row.item.processed == 'Yes'"
+                                                    size="sm"
+                                                    class="mr-1"
+                                                    disabled
                                                 >
                                                     Cancel appointment
                                                 </b-button>
@@ -238,7 +256,7 @@
                                             :fields="drugReservationFields"
                                             :items="drugReservations"
                                         >
-                                            <template #cell(actions)="row">
+                                            <template #cell(actions)="row" >
                                                 <b-button
                                                     variant="outline-danger"
                                                     v-if="row.item"
@@ -358,6 +376,7 @@ export default {
         return {
             dermatologistappointments: [],
             drugReservations: [],
+            eReceiptReservations:[],
             employee: {},
             editEnabled: true,
             validationPassword: "",
@@ -377,8 +396,12 @@ export default {
                     key: "time",
                 },
                 {
+                    key: 'processed',
+                    label: "Done"
+                },
+                {
                     key: "actions",
-                    label: "",
+                    label: "Cancel appointment",
                 },
             ],
             dermAppFields: [
@@ -392,8 +415,12 @@ export default {
                     key: "time",
                 },
                 {
+                    key: 'processed',
+                    label: "Done"
+                },
+                {
                     key: "actions",
-                    label: "",
+                    label: "Cancel appointment",
                 },
             ],
             drugReservationFields: [
@@ -405,6 +432,10 @@ export default {
                 },
                 {
                     key: "date",
+                },
+                {
+                    key: 'receipt',
+                    label: "eReceipt"
                 },
                 {
                     key: "actions",
@@ -519,11 +550,12 @@ export default {
                 )
                 .then((response) => {
                     this.drugReservations = response.data.map(
-                        (drugReservation) => ({
+                        (drugReservation) => ({ 
                             id: drugReservation.id,
                             drug: drugReservation.drug.name,
                             drugstore: drugReservation.drugstore.name,
                             date: drugReservation.date,
+                            receipt: drugReservation.eReceipt ? "Yes" : "No"
                         })
                     );
                 })
@@ -546,6 +578,7 @@ export default {
                             pharmacist: appointment.pharmacist.name,
                             date: appointment.date.slice(0, 10),
                             time: appointment.time.slice(0, 5),
+                            processed: appointment.processed ? "Yes" : "No"
                         })
                     );
                 })
@@ -569,6 +602,7 @@ export default {
                             dermatologist: appointment.dermatologist.name,
                             date: appointment.date.slice(0, 10),
                             time: appointment.time.slice(0, 5),
+                            processed: appointment.processed ? "Yes" : "No"
                         })
                     );
                 })
