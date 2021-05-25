@@ -2,7 +2,7 @@
     <b-container>
     <h1> Drug order list </h1>
     <div style="margin:40px; border-style:solid;">
-        <b-table sticky-header striped hover :items="drugOrders" :fields="fields">
+        <b-table sticky-header striped hover :items="drugOrders" :fields="fields_for_orders">
           <template #cell(actions)="row">
             <button v-if="row.item.Order_status === 'Pending' && selectedOrder != row.item.Order_id" class="btn btn-dark" @click="showOffersForOrder(row)">Select offer</button>
             <button v-if="row.item.Order_status === 'Pending' && selectedOrder == row.item.Order_id" class="btn btn-dark" @click="hideOffers">Hide offers</button>
@@ -14,7 +14,7 @@
       <b-card style="margin:40px">
         <h2 style="margin-top:5px"><b> Available offers for selected order: </b></h2>
         <div style="margin:40px; border-style:solid;">
-            <b-table selectable select-mode="single" sticky-header striped hover :items="offers" @row-selected="onRowSelected"></b-table>
+            <b-table selectable select-mode="single" sticky-header striped hover :items="offers" :fields="fields_for_offers" @row-selected="onRowSelected"></b-table>
         </div>
         <b-button type="submit" variant="outline-hub" size="lg" style="margin-right:20px;" @click="completeOrder">Accept offer</b-button>
         <b-button type="submit" variant="outline-hub" size="lg" style="margin-left:20px;" @click="decline">Decline all offers</b-button>
@@ -73,25 +73,39 @@
           { value: 'Accepted', text: 'Accepted' },
           { value: 'Declined', text: 'Declined' },
         ],
-        fields: [
-      {
-        key: "Drugs_in_order",
-        label: "Drugs in order",
-      },
-      {
-        key: "Order_status",
-        label: "Order status",
-      },
-      {
-        key: "Expiration_date",
-        label: "Expiration date",
-      },
-      {
-        key: "Expiration_time",
-        label: "Expiration time",
-      },
-      { key: "Actions" }
-    ],
+        fields_for_orders: [
+          {
+            key: "Drugs_in_order",
+            label: "Drugs in order",
+          },
+          {
+            key: "Order_status",
+            label: "Order status",
+          },
+          {
+            key: "Expiration_date",
+            label: "Expiration date",
+          },
+          {
+            key: "Expiration_time",
+            label: "Expiration time",
+          },
+          { key: "Actions" }
+        ],
+        fields_for_offers: [
+          {
+            key: 'Supplier',
+          },
+          {
+            key: 'Price',
+          },
+          {
+            key: 'Delivery_date',
+          },
+          {
+            key: 'Delivery_time',
+          },
+        ],
     showOferrs: false,
     selectedOrder: "",
     selectedOffer: ""
