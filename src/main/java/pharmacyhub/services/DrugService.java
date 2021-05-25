@@ -17,6 +17,7 @@ import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.OrderStock;
 import pharmacyhub.domain.enums.OrderStatus;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.CreateDrugOrderDto;
 import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.dto.search.DrugSearchDto;
@@ -28,10 +29,14 @@ import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.IngredientRepository;
 import pharmacyhub.repositories.specifications.drugs.DrugSpecifications;
+import pharmacyhub.repositories.users.PatientRepository;
 
 @Service
 public class DrugService {
 
+	@Autowired
+	private PatientRepository patientRepository;
+	
 	@Autowired
 	private DrugRepository drugRepository;
 
@@ -121,7 +126,7 @@ public class DrugService {
 		return drugRepository.findAll();
 	}
 	
-	public List<Drug> findAllSubstitutesDrugstore(String drugId, String drugstoreId) {
+	public List<Drug> findAllSubstitutesDrugstore(String drugId, String drugstoreId, String patientId) {
 		Drug drug = drugRepository.findById(drugId).orElse(null);
 		//List<Drug> drugList =  drug.getSubstitutions();
 		
@@ -131,6 +136,8 @@ public class DrugService {
 		List<DrugStock> drugStockList = drugStockRepository.findByDrugstore(drugstore);
 
 		ArrayList<Drug> wanted = new ArrayList<Drug>();
+		ArrayList<Drug> wantedAllergens = new ArrayList<Drug>();
+
 		for(DrugStock ds : drugStockList) {
 			
 			for(Drug d : drugList) {
@@ -139,7 +146,22 @@ public class DrugService {
 				}
 			}
 		}
-		return wanted;
+		//provera za alergicnost
+		Patient pat = patientRepository.findById(patientId).orElse(null);
+		for(Drug d : wanted) {
+			int foundAllergen = 0;
+			for(Ingredient ing : pat.getAllergens()) {
+				if(d.getIngredients().contains(ing)) {
+					foundAllergen = 1;
+					break;
+				}
+			}
+			if(foundAllergen == 0) {
+				wantedAllergens.add(d);
+			}
+		}
+		
+		return wantedAllergens;
 	}
 
 	public List<Drug> getDrugsNotOnStock(String drugstoreId) {

@@ -42,6 +42,10 @@ public class AbsenceRequestService {
 	DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	
 	public String createNewRequest(AbsenceRequestDto createAbsenceRequestDto) throws ParseException {
+		List<AbsenceRequest> employeeRequests = absenceRequestRepository.findByEmployeeAndStatus(userRepository.findById(createAbsenceRequestDto.getEmployeeId()).orElse(null), AbsenceRequestStatus.Pending);
+		if(employeeRequests.size() > 0) {
+			return "You have a pending absence request! You can't create a new one!";
+		}
 		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(createAbsenceRequestDto.getStartDate());
 		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(createAbsenceRequestDto.getEndDate());
 		AbsenceRequest ar = new AbsenceRequest(createAbsenceRequestDto.getReason(),startDate,endDate,userRepository.findById(createAbsenceRequestDto.getEmployeeId()).orElse(null));

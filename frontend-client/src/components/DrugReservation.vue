@@ -158,6 +158,7 @@
             {
             drugId: this.selecteddrug.id,
             drugstoreId: this.passedDrugstoreId,
+            patientId: this.patientId,
             }
           })
           .then(response => {
