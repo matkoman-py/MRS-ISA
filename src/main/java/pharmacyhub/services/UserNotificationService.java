@@ -12,12 +12,16 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.AbsenceRequest;
+import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Offer;
 import pharmacyhub.domain.OrderStock;
+import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.Subscription;
 import pharmacyhub.domain.enums.OfferStatus;
+import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.CreateNewPriceForDrugDto;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.SubscriptionRepository;
@@ -168,5 +172,82 @@ public class UserNotificationService {
 
 		javaMailSender.send(message);
 	}
+  @Async
+  public void notifyPatientAboutCancelation(PharmacistAppointment appointment) throws MessagingException {
+	  	MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		
+		String emailContent = "Dear customer,\nUnfortunately we have to notify you about cancelation of your appointment with pharmacist " + appointment.getPharmacist().getName() + " " + appointment.getPharmacist().getSurname() + 
+				" scheduled on " + appointment.getDate() + " due to absence of pharmacist in that period. You can still schedule an appointment with some of other pharmacists from our pharmacy!\nThank you for understanding, your " + appointment.getPharmacist().getDrugstore().getName() + "!";
+		
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setTo(appointment.getPatient().getEmail());
+		helper.setSubject("Cancelation of your appointment with pharmacist at '" + appointment.getPharmacist().getDrugstore().getName() + "' pharmacy.");
+		helper.setText(emailContent, true);
+
+		javaMailSender.send(message);
+}
+  @Async
+public void notifyPharmacistAboutApproving(AbsenceRequest request) throws MessagingException {
+	MimeMessage message = javaMailSender.createMimeMessage();
+	MimeMessageHelper helper;
+	
+	String emailContent = "Dear " + request.getEmployee().getName() + ",\nWe inform you that your absence request from " + request.getStartDate() + " to " + request.getEndDate() + " is approved!\nAll the best, your " + ((Pharmacist)request.getEmployee()).getDrugstore().getName() + "!";
+	
+	helper = new MimeMessageHelper(message, true);
+	helper.setFrom("notification@pharmacyhub.com");
+	helper.setTo(request.getEmployee().getEmail());
+	helper.setSubject("Status of your absence request changed.");
+	helper.setText(emailContent, true);
+
+	javaMailSender.send(message);
+}
+  @Async
+public void notifyAboutRejection(AbsenceRequest request) throws MessagingException {
+	MimeMessage message = javaMailSender.createMimeMessage();
+	MimeMessageHelper helper;
+	
+	String emailContent = "Dear " + request.getEmployee().getName() + ",\nUnfortunately, we have to inform you that your absence request from " + request.getStartDate() + " to " + request.getEndDate() + " is rejected.\nReason for that is: '" + request.getAdminComment() + "' \nAll the best!";
+	
+	helper = new MimeMessageHelper(message, true);
+	helper.setFrom("notification@pharmacyhub.com");
+	helper.setTo(request.getEmployee().getEmail());
+	helper.setSubject("Status of your absence request changed.");
+	helper.setText(emailContent, true);
+
+	javaMailSender.send(message);
+}
+  @Async
+public void notifyPatientAboutCancelation(DermatologistAppointment appointment) throws MessagingException {
+	MimeMessage message = javaMailSender.createMimeMessage();
+	MimeMessageHelper helper;
+	
+	String emailContent = "Dear customer,\nUnfortunately we have to notify you about cancelation of your appointment with pharmacist " + appointment.getDermatologist().getName() + " " + appointment.getDermatologist().getSurname() + 
+			" scheduled on " + appointment.getDate() + " due to absence of pharmacist in that period. You can still schedule an appointment with some of other pharmacists from our pharmacy!\nThank you for understanding!";
+	
+	helper = new MimeMessageHelper(message, true);
+	helper.setFrom("notification@pharmacyhub.com");
+	helper.setTo(appointment.getPatient().getEmail());
+	helper.setSubject("Cancelation of your appointment with dermatologist.");
+	helper.setText(emailContent, true);
+
+	javaMailSender.send(message);
+}
+  @Async
+public void notifyDermatologistAboutApproving(AbsenceRequest request) throws MessagingException {
+	MimeMessage message = javaMailSender.createMimeMessage();
+	MimeMessageHelper helper;
+	
+	String emailContent = "Dear " + request.getEmployee().getName() + ",\nWe inform you that your absence request from " + request.getStartDate() + " to " + request.getEndDate() + " is approved!\nAll the best!";
+	
+	helper = new MimeMessageHelper(message, true);
+	helper.setFrom("notification@pharmacyhub.com");
+	helper.setTo(request.getEmployee().getEmail());
+	helper.setSubject("Status of your absence request changed.");
+	helper.setText(emailContent, true);
+
+	javaMailSender.send(message);
+}
   
 }

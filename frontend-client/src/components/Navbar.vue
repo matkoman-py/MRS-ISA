@@ -38,6 +38,22 @@
                 </b-dropdown-item>
             </b-nav-item-dropdown>
 
+             <!--b-nav-item-dropdown
+                text="CRUD"
+                right
+                v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'"
+                class="nav-dropdown link-font"
+            >
+                <b-dropdown-item
+                    v-for="route in userSpecificRoutes['SystemAdmin']"
+                    :key="route.name"
+                >
+                    <router-link :to="route.path" class="link-font">{{
+                        route.name
+                    }}</router-link>
+                </b-dropdown-item>
+            </b-nav-item-dropdown-->
+
             <template
                 v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'"
             >
@@ -135,6 +151,9 @@
                     <router-link v-else-if="role == 'Patient'" to="/patient">{{
                         email
                     }}</router-link>
+                    <router-link v-else-if="role == 'DrugstoreAdmin'" to="/drugstore-administrator-profile">{{
+                        email
+                    }}</router-link>
                     <router-link v-else to="/">{{ email }}</router-link>
                 </b-navbar-brand>
                 <b-navbar-brand tag="h3" class="nav-link" v-on:click="logout">
@@ -173,6 +192,10 @@ export default {
                     {
                         name: "User CRUD",
                         path: "/admin-user-table",
+                    },
+                    {
+                        name: "Patient Categories CRUD",
+                        path: "/admin-patient-categories",
                     },
                 ],
                 Supplier: [

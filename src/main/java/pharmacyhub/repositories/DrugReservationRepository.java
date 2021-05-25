@@ -14,5 +14,6 @@ public interface DrugReservationRepository extends JpaRepository<DrugReservation
 	List<DrugReservation> findByPatient(Patient patient);
 	List<DrugReservation> findByDrugAndDrugstore(Drug drug, Drugstore drugstore);
 	List<DrugReservation> findByDrugstoreAndPatient(Drugstore drugstore, Patient patient);
+	List<DrugReservation> findByDrugstoreIdAndPatientIdAndIssuedTrue(String drugstoreId, String patientId);
 	DrugReservation findByConfirmationCode(String confirmationCode);
 }

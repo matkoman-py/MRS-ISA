@@ -17,7 +17,7 @@ import pharmacyhub.domain.users.Patient;
 @Table(name = "drug_reservation")
 @SQLDelete(sql = "UPDATE drug_reservation SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class DrugReservation extends BaseEntity{
+public class DrugReservation extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "drug_fk")
@@ -34,18 +34,47 @@ public class DrugReservation extends BaseEntity{
 	private String date;
 	@Column
 	private String confirmationCode;
+	@Column
+	private double price;
+	@Column(nullable = false)
+	private boolean issued;
+	@Column
+	private boolean eReceipt;
 
 	public DrugReservation() {
 		super();
 	}
 
-	public DrugReservation(Drug drug, Drugstore drugstore, int amount, Patient patient, String date) {
+	public DrugReservation(Drug drug, Drugstore drugstore, int amount, Patient patient, String date,boolean eReceipt) {
 		super();
 		this.drug = drug;
 		this.drugstore = drugstore;
 		this.amount = amount;
 		this.patient = patient;
 		this.date = date;
+		this.issued = false;
+		this.eReceipt = eReceipt;
+	}
+
+	public DrugReservation(Drug drug, Drugstore drugstore, int amount, Patient patient, String date,
+			String confirmationCode, double price) {
+		super();
+		this.drug = drug;
+		this.drugstore = drugstore;
+		this.amount = amount;
+		this.patient = patient;
+		this.date = date;
+		this.confirmationCode = confirmationCode;
+		this.price = price;
+		this.issued = false;
+	}
+
+	public boolean iseReceipt() {
+		return eReceipt;
+	}
+
+	public void seteReceipt(boolean eReceipt) {
+		this.eReceipt = eReceipt;
 	}
 
 	public String getDate() {
@@ -96,4 +125,21 @@ public class DrugReservation extends BaseEntity{
 		this.confirmationCode = confirmationCode;
 	}
 
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public boolean isIssued() {
+		return issued;
+	}
+
+	public void setIssued(boolean issued) {
+		this.issued = issued;
+	}
+
+	
 }

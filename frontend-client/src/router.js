@@ -7,6 +7,7 @@ import AdminDrugTable from "./components/tables/AdminDrugTable";
 import AdminUserTable from "./components/tables/AdminUserTable";
 import DrugOrderTable from "./components/tables/DrugOrderTable";
 import OfferTable from "./components/tables/OfferTable";
+import PatientCategoryTable from "./components/tables/PatientCategoryTable";
 import SupplierStockTable from "./components/tables/SupplierStockTable";
 import AbsenceRequest from "./views/AbsenceRequest";
 import AddDermatologistForm from "./views/AddDermatologistForm";
@@ -15,6 +16,7 @@ import AddPharmacistForm from "./views/AddPharmacistForm";
 import AppointmentDermatologist from "./views/AppointmentDermatologist";
 import AppointmentPharmacist from "./views/AppointmentPharmacist";
 import AppointmentsOverview from "./views/AppointmentsOverview";
+import AdminComplaintsView from "./views/complaints/AdminComplaintsView";
 import CreateDrugOrder from "./views/CreateDrugOrder";
 import DermatologistAppointments from "./views/DermatologistAppointments";
 import DermatologistOverview from "./views/DermatologistOverview";
@@ -43,6 +45,8 @@ import SchedulePharmacist from "./views/SchedulePharmacist";
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
 import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
+import PharmacistAbsenceRequests from "./views/PharmacistAbsenceRequests";
+import DermatologistAbsenceRequests from "./views/DermatologistAbsenceRequests";
 
 Vue.use(VueRouter);
 
@@ -263,6 +267,26 @@ const routes = [
         path: "/my-drugstore",
         name: "MyDrugstore",
         component: MyDrugstore,
+    },
+    {
+        path: "/admin-patient-categories",
+        name: "Patient Categories",
+        component: PatientCategoryTable,
+    },
+    {
+        path: "/admin-complaints",
+        name: "Admin Complaints View",
+        component: AdminComplaintsView,
+    },
+    {        
+        path: "/pharmacist-absence-requests",
+        name: "PharmacistAbsenceRequests",
+        component: PharmacistAbsenceRequests,
+    },
+    {
+        path: "/dermatologist-absence-requests",
+        name: "DermatologistAbsenceRequests",
+        component: DermatologistAbsenceRequests,
     },
 ];
 

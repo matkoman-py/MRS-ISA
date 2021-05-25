@@ -36,14 +36,14 @@ public class RatingPharmacistService {
 		Pharmacist pharmacist = pharmacistRepository.findById(pharmacistId).orElse(null);
 		int ratingg = Integer.parseInt(rating);
 		
-		RatingPharmacist rtd = ratingPharmacistRepository.findByPharmacistAndPatient(patient,pharmacist);
+		RatingPharmacist rtd = ratingPharmacistRepository.findByPharmacistAndPatient(pharmacist,patient);
 		if(rtd == null) {
 			rtd = new RatingPharmacist(patient,pharmacist,ratingg);
 		}
 		else {
 			rtd.setRating(ratingg);
-			ratingPharmacistRepository.save(rtd);
 		}
+		ratingPharmacistRepository.save(rtd);
 		return null;
 	}
 }

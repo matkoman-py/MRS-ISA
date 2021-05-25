@@ -1,26 +1,24 @@
 package pharmacyhub.services;
 
 import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
-import pharmacyhub.dto.DermatologistAppointmentPatientDto;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
-import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
@@ -44,9 +42,13 @@ public class PharmacistAppointmentService {
 	
     @Autowired
 	private UserNotificationService userNotificationService;
+    
+	@Autowired
+	private PatientCategoryService patientCategoryService;
+
 	
     public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
-    	userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
+    	//userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
 		return pharmacistAppointmentRepository.findByPatientId(patientId);
 	}
     
@@ -136,8 +138,20 @@ public class PharmacistAppointmentService {
 			throw new Exception("Pharmacist is not working at that time.");
 		}
 		
+		Pharmacist pharmacist = pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null);
+		Patient patient = patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null);
+		
     	userNotificationService.sendReservationConfirmation(patientRepository.getById(pharmacistAppointmentPatientDto.getPatientId()).getEmail(), "pharmacist");
-		return pharmacistAppointmentRepository.save(new PharmacistAppointment(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null),pharmacistAppointmentPatientDto.getDate(), pharmacistAppointmentPatientDto.getTime(), pharmacistAppointmentPatientDto.getDuration(), patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null), null,false));
+    	PharmacistAppointment pharmacistAppointment = new PharmacistAppointment(
+    			pharmacist,
+    			pharmacistAppointmentPatientDto.getDate(), 
+    			pharmacistAppointmentPatientDto.getTime(),
+    			pharmacistAppointmentPatientDto.getDuration(),
+    			patient,
+    			null,
+    			false,
+    			patientCategoryService.getPriceWithDiscount(patient, pharmacist.getDrugstore().getPharmacistAppointmentPrice()));
+		return pharmacistAppointmentRepository.save(pharmacistAppointment);
 	}
 	
 	public PharmacistAppointment findAppointment(String pharmacistAppointmentId) {
@@ -220,6 +234,7 @@ public class PharmacistAppointmentService {
 		da.setAppointmentReport(appointmentReport);
 		da.setProcessed(true);
 		pharmacistAppointmentRepository.save(da);
+		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "pharmacist");
 		return da;
 	}
   	

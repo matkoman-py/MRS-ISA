@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import pharmacyhub.domain.users.Employee;
+import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.User;
 
 @Entity
@@ -25,10 +25,34 @@ public class AbsenceRequest extends BaseEntity {
 	@Column(nullable = false)
 	private Date endDate;
 	@Column(nullable = false)
-	private boolean accepted;
+	private AbsenceRequestStatus status;
+	@Column
+	private String adminComment;
 	@ManyToOne
 	@JoinColumn(name = "emlpoyee_fk", nullable = false)
 	private User employee;
+	
+	public AbsenceRequest() {
+		
+	}
+	
+	public AbsenceRequest(String reason, Date startDate, Date endDate,  User employee) {
+		super();
+		this.reason = reason;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = AbsenceRequestStatus.Pending;
+		this.employee = employee;
+	}
+	
+	
+	public String getAdminComment() {
+		return adminComment;
+	}
+	public void setAdminComment(String adminComment) {
+		this.adminComment = adminComment;
+	}
+	
 	public String getReason() {
 		return reason;
 	}
@@ -47,11 +71,11 @@ public class AbsenceRequest extends BaseEntity {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public boolean isAccepted() {
-		return accepted;
+	public AbsenceRequestStatus getStatus() {
+		return status;
 	}
-	public void setAccepted(boolean accepted) {
-		this.accepted = accepted;
+	public void setStatus(AbsenceRequestStatus status) {
+		this.status = status;
 	}
 	public User getEmployee() {
 		return employee;
@@ -59,18 +83,5 @@ public class AbsenceRequest extends BaseEntity {
 	public void setEmployee(User employee) {
 		this.employee = employee;
 	}
-	public AbsenceRequest() {
-		super();
-	}
-	public AbsenceRequest(String reason, Date startDate, Date endDate,  User employee) {
-		super();
-		this.reason = reason;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.accepted = false;
-		this.employee = employee;
-	}
-	
-	
 	
 }
