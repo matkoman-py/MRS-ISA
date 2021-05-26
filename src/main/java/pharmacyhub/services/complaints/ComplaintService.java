@@ -29,6 +29,7 @@ import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.ReplyRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.UserRepository;
+import pharmacyhub.services.UserNotificationService;
 
 @Service
 public class ComplaintService {
@@ -56,6 +57,9 @@ public class ComplaintService {
 	
 	@Autowired
 	private DrugReservationRepository drugReservationRepository;
+	
+	@Autowired
+	private UserNotificationService userNotificationService;
 	
 	private ComplaintDto toComplaintDto(Complaint complaint) {
 		ComplaintDto complaintDto = new ComplaintDto();
@@ -184,6 +188,9 @@ public class ComplaintService {
 		}
 		complaint.setHasReply(true);
 		complaintRepository.save(complaint);
+		
+		
+		userNotificationService.notifyAboutComplaintReply(complaint, reply);
 		return new ReplyDto(replyRepository.save(new Reply(complaint, user, makeReplyDto.getText())));
 	}
 }
