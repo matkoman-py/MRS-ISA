@@ -57,38 +57,6 @@
                         {{ selectedComplaintReply.text }}
                     </p>
                 </div>
-                <b-card class="mt-3">
-                    <b-form>
-                        <b-form-row>
-                            <b-col cols="10">
-                                <b-form-textarea
-                                    id="textarea"
-                                    placeholder="Enter something..."
-                                    rows="3"
-                                    max-rows="6"
-                                    v-model="replyForm.text"
-                                    :disabled="
-                                        !$helpers.isObjectEmpty(
-                                            selectedComplaintReply
-                                        )
-                                    "
-                                ></b-form-textarea>
-                            </b-col>
-                            <b-col>
-                                <b-button
-                                    variant="outline-hub"
-                                    :disabled="
-                                        !$helpers.isObjectEmpty(
-                                            selectedComplaintReply
-                                        )
-                                    "
-                                    v-on:click="postReplyForComplaint"
-                                    >Reply</b-button
-                                >
-                            </b-col>
-                        </b-form-row>
-                    </b-form>
-                </b-card>
             </b-col>
             <b-col v-else class="mt-3">
                 <h3>Select a complaint</h3>
@@ -101,18 +69,13 @@
 import { mapState } from "vuex";
 
 export default {
-    name: "AdminComplaintsView",
+    name: "UserComplaintsView",
     components: {},
     data: function() {
         return {
             complaints: [],
             selectedComplaint: {},
             selectedComplaintReply: {},
-            replyForm: {
-                text: "",
-                complaintId: "",
-                adminId: "",
-            },
         };
     },
     computed: {
@@ -123,7 +86,7 @@ export default {
     methods: {
         getComplaints: function() {
             this.$http
-                .get("http://localhost:8081/complaints")
+                .get("http://localhost:8081/complaints/patient/" + this.user.id)
                 .then((response) => {
                     this.complaints = response.data;
                 });
@@ -140,19 +103,6 @@ export default {
             this.getReplyForComplaint(this.selectedComplaint);
             this.replyForm.complaintId = this.selectedComplaint.id;
             this.replyForm.adminId = this.user.id;
-        },
-        postReplyForComplaint: function() {
-            this.$http
-                .post(
-                    "http://localhost:8081/complaints/reply/" +
-                        this.selectedComplaint.id,
-                    this.replyForm
-                )
-                .then((response) => {
-                    this.selectedComplaintReply = response.data;
-                    this.replyForm.text = "";
-                    this.selectedComplaint.hasReply = true;
-                });
         },
     },
     mounted: function() {

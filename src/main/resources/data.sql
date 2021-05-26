@@ -208,8 +208,8 @@ INSERT INTO public.patient_category VALUES ('444038a9a-a754-11eb-bcbc-0242ac1300
 INSERT INTO public.patient_category VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 10, 'Silver', 500);
 INSERT INTO public.patient_category VALUES ('22038a9a-a754-11eb-bcbc-0242ac130002', false, 15, 'Gold', 700);
 
-INSERT INTO public.complaint VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
-INSERT INTO public.complaint VALUES ('11038a9a-a754-11eb-bcbc-0242ac130002', false, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
+INSERT INTO public.complaint VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, true, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
+INSERT INTO public.complaint VALUES ('11038a9a-a754-11eb-bcbc-0242ac130002', false, false, 'Stvarno mi se ne svidja kako pristupa pacijentima', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
 
 -- Data for dermatology rates
 

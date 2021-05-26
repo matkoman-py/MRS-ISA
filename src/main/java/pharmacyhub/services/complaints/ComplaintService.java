@@ -65,6 +65,7 @@ public class ComplaintService {
 		complaintDto.setPatientEmail(complaint.getPatient().getEmail());
 		complaintDto.setText(complaint.getText());
 		complaintDto.setType(complaint.getType());
+		complaintDto.setHasReply(complaint.isHasReply());
 		
 		switch(complaint.getType()) {
 		case Drugstore:
@@ -84,6 +85,12 @@ public class ComplaintService {
 	
 	public List<ComplaintDto> getComplaints(Pageable pageable){
 		return complaintRepository.findAll(pageable).stream()
+				.map(complaint -> toComplaintDto(complaint))
+				.collect(Collectors.toList());
+	}
+	
+	public List<ComplaintDto> getComplaintsByPatientId(String patientId, Pageable pageable){
+		return complaintRepository.findByPatientId(patientId, pageable).stream()
 				.map(complaint -> toComplaintDto(complaint))
 				.collect(Collectors.toList());
 	}
@@ -175,7 +182,8 @@ public class ComplaintService {
 		if (alreadyGivenReply != null) {
 			throw new Exception("Reply already given!");
 		}
-		
+		complaint.setHasReply(true);
+		complaintRepository.save(complaint);
 		return new ReplyDto(replyRepository.save(new Reply(complaint, user, makeReplyDto.getText())));
 	}
 }

@@ -38,7 +38,7 @@
                 </b-dropdown-item>
             </b-nav-item-dropdown>
 
-             <!--b-nav-item-dropdown
+            <!--b-nav-item-dropdown
                 text="CRUD"
                 right
                 v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'"
@@ -151,9 +151,11 @@
                     <router-link v-else-if="role == 'Patient'" to="/patient">{{
                         email
                     }}</router-link>
-                    <router-link v-else-if="role == 'DrugstoreAdmin'" to="/drugstore-administrator-profile">{{
-                        email
-                    }}</router-link>
+                    <router-link
+                        v-else-if="role == 'DrugstoreAdmin'"
+                        to="/drugstore-administrator-profile"
+                        >{{ email }}</router-link
+                    >
                     <router-link v-else to="/">{{ email }}</router-link>
                 </b-navbar-brand>
                 <b-navbar-brand tag="h3" class="nav-link" v-on:click="logout">
@@ -197,6 +199,7 @@ export default {
                         name: "Patient Categories CRUD",
                         path: "/admin-patient-categories",
                     },
+                    { name: "Complaints", path: "/admin-complaints" },
                 ],
                 Supplier: [
                     {
@@ -235,6 +238,7 @@ export default {
                 Patient: [
                     { name: "Subscriptions", path: "/subscriptions" },
                     { name: "eReceipt", path: "/receipt-scanner" },
+                    { name: "Complaints", path: "/patient-complaints" },
                 ],
             },
             commonRoutes: [

@@ -31,6 +31,9 @@ public class Complaint extends BaseEntity {
 	@Column(nullable = false)
 	private ComplaintType type;
 
+	@Column(nullable = false)
+	private boolean hasReply;
+
 	public Complaint() {
 		super();
 	}
@@ -43,6 +46,7 @@ public class Complaint extends BaseEntity {
 		this.employee = employee;
 		this.drugstore = drugstore;
 		this.type = type;
+		this.hasReply = false;
 	}
 
 	public String getText() {
@@ -83,6 +87,14 @@ public class Complaint extends BaseEntity {
 
 	public void setType(ComplaintType type) {
 		this.type = type;
+	}
+
+	public boolean isHasReply() {
+		return hasReply;
+	}
+
+	public void setHasReply(boolean hasReply) {
+		this.hasReply = hasReply;
 	}
 
 }
