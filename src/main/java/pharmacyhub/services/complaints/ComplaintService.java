@@ -189,8 +189,8 @@ public class ComplaintService {
 		complaint.setHasReply(true);
 		complaintRepository.save(complaint);
 		
-		
+		Reply reply = new Reply(complaint, user, makeReplyDto.getText());
 		userNotificationService.notifyAboutComplaintReply(complaint, reply);
-		return new ReplyDto(replyRepository.save(new Reply(complaint, user, makeReplyDto.getText())));
+		return new ReplyDto(replyRepository.save(reply));
 	}
 }
