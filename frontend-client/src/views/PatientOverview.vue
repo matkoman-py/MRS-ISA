@@ -120,7 +120,7 @@
                                 country: patient.location ? patient.location.country : "Null",
                                 city: patient.location ? patient.location.city : "Null",
                                 points: patient.points,
-                                category: patient.category,
+                                category: patient.category? patient.category.name: "Null",
                             }));
                     })
                     .catch(error => console.log(error));

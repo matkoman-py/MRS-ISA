@@ -103,7 +103,7 @@
                         <template #cell(actions)="row">
                             <b-button
                                 variant="outline-hub"
-                                v-if="row.item && passedPatientId == null"
+                                v-if="row.item"
                                 size="sm"
                                 @click="
                                     getDrugstores(
@@ -116,21 +116,7 @@
                             >
                                 Reserve
                             </b-button>
-                            <b-button
-                                variant="outline-hub"
-                                v-if="row.item && passedPatientId != null"
-                                size="sm"
-                                @click="
-                                    getDrugstores(
-                                        row.item,
-                                        row.index,
-                                        $event.target
-                                    )
-                                "
-                                class="mr-1"
-                            >
-                                Reserve
-                            </b-button>
+                            
                         </template>
                         <template #cell(rateAction)="row">
                             <b-button
@@ -165,6 +151,8 @@
                         :patientId="patientId"
                         :passedDrugstoreId="passedDrugstoreId"
                         :drugSubstitutions="drugSubstitutions"
+                        :appointmentId="passedAppointmentId"
+                        :check="passedCheck"
                     >
                     </drug-reservation>
                     <h1 v-if="drugs.length == 0">
@@ -227,6 +215,8 @@ export default {
     props: {
         passedDrugstoreId: String,
         passedPatientId: String,
+        passedAppointmentId: String,
+        passedCheck: String,
     },
     computed: {
         ...mapState({
@@ -319,6 +309,8 @@ export default {
             currentSearch: {},
             patientId: "",
             selectedDrugId: "",
+            appointmentId: '',
+            check: '',
         };
     },
     methods: {
@@ -349,17 +341,19 @@ export default {
         },
         
         makeReservation: function() {
-        
-        this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+        //alert(this.check)
+        this.$http.post('http://localhost:8081/drugReservation/saveReservationEmployee', {
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selectedDrugId,
             date: this.date,
             amount: this.amount,
+            appointmentId: this.appointmentId,
+            check: this.check,
           })
           .then(response => {
             alert(response.data);
-            this.$root.$emit('bv::hide::modal', 'my-modal');
+            this.$root.$emit('bv::hide::modal', 'my-modal1');
           })
           .catch(error => console.log(error));
         },
@@ -438,6 +432,8 @@ export default {
                         this.selectedDrugId = data.id;
                         this.drugstoreId = this.passedDrugstoreId;
                         this.patientId = this.passedPatientId;
+                        this.check = this.passedCheck;
+                        this.appointmentId = this.passedAppointmentId;
                         this.$root.$emit('bv::show::modal', 'my-modal1');}
                     });
             }

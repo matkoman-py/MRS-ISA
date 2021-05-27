@@ -77,7 +77,7 @@
         <b-modal id="reservemodal" size="xl" title="Reserve a drug" hide-footer>
             <h1>Drugs</h1>
             <!-- <DrugInDrugstoreTable :passedDrugstoreId="currentAppointment.drugstore.id" :passedPatientId="currentAppointment.patient.id"/> -->
-            <DrugTable align="center" :passedDrugstoreId="currentAppointment.pharmacist.drugstore.id" :passedPatientId="currentAppointment.patient.id" />
+            <DrugTable align="center" :passedDrugstoreId="currentAppointment.pharmacist.drugstore.id" :passedPatientId="currentAppointment.patient.id" :passedAppointmentId="currentAppointment.id" :passedCheck="pharm"/>
         </b-modal>
 
     </b-container>
@@ -100,6 +100,7 @@ export default {
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
             const minDate = new Date(today)
             return {
+                pharm: "pharm",
                 currentAppointment: {},
                 minDate:minDate,
                 inputValues: {

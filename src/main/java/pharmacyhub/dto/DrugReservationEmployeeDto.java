@@ -1,19 +1,13 @@
 package pharmacyhub.dto;
 
-public class DrugReservationDto {
-	
+public class DrugReservationEmployeeDto {
 	private String patientId;
 	private String drugstoreId;
 	private String drugId;
 	private String date;
 	private int amount;
-	
-	public int getAmount() {
-		return amount;
-	}
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
+	private String appointmentId;
+	private String check;
 	public String getPatientId() {
 		return patientId;
 	}
@@ -38,17 +32,37 @@ public class DrugReservationDto {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public DrugReservationDto(String patientId, String drugstoreId, String drugId, String date, int amount) {
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	public String getAppointmentId() {
+		return appointmentId;
+	}
+	public void setAppointmentId(String appointmentId) {
+		this.appointmentId = appointmentId;
+	}
+	public String getCheck() {
+		return check;
+	}
+	public void setCheck(String check) {
+		this.check = check;
+	}
+	public DrugReservationEmployeeDto(String patientId, String drugstoreId, String drugId, String date, int amount,
+			String appointmentId, String check) {
 		super();
 		this.patientId = patientId;
 		this.drugstoreId = drugstoreId;
 		this.drugId = drugId;
 		this.date = date;
 		this.amount = amount;
+		this.appointmentId = appointmentId;
+		this.check = check;
 	}
-	public DrugReservationDto() {
+	public DrugReservationEmployeeDto() {
 		super();
 	}
-	
 	
 }

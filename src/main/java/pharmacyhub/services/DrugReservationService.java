@@ -11,21 +11,26 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugPrice;
 import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DrugReservationDto;
+import pharmacyhub.dto.DrugReservationEmployeeDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugReservationRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.utils.RadnomGeneratorUtil;
@@ -62,6 +67,12 @@ public class DrugReservationService {
 	
 	@Autowired
 	private DrugStockService drugStockService;
+	
+	@Autowired
+	PharmacistAppointmentRepository pharmAppointmentRepository;
+	
+	@Autowired
+	DermatologistAppointmentRepository dermAppointmentRepository;
 
 	public List<DrugReservation> findAll() {
 		return drugreservationRespository.findAll();
@@ -139,14 +150,16 @@ public class DrugReservationService {
 		String drugId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrug().getId();
 		String drugstoreId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrugstore().getId();
 		
-		drugreservationRespository.deleteById(drugReservationId);
 		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
 		for(DrugStock stok:drst) {
 			if(stok.getDrugstore().getId().equals(drugstoreId)) {
-				stok.setAmount(stok.getAmount() + 1);
+				stok.setAmount(stok.getAmount() + drugreservationRespository.findById(drugReservationId).orElse(null).getAmount());
 				drugstockRepository.save(stok);
 			}
 		}
+		drugreservationRespository.deleteById(drugReservationId);
+		
+		
 		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
 		System.out.println(reservations.size());
 		return reservations;
@@ -162,7 +175,7 @@ public class DrugReservationService {
 			Date dateRes=new SimpleDateFormat("yyyy-MM-dd").parse(dr.getDate()); 
 			Date dateNow = new Date(System.currentTimeMillis()-24*60*60*1000);
 			
-			if(dateRes.after(dateNow)) {
+			if(dateRes.after(dateNow) && !dr.isIssued()) {
 				wanted.add(dr);
 			}
 		}
@@ -184,6 +197,42 @@ public class DrugReservationService {
 		}else {
 			return "Confirmation code is not valid!";
 		}
+	}
+
+	public String saveReservationEmployee(DrugReservationEmployeeDto drugreservationEmployeeDto) throws MessagingException {
+		DrugReservationDto drugreservationDto = new DrugReservationDto(
+				drugreservationEmployeeDto.getPatientId(),
+				drugreservationEmployeeDto.getDrugstoreId(),
+				drugreservationEmployeeDto.getDrugId(),
+				drugreservationEmployeeDto.getDate(),
+				drugreservationEmployeeDto.getAmount()
+		);
+		System.out.println(drugreservationEmployeeDto.getAppointmentId()+drugreservationEmployeeDto.getCheck()+ "KURAC");
+		if(drugreservationEmployeeDto.getCheck().equals("derm")) {
+			DermatologistAppointment da = dermAppointmentRepository.findById(drugreservationEmployeeDto.getAppointmentId()).orElse(null);
+			if(da.getAppointmentReport() != null) {
+				da.setAppointmentReport(da.getAppointmentReport()+"\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+				+"*"+drugreservationEmployeeDto.getAmount()+"\n");}
+				else {
+					da.setAppointmentReport("\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+							+"*"+drugreservationEmployeeDto.getAmount()+"\n");
+				}
+			dermAppointmentRepository.save(da);
+		}else {
+			PharmacistAppointment da = pharmAppointmentRepository.findById(drugreservationEmployeeDto.getAppointmentId()).orElse(null);
+			if(da.getAppointmentReport() != null) {
+			da.setAppointmentReport(da.getAppointmentReport()+"\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+			+"*"+drugreservationEmployeeDto.getAmount()+"\n");}
+			else {
+				da.setAppointmentReport("\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+						+"*"+drugreservationEmployeeDto.getAmount()+"\n");
+			}
+			pharmAppointmentRepository.save(da);
+		}
+		String confirmationCode = saveSingleReservation(drugreservationDto,false);
+		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
+		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
+		return "Success!Tu Sam";
 	}
 
 }

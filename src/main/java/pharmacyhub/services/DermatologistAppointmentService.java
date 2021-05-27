@@ -323,7 +323,11 @@ public class DermatologistAppointmentService {
 
 	public DermatologistAppointment endAppointment(String appointmentId, String appointmentReport) {
 		DermatologistAppointment da = dermatologistAppointmentRepository.findById(appointmentId).orElse(null);
-		da.setAppointmentReport(appointmentReport);
+		if(appointmentReport.equals("0")) {
+			da.setAppointmentReport(da.getAppointmentReport());
+		}else {
+		da.setAppointmentReport(appointmentReport+da.getAppointmentReport());
+		}
 		da.setProcessed(true);
 		dermatologistAppointmentRepository.save(da);
 		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "dermatologist");

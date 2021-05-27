@@ -231,7 +231,11 @@ public class PharmacistAppointmentService {
 	
 	public PharmacistAppointment endAppointment(String appointmentId, String appointmentReport) {
 		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
-		da.setAppointmentReport(appointmentReport);
+		if(appointmentReport.equals("0")) {
+			da.setAppointmentReport(da.getAppointmentReport());
+		}else {
+		da.setAppointmentReport(appointmentReport+da.getAppointmentReport());
+		}
 		da.setProcessed(true);
 		pharmacistAppointmentRepository.save(da);
 		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "pharmacist");
