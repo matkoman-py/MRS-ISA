@@ -205,7 +205,10 @@
           <b-form @submit="makeReservation">
             <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
             <br>
-            <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
+            <p>Now choose how much you want</p>
+            <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
+            <br>
+            <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
           </b-form>
         </b-modal>
 
@@ -249,6 +252,7 @@ export default {
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
         const minDate = new Date(today)
         return {
+            amount:'',
             minDate : minDate,
             userRating: "1",
             canRate: false,
@@ -350,7 +354,8 @@ export default {
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selectedDrugId,
-            date: this.date
+            date: this.date,
+            amount: this.amount,
           })
           .then(response => {
             alert(response.data);

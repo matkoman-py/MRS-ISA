@@ -6,7 +6,14 @@ public class DrugReservationDto {
 	private String drugstoreId;
 	private String drugId;
 	private String date;
+	private int amount;
 	
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
 	public String getPatientId() {
 		return patientId;
 	}

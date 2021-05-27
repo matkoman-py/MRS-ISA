@@ -72,6 +72,7 @@ public class DrugReservationService {
 		String drugstoreId = drugreservationDto.getDrugstoreId();
 		String patientId = drugreservationDto.getPatientId();
 		String date = drugreservationDto.getDate();
+		Integer amount = drugreservationDto.getAmount();
 
 		
 		Drug drug = drugRepository.findById(drugId).orElse(null);
@@ -80,15 +81,15 @@ public class DrugReservationService {
 		String confirmationCode = RadnomGeneratorUtil.generateDrugReservationCode(patient.getEmail());
 
 		
-		DrugReservation drr = new DrugReservation(drug, drugstore, 1, patient, date,eReceit);
+		DrugReservation drr = new DrugReservation(drug, drugstore, amount, patient, date,eReceit);
 		drr.setConfirmationCode(confirmationCode);
 
 
 		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
 		for(DrugStock stok:drst) {
 			if(stok.getDrugstore().getId().equals(drugstoreId)) {
-				if(stok.getAmount()-1>=0) {
-					stok.setAmount(stok.getAmount() - 1);
+				if(stok.getAmount()-amount>=0) {
+					stok.setAmount(stok.getAmount() - amount);
 					drugstockRepository.save(stok);
 					break;
 				}
