@@ -119,21 +119,41 @@ public class DrugReservationService {
 		return drr.getConfirmationCode();
 	}
 	
+	private boolean isDrugOnStock(String drugstoreId, String drugId, int amount) {
+		return drugreservationRespository.existsByDrugstoreIdAndDrugIdAndAmountGreaterThanEqual(drugstoreId, drugId, amount);
+		
+	}
+	
+	private boolean areDrugReservationsOnStock(List<DrugReservationDto>  drugReservationDtos) {
+		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
+			if(!isDrugOnStock(drugReservationDto.getDrugstoreId(), drugReservationDto.getDrugId(), drugReservationDto.getAmount())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public String saveMultipleReservations(List<DrugReservationDto>  drugReservationDtos) throws Exception {
 		String confirmationCodes = "";
 		if (drugReservationDtos.isEmpty()) {
 			throw new Exception("Empty drug reservations");
 		}
+		
 		Patient patient = patientRepository.findById(drugReservationDtos.get(0).getPatientId()).orElse(null);
+		if(!areDrugReservationsOnStock(drugReservationDtos)) {
+			return "Not enough drug on stock!"; 
+		}
+		
 		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
-			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto,true);
+			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto, true);
 		}
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCodes);
+		
 		return "Success!";
 	}
 
 	public String saveReservation(DrugReservationDto drugreservationDto) throws MessagingException {
-		String confirmationCode = saveSingleReservation(drugreservationDto,false);
+		String confirmationCode = saveSingleReservation(drugreservationDto, false);
 		if(confirmationCode != null) {
 			Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
 			userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
