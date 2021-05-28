@@ -108,7 +108,7 @@ public class DrugReservationService {
 					//NAPRAVITI DRUG REQUEST !!!
 					DrugRequest dr = new DrugRequest(drugstoreRepository.findById(drugstoreId).orElse(null),drugRepository.findById(drugId).orElse(null),false);
 					drugRequestRepository.save(dr);
-					return "Drug not on stock!";
+					return null;
 				}
 			}
 		}
@@ -134,9 +134,14 @@ public class DrugReservationService {
 
 	public String saveReservation(DrugReservationDto drugreservationDto) throws MessagingException {
 		String confirmationCode = saveSingleReservation(drugreservationDto,false);
-		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
-		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
-		return "Success!";
+		if(confirmationCode != null) {
+			Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
+			userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
+			return "Success!";
+		}else {
+			return "Not enough drug on stock!";
+		}
+		
 	}
 
 	public List<DrugReservation> getPatientReservations(String patientId) {
@@ -200,6 +205,7 @@ public class DrugReservationService {
 	}
 
 	public String saveReservationEmployee(DrugReservationEmployeeDto drugreservationEmployeeDto) throws MessagingException {
+		
 		DrugReservationDto drugreservationDto = new DrugReservationDto(
 				drugreservationEmployeeDto.getPatientId(),
 				drugreservationEmployeeDto.getDrugstoreId(),
@@ -207,7 +213,12 @@ public class DrugReservationService {
 				drugreservationEmployeeDto.getDate(),
 				drugreservationEmployeeDto.getAmount()
 		);
-		System.out.println(drugreservationEmployeeDto.getAppointmentId()+drugreservationEmployeeDto.getCheck()+ "KURAC");
+		
+		String confirmationCode = saveSingleReservation(drugreservationDto,false);
+		if(confirmationCode == null) {
+			return "Not enough drug on stock!";
+		}
+		
 		if(drugreservationEmployeeDto.getCheck().equals("derm")) {
 			DermatologistAppointment da = dermAppointmentRepository.findById(drugreservationEmployeeDto.getAppointmentId()).orElse(null);
 			if(da.getAppointmentReport() != null) {
@@ -229,7 +240,7 @@ public class DrugReservationService {
 			}
 			pharmAppointmentRepository.save(da);
 		}
-		String confirmationCode = saveSingleReservation(drugreservationDto,false);
+		
 		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
 		return "Success!Tu Sam";
