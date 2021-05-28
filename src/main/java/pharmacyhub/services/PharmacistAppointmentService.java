@@ -8,6 +8,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -49,6 +50,7 @@ public class PharmacistAppointmentService {
 	
     public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
     	//userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
+    	
 		return pharmacistAppointmentRepository.findByPatientId(patientId);
 	}
     
@@ -247,15 +249,11 @@ public class PharmacistAppointmentService {
 		return da;
 	}
   	
-	public List<PharmacistAppointment> findAllPharmacistAppointmentsDone(String pharmacistId) {
-		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
-		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
-
-		for(PharmacistAppointment appointment : allAppointments) {
-
-			if(appointment.getPharmacist().getId().equals(pharmacistId) && appointment.isProcessed())
-				wantedAppontments.add(appointment);
-		}
-		return wantedAppontments;
+	public List<PharmacistAppointment> findAllPharmacistAppointmentsDone(String pharmacistId, Pageable pageable) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedTrue(pharmacistId, pageable);
+	}
+	
+	public int findAllPharmacistAppointmentsDoneLength(String pharmacist) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedTrue(pharmacist).size();
 	}
 }

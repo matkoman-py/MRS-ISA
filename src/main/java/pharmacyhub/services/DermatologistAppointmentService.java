@@ -7,6 +7,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -338,21 +339,9 @@ public class DermatologistAppointmentService {
 		return da;
 	}
 
-	public List<DermatologistAppointment> findAllDermatologistAppointmentsDone(String dermatologistId) {
-		List<DermatologistAppointment> allAppointments = findAll();
-		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
+	public List<DermatologistAppointment> findAllDermatologistAppointmentsDone(String dermatologistId, Pageable pageable) {
 		
-		//long sad = new Date().getTime();
-		for(DermatologistAppointment appointment : allAppointments) {
-//			Date vreme = appointment.getDate();
-//			vreme.setHours(appointment.getTime().getHours());
-//			vreme.setMinutes(appointment.getTime().getMinutes());
-//			long vremee = vreme.getTime();
-			if(appointment.getDermatologist().getId().equals(dermatologistId) && appointment.isProcessed())
-				wantedAppontments.add(appointment);
-		}
-		System.out.println(wantedAppontments);
-		return wantedAppontments;
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedTrue(dermatologistId, pageable);
 	}
 
 	public List<DermatologistAppointment> cancelAppointment(String appointmentId) {
@@ -361,6 +350,10 @@ public class DermatologistAppointmentService {
 		da.setPatient(null);
 		dermatologistAppointmentRepository.save(da);
 		return dermatologistAppointmentRepository.findByPatientId(patientId);
+	}
+
+	public int findAllDermatologistAppointmentsDoneLength(String dermatologistId) {
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedTrue(dermatologistId).size();
 	}
 	
 }

@@ -288,6 +288,7 @@ export default {
         },
         getAppointments: function() {
             if(this.check == "pharm"){
+            
             this.$http
                 .get(
                     "http://localhost:8081/pharmacist-appointment/get-appointments",
@@ -300,15 +301,17 @@ export default {
                 .then((response) => {
                     this.pharmacistappointments = response.data.map(
                         (appointment) => ({
+                            id: appointment.id,
                             pharmacist: appointment.pharmacist.name,
                             date: appointment.date.slice(0, 10),
                             time: appointment.time.slice(0, 5),
                             processed: appointment.processed ? "Yes" : "No",
-                            drugstore: appointment.drugstore.name,
+                            drugstore: appointment.pharmacist.drugstore.name,
                             duration: appointment.duration,
                             appointment_eport: appointment.appointmentReport,
                         })
                     );
+                    
                 })
                 .catch((error) => console.log(error));
             }

@@ -3,6 +3,8 @@ package pharmacyhub.controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,20 +25,35 @@ public class PatientController {
 	private PatientService patientService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Patient>> getGreetings() {
-		return new ResponseEntity<>(patientService.findAll(), HttpStatus.OK);
+	public ResponseEntity<Collection<Patient>> getGreetings(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size
+			) {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(patientService.findAll(pageable), HttpStatus.OK);
 	}
 	
 	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Patient>> search(@RequestParam(value = "patientNameParam", required=false,  defaultValue = "0") String patientName,
-													  @RequestParam(value = "patientSurnameParam", required=false,  defaultValue = "0") String patientSurname
+	public ResponseEntity<Collection<Patient>> search(@RequestParam(value = "page", required = false) Integer page,
+													  @RequestParam(value = "size", required = false) Integer size,
+													  @RequestParam(value = "patientNameParam", required=false,  defaultValue = "") String patientName,
+													  @RequestParam(value = "patientSurnameParam", required=false,  defaultValue = "") String patientSurname
+												) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(patientService.returnPatients(pageable,patientName,patientSurname), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/searchLength", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> searchLength(
+													  @RequestParam(value = "patientNameParam", required=false,  defaultValue = "") String patientName,
+													  @RequestParam(value = "patientSurnameParam", required=false,  defaultValue = "") String patientSurname
 												) throws Exception {
 		
-		return new ResponseEntity<>(patientService.returnPatients(patientName,patientSurname), HttpStatus.OK);
+		return new ResponseEntity<>(patientService.returnPatientsLength(patientName,patientSurname), HttpStatus.OK);
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Patient>> update(@RequestBody Patient patient) throws Exception {
+	public ResponseEntity<Patient> update(@RequestBody Patient patient) throws Exception {
 		return new ResponseEntity<>(patientService.update(patient), HttpStatus.OK);
 
 	}

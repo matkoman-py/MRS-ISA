@@ -53,7 +53,13 @@
                 </b-table>
             </b-col>
         </b-row>
-        
+        <b-row align-h="center">
+            <b-pagination
+                        v-model="currentPage"
+                        per-page="5"
+                        :total-rows="rows"
+            ></b-pagination>
+        </b-row>
 
     </b-container>
 </template>
@@ -100,18 +106,26 @@
                     label: "Visit",
                     },
                 ],
+                rows: 0,
+                currentPage: 1,
             }
         },
-        
+        watch:{
+            currentPage: function() {
+                this.getAllPatients();
+            },
+        },
         methods: {
             getAllPatients: function () {
                 if(this.user.type == "Dermatologist"){
-                this.$http.get('http://localhost:8081/dermatologist-appointment/all-derm-done', {
+                this.$http.get(`http://localhost:8081/dermatologist-appointment/all-derm-done?page=${this
+                        .currentPage - 1}&size=5`, {
                         params: {
                             dermatologistId:  this.user.id
                         }
                     })
                     .then(response => {
+                        this.getRows()
                         this.patients = response.data.map(currentEvent =>
                             ({
                                 id: currentEvent.patient.id,
@@ -124,17 +138,17 @@
                                 appointment_report: currentEvent.appointmentReport,
                             }));
                     })
-                    .then(() => {
-                        this.mountedTrue = true;
-                        }
-                    )    
+                     
                 }else{
-                this.$http.get('http://localhost:8081/pharmacist-appointment/all-pharm-done', {
+                
+                this.$http.get(`http://localhost:8081/pharmacist-appointment/all-pharm-done?page=${this
+                        .currentPage - 1}&size=5`, {
                         params: {
                             pharmacistId:  this.user.id
                         }
                     })
                     .then(response => {
+                        this.getRows()
                         this.patients = response.data.map(currentEvent =>
                             ({
                                 id: currentEvent.patient.id,
@@ -147,10 +161,7 @@
                                 appointment_report: currentEvent.appointmentReport,
                             }));
                     })
-                    .then(() => {
-                        this.mountedTrue = true;
-                        }
-                    )
+                    
                 }
 
             },
@@ -168,6 +179,29 @@
                 }
                 else{
                     this.$router.push({ name: 'PatientProfileView', params: { passedId: item.id, check: "pharm" } });
+                }
+            },
+            getRows(){
+                if(this.user.type == "Dermatologist"){
+                this.$http.get(`http://localhost:8081/dermatologist-appointment/all-derm-done-length`, {
+                        params: {
+                            dermatologistId:  this.user.id
+                        }
+                    })
+                    .then(response => {
+                        this.rows = response.data;
+                    })
+                       
+                }else{
+                this.$http.get(`http://localhost:8081/pharmacist-appointment/all-pharm-done-length`, {
+                        params: {
+                            pharmacistId:  this.user.id
+                        }
+                    })
+                    .then(response => {
+                        this.rows = response.data;
+                    })
+                    
                 }
             }
         },

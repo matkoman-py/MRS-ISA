@@ -2,6 +2,8 @@ package pharmacyhub.controllers;
 
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +71,18 @@ public class PharmacistAppointmentController {
 	
 	@GetMapping(path ="/all-pharm-done", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsDone(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
 			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
-		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDone(pharmacistId), HttpStatus.OK);
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDone(pharmacistId,pageable), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-pharm-done-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getAllADermatologistAppointmentsDoneLength(
+			
+			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
+		
+		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDoneLength(pharmacistId), HttpStatus.OK);
 	}
 }
