@@ -234,7 +234,12 @@ public class PharmacistAppointmentService {
 		if(appointmentReport.equals("0")) {
 			da.setAppointmentReport(da.getAppointmentReport());
 		}else {
-		da.setAppointmentReport(appointmentReport+da.getAppointmentReport());
+			if(da.getAppointmentReport()!=null) {
+				da.setAppointmentReport(appointmentReport+da.getAppointmentReport());
+			}else {
+				da.setAppointmentReport(appointmentReport);
+			}
+		
 		}
 		da.setProcessed(true);
 		pharmacistAppointmentRepository.save(da);
