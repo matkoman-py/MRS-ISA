@@ -1,15 +1,16 @@
 <template>
     <b-container>
-        <b-row>
+        <b-row align-h="center">
             
             <b-col>
                 <b-table id="tabela_pacijenata" striped hover :items="patients" ></b-table>
             </b-col>
-            
+            <h3  v-if="patients.length == 0">Sorry, there are no patients with this name/surname!</h3>
             
         </b-row>
         <b-row align-h="center">
             <b-pagination
+                        v-if="patients.length != 0"
                         v-model="currentPage"
                         per-page="5"
                         :total-rows="rows"

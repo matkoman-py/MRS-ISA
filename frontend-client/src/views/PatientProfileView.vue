@@ -139,6 +139,11 @@
                                         >
                                             Patient has no history of pharmacist appointments!
                                         </h3>
+                                        <b-pagination align="center"
+                                                    v-model="currentPage"
+                                                    per-page="4"
+                                                    :total-rows="rows"
+                                        ></b-pagination>
                                     </b-card>
                                 </b-tab>
                                 <b-tab
@@ -168,6 +173,11 @@
                                         >
                                             Patient has no history of dermatology appointments!
                                         </h3>
+                                        <b-pagination align="center"
+                                                    v-model="currentPage"
+                                                    per-page="4"
+                                                    :total-rows="rows"
+                                        ></b-pagination>
                                     </b-card>
                                 </b-tab>
                             </b-tabs>
@@ -268,7 +278,14 @@ export default {
             ],
             pharmacistappointments: [],
             selected: {},
+            rows: 0,
+            currentPage: 1,
         };
+    },
+    watch:{
+            currentPage: function() {
+                this.getAppointments();
+            },
     },
     methods:{
         getEmployee: function() {
@@ -291,7 +308,8 @@ export default {
             
             this.$http
                 .get(
-                    "http://localhost:8081/pharmacist-appointment/get-appointments",
+                    `http://localhost:8081/pharmacist-appointment/get-appointments?page=${this
+                        .currentPage - 1}&size=4`,
                     {
                         params: {
                             patientId: this.passedId,
@@ -299,6 +317,7 @@ export default {
                     }
                 )
                 .then((response) => {
+                    this.getRows()
                     this.pharmacistappointments = response.data.map(
                         (appointment) => ({
                             id: appointment.id,
@@ -318,7 +337,8 @@ export default {
             else{
                 this.$http
                 .get(
-                    "http://localhost:8081/dermatologist-appointment/returnAppointments",
+                    `http://localhost:8081/dermatologist-appointment/returnAppointments?page=${this
+                        .currentPage - 1}&size=4`,
                     {
                         params: {
                             patientId: this.passedId,
@@ -326,6 +346,7 @@ export default {
                     }
                 )
                 .then((response) => {
+                    this.getRows()
                     this.dermatologistappointments = response.data.map(
                         (appointment) => ({
                             id: appointment.id,
@@ -350,6 +371,29 @@ export default {
         handleClose() {
                 this.$root.$emit('bv::hide::modal', 'my-modal');
         },
+        getRows(){
+            if(this.check == "derm"){
+                this.$http.get(`http://localhost:8081/dermatologist-appointment/returnAppointments-length`, {
+                        params: {
+                            patientId: this.passedId,
+                        },
+                    })
+                    .then(response => {
+                        this.rows = response.data;
+                    })
+                       
+                }else{
+                this.$http.get(`http://localhost:8081/pharmacist-appointment/get-appointments-length`, {
+                        params: {
+                            patientId: this.passedId,
+                        },
+                    })
+                    .then(response => {
+                        this.rows = response.data;
+                    })
+                    
+                }
+        }
     },
     mounted: function() {
         //appointments

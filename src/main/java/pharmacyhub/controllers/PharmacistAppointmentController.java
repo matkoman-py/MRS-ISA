@@ -53,10 +53,20 @@ public class PharmacistAppointmentController {
 	}
 	
 	@GetMapping(path ="/get-appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<PharmacistAppointment>> getAppointments(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
-		return new ResponseEntity<>(pharmacistAppointmentService.getAppointments(patientId), HttpStatus.OK);
-  }
-  
+	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<PharmacistAppointment>> getAppointments(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(pharmacistAppointmentService.getAppointments(patientId, pageable), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/get-appointments-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getAppointmentsLength(
+			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		return new ResponseEntity<>(pharmacistAppointmentService.getAppointmentsLength(patientId), HttpStatus.OK);
+	}
+	
 	@GetMapping(path ="/all-appointments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllPharmacistAppointments(@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.getAllPharmacistAppointments(pharmacistId), HttpStatus.OK);

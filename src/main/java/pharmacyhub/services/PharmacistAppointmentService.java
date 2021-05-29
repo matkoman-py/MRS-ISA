@@ -48,10 +48,12 @@ public class PharmacistAppointmentService {
 	private PatientCategoryService patientCategoryService;
 
 	
-    public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
-    	//userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
-    	
-		return pharmacistAppointmentRepository.findByPatientId(patientId);
+    public List<PharmacistAppointment> getAppointments(String patientId, Pageable pageable) {
+		return pharmacistAppointmentRepository.findByPatientId(patientId,pageable);
+	}
+    
+    public int getAppointmentsLength(String patientId) {
+		return pharmacistAppointmentRepository.findByPatientId(patientId).size();
 	}
     
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {

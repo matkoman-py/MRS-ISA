@@ -278,9 +278,12 @@ public class DermatologistAppointmentService {
 		return da;
 	}
 	
-	public List<DermatologistAppointment> returnAppointments(String patientId) {
-		List<DermatologistAppointment> da = dermatologistAppointmentRepository.findByPatientId(patientId);
-		return da;
+	public List<DermatologistAppointment> returnAppointments(String patientId, Pageable pageable) {
+		return dermatologistAppointmentRepository.findByPatientId(patientId,pageable);
+	}
+	
+	public int returnAppointmentsLength(String patientId) {
+		return dermatologistAppointmentRepository.findByPatientId(patientId).size();
 	}
 	
 	public List<DermatologistAppointment> findAvailable(String drugstoreId, String dermatologistId) {

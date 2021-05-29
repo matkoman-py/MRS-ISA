@@ -54,8 +54,18 @@ public class DermatologistAppointmentController {
 	}
 	
 	@GetMapping(path ="/returnAppointments", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<DermatologistAppointment>> returnAppointments(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
-		  return new ResponseEntity<>(dermatologistAppointmentService.returnAppointments(patientId), HttpStatus.OK);	
+	public ResponseEntity<Collection<DermatologistAppointment>> returnAppointments(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+			Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		  return new ResponseEntity<>(dermatologistAppointmentService.returnAppointments(patientId,pageable), HttpStatus.OK);	
+	}
+	
+	@GetMapping(path ="/returnAppointments-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> returnAppointmentsLength(
+			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		  return new ResponseEntity<>(dermatologistAppointmentService.returnAppointmentsLength(patientId), HttpStatus.OK);	
 	}
 	
 	@GetMapping(path ="/begin-appointment", produces = MediaType.APPLICATION_JSON_VALUE)

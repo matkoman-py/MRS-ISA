@@ -14,6 +14,7 @@ import pharmacyhub.domain.users.Pharmacist;
 public interface PharmacistAppointmentRepository extends JpaRepository<PharmacistAppointment, String> {
 	List<PharmacistAppointment> findByPharmacistId(String pharmacistId);
 	List<PharmacistAppointment> findByPatientId(String patientId);
+	List<PharmacistAppointment> findByPatientId(String patientId, Pageable pageable);
 	List<PharmacistAppointment> findByPharmacistAndProcessed(Pharmacist pharmacist, boolean processed);
 	List<PharmacistAppointment> findByPharmacistIdAndProcessedTrue(String pharmacistId);
 	List<PharmacistAppointment> findByPharmacistIdAndProcessedTrue(String pharmacistId, Pageable pageable);
