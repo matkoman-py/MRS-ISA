@@ -258,4 +258,12 @@ public class PharmacistAppointmentService {
 	public int findAllPharmacistAppointmentsDoneLength(String pharmacist) {
 		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedTrue(pharmacist).size();
 	}
+	
+	public List<PharmacistAppointment> findAllPharmacistAppointmentsTodo(String pharmacistId, Pageable pageable) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedFalseAndPatientNotNull(pharmacistId,pageable);
+	}
+
+	public int findAllPharmacistAppointmentsTodoLength(String pharmacistId) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedFalseAndPatientNotNull(pharmacistId).size();
+	}
 }

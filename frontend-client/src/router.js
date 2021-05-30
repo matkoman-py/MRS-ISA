@@ -49,6 +49,7 @@ import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment
 import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
 import PatientProfileView from "./views/PatientProfileView"
+import AppointmentPage from "./views/AppointmentPage"
 
 Vue.use(VueRouter);
 
@@ -300,6 +301,11 @@ const routes = [
         name: "PatientProfileView",
         component: PatientProfileView,
         props: true,
+    },
+    {
+        path: "/appointment-page",
+        name: "AppointmentPage",
+        component: AppointmentPage,
     },
 ];
 

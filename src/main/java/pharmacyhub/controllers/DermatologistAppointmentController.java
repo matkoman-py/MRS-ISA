@@ -99,6 +99,23 @@ public class DermatologistAppointmentController {
 		return new ResponseEntity<>(dermatologistAppointmentService.endAppointment(appointmentId,appointmentReport), HttpStatus.OK);
 	}
 	
+	@GetMapping(path ="/all-derm-todo", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointmentsTodo(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsTodo(dermatologistId,pageable), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-derm-todo-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getAllADermatologistAppointmentsTodoLength(
+			
+			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
+		
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsTodoLength(dermatologistId), HttpStatus.OK);
+	}
+	
 	@GetMapping(path ="/all-derm-done", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointmentsDone(
 			@RequestParam(value = "page", required = false) Integer page,

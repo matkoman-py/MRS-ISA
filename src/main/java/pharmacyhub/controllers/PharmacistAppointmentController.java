@@ -95,4 +95,21 @@ public class PharmacistAppointmentController {
 		
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDoneLength(pharmacistId), HttpStatus.OK);
 	}
+	
+	@GetMapping(path ="/all-pharm-todo", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsTodo(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsTodo(pharmacistId,pageable), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-pharm-todo-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getAllAPharmacistAppointmentsTodoLength(
+			
+			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
+		
+		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsTodoLength(pharmacistId), HttpStatus.OK);
+	}
 }

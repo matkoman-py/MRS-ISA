@@ -358,5 +358,13 @@ public class DermatologistAppointmentService {
 	public int findAllDermatologistAppointmentsDoneLength(String dermatologistId) {
 		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedTrue(dermatologistId).size();
 	}
+
+	public List<DermatologistAppointment> findAllDermatologistAppointmentsTodo(String dermatologistId, Pageable pageable) {
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedFalseAndPatientNotNull(dermatologistId,pageable);
+	}
+
+	public int findAllDermatologistAppointmentsTodoLength(String dermatologistId) {
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedFalseAndPatientNotNull(dermatologistId).size();
+	}
 	
 }
