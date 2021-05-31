@@ -33,8 +33,19 @@
                 <b-button type="button" variant="outline-hub" @click="handleClose">Cancel</b-button>
             </b-form>
         </b-modal>
- 
-        <b-row>
+        <b-row align-h="center" style="margin: 20px;" >
+            <b-form-select style="width:30%;margin: 2px;" v-model="selectedOption" :options="options" ></b-form-select>
+            <b-button                                  
+                                                    style="margin: 2px;"
+                                                    variant="outline-hub"
+                                                    size="sm"
+                                                    class="mr-1"
+                                                    @click="sort"
+                                                >
+                                                    Sort
+                                                </b-button>
+        </b-row>
+        <b-row style="margin: 20px;" align-h="center">
             <b-col>
                 <b-table id="tabela_pacijenata" striped hover :items="patients" :fields="fields" @row-clicked="showModal">
                     <template #cell(actions)="row">
@@ -78,28 +89,33 @@
         },
         data: function () {
             return {
+                selectedOption: '',
+                options:[{text: "First Name", value:"patient.name"},
+                        {text: "Last Name", value:"patient.surname"},
+                        {text: "Drugstore", value:"drugstore.name"},
+                        {text: "Start", value:"date"},
+                        {text: "Duration", value:"duration"}],
                 selected: {},
                 patients: [],
                 fields: [
                     {
-                        key: 'last_name',
-                        sortable: true
+                        key: 'last_name'
                     },
                     {
-                        key: 'first_name',
-                        sortable: true
+                        key: 'first_name'
+                        
                     },
                     {
                         key: 'drugstore',
-                        sortable: true
+                        
                     },
                     {
                         key: 'start',
-                        sortable: true
+                        
                     },
                     {
-                        key: 'duration',
-                        sortable: true
+                        key: 'duration'
+                        
                     },
                     {
                     key: "actions",
@@ -121,7 +137,8 @@
                 this.$http.get(`http://localhost:8081/dermatologist-appointment/all-derm-done?page=${this
                         .currentPage - 1}&size=5`, {
                         params: {
-                            dermatologistId:  this.user.id
+                            dermatologistId:  this.user.id,
+                            sortBy: this.selectedOption
                         }
                     })
                     .then(response => {
@@ -144,7 +161,8 @@
                 this.$http.get(`http://localhost:8081/pharmacist-appointment/all-pharm-done?page=${this
                         .currentPage - 1}&size=5`, {
                         params: {
-                            pharmacistId:  this.user.id
+                            pharmacistId:  this.user.id,
+                            sortBy: this.selectedOption
                         }
                     })
                     .then(response => {
@@ -203,6 +221,9 @@
                     })
                     
                 }
+            },
+            sort: function(){
+                this.getAllPatients()
             }
         },
         mounted: function () {

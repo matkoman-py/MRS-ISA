@@ -4,6 +4,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -83,8 +84,14 @@ public class PharmacistAppointmentController {
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsDone(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
-			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
-		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId,
+			@RequestParam (value = "sortBy", required=false,  defaultValue = "0") String sortBy) throws Exception {
+		Pageable pageable;
+		if(!sortBy.equals("0")) {
+			pageable =  PageRequest.of(page, size, Sort.by(sortBy));
+		}else {
+			pageable =  PageRequest.of(page, size);
+		}
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDone(pharmacistId,pageable), HttpStatus.OK);
 	}
 	
@@ -100,8 +107,14 @@ public class PharmacistAppointmentController {
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsTodo(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
-			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
-		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId,
+			@RequestParam (value = "sortBy", required=false,  defaultValue = "0") String sortBy) throws Exception {
+		Pageable pageable;
+		if(!sortBy.equals("0")) {
+			pageable =  PageRequest.of(page, size, Sort.by(sortBy));
+		}else {
+			pageable =  PageRequest.of(page, size);
+		}
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsTodo(pharmacistId,pageable), HttpStatus.OK);
 	}
 	

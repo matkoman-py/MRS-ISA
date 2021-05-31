@@ -66,7 +66,6 @@ public class PatientController {
 	
 	@GetMapping(path ="/penalty", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Patient> penalty(@RequestParam(value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
-		
 		return new ResponseEntity<>(patientService.penalty(patientId), HttpStatus.OK);
 	}
 }

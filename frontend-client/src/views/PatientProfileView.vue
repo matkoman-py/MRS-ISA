@@ -115,6 +115,7 @@
                                     style="height: 370px;"
                                     title="Pharmacist appointments"
                                 >
+                                    
                                     <b-card style="border: none;">
                                         <b-table
                                             v-if="
