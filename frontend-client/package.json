@@ -21,6 +21,7 @@
     "core-js": "^3.6.5",
     "fullcalendar-year-view": "0.0.3",
     "jquery": "^3.6.0",
+    "ol": "^6.5.0",
     "promise": "^8.1.0",
     "qr-scanner": "^1.2.0",
     "qrcode.vue": "^1.7.0",

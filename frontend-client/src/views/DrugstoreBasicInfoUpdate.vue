@@ -54,6 +54,7 @@ export default {
                 .catch((error) => console.log(error));
         },
         saveChanges: function() {
+            alert(this.drugstore.point.latitude, this.drugstore.point.longitude);
             this.$http
                 .put("http://localhost:8081/drugstores/update", this.drugstore)
                 .then(() => {

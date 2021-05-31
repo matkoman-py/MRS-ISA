@@ -197,7 +197,6 @@ public class ReportService {
 
 	private int getDermatologistAppointmentsProfit(Date from, Date to, Drugstore drugstore) {
 		List<DermatologistAppointment> appointments = dermatologistAppointmentRepository.findByDrugstoreAndProcessedTrue(drugstore);
-		System.out.println(appointments.size());
 		int profit = 0;
 		for (DermatologistAppointment appointment : appointments) {
 			if (appointment.getAppointmentReport() != null) {

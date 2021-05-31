@@ -43,13 +43,23 @@ INSERT INTO public.drug VALUES ('a3ew071d-b38c-4014-9fa3-2e7367d9ee49', false, '
 INSERT INTO public.drug VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'vaccine', 'Astra-zeneca', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
 
 --
+-- Data for Name: Point;
+--
+
+INSERT INTO public.point VALUES ('1', false, 44.8125, 20.4612);
+INSERT INTO public.point VALUES ('2', false, 44.8125, 20.4612);
+INSERT INTO public.point VALUES ('3', false, 44.8125, 20.4612);
+INSERT INTO public.point VALUES ('4', false, 44.8125, 20.4612);
+INSERT INTO public.point VALUES ('5', false, 44.8125, 20.4612);
+
+--
 -- Data for Name: Drugstore;
 --
-INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-ded43ad63843', false, 'Description', 'Lav', 2000, '08:00', '18:00', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
-INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-dedascs63843', false, 'Description', 'Sombor pharmacy', 2500, '07:50', '18:40', '9c7face6-d759-46bd-439a-6469ae471067');
-INSERT INTO public.drugstore VALUES ('2b7933e9-6as3-463a-974b-ded43ad63843', false, 'Description', 'Belgrade Health', 1000, '09:00', '19:00','9c7face6-d759-46bd-439a-6469ae471067');
-INSERT INTO public.drugstore VALUES ('2bas33e9-6523-463a-974b-ded43ad63843', false, 'Description', 'Pejin medicine', 800, '12:00', '21:00','9c7face6-d759-412d-839a-6469ae471067');
-INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', false, 'Description', 'Prirodnjacka medicina', 8000, '14:00', '22:00','71bfb5bf-f58f-45a9-8dea-2820a6e4d25d');
+INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-ded43ad63843', false, 'Description', 'Lav', 2000, '08:00', '18:00', '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '1');
+INSERT INTO public.drugstore VALUES ('2b7933e9-6523-463a-974b-dedascs63843', false, 'Description', 'Sombor pharmacy', 2500, '07:50', '18:40', '9c7face6-d759-46bd-439a-6469ae471067', '2');
+INSERT INTO public.drugstore VALUES ('2b7933e9-6as3-463a-974b-ded43ad63843', false, 'Description', 'Belgrade Health', 1000, '09:00', '19:00','9c7face6-d759-46bd-439a-6469ae471067', '3');
+INSERT INTO public.drugstore VALUES ('2bas33e9-6523-463a-974b-ded43ad63843', false, 'Description', 'Pejin medicine', 800, '12:00', '21:00','9c7face6-d759-412d-839a-6469ae471067', '4');
+INSERT INTO public.drugstore VALUES ('2fasdfe9-6523-463a-974b-ded43ad63843', false, 'Description', 'Prirodnjacka medicina', 8000, '14:00', '22:00','71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '5');
 
 --
 -- Data for Name: Employee;
