@@ -20,6 +20,8 @@ public class ComplaintDto {
 	private String employeName;
 	private String employeSurname;
 
+	private boolean hasReply;
+
 	public String getId() {
 		return id;
 	}
@@ -114,6 +116,14 @@ public class ComplaintDto {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public boolean isHasReply() {
+		return hasReply;
+	}
+
+	public void setHasReply(boolean hasReply) {
+		this.hasReply = hasReply;
 	}
 
 }

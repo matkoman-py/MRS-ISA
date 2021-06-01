@@ -37,6 +37,15 @@ public class ComplaintController {
 		return new ResponseEntity<>(complaintService.getComplaints(pageable), HttpStatus.OK);
 	}
 	
+	@GetMapping(path="/patient/{patientId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<ComplaintDto>> getComplaints(
+			@PathVariable("patientId") String patientId,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size) {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(complaintService.getComplaintsByPatientId(patientId, pageable), HttpStatus.OK);
+	}
+	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ComplaintDto> makeComplaint(@RequestBody MakeComplaintDto makeComplaintDto) throws Exception {
 		return new ResponseEntity<>(complaintService.makeComplaint(makeComplaintDto), HttpStatus.OK);

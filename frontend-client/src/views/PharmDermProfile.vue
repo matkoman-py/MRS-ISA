@@ -20,7 +20,7 @@
                                     <h6>
                                         {{employee.type}}
                                     </h6>
-                                    <p class="proile-rating">RANKING : <span>8/10</span></p>
+                                    <p class="proile-rating">RATING : <span>{{employee.rating}}</span></p>
                             <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#about" role="tab" aria-controls="home" aria-selected="true">About</a>

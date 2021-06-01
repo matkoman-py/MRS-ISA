@@ -7,6 +7,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -277,9 +278,12 @@ public class DermatologistAppointmentService {
 		return da;
 	}
 	
-	public List<DermatologistAppointment> returnAppointments(String patientId) {
-		List<DermatologistAppointment> da = dermatologistAppointmentRepository.findByPatientId(patientId);
-		return da;
+	public List<DermatologistAppointment> returnAppointments(String patientId, Pageable pageable) {
+		return dermatologistAppointmentRepository.findByPatientId(patientId,pageable);
+	}
+	
+	public int returnAppointmentsLength(String patientId) {
+		return dermatologistAppointmentRepository.findByPatientId(patientId).size();
 	}
 	
 	public List<DermatologistAppointment> findAvailable(String drugstoreId, String dermatologistId) {
@@ -323,28 +327,24 @@ public class DermatologistAppointmentService {
 
 	public DermatologistAppointment endAppointment(String appointmentId, String appointmentReport) {
 		DermatologistAppointment da = dermatologistAppointmentRepository.findById(appointmentId).orElse(null);
-		da.setAppointmentReport(appointmentReport);
+		if(appointmentReport.equals("0")) {
+			da.setAppointmentReport(da.getAppointmentReport());
+		}else {
+			if(da.getAppointmentReport()!=null) {
+				da.setAppointmentReport(appointmentReport+da.getAppointmentReport());
+			}else {
+				da.setAppointmentReport(appointmentReport);
+			}
+		}
 		da.setProcessed(true);
 		dermatologistAppointmentRepository.save(da);
 		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "dermatologist");
 		return da;
 	}
 
-	public List<DermatologistAppointment> findAllDermatologistAppointmentsDone(String dermatologistId) {
-		List<DermatologistAppointment> allAppointments = findAll();
-		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
+	public List<DermatologistAppointment> findAllDermatologistAppointmentsDone(String dermatologistId, Pageable pageable) {
 		
-		//long sad = new Date().getTime();
-		for(DermatologistAppointment appointment : allAppointments) {
-//			Date vreme = appointment.getDate();
-//			vreme.setHours(appointment.getTime().getHours());
-//			vreme.setMinutes(appointment.getTime().getMinutes());
-//			long vremee = vreme.getTime();
-			if(appointment.getDermatologist().getId().equals(dermatologistId) && appointment.isProcessed())
-				wantedAppontments.add(appointment);
-		}
-		System.out.println(wantedAppontments);
-		return wantedAppontments;
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedTrue(dermatologistId, pageable);
 	}
 
 	public List<DermatologistAppointment> cancelAppointment(String appointmentId) {
@@ -353,6 +353,18 @@ public class DermatologistAppointmentService {
 		da.setPatient(null);
 		dermatologistAppointmentRepository.save(da);
 		return dermatologistAppointmentRepository.findByPatientId(patientId);
+	}
+
+	public int findAllDermatologistAppointmentsDoneLength(String dermatologistId) {
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedTrue(dermatologistId).size();
+	}
+
+	public List<DermatologistAppointment> findAllDermatologistAppointmentsTodo(String dermatologistId, Pageable pageable) {
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedFalseAndPatientNotNull(dermatologistId,pageable);
+	}
+
+	public int findAllDermatologistAppointmentsTodoLength(String dermatologistId) {
+		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedFalseAndPatientNotNull(dermatologistId).size();
 	}
 	
 }

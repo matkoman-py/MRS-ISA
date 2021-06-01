@@ -1,6 +1,5 @@
 package pharmacyhub.services;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -14,12 +13,13 @@ import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.DermatologistAppointment;
-import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Offer;
 import pharmacyhub.domain.OrderStock;
 import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.Subscription;
+import pharmacyhub.domain.complaints.Complaint;
+import pharmacyhub.domain.complaints.Reply;
 import pharmacyhub.domain.enums.OfferStatus;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.CreateNewPriceForDrugDto;
@@ -203,13 +203,17 @@ public void notifyPharmacistAboutApproving(AbsenceRequest request) throws Messag
 
 	javaMailSender.send(message);
 }
-  @Async
+
+@Async
 public void notifyAboutRejection(AbsenceRequest request) throws MessagingException {
 	MimeMessage message = javaMailSender.createMimeMessage();
 	MimeMessageHelper helper;
-	
-	String emailContent = "Dear " + request.getEmployee().getName() + ",\nUnfortunately, we have to inform you that your absence request from " + request.getStartDate() + " to " + request.getEndDate() + " is rejected.\nReason for that is: '" + request.getAdminComment() + "' \nAll the best!";
-	
+
+	String emailContent = "Dear " + request.getEmployee().getName()
+			+ ",\nUnfortunately, we have to inform you that your absence request from " + request.getStartDate()
+			+ " to " + request.getEndDate() + " is rejected.\nReason for that is: '" + request.getAdminComment()
+			+ "' \nAll the best!";
+
 	helper = new MimeMessageHelper(message, true);
 	helper.setFrom("notification@pharmacyhub.com");
 	helper.setTo(request.getEmployee().getEmail());
@@ -249,5 +253,21 @@ public void notifyDermatologistAboutApproving(AbsenceRequest request) throws Mes
 
 	javaMailSender.send(message);
 }
+  	@Async
+	public void notifyAboutComplaintReply(Complaint complaint, Reply reply) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		
+		String emailContent = "Dear " + complaint.getPatient().getName() +
+				",\nA system admin replied to your complaint\n" + reply.getText() + "\n";
+		
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("notification@pharmacyhub.com");
+		helper.setTo(complaint.getPatient().getEmail());
+		helper.setSubject("Reply to complaint.");
+		helper.setText(emailContent, true);
+	
+		javaMailSender.send(message);
+	}
   
 }

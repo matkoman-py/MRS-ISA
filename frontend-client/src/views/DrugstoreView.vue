@@ -21,10 +21,13 @@
                         <b>Description</b>: {{ drugstore.description }}
                     </p>
                     <p v-if="averageRate != null" style="margin:20px">
-                        <b>Average rating</b>: {{ averageRate.toFixed(2) }} (From {{numberOfRates}} rates)
+                        <b>Average rating</b>:
+                        {{ averageRate.toFixed(2) }} (From
+                        {{ numberOfRates }} rates)
                     </p>
                     <p v-if="averageRate == null" style="margin:20px">
-                        <b>Average rating</b>: There are currently no rates for this drugstore
+                        <b>Average rating</b>: There are currently no rates for
+                        this drugstore
                     </p>
                     <p style="margin:20px">
                         <b>Working hours</b>: {{ drugstore.workingHoursFrom }} -
@@ -273,7 +276,7 @@
             size="lg"
             hide-footer
         >
-            <b-form @submit="saveRating">
+            <b-form>
                 <make-complaint-form
                     v-on:complaint-success="handleComplaintSuccess"
                     :complaintForm="complaintForm"
@@ -300,8 +303,8 @@ export default {
     },
     data: function() {
         return {
-            saveRatingPharmacistId: '',
-            saveRatingDermatologistId: '',
+            saveRatingPharmacistId: "",
+            saveRatingDermatologistId: "",
             dermatologistappointments: [],
             pharmacistappointments: [],
             drugReservations: [],
@@ -314,8 +317,8 @@ export default {
             dermatologists: [],
             pharmacists: [],
             date: "",
-            averageRate:0,
-            numberOfRates:0,
+            averageRate: 0,
+            numberOfRates: 0,
             pTableFields: [
                 {
                     key: "name",
@@ -371,42 +374,36 @@ export default {
     },
     methods: {
         saveRatingPharmacist() {
-                this.$http.get(
-                    "http://localhost:8081/rating-pharmacist/saveRating",
-                    {
-                        params: {
-                            patientId: this.user.id,
-                            pharmacistId: this.saveRatingPharmacistId,
-                            rating: this.userRating,
-                        },
-                    }
-                )
+            this.$http
+                .get("http://localhost:8081/rating-pharmacist/saveRating", {
+                    params: {
+                        patientId: this.user.id,
+                        pharmacistId: this.saveRatingPharmacistId,
+                        rating: this.userRating,
+                    },
+                })
                 .catch((error) => console.log(error));
         },
         saveRatingDermatologist() {
-                this.$http.get(
-                    "http://localhost:8081/rating-dermatologist/saveRating",
-                    {
-                        params: {
-                            patientId: this.user.id,
-                            dermatologistId: this.saveRatingDermatologistId,
-                            rating: this.userRating,
-                        },
-                    }
-                )
+            this.$http
+                .get("http://localhost:8081/rating-dermatologist/saveRating", {
+                    params: {
+                        patientId: this.user.id,
+                        dermatologistId: this.saveRatingDermatologistId,
+                        rating: this.userRating,
+                    },
+                })
                 .catch((error) => console.log(error));
         },
         saveRatingDrugstore() {
-            this.$http.get(
-                    "http://localhost:8081/rating-drugsore/saveRating",
-                    {
-                        params: {
-                            patientId: this.user.id,
-                            drugstoreId: this.currentDrugstoreId,
-                            rating: this.userRating,
-                        },
-                    }
-                )
+            this.$http
+                .get("http://localhost:8081/rating-drugsore/saveRating", {
+                    params: {
+                        patientId: this.user.id,
+                        drugstoreId: this.currentDrugstoreId,
+                        rating: this.userRating,
+                    },
+                })
                 .catch((error) => console.log(error));
         },
         showModal() {
@@ -598,18 +595,22 @@ export default {
                     this.checkSubscription();
                 })
                 .catch((error) => console.log(error));
-        }, getAverageRating() {
-                this.$http.get("http://localhost:8081/drugstores/averageRate", {
+        },
+        getAverageRating() {
+            this.$http
+                .get("http://localhost:8081/drugstores/averageRate", {
                     params: {
-                        drugstoreId: this.drugstore.id
-                    }
+                        drugstoreId: this.drugstore.id,
+                    },
                 })
-                .then(response => {
-                    this.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
+                .then((response) => {
+                    this.averageRate =
+                        response.data.numberOfRates > 0
+                            ? response.data.averageRate
+                            : null;
                     this.numberOfRates = response.data.numberOfRates;
                 })
                 .catch((error) => console.log(error));
-
         },
         getAllDermatologists() {
             this.$http

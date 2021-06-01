@@ -67,7 +67,6 @@ INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6f
 INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', false, NULL, 'mirko@mirkovic.com', 'Mirko', '$2a$12$Fq8JFCN1p2pQAyBKEIHA7enwqoDgZLdKFLJJ3mJKZ04PdXsgRgTnG', '060555522555', true, 'Mirkovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
 INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', false, NULL, 'petar@markovic.com', 'Petar', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', '06512345432', true, 'Markovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
 
-
 --
 -- Data for Name: Drugstore Admin;
 --
@@ -118,6 +117,7 @@ INSERT INTO public.employment VALUES ('2', false, '10:00', '12:00', '68eec890-3b
 --
 INSERT INTO public.dermatologist_appointment VALUES ('4a73ae19-2001-450a-a050-85f51717ab76', false, NULL, '2021-04-13 02:00:00', 8, 200,true,'12:00:00', '13:00:00','da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
 INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b6a802bce2b', false, NULL, '2021-04-19 02:00:00', 10, 200,true,'16:59:00', '17:59:00','79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
+
 --
 -- Data for Name: pharmacist_appointment; 
 --
@@ -208,8 +208,8 @@ INSERT INTO public.patient_category VALUES ('444038a9a-a754-11eb-bcbc-0242ac1300
 INSERT INTO public.patient_category VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 10, 'Silver', 500);
 INSERT INTO public.patient_category VALUES ('22038a9a-a754-11eb-bcbc-0242ac130002', false, 15, 'Gold', 700);
 
-INSERT INTO public.complaint VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
-INSERT INTO public.complaint VALUES ('11038a9a-a754-11eb-bcbc-0242ac130002', false, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
+INSERT INTO public.complaint VALUES ('33038a9a-a754-11eb-bcbc-0242ac130002', false, true, 'Najgori smecar od farmaceuta ikada, ne mogu da verujem', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
+INSERT INTO public.complaint VALUES ('11038a9a-a754-11eb-bcbc-0242ac130002', false, false, 'Stvarno mi se ne svidja kako pristupa pacijentima', 0, '2b7933e9-6523-463a-974b-ded43ad63843', 'ccb953a7-d244-48bb-8627-4b2437491dc1', '393dca36-3778-4802-939c-de7a0a265c9d');
 
 -- Data for dermatology rates
 

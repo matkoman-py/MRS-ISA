@@ -29,6 +29,7 @@ import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.ReplyRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.UserRepository;
+import pharmacyhub.services.UserNotificationService;
 
 @Service
 public class ComplaintService {
@@ -57,6 +58,9 @@ public class ComplaintService {
 	@Autowired
 	private DrugReservationRepository drugReservationRepository;
 	
+	@Autowired
+	private UserNotificationService userNotificationService;
+	
 	private ComplaintDto toComplaintDto(Complaint complaint) {
 		ComplaintDto complaintDto = new ComplaintDto();
 		
@@ -65,6 +69,7 @@ public class ComplaintService {
 		complaintDto.setPatientEmail(complaint.getPatient().getEmail());
 		complaintDto.setText(complaint.getText());
 		complaintDto.setType(complaint.getType());
+		complaintDto.setHasReply(complaint.isHasReply());
 		
 		switch(complaint.getType()) {
 		case Drugstore:
@@ -84,6 +89,12 @@ public class ComplaintService {
 	
 	public List<ComplaintDto> getComplaints(Pageable pageable){
 		return complaintRepository.findAll(pageable).stream()
+				.map(complaint -> toComplaintDto(complaint))
+				.collect(Collectors.toList());
+	}
+	
+	public List<ComplaintDto> getComplaintsByPatientId(String patientId, Pageable pageable){
+		return complaintRepository.findByPatientId(patientId, pageable).stream()
 				.map(complaint -> toComplaintDto(complaint))
 				.collect(Collectors.toList());
 	}
@@ -175,7 +186,11 @@ public class ComplaintService {
 		if (alreadyGivenReply != null) {
 			throw new Exception("Reply already given!");
 		}
+		complaint.setHasReply(true);
+		complaintRepository.save(complaint);
 		
-		return new ReplyDto(replyRepository.save(new Reply(complaint, user, makeReplyDto.getText())));
+		Reply reply = new Reply(complaint, user, makeReplyDto.getText());
+		userNotificationService.notifyAboutComplaintReply(complaint, reply);
+		return new ReplyDto(replyRepository.save(reply));
 	}
 }

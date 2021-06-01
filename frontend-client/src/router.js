@@ -17,7 +17,9 @@ import AppointmentDermatologist from "./views/AppointmentDermatologist";
 import AppointmentPharmacist from "./views/AppointmentPharmacist";
 import AppointmentsOverview from "./views/AppointmentsOverview";
 import AdminComplaintsView from "./views/complaints/AdminComplaintsView";
+import UserComplaintsView from "./views/complaints/UserComplaintsView";
 import CreateDrugOrder from "./views/CreateDrugOrder";
+import DermatologistAbsenceRequests from "./views/DermatologistAbsenceRequests";
 import DermatologistAppointments from "./views/DermatologistAppointments";
 import DermatologistOverview from "./views/DermatologistOverview";
 import DrugIssuing from "./views/DrugIssuing";
@@ -37,6 +39,7 @@ import LoginPage from "./views/LoginPage";
 import MyDrugstore from "./views/MyDrugstore";
 import PatientOverview from "./views/PatientOverview";
 import PatientProfile from "./views/PatientProfile";
+import PharmacistAbsenceRequests from "./views/PharmacistAbsenceRequests";
 import PharmacistOverview from "./views/PharmacistOverview";
 import PharmDermProfile from "./views/PharmDermProfile";
 import RegistrationPage from "./views/RegistrationPage";
@@ -45,8 +48,8 @@ import SchedulePharmacist from "./views/SchedulePharmacist";
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
 import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
-import PharmacistAbsenceRequests from "./views/PharmacistAbsenceRequests";
-import DermatologistAbsenceRequests from "./views/DermatologistAbsenceRequests";
+import PatientProfileView from "./views/PatientProfileView"
+import AppointmentPage from "./views/AppointmentPage"
 
 Vue.use(VueRouter);
 
@@ -278,7 +281,12 @@ const routes = [
         name: "Admin Complaints View",
         component: AdminComplaintsView,
     },
-    {        
+    {
+        path: "/patient-complaints",
+        name: "Patient Complaints View",
+        component: UserComplaintsView,
+    },
+    {
         path: "/pharmacist-absence-requests",
         name: "PharmacistAbsenceRequests",
         component: PharmacistAbsenceRequests,
@@ -287,6 +295,17 @@ const routes = [
         path: "/dermatologist-absence-requests",
         name: "DermatologistAbsenceRequests",
         component: DermatologistAbsenceRequests,
+    },
+    {
+        path: "/patient-profile-view",
+        name: "PatientProfileView",
+        component: PatientProfileView,
+        props: true,
+    },
+    {
+        path: "/appointment-page",
+        name: "AppointmentPage",
+        component: AppointmentPage,
     },
 ];
 
