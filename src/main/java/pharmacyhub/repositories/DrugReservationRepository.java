@@ -15,6 +15,7 @@ public interface DrugReservationRepository extends JpaRepository<DrugReservation
 	List<DrugReservation> findByDrugAndDrugstore(Drug drug, Drugstore drugstore);
 	List<DrugReservation> findByDrugstoreAndPatient(Drugstore drugstore, Patient patient);
 	List<DrugReservation> findByDrugstoreIdAndPatientIdAndIssuedTrue(String drugstoreId, String patientId);
+	List<DrugReservation> findByDrugstoreAndIssuedTrue(Drugstore drugstore);
 	DrugReservation findByConfirmationCode(String confirmationCode);
 	boolean existsByDrugstoreIdAndDrugIdAndAmountGreaterThanEqual(String drugstoreId, String drugId, int amount);
 

@@ -62,7 +62,6 @@ public class PatientService {
 	}
 	
 	public Patient penalty(String patientId) {
-		System.out.println(patientId+"KURAC");
 		Patient pat = patientRepository.findById(patientId).orElse(null);
 		pat.setPenaltyCounter(pat.getPenaltyCounter()+1);
 		patientRepository.save(pat);

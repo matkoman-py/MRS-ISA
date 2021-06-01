@@ -12,8 +12,8 @@ import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
+import pharmacyhub.domain.Point;
 import pharmacyhub.domain.RatingDrugstore;
-import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.dto.DrugStockPriceDto;
 import pharmacyhub.dto.DrugstoreAverageRatingDto;
@@ -222,6 +222,13 @@ public class DrugstoreService {
 		if(d.getLocation().getCountry() != null) location.setCountry(drugstore.getLocation().getCountry());
 
 		d.setLocation(location);
+		
+		Point point = d.getPoint();
+		
+		if (d.getPoint().getLatitude() != 0) point.setLatitude(drugstore.getPoint().getLatitude());
+		if (d.getPoint().getLongitude() != 0) point.setLongitude(drugstore.getPoint().getLongitude());
+		
+		d.setPoint(point);
 		
 		drugstoreRepository.save(d);
 		return true;
