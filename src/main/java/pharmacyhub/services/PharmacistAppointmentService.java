@@ -266,4 +266,15 @@ public class PharmacistAppointmentService {
 	public int findAllPharmacistAppointmentsTodoLength(String pharmacistId) {
 		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedFalseAndPatientNotNull(pharmacistId).size();
 	}
+
+	public Integer reservationsLength(String patientId) {
+		return pharmacistAppointmentRepository.findByPatientId(patientId).size();
+	}
+	
+	public List<PharmacistAppointment> cancelAppointment(String appointmentId) {
+		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
+		String patientId = da.getPatient().getId();
+		pharmacistAppointmentRepository.delete(da);
+		return pharmacistAppointmentRepository.findByPatientId(patientId);
+	}
 }

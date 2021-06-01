@@ -54,13 +54,17 @@ public class PharmacistAppointmentController {
 	}
 	
 	@GetMapping(path ="/get-appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<PharmacistAppointment>> getAppointments(
+  public /*ResponseEntity<Integer>*/ResponseEntity<Collection<PharmacistAppointment>> getAppointments(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
 			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+			@RequestParam(value = "size", required = false) Integer size) throws Exception {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(pharmacistAppointmentService.getAppointments(patientId, pageable), HttpStatus.OK);
-	}
+  }
+	//reservations-length
+	@GetMapping(path ="/reservations-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public /*ResponseEntity<Integer>*/ResponseEntity<Integer> reservationsLength(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		return new ResponseEntity<>(pharmacistAppointmentService.reservationsLength(patientId), HttpStatus.OK);
+  }
 	
 	@GetMapping(path ="/get-appointments-length", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getAppointmentsLength(
@@ -124,5 +128,11 @@ public class PharmacistAppointmentController {
 			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
 		
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsTodoLength(pharmacistId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/cancelAppointment",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PharmacistAppointment>> cancelReservation(@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String appointmentId) throws Exception {
+
+		return new ResponseEntity<>(pharmacistAppointmentService.cancelAppointment(appointmentId), HttpStatus.OK);
 	}
 }

@@ -39,6 +39,11 @@ public class DrugController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.returnDrugs(searchDto, pageable), HttpStatus.OK);
 	}
+	
+	@PostMapping(path = "/searchLength", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> search(@RequestBody DrugSearchDto searchDto) {
+		return new ResponseEntity<>(drugService.returnDrugsLength(searchDto), HttpStatus.OK);
+	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drug>> getDrugs(
@@ -47,7 +52,7 @@ public class DrugController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.findAll(pageable), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = "/notOnStock", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drug>> getDrugsNotOnStock(
 			@RequestParam(value = "page", required = false) Integer page,

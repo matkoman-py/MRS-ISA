@@ -23,8 +23,8 @@ public interface PharmacistAppointmentRepository extends JpaRepository<Pharmacis
 	void deleteByPharmacist(Pharmacist pharmacist);
 	List<PharmacistAppointment> findByPatientIdAndPharmacistIdAndProcessedTrue(String patientId, String pharmacistId);
 	List<PharmacistAppointment> findByPatientIdAndPharmacistDrugstoreIdAndProcessedTrue(String patientId, String drugstoreId);
+	List<PharmacistAppointment> findByPatientId(String patientId, Pageable pageable);
 	List<PharmacistAppointment> findByPharmacistIdAndProcessedFalseAndPatientNotNull(String pharmacistId, Pageable pageable);
 	List<PharmacistAppointment> findByPharmacistIdAndProcessedFalseAndPatientNotNull(String pharmacistId);
 	List<PharmacistAppointment> findByPharmacistDrugstoreAndProcessedTrue(Drugstore drugstore);
-
 }

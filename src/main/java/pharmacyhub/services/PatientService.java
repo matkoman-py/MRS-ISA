@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.Penalty;
 import pharmacyhub.domain.users.Patient;
+import pharmacyhub.repositories.PenaltyRepository;
 import pharmacyhub.repositories.specifications.PatientSpecifications;
 import pharmacyhub.repositories.users.PatientRepository;
 
@@ -15,6 +17,9 @@ public class PatientService {
 
 	@Autowired
 	private PatientRepository patientRepository;
+	
+	@Autowired
+	private PenaltyRepository penaltyRepository;
 	
 	public List<Patient> findAll(Pageable pageable)
 	{
@@ -58,10 +63,16 @@ public class PatientService {
 		return patientRepository.findById(patientId).orElse(null);
 	}
 	
-	public Patient penalty(String patientId) {
+	public Patient penalty(String patientId, String reservationId, String type) {
 		Patient pat = patientRepository.findById(patientId).orElse(null);
-		pat.setPenaltyCounter(pat.getPenaltyCounter()+1);
-		patientRepository.save(pat);
+		System.out.println("EVO ME U FUNKCIJI");
+		if(penaltyRepository.findByReservationId(reservationId) == null) {
+			Penalty penalty = new Penalty(reservationId,patientId,type);
+			penaltyRepository.save(penalty);
+			System.out.println("EVO ME U IFU");
+			pat.setPenaltyCounter(pat.getPenaltyCounter()+1);
+			patientRepository.save(pat);
+		}
 		return pat;
 	}
 

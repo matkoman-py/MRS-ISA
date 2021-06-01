@@ -225,4 +225,8 @@ public class DrugService {
 		return returnValue;
 	}
 
+	public Integer returnDrugsLength(DrugSearchDto searchDto) {
+		return drugRepository.findAll(DrugSpecifications.withSearch(searchDto)).size();
+	}
+
 }

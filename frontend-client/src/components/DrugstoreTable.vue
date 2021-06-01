@@ -47,9 +47,9 @@
 
     export default {
         computed: {
-            rows() {
-                return (this.currentPage+1)*4
-            }
+            //rows() {
+              //  return (this.currentPage+1)*4
+            //}
         },
         watch: {
             currentPage: function () {
@@ -80,9 +80,17 @@
                 currentPage: 1,
                 suppress: false,
                 currentSearch : {},
+                rows:0
             }
         },
         methods: {
+            getDrugstoresLength: function () {
+                this.$http.post(`http://localhost:8081/drugstores/searchLength`, this.currentSearch)
+                    .then(response => {
+                        this.rows = response.data;
+                    })
+                    .catch(error => console.log(error));
+            },
             searchDrugstores: function () {
                 this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
                 this.getDrugstores();
@@ -90,11 +98,13 @@
             getDrugstores: function () {
                 this.$http.post(`http://localhost:8081/drugstores/search?page=${this.currentPage-1}&size=4`, this.currentSearch)
                     .then(response => {
+                        this.getDrugstoresLength()
                         if (response.data.length == 0) {
-                            this.suppress = true;
-                            this.currentPage--;
+                            //this.suppress = true;
+                            this.drugstores = this.mapDrugstores(response);
+                            //this.currentPage--;
                         } else {
-                            this.suppress = false;
+                            //this.suppress = false;
                             this.drugstores = this.mapDrugstores(response);
                         }
                     })

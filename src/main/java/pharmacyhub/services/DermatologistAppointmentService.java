@@ -286,6 +286,10 @@ public class DermatologistAppointmentService {
 		return dermatologistAppointmentRepository.findByPatientId(patientId).size();
 	}
 	
+	public Integer reservationsLength(String patientId) {
+		return dermatologistAppointmentRepository.findByPatientId(patientId).size();
+	}
+	
 	public List<DermatologistAppointment> findAvailable(String drugstoreId, String dermatologistId) {
 		List<DermatologistAppointment> allAppointments = findAll();
 		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
