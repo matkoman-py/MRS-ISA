@@ -91,7 +91,7 @@
             </div>
 
             <div style="float:right; width:48%; height:300px; border-style:solid">
-                <map-container :coordinates="[form.point.longitude, form.point.latitude]"></map-container>
+                <map-container ref="map-container" :coordinates="[form.point.longitude, form.point.latitude]"></map-container>
             </div>
         </b-form>
     </b-container>
@@ -105,7 +105,12 @@ export default {
     props: ["form", "mode"],
     name: "DrugstoreBasicInfo",
     data: function() {
-        return {};
+        return {
+            map:null
+        };
+    },
+    mounted: function(){
+        this.map = this.$refs["map-container"].olMap;
     }
 };
 </script>

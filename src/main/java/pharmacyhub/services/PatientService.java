@@ -1,7 +1,5 @@
 package pharmacyhub.services;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.users.Patient;
-import pharmacyhub.repositories.specifications.drugs.DrugSpecifications;
+import pharmacyhub.repositories.specifications.PatientSpecifications;
 import pharmacyhub.repositories.users.PatientRepository;
-import specifications.patient.PatientSpecifications;
 
 @Service
 public class PatientService {

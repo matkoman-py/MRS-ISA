@@ -27,6 +27,7 @@ import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
+import pharmacyhub.repositories.PointRepository;
 import pharmacyhub.repositories.RatingDrugstoreRepository;
 import pharmacyhub.repositories.specifications.drugstores.DrugstoreSpecifications;
 import pharmacyhub.repositories.users.DrugstoreAdminRepository;
@@ -69,6 +70,9 @@ public class DrugstoreService {
 	@Autowired
 	private RatingDrugstoreRepository ratingDrugstoreRepository;
 	
+	@Autowired
+	private PointRepository pointRepository;
+	
 	public List<Drugstore> findAll() {
 		return drugstoreRepository.findAll();
 	}
@@ -90,6 +94,11 @@ public class DrugstoreService {
 		if(drugstore.getLocation() != null) {
 			Location location = drugstore.getLocation();
 			locationRepository.save(location);
+		}
+		
+		if(drugstore.getPoint() != null) {
+			Point point = drugstore.getPoint();
+			pointRepository.save(point);
 		}
 		
 		return drugstoreRepository.save(drugstore);

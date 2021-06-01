@@ -16,7 +16,9 @@
         </b-row>
         <b-row>
             <b-col> 
-                <b-button variant="outline-hub" style="margin:20px"> Drugstore reports </b-button> 
+                <router-link to="/drugstore-reports">
+                    <b-button variant="outline-hub" style="margin:20px"> Drugstore reports </b-button> 
+                </router-link>
             </b-col>
             <b-col> 
                 <router-link to="/drugstoreUpdate">

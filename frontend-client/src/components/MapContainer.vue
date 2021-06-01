@@ -76,7 +76,6 @@
             source.clear();
             source.addFeatures(features);
 
-            // this zooms the view on the created object
             view.fit(source.getExtent())
       },
         addMarker(coordinates) {
@@ -106,14 +105,6 @@
       }
     },
     mounted() {
-      // this is where we create the OpenLayers map
-      //const feature = new GeoJSON().readFeature(data, {
-        // this is required since GeoJSON uses latitude/longitude,
-        // but the map is rendered using “Web Mercator”
-        //featureProjection: 'EPSG:3857'
-     // });
-
-      // a new vector layer is created with the feature
       this.vectorSource = new VectorSource({
           features: [],
         });
@@ -143,8 +134,6 @@
       })
 
         this.olMap.on('dblclick', (evt) => {
-            //console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
-            //console.log(ol);
             this.addMarker(evt.coordinate);
         });
 

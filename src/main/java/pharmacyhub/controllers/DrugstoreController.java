@@ -72,8 +72,7 @@ public class DrugstoreController {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Drugstore>> get(
-			@RequestParam(value = "drugStoreNameParam", required = false, defaultValue = "0") String drugStoreName)
+	public ResponseEntity<Collection<Drugstore>> get()
 			throws Exception {
 
 		return new ResponseEntity<>(drugstoreService.findAll(), HttpStatus.OK);
