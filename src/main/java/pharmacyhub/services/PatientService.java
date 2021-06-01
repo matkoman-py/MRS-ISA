@@ -1,14 +1,15 @@
 package pharmacyhub.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Penalty;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.repositories.PenaltyRepository;
+import pharmacyhub.repositories.specifications.PatientSpecifications;
 import pharmacyhub.repositories.users.PatientRepository;
 
 @Service
@@ -20,14 +21,14 @@ public class PatientService {
 	@Autowired
 	private PenaltyRepository penaltyRepository;
 	
-	public List<Patient> findAll()
+	public List<Patient> findAll(Pageable pageable)
 	{
-		return patientRepository.findAll();
+		return patientRepository.findAll(pageable).toList();
 	}
 	
-	public List<Patient> returnPatients(String patientName,String patientSurname) {
+	public List<Patient> returnPatients(Pageable pageable,String patientName,String patientSurname) {
 		
-		List<Patient> allPatients = findAll();
+		/*List<Patient> allPatients = findAll();
 		List<Patient> wantedPatients = new ArrayList<>();
 		
 		for(Patient pat:allPatients) {
@@ -35,12 +36,12 @@ public class PatientService {
 				(pat.getSurname().toLowerCase().contains(patientSurname.toLowerCase()) || patientSurname.equals("0"))) {
 				wantedPatients.add(pat);
 			}
-		}
-		
-		return wantedPatients;
+		}*/
+		System.out.println(patientName + patientSurname);
+		return patientRepository.findAll(PatientSpecifications.withSearch(patientName, patientSurname),pageable).toList();
 	}
 	
-	public List<Patient> update(Patient patient) throws Exception {
+	public Patient update(Patient patient) throws Exception {
 
 			Patient pat = (Patient) patientRepository.findById(patient.getId()).orElse(null);
 			if (pat.equals(null)) {
@@ -55,7 +56,7 @@ public class PatientService {
 			if(patient.getAllergens() != null) pat.setAllergens(patient.getAllergens());
 
 			patientRepository.save(pat);
-		return findAll();
+			return pat;
 	}
 
 	public Patient returnPatient(String patientId) {
@@ -73,6 +74,11 @@ public class PatientService {
 			patientRepository.save(pat);
 		}
 		return pat;
+	}
+
+	public Integer returnPatientsLength(String patientName, String patientSurname) {
+		// TODO Auto-generated method stub
+		return patientRepository.findAll(PatientSpecifications.withSearch(patientName, patientSurname)).size();
 	}
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.dto.DrugReservationDto;
+import pharmacyhub.dto.DrugReservationEmployeeDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.services.DrugReservationService;
 
@@ -37,6 +38,11 @@ public class DrugReservationController {
 	@PostMapping(path = "/saveReservation",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationDto drugreservationDto) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveReservation(drugreservationDto), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/saveReservationEmployee",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationEmployeeDto drugreservationDto) throws Exception {
+		return new ResponseEntity<>(drugReservationService.saveReservationEmployee(drugreservationDto), HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/saveMultipleReservations", produces = MediaType.APPLICATION_JSON_VALUE)

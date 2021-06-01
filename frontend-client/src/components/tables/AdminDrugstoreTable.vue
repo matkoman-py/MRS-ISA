@@ -36,7 +36,7 @@
             @hide="resetEditModal"
             size="xl"
         >
-            <pre><edit-drugstore-form :form="editModal.drugstore" submitHandle="null"></edit-drugstore-form></pre>
+            <pre><edit-drugstore-form ref="edit-form" :drugstore="editModal.drugstore" submitHandle="null"></edit-drugstore-form></pre>
         </b-modal>
         <b-modal
             :id="deleteModal.id"
@@ -90,6 +90,12 @@ export default {
             this.editModal.drugstore = JSON.parse(JSON.stringify(rowItem));
             console.log(this.editModal.drugstore);
             this.$root.$emit("bv::show::modal", this.editModal.id, button);
+            setTimeout(() =>
+            {
+                 this.$refs["edit-form"].map.updateSize();
+                 this.$refs["edit-form"].map.getView().setZoom(6);
+            }
+            , 300);
         },
         resetEditModal: function() {
             this.editModal.title = "";

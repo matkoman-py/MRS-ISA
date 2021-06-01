@@ -38,12 +38,13 @@ public class DrugReservationDto {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public DrugReservationDto(String patientId, String drugstoreId, String drugId, String date) {
+	public DrugReservationDto(String patientId, String drugstoreId, String drugId, String date, int amount) {
 		super();
 		this.patientId = patientId;
 		this.drugstoreId = drugstoreId;
 		this.drugId = drugId;
 		this.date = date;
+		this.amount = amount;
 	}
 	public DrugReservationDto() {
 		super();

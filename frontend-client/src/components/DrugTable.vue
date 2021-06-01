@@ -117,21 +117,8 @@
                             >
                                 Reserve
                             </b-button>
-                            <b-button
-                                variant="outline-hub"
-                                v-if="row.item && passedPatientId != null"
-                                size="sm"
-                                @click="
-                                    getDrugstores(
-                                        row.item,
-                                        row.index,
-                                        $event.target
-                                    )
-                                "
-                                class="mr-1"
-                            >
-                                Reserve
-                            </b-button>
+                        
+                            
                         </template>
                         <template #cell(rateAction)="row">
                             <b-button
@@ -166,6 +153,8 @@
                         :patientId="patientId"
                         :passedDrugstoreId="passedDrugstoreId"
                         :drugSubstitutions="drugSubstitutions"
+                        :appointmentId="passedAppointmentId"
+                        :check="passedCheck"
                     >
                     </drug-reservation>
                     <h1 v-if="drugs.length == 0">
@@ -209,6 +198,9 @@
             <p>Now choose how much you want</p>
             <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
             <br>
+            <p>Duration of therapy (in days):</p>
+            <b-form-input :value="1" :min="1" v-model="duration" type="number"></b-form-input>
+            <br>
             <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
           </b-form>
         </b-modal>
@@ -228,6 +220,8 @@ export default {
     props: {
         passedDrugstoreId: String,
         passedPatientId: String,
+        passedAppointmentId: String,
+        passedCheck: String,
     },
     computed: {
         ...mapState({
@@ -321,6 +315,9 @@ export default {
             patientId: "",
             selectedDrugId: "",
             rows: 0,
+            appointmentId: '',
+            check: '',
+            duration: '',
         };
     },
     methods: {
@@ -351,17 +348,20 @@ export default {
         },
         
         makeReservation: function() {
-        
-        this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+        //alert(this.check)
+        this.$http.post('http://localhost:8081/drugReservation/saveReservationEmployee', {
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selectedDrugId,
             date: this.date,
             amount: this.amount,
+            duration: this.duration,
+            appointmentId: this.appointmentId,
+            check: this.check,
           })
           .then(response => {
             alert(response.data);
-            this.$root.$emit('bv::hide::modal', 'my-modal');
+            this.$root.$emit('bv::hide::modal', 'my-modal1');
           })
           .catch(error => console.log(error));
         },
@@ -442,6 +442,8 @@ export default {
                         this.selectedDrugId = data.id;
                         this.drugstoreId = this.passedDrugstoreId;
                         this.patientId = this.passedPatientId;
+                        this.check = this.passedCheck;
+                        this.appointmentId = this.passedAppointmentId;
                         this.$root.$emit('bv::show::modal', 'my-modal1');}
                     });
             }

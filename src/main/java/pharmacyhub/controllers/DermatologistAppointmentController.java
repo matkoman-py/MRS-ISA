@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,12 @@ public class DermatologistAppointmentController {
 	@GetMapping(path ="/reservations-length", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> reservationsLength(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.reservationsLength(patientId), HttpStatus.OK);	
+  }
+	
+	@GetMapping(path ="/returnAppointments-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> returnAppointmentsLength(
+			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		  return new ResponseEntity<>(dermatologistAppointmentService.returnAppointmentsLength(patientId), HttpStatus.OK);	
 	}
 	
 	@GetMapping(path ="/begin-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,10 +105,50 @@ public class DermatologistAppointmentController {
 		return new ResponseEntity<>(dermatologistAppointmentService.endAppointment(appointmentId,appointmentReport), HttpStatus.OK);
 	}
 	
+	@GetMapping(path ="/all-derm-todo", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointmentsTodo(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId,
+			@RequestParam (value = "sortBy", required=false,  defaultValue = "0") String sortBy) throws Exception {
+		Pageable pageable;
+		if(!sortBy.equals("0")) {
+			pageable =  PageRequest.of(page, size, Sort.by(sortBy));
+		}else {
+			pageable =  PageRequest.of(page, size);
+		}
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsTodo(dermatologistId,pageable), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-derm-todo-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getAllADermatologistAppointmentsTodoLength(
+			
+			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
+		
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsTodoLength(dermatologistId), HttpStatus.OK);
+	}
+	
 	@GetMapping(path ="/all-derm-done", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointmentsDone(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId,
+			@RequestParam (value = "sortBy", required=false,  defaultValue = "0") String sortBy) throws Exception {
+		Pageable pageable;
+		if(!sortBy.equals("0")) {
+			pageable =  PageRequest.of(page, size, Sort.by(sortBy));
+		}else {
+			pageable =  PageRequest.of(page, size);
+		}
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsDone(dermatologistId,pageable), HttpStatus.OK);
+	}
+	
+	@GetMapping(path ="/all-derm-done-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getAllADermatologistAppointmentsDoneLength(
+			
 			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
-		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsDone(dermatologistId), HttpStatus.OK);
+		
+		return new ResponseEntity<>(dermatologistAppointmentService.findAllDermatologistAppointmentsDoneLength(dermatologistId), HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/cancelAppointment",produces = MediaType.APPLICATION_JSON_VALUE)

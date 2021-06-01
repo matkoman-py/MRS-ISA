@@ -4,8 +4,8 @@
     <div style="margin:40px; border-style:solid;">
         <b-table sticky-header striped hover :items="drugOrders" :fields="fields_for_orders">
           <template #cell(actions)="row">
-            <button v-if="row.item.Order_status === 'Pending' && selectedOrder != row.item.Order_id" class="btn btn-dark" @click="showOffersForOrder(row)">Select offer</button>
-            <button v-if="row.item.Order_status === 'Pending' && selectedOrder == row.item.Order_id" class="btn btn-dark" @click="hideOffers">Hide offers</button>
+            <b-button v-if="row.item.Order_status === 'Pending' && selectedOrder != row.item.Order_id"  variant="outline-hub" @click="showOffersForOrder(row)">Select offer</b-button>
+            <b-button v-if="row.item.Order_status === 'Pending' && selectedOrder == row.item.Order_id" variant="outline-hub" @click="hideOffers">Hide offers</b-button>
           </template>
         </b-table>
     </div>

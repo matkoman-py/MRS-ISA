@@ -131,6 +131,7 @@
                     })
                     .then(response => {
                         alert(response.data);
+                        this.search();
                     })
                     .catch(error => console.log(error));
             },

@@ -52,6 +52,7 @@
         <p>Now choose how much you want</p>
          <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
          <br>
+        
         <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
       </b-form>
     </b-modal>
