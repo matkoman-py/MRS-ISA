@@ -20,7 +20,6 @@ public interface DermatologistAppointmentRepository  extends JpaRepository<Derma
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedTrue(String dermatologistId);
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedTrue(String dermatologistId, Pageable pageable);
 	List<DermatologistAppointment> findByPatientId(String patientId);
-	List<DermatologistAppointment> findByPatientId(String patientId, Pageable pageable);
 	List<DermatologistAppointment> findByPatientIdAndDermatologistIdAndProcessedTrue(String patientId, String dermatologistId);
 	List<DermatologistAppointment> findByPatientIdAndDrugstoreIdAndProcessedTrue(String patientId, String drugstoreId);
 	List<DermatologistAppointment> findByPatientId(String patientId, Pageable pageable);
