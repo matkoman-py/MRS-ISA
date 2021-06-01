@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.DrugReservation;
@@ -159,19 +160,25 @@ public class ComplaintService {
 		return toComplaintDto(complaint);
 	}
 
-	
+	@Transactional
 	public ReplyDto getReply(String complaintId) throws Exception {
 		Complaint complaint = complaintRepository.findById(complaintId).orElse(null);
 		
 		if(complaint == null) {
 			throw new Exception("The given complaint doesn't exist!");
 		}
-		Reply reply = replyRepository.findByComplaint(complaint);
+		Reply reply = replyRepository.findByComplaintId(complaint.getId());
 		return (reply != null) ? new ReplyDto(reply) : null;
 	}
 	
+//	@Transactional
+//	private Reply findReplyByComplaintId(Complaint complaint) {
+//		return replyRepository.findByComplaintId(complaint.getId());
+//	}
+	
+    @Transactional
 	public ReplyDto makeReply(MakeReplyDto makeReplyDto) throws Exception {
-		Reply alreadyGivenReply = replyRepository.findById(makeReplyDto.getComplaintId()).orElse(null);
+		Reply alreadyGivenReply = replyRepository.findByComplaintId(makeReplyDto.getComplaintId());
 		Complaint complaint = complaintRepository.findById(makeReplyDto.getComplaintId()).orElse(null);
 		User user = userRepository.findById(makeReplyDto.getAdminId()).orElse(null);
 		
@@ -190,7 +197,8 @@ public class ComplaintService {
 		complaintRepository.save(complaint);
 		
 		Reply reply = new Reply(complaint, user, makeReplyDto.getText());
-		userNotificationService.notifyAboutComplaintReply(complaint, reply);
-		return new ReplyDto(replyRepository.save(reply));
+		reply = replyRepository.save(reply);
+		//userNotificationService.notifyAboutComplaintReply(complaint, reply);
+		return new ReplyDto(reply);
 	}
 }

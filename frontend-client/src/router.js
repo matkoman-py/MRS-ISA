@@ -42,6 +42,7 @@ import PatientProfile from "./views/PatientProfile";
 import PharmacistAbsenceRequests from "./views/PharmacistAbsenceRequests";
 import PharmacistOverview from "./views/PharmacistOverview";
 import PharmDermProfile from "./views/PharmDermProfile";
+import ActivateAccountView from "./views/postRegistration/ActivateAccountView";
 import RegistrationPage from "./views/RegistrationPage";
 import Schedule from "./views/Schedule";
 import SchedulePharmacist from "./views/SchedulePharmacist";
@@ -293,6 +294,11 @@ const routes = [
         path: "/dermatologist-absence-requests",
         name: "DermatologistAbsenceRequests",
         component: DermatologistAbsenceRequests,
+    },
+    {
+        path: "/activate-account/:activationCode",
+        name: "ActivateAccount",
+        component: ActivateAccountView,
     },
 ];
 

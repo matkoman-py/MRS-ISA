@@ -1,26 +1,24 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import userModule from './modules/user';
+import Vue from "vue";
+import VueToastr from "vue-toastr";
+import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import helpers from '../helpers';
-import VueToastr from 'vue-toastr';
+import helpers from "../helpers";
+import userModule from "./modules/user";
 
 Vue.use(Vuex);
 Vue.use(VueToastr);
 
-function helperPlugin () {
+function helperPlugin() {
     Vue.helpers = helpers;
     Vue.prototype.$helpers = helpers;
 }
-  
 
 export default new Vuex.Store({
     modules: {
-        userModule
+        userModule,
     },
-    plugins: 
-    [
-        createPersistedState({ storage: window.sessionStorage }),
-        helperPlugin
-    ]
-  })
+    plugins: [
+        createPersistedState({ storage: window.localStorage }),
+        helperPlugin,
+    ],
+});
