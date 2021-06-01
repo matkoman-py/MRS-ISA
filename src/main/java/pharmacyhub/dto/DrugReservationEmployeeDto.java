@@ -6,8 +6,16 @@ public class DrugReservationEmployeeDto {
 	private String drugId;
 	private String date;
 	private int amount;
+	private int duration;
 	private String appointmentId;
 	private String check;
+	
+	public int getDuration() {
+		return duration;
+	}
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
 	public String getPatientId() {
 		return patientId;
 	}
@@ -50,7 +58,7 @@ public class DrugReservationEmployeeDto {
 	public void setCheck(String check) {
 		this.check = check;
 	}
-	public DrugReservationEmployeeDto(String patientId, String drugstoreId, String drugId, String date, int amount,
+	public DrugReservationEmployeeDto(String patientId, String drugstoreId, String drugId, String date, int amount, int duration,
 			String appointmentId, String check) {
 		super();
 		this.patientId = patientId;
@@ -58,8 +66,10 @@ public class DrugReservationEmployeeDto {
 		this.drugId = drugId;
 		this.date = date;
 		this.amount = amount;
+		this.duration = duration;
 		this.appointmentId = appointmentId;
 		this.check = check;
+	    
 	}
 	public DrugReservationEmployeeDto() {
 		super();

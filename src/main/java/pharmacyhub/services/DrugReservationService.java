@@ -243,20 +243,20 @@ public class DrugReservationService {
 			DermatologistAppointment da = dermAppointmentRepository.findById(drugreservationEmployeeDto.getAppointmentId()).orElse(null);
 			if(da.getAppointmentReport() != null) {
 				da.setAppointmentReport(da.getAppointmentReport()+"\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
-				+"*"+drugreservationEmployeeDto.getAmount()+"\n");}
+				+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");}
 				else {
 					da.setAppointmentReport("\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
-							+"*"+drugreservationEmployeeDto.getAmount()+"\n");
+							+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");
 				}
 			dermAppointmentRepository.save(da);
 		}else {
 			PharmacistAppointment da = pharmAppointmentRepository.findById(drugreservationEmployeeDto.getAppointmentId()).orElse(null);
 			if(da.getAppointmentReport() != null) {
 			da.setAppointmentReport(da.getAppointmentReport()+"\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
-			+"*"+drugreservationEmployeeDto.getAmount()+"\n");}
+			+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");}
 			else {
 				da.setAppointmentReport("\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
-						+"*"+drugreservationEmployeeDto.getAmount()+"\n");
+						+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");
 			}
 			pharmAppointmentRepository.save(da);
 		}
