@@ -1,4 +1,4 @@
-package specifications.patient;
+package pharmacyhub.repositories.specifications;
 
 import java.util.ArrayList;
 import java.util.List;

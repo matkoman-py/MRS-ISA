@@ -50,6 +50,7 @@ import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
 import PatientProfileView from "./views/PatientProfileView"
 import AppointmentPage from "./views/AppointmentPage"
+import DrugstoreReports from "./views/DrugstoreReports";
 
 Vue.use(VueRouter);
 
@@ -306,6 +307,11 @@ const routes = [
         path: "/appointment-page",
         name: "AppointmentPage",
         component: AppointmentPage,
+    },
+    {
+        path: "/drugstore-reports",
+        name: "DrugstoreReports",
+        component: DrugstoreReports,
     },
 ];
 

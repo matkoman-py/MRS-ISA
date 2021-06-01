@@ -1,6 +1,6 @@
 <template>
     <b-container>
-        <drugstore-basic-info :form="form" mode="add"></drugstore-basic-info>
+        <drugstore-basic-info :form="drugstore" mode="add"></drugstore-basic-info>
         <b-button type="submit" style="margin:30px; width:25%" variant="outline-hub" size="lg" v-on:click="submitHandler">Save</b-button>
     </b-container>
 </template>
@@ -12,7 +12,7 @@ import DrugstoreBasicInfo from '../components/DrugstoreBasicInfo.vue'
   components: { DrugstoreBasicInfo },
     data: function() {
       return {
-        form: {
+        drugstore: {
           name: "",
           description: "",
           location: {
@@ -22,13 +22,18 @@ import DrugstoreBasicInfo from '../components/DrugstoreBasicInfo.vue'
           },
           workingHoursFrom: "",
           workingHoursTo: "",
+          pharmacistAppointmentPrice: null,
+          point: {
+            longitude: null,
+            latitude: null
+          }
         }
       };
     },
 
     methods:{
         submitHandler: function(){
-            this.$http.post("http://localhost:8081/drugstores", this.form)
+            this.$http.post("http://localhost:8081/drugstores", this.drugstore)
             .then(response => {
                 console.log(response);
                 alert("Successfully added drugstore");

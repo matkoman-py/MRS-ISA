@@ -35,7 +35,7 @@
       <b-col>
         <b-table head-variant="outline-hub" striped hover :items="drugs" :fields="fields" sticky-header="400px">
           <template #cell(actions)="row">
-            <b-button variant="outline-hub" v-if="row.item" size="sm"
+            <b-button variant="outline-hub" v-if="row.item" :disabled="employee.penaltyCounter >= 3" size="sm"
               @click="showModal(row.item, row.index, $event.target)" class="mr-1">
               Reserve
             </b-button>
@@ -76,6 +76,7 @@
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
       const minDate = new Date(today)
       return {
+        employee: 0,
         amount: '',
         selecteddrug: '',
         minDate: minDate,
@@ -253,9 +254,28 @@
               }));
           })
           .catch(error => console.log(error));
-      }
+      },
+      getEmployee: function () {
+        if(this.user != null){
+                this.$http
+                    .get("http://localhost:8081/patients/id", {
+                        params: {
+                            patientId: this.user.id,
+                        },
+                    })
+                    .then((response) => {
+                        this.employee = response.data;
+                        console.log(this.employee.penaltyCounter);
+                    })
+                    .catch((error) => console.log(error));
+                  }
+                  else{
+                    //this.user = "not logged in";
+                  }
+            },
     },
     mounted: function () {
+      this.getEmployee();
       this.getDrugstoreId();
       this.getManufacturers();
       this.getIngrediants();
