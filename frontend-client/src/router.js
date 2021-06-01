@@ -48,6 +48,8 @@ import SchedulePharmacist from "./views/SchedulePharmacist";
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
 import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
+import PatientProfileView from "./views/PatientProfileView"
+import AppointmentPage from "./views/AppointmentPage"
 
 Vue.use(VueRouter);
 
@@ -293,6 +295,17 @@ const routes = [
         path: "/dermatologist-absence-requests",
         name: "DermatologistAbsenceRequests",
         component: DermatologistAbsenceRequests,
+    },
+    {
+        path: "/patient-profile-view",
+        name: "PatientProfileView",
+        component: PatientProfileView,
+        props: true,
+    },
+    {
+        path: "/appointment-page",
+        name: "AppointmentPage",
+        component: AppointmentPage,
     },
 ];
 
