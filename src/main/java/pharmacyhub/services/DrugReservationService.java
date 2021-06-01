@@ -9,6 +9,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drug;
@@ -128,8 +129,8 @@ public class DrugReservationService {
 		return "Success!";
 	}
 
-	public List<DrugReservation> getPatientReservations(String patientId) {
-		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
+	public List<DrugReservation> getPatientReservations(String patientId, Pageable pageable) {
+		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null),pageable);
 		return reservations;
 	}
 
@@ -184,6 +185,10 @@ public class DrugReservationService {
 		}else {
 			return "Confirmation code is not valid!";
 		}
+	}
+
+	public Integer getPatientReservations(String patientId) {
+		return  drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null)).size();
 	}
 
 }

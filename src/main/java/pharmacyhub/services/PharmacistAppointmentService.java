@@ -8,6 +8,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -47,9 +48,8 @@ public class PharmacistAppointmentService {
 	private PatientCategoryService patientCategoryService;
 
 	
-    public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
-    	//userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
-		return pharmacistAppointmentRepository.findByPatientId(patientId);
+    public List<PharmacistAppointment> getAppointments(String patientId, Pageable pageable) throws MessagingException {
+		return pharmacistAppointmentRepository.findByPatientId(patientId,pageable);
 	}
     
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
@@ -248,5 +248,16 @@ public class PharmacistAppointmentService {
 				wantedAppontments.add(appointment);
 		}
 		return wantedAppontments;
+	}
+
+	public Integer reservationsLength(String patientId) {
+		return pharmacistAppointmentRepository.findByPatientId(patientId).size();
+	}
+	
+	public List<PharmacistAppointment> cancelAppointment(String appointmentId) {
+		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
+		String patientId = da.getPatient().getId();
+		pharmacistAppointmentRepository.delete(da);
+		return pharmacistAppointmentRepository.findByPatientId(patientId);
 	}
 }

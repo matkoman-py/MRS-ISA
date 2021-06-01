@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -18,4 +19,5 @@ public interface DermatologistAppointmentRepository  extends JpaRepository<Derma
 	List<DermatologistAppointment> findByPatientId(String patientId);
 	List<DermatologistAppointment> findByPatientIdAndDermatologistIdAndProcessedTrue(String patientId, String dermatologistId);
 	List<DermatologistAppointment> findByPatientIdAndDrugstoreIdAndProcessedTrue(String patientId, String drugstoreId);
+	List<DermatologistAppointment> findByPatientId(String patientId, Pageable pageable);
 }

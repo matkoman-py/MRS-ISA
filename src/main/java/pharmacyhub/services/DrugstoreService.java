@@ -242,5 +242,9 @@ public class DrugstoreService {
 		System.out.println(numberOfRates);
 		return new DrugstoreAverageRatingDto(averageRate, numberOfRates);
 	}
+
+	public Integer returnDrugStores(DrugstoreSearchDto drugstoreSearchDto) {
+		return drugstoreRepository.findAll(DrugstoreSpecifications.withSearch(drugstoreSearchDto)).size();
+	}
 }
 

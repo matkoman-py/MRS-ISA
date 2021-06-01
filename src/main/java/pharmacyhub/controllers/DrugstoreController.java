@@ -33,6 +33,11 @@ public class DrugstoreController {
 	@Autowired
 	private DrugstoreService drugstoreService;
 
+	@PostMapping(path = "/searchLength", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> searchLength(@RequestBody DrugstoreSearchDto drugstoreSearchDto) throws Exception {
+		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugstoreSearchDto), HttpStatus.OK);
+	}
+	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> add(@RequestBody Drugstore drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.save(drugstore), HttpStatus.OK);

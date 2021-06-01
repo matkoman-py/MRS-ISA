@@ -2,6 +2,8 @@ package pharmacyhub.controllers;
 
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,10 +53,18 @@ public class PharmacistAppointmentController {
 	}
 	
 	@GetMapping(path ="/get-appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<PharmacistAppointment>> getAppointments(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
-		return new ResponseEntity<>(pharmacistAppointmentService.getAppointments(patientId), HttpStatus.OK);
+	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<PharmacistAppointment>> getAppointments(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(pharmacistAppointmentService.getAppointments(patientId, pageable), HttpStatus.OK);
   }
-  
+	//reservations-length
+	@GetMapping(path ="/reservations-length", produces = MediaType.APPLICATION_JSON_VALUE)
+	public /*ResponseEntity<Integer>*/ResponseEntity<Integer> reservationsLength(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
+		return new ResponseEntity<>(pharmacistAppointmentService.reservationsLength(patientId), HttpStatus.OK);
+  }
+	
 	@GetMapping(path ="/all-appointments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllPharmacistAppointments(@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.getAllPharmacistAppointments(pharmacistId), HttpStatus.OK);
@@ -71,5 +81,11 @@ public class PharmacistAppointmentController {
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsDone(
 			@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDone(pharmacistId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/cancelAppointment",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PharmacistAppointment>> cancelReservation(@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String appointmentId) throws Exception {
+
+		return new ResponseEntity<>(pharmacistAppointmentService.cancelAppointment(appointmentId), HttpStatus.OK);
 	}
 }

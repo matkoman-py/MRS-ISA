@@ -7,6 +7,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -277,9 +278,13 @@ public class DermatologistAppointmentService {
 		return da;
 	}
 	
-	public List<DermatologistAppointment> returnAppointments(String patientId) {
-		List<DermatologistAppointment> da = dermatologistAppointmentRepository.findByPatientId(patientId);
+	public List<DermatologistAppointment> returnAppointments(String patientId, Pageable pageable) {
+		List<DermatologistAppointment> da = dermatologistAppointmentRepository.findByPatientId(patientId,pageable);
 		return da;
+	}
+	
+	public Integer reservationsLength(String patientId) {
+		return dermatologistAppointmentRepository.findByPatientId(patientId).size();
 	}
 	
 	public List<DermatologistAppointment> findAvailable(String drugstoreId, String dermatologistId) {

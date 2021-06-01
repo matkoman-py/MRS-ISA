@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import pharmacyhub.domain.PharmacistAppointment;
@@ -17,6 +18,7 @@ public interface PharmacistAppointmentRepository extends JpaRepository<Pharmacis
 	void deleteByPharmacist(Pharmacist pharmacist);
 	List<PharmacistAppointment> findByPatientIdAndPharmacistIdAndProcessedTrue(String patientId, String pharmacistId);
 	List<PharmacistAppointment> findByPatientIdAndPharmacistDrugstoreIdAndProcessedTrue(String patientId, String drugstoreId);
+	List<PharmacistAppointment> findByPatientId(String patientId, Pageable pageable);
 
 
 }
