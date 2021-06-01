@@ -113,6 +113,7 @@
                                     )
                                 "
                                 class="mr-1"
+                            :disabled="employee.penaltyCounter >= 3"
                             >
                                 Reserve
                             </b-button>
@@ -234,9 +235,9 @@ export default {
             email: (state) => state.userModule.loggedInUser.email,
             role: (state) => state.userModule.loggedInUser.type,
         }),
-        rows() {
-            return (this.currentPage + 1) * 3;
-        },
+        //rows() {
+            //return (this.currentPage + 1) * 3;
+        //},
     },
     watch: {
         currentPage: function() {
@@ -319,6 +320,7 @@ export default {
             currentSearch: {},
             patientId: "",
             selectedDrugId: "",
+            rows: 0,
         };
     },
     methods: {
@@ -364,6 +366,7 @@ export default {
           .catch(error => console.log(error));
         },
         getDrugReservations: function() {
+            if(this.user != null){
             this.$http
                 .get(
                     "http://localhost:8081/drugReservation/getPatientReservations",
@@ -384,6 +387,7 @@ export default {
                     );
                 })
                 .catch((error) => console.log(error));
+            }
         },
         getDrugstores: function(data) {
             if (this.user == null) {
@@ -442,6 +446,17 @@ export default {
                     });
             }
         },
+        getLength: function() {
+            this.$http
+                .post(
+                    `http://localhost:8081/drugs/searchLength`,
+                    this.currentSearch
+                )
+                .then((response) => {
+                    this.rows = response.data;
+                })
+                .catch((error) => console.log(error));
+        },
         searchDrugs: function() {
             this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
             this.getDrugs();
@@ -454,11 +469,14 @@ export default {
                     this.currentSearch
                 )
                 .then((response) => {
+                    this.getLength();
                     if (response.data.length == 0) {
-                        this.suppress = true;
-                        this.currentPage--;
+                        //this.suppress = true;
+                        //this.currentPage--;
+                        this.drugs = this.mapDrugs(response);
+                        //alert(this.currentPage)
                     } else {
-                        this.suppress = false;
+                        //this.suppress = false;
                         this.drugs = this.mapDrugs(response);
                     }
                 })
@@ -521,9 +539,28 @@ export default {
                     .join(", "),
             }));
         },
+        getEmployee: function () {
+            if(this.user != null){
+                this.$http
+                    .get("http://localhost:8081/patients/id", {
+                        params: {
+                            patientId: this.user.id,
+                        },
+                    })
+                    .then((response) => {
+                        this.employee = response.data;
+                        console.log(this.employee.penaltyCounter);
+                    })
+                    .catch((error) => console.log(error));
+                }
+                else{
+                    this.employee = "not logged in";
+                }
+            },
     },
 
     mounted: function() {
+        this.getEmployee();
         this.getDrugReservations();
         this.getManufacturers();
         this.getIngrediants();
