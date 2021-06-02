@@ -182,7 +182,7 @@ export default {
                     this.makeReservationRequestBody()
                 )
                 .then((response) => {
-                    this.$toastr.s("Yay!");
+                    this.$toastr.s("Success!");
                     console.log(response.data);
                 })
                 .catch((error) => console.log(error));

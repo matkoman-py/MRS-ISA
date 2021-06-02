@@ -59,7 +59,7 @@
                                     v-model="formData.drugstoreCity"
                                 ></b-form-input>
                             </b-form-row>
-                            <b-form-row class="mt-3">
+                            <!--b-form-row class="mt-3">
                                 <label for="minimumRatingInput"
                                     >Minimum Rating:</label
                                 >
@@ -72,7 +72,7 @@
                                     v-model="formData.minimumRating"
                                     >5</b-form-rating
                                 >
-                            </b-form-row>
+                            </b-form-row-->
                             <b-form-row class="mt-3">
                                 <label>Price:</label>
                                 <b-col cols="3">
@@ -130,7 +130,7 @@ export default {
             url: "",
             formData: {
                 drugstoreName: "",
-                minimumRating: 0,
+                //minimumRating: 0,
                 fromPrice: 0,
                 toPrice: 0,
                 drugstoreCity: "",

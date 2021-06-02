@@ -141,7 +141,8 @@
                     patientId: this.user.id,
                     drugstoreId: this.currentDrugstoreId,
                     drugId: this.selecteddrug,
-                    date: this.date
+                    date: this.date,
+                    amount: this.amount
                   })
                   .then(response => {
                     alert(response.data);

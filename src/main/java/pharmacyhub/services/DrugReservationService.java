@@ -117,7 +117,7 @@ public class DrugReservationService {
 		drr.setPrice(patientCategoryService.getPriceWithDiscount(patient, drugPrice.getPrice()));
 		drugreservationRespository.save(drr);
 		
-		return drr.getConfirmationCode();
+		return drr.getDrug().getName() + ": " + drr.getConfirmationCode();
 	}
 	
 	private boolean isDrugOnStock(String drugstoreId, String drugId, int amount) {
@@ -142,7 +142,7 @@ public class DrugReservationService {
 		
 		Patient patient = patientRepository.findById(drugReservationDtos.get(0).getPatientId()).orElse(null);
 		if(!areDrugReservationsOnStock(drugReservationDtos)) {
-			return "Not enough drug on stock!"; 
+			//throw new Exception("Not enough drug on stock");
 		}
 		
 		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
@@ -268,7 +268,7 @@ public class DrugReservationService {
 		
 		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
-		return "Success!Tu Sam";
+		return "Success!";
 	}
 
 }

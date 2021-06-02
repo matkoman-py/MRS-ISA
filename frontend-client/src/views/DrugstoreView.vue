@@ -403,6 +403,8 @@ export default {
                         drugstoreId: this.currentDrugstoreId,
                         rating: this.userRating,
                     },
+                }).then(() => {
+                    this.getCurrentDrugstore();
                 })
                 .catch((error) => console.log(error));
         },

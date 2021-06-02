@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class EReceiptSearchDto {
 
 	private String drugstoreName;
-	private Integer minimumRating;
+	//private Integer minimumRating;
 	private Double fromPrice;
 	private Double toPrice;
 	private String drugstoreCity;
@@ -27,13 +27,13 @@ public class EReceiptSearchDto {
 		this.drugstoreName = drugstoreName;
 	}
 
-	public Integer getMinimumRating() {
+	/*public Integer getMinimumRating() {
 		return minimumRating;
 	}
 
 	public void setMinimumRating(Integer minimumRating) {
 		this.minimumRating = minimumRating;
-	}
+	}*/
 
 	public Double getFromPrice() {
 		return fromPrice;
