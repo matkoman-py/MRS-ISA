@@ -35,12 +35,12 @@ INSERT INTO public.ingredient VALUES ('0e940928-4756-403e-b624-6fe00578448f', fa
 --
 -- Data for Name: drug;
 --
-INSERT INTO public.drug VALUES ('d7d2d173-9f15-4bd2-979c-6933746f6be4', false, 'a', 'tablet', 'Zanax', 200, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug VALUES ('6602618d-067d-487b-95f1-21cee6bb6e43', false, 'a', 'tablet', 'Prostamol uno', 0, false, 'b137c265-6e12-4b59-947e-ab5504335dc4', 'cb22173a-4b0b-4f98-9c03-e19682520ff2');
-INSERT INTO public.drug VALUES ('a329071d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'vaccine', 'Pfizer', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug VALUES ('a32asd1d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'herb', 'Caj od nane', 0, true, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug VALUES ('a3ew071d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'bandage', 'Nikotinski flaster', 0, false, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'vaccine', 'Astra-zeneca', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug VALUES ('d7d2d173-9f15-4bd2-979c-6933746f6be4', false, 'AS2222', 2, 'a', 'tablet', 'Zanax', 200, true, 2, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug VALUES ('6602618d-067d-487b-95f1-21cee6bb6e43', false, 'GB3333', 3, 'a', 'tablet', 'Prostamol uno', 0, false, 2, 'b137c265-6e12-4b59-947e-ab5504335dc4', 'cb22173a-4b0b-4f98-9c03-e19682520ff2');
+INSERT INTO public.drug VALUES ('a329071d-b38c-4014-9fa3-2e7367d9ee49', false, 'SF5555', 4, 'a', 'vaccine', 'Pfizer', 0, true, 2, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug VALUES ('a32asd1d-b38c-4014-9fa3-2e7367d9ee49', false, 'TR7777', 5, 'a', 'herb', 'Caj od nane', 0, true, 3, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug VALUES ('a3ew071d-b38c-4014-9fa3-2e7367d9ee49', false, 'FT1122', 6, 'a', 'bandage', 'Nikotinski flaster', 0, false, 5, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', false, 'GQ7878', 10,'a', 'vaccine', 'Astra-zeneca', 0, true, 10, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
 
 --
 -- Data for Name: Drugstore;

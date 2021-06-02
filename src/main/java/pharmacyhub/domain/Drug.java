@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -18,45 +17,43 @@ import org.hibernate.annotations.Where;
 @Where(clause = "deleted = false")
 public class Drug extends BaseEntity {
 
-	@Column(nullable = false, unique=true)
+	@Column(nullable = false, unique = true)
 	private String name;
-	
+
 	@Column(nullable = false)
 	private String form;
-	
+
 	@Column(nullable = false)
 	private boolean receipt;
-	
-//	@Column(nullable = false)
-//	private String counterEffects;
-//	
-//	@Column(nullable = false)
-//	private int dailyDose;
-//	
-//	@Column(nullable = false)
-//	private int weight;
-	
+
+	@Column(unique = true, nullable = false)
+	private String code;
+
+	@Column(nullable = false)
+	private int dailyDose;
+
+	@Column(nullable = false)
+	private double weight;
+
 	@ManyToOne
 	@JoinColumn(name = "drug_type_fk", nullable = false)
 	private DrugType type;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "manufacturer_fk", nullable = false)
 	private Manufacturer manufacturer;
-	
-	@Transient
-	//za sada, ovo ce se menjati
-	private List<Drug> substitutions;
-	
+
 	@ManyToMany
-	@JoinTable(name = "drug_ingredients", 
-			   joinColumns = @JoinColumn(name = "drug_id"), 
-			   inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+	@JoinTable(name = "substitutions", joinColumns = @JoinColumn(name = "original_id"), inverseJoinColumns = @JoinColumn(name = "sub_id"))
+	private List<Drug> substitutions;
+
+	@ManyToMany
+	@JoinTable(name = "drug_ingredients", joinColumns = @JoinColumn(name = "drug_id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
 	private List<Ingredient> ingredients;
-	
+
 	@Column(nullable = false)
 	private String description;
-	
+
 	@Column(nullable = false)
 	private int point;
 
@@ -148,6 +145,30 @@ public class Drug extends BaseEntity {
 
 	public void setPoint(int point) {
 		this.point = point;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public int getDailyDose() {
+		return dailyDose;
+	}
+
+	public void setDailyDose(int dailyDose) {
+		this.dailyDose = dailyDose;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 
 }
