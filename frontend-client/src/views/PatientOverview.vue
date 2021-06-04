@@ -4,8 +4,9 @@
             
             <b-col>
                 <b-table id="tabela_pacijenata" striped hover :items="patients" ></b-table>
+                <h3  v-if="patients.length == 0">Sorry, there are no patients with this name/surname!</h3>
             </b-col>
-            <h3  v-if="patients.length == 0">Sorry, there are no patients with this name/surname!</h3>
+            
             
         </b-row>
         <b-row align-h="center">
@@ -87,7 +88,7 @@
                                 country: patient.location ? patient.location.country : "Null",
                                 city: patient.location ? patient.location.city : "Null",
                                 points: patient.points,
-                                category: patient.category,
+                                category: patient.category? patient.category.name : "Null",
                             }));
                         this.getRows()
                         

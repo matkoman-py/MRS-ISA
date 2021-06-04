@@ -46,6 +46,7 @@
                                                
                                             </template>
                 </b-table>
+                <h1 v-if="appointments.length == 0"> You have no scheduled appointments!</h1>
             </b-col>
     </b-row>
     

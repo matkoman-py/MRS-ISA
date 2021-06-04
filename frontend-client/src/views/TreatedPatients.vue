@@ -62,6 +62,7 @@
                                                
                                             </template>
                 </b-table>
+                <h1 v-if="patients.length == 0"> You have no history of appointments!</h1>
             </b-col>
         </b-row>
         <b-row align-h="center">

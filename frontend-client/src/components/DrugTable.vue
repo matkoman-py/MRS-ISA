@@ -117,7 +117,23 @@
                             >
                                 Reserve
                             </b-button>
-                        
+                            
+                             <b-button
+                                variant="outline-hub"
+                                v-if="row.item && passedPatientId != null"
+                                size="sm"
+                                @click="
+                                    getDrugstores(
+                                        row.item,
+                                        row.index,
+                                        $event.target
+                                    )
+                                "
+                                class="mr-1"
+
+                            >
+                                Reserve
+                            </b-button>
                             
                         </template>
                         <template #cell(rateAction)="row">
