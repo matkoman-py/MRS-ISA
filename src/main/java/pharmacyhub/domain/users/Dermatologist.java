@@ -33,9 +33,9 @@ public class Dermatologist extends Employee {
 	}
 
 	public Dermatologist(String email, String password, String name, String surname, String phoneNumber,
-			Location location, String workingHoursFrom, String workingHoursTo) {
+			Location location, String workingHoursFrom, String workingHoursTo, double rating) {
 		super(email, password, name, surname, phoneNumber, location, UserType.Dermatologist, true, "", workingHoursFrom,
-				workingHoursTo);
+				workingHoursTo, rating);
 		this.employements = new ArrayList<Employment>();
 	}
 

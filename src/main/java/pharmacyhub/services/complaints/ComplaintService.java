@@ -14,6 +14,7 @@ import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.complaints.Complaint;
 import pharmacyhub.domain.complaints.Reply;
 import pharmacyhub.domain.enums.ComplaintType;
+import pharmacyhub.domain.enums.DrugReservationStatus;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
@@ -110,7 +111,7 @@ public class ComplaintService {
 	}
 	
 	public boolean patientHasPickedUpDrugInDrugsotre(String patientId, String drugstoreId) {
-		List<DrugReservation> drugReservations = drugReservationRepository.findByDrugstoreIdAndPatientIdAndIssuedTrue(drugstoreId, patientId);
+		List<DrugReservation> drugReservations = drugReservationRepository.findByDrugstoreIdAndPatientIdAndStatus(drugstoreId, patientId, DrugReservationStatus.Issued);
 		return drugReservations.size() > 0;
 	}
 	

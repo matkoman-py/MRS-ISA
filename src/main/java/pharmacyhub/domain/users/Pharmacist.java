@@ -30,8 +30,8 @@ public class Pharmacist extends Employee {
 		super();
 	}
 
-	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, String workingHoursFrom, String workingHoursTo, Drugstore drugstore) {
-		super(email, password, name, surname, phoneNumber, location, UserType.Pharmacist, true, null, workingHoursFrom, workingHoursTo);
+	public Pharmacist(String email, String password, String name, String surname, String phoneNumber, Location location, String workingHoursFrom, String workingHoursTo, Drugstore drugstore, double rating) {
+		super(email, password, name, surname, phoneNumber, location, UserType.Pharmacist, true, null, workingHoursFrom, workingHoursTo, rating);
 		this.drugstore = drugstore;
 	}
 	

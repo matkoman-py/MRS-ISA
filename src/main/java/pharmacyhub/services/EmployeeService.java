@@ -122,7 +122,7 @@ public class EmployeeService {
 		Dermatologist dermatologist = new Dermatologist(employee.getEmail(),
 				RadnomGeneratorUtil.generateEmployeePassword(), employee.getName(), employee.getSurname(),
 				employee.getPhoneNumber(), employee.getLocation(), employee.getWorkingHoursFrom(),
-				employee.getWorkingHoursTo());
+				employee.getWorkingHoursTo(), 0);
 
 		dermatologistRepository.save(dermatologist);
 		userNotificationService.sendEmployeeInitialPassword(dermatologist.getEmail(), dermatologist.getPassword());
@@ -439,7 +439,7 @@ public class EmployeeService {
 		String rawPassword = RadnomGeneratorUtil.generateEmployeePassword();
 		Pharmacist p = new Pharmacist(pharmacist.getEmail(), passwordEncoder.encode(rawPassword),
 				pharmacist.getName(), pharmacist.getSurname(), pharmacist.getPhoneNumber(), pharmacist.getLocation(),
-				pharmacist.getWorkingHoursFrom(), pharmacist.getWorkingHoursTo(), dg);
+				pharmacist.getWorkingHoursFrom(), pharmacist.getWorkingHoursTo(), dg, 0);
 
 		pharmacistRepository.save(p);
 		userNotificationService.sendEmployeeInitialPassword(p.getEmail(), rawPassword);

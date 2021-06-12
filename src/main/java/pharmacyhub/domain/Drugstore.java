@@ -47,13 +47,16 @@ public class Drugstore extends BaseEntity {
 	@ManyToOne	
 	@JoinColumn(name = "point_fk")
 	private Point point;
-
+	
+	@Column
+	private double rating;
+	
 	public Drugstore() {
 		super();
 	}
 
 	public Drugstore(String name, Location location, String decription, double averageRating,
-			int pharmacistAppointmentPrice, Point point) {
+			int pharmacistAppointmentPrice, Point point, double rating) {
 		super();
 		this.name = name;
 		this.location = location;
@@ -61,6 +64,16 @@ public class Drugstore extends BaseEntity {
 		//this.averageRating = averageRating;
 		this.pharmacistAppointmentPrice = pharmacistAppointmentPrice;
 		this.point = point;
+		this.rating = rating;
+	}
+
+	
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
 	public Point getPoint() {
