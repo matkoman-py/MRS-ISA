@@ -8,6 +8,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -47,9 +48,12 @@ public class PharmacistAppointmentService {
 	private PatientCategoryService patientCategoryService;
 
 	
-    public List<PharmacistAppointment> getAppointments(String patientId) throws MessagingException {
-    	//userNotificationService.sendReservationConfirmation(patientRepository.getById(patientId).getEmail(), "pharmacist");
-		return pharmacistAppointmentRepository.findByPatientId(patientId);
+    public List<PharmacistAppointment> getAppointments(String patientId, Pageable pageable) {
+		return pharmacistAppointmentRepository.findByPatientId(patientId,pageable);
+	}
+    
+    public int getAppointmentsLength(String patientId) {
+		return pharmacistAppointmentRepository.findByPatientId(patientId).size();
 	}
     
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
@@ -231,22 +235,46 @@ public class PharmacistAppointmentService {
 	
 	public PharmacistAppointment endAppointment(String appointmentId, String appointmentReport) {
 		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
-		da.setAppointmentReport(appointmentReport);
+		if(appointmentReport.equals("0")) {
+			da.setAppointmentReport(da.getAppointmentReport());
+		}else {
+			if(da.getAppointmentReport()!=null) {
+				da.setAppointmentReport(appointmentReport+da.getAppointmentReport());
+			}else {
+				da.setAppointmentReport(appointmentReport);
+			}
+		
+		}
 		da.setProcessed(true);
 		pharmacistAppointmentRepository.save(da);
 		patientCategoryService.updatePatientCategoryFromAppointment(da.getPatient(), "pharmacist");
 		return da;
 	}
   	
-	public List<PharmacistAppointment> findAllPharmacistAppointmentsDone(String pharmacistId) {
-		List<PharmacistAppointment> allAppointments = pharmacistAppointmentRepository.findAll();
-		List<PharmacistAppointment> wantedAppontments = new ArrayList<>();
+	public List<PharmacistAppointment> findAllPharmacistAppointmentsDone(String pharmacistId, Pageable pageable) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedTrue(pharmacistId, pageable);
+	}
+	
+	public int findAllPharmacistAppointmentsDoneLength(String pharmacist) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedTrue(pharmacist).size();
+	}
+	
+	public List<PharmacistAppointment> findAllPharmacistAppointmentsTodo(String pharmacistId, Pageable pageable) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedFalseAndPatientNotNull(pharmacistId,pageable);
+	}
 
-		for(PharmacistAppointment appointment : allAppointments) {
+	public int findAllPharmacistAppointmentsTodoLength(String pharmacistId) {
+		return pharmacistAppointmentRepository.findByPharmacistIdAndProcessedFalseAndPatientNotNull(pharmacistId).size();
+	}
 
-			if(appointment.getPharmacist().getId().equals(pharmacistId) && appointment.isProcessed())
-				wantedAppontments.add(appointment);
-		}
-		return wantedAppontments;
+	public Integer reservationsLength(String patientId) {
+		return pharmacistAppointmentRepository.findByPatientId(patientId).size();
+	}
+	
+	public List<PharmacistAppointment> cancelAppointment(String appointmentId) {
+		PharmacistAppointment da = pharmacistAppointmentRepository.findById(appointmentId).orElse(null);
+		String patientId = da.getPatient().getId();
+		pharmacistAppointmentRepository.delete(da);
+		return pharmacistAppointmentRepository.findByPatientId(patientId);
 	}
 }

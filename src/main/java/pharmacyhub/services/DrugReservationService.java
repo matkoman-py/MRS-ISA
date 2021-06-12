@@ -10,24 +10,30 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugPrice;
 import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DrugReservationDto;
+import pharmacyhub.dto.DrugReservationEmployeeDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugReservationRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
+import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.utils.RadnomGeneratorUtil;
@@ -64,6 +70,12 @@ public class DrugReservationService {
 	
 	@Autowired
 	private DrugStockService drugStockService;
+	
+	@Autowired
+	PharmacistAppointmentRepository pharmAppointmentRepository;
+	
+	@Autowired
+	DermatologistAppointmentRepository dermAppointmentRepository;
 
 	public List<DrugReservation> findAll() {
 		return drugreservationRespository.findAll();
@@ -75,6 +87,7 @@ public class DrugReservationService {
 		String drugstoreId = drugreservationDto.getDrugstoreId();
 		String patientId = drugreservationDto.getPatientId();
 		String date = drugreservationDto.getDate();
+		Integer amount = drugreservationDto.getAmount();
 
 		Drug drug = drugRepository.findById(drugId).orElse(null);
 		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
@@ -85,8 +98,8 @@ public class DrugReservationService {
 		drr.setConfirmationCode(confirmationCode);
 
 		DrugStock drst = drugstockRepository.findByDrugAndDrugstore(drug, drugstore);
-		if(drst.getAmount() - 1 >= 0) {
-			drst.setAmount(drst.getAmount() - 1);
+		if(drst.getAmount() - amount >= 0) {
+			drst.setAmount(drst.getAmount() - amount);
 			drugstockRepository.save(drst);
 		}
 		else {
@@ -98,7 +111,21 @@ public class DrugReservationService {
 		drr.setPrice(patientCategoryService.getPriceWithDiscount(patient, drugPrice.getPrice()));
 		drugreservationRespository.save(drr);
 		
-		return drr.getConfirmationCode();
+		return drr.getDrug().getName() + ": " + drr.getConfirmationCode();
+	}
+	
+	private boolean isDrugOnStock(String drugstoreId, String drugId, int amount) {
+		return drugreservationRespository.existsByDrugstoreIdAndDrugIdAndAmountGreaterThanEqual(drugstoreId, drugId, amount);
+		
+	}
+	
+	private boolean areDrugReservationsOnStock(List<DrugReservationDto>  drugReservationDtos) {
+		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
+			if(!isDrugOnStock(drugReservationDto.getDrugstoreId(), drugReservationDto.getDrugId(), drugReservationDto.getAmount())) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@Transactional(rollbackFor = PessimisticLockingFailureException.class)
@@ -107,23 +134,34 @@ public class DrugReservationService {
 		if (drugReservationDtos.isEmpty()) {
 			throw new Exception("Empty drug reservations");
 		}
+		
 		Patient patient = patientRepository.findById(drugReservationDtos.get(0).getPatientId()).orElse(null);
+		if(!areDrugReservationsOnStock(drugReservationDtos)) {
+			//throw new Exception("Not enough drug on stock");
+		}
+		
 		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
-			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto,true);
+			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto, true);
 		}
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCodes);
+		
 		return "Success!";
 	}
 
 	public String saveReservation(DrugReservationDto drugreservationDto) throws MessagingException {
-		String confirmationCode = saveSingleReservation(drugreservationDto,false);
-		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
-		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
-		return "Success!";
+		String confirmationCode = saveSingleReservation(drugreservationDto, false);
+		if(confirmationCode != null) {
+			Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
+			userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
+			return "Success!";
+		}else {
+			return "Not enough drug on stock!";
+		}
+		
 	}
 
-	public List<DrugReservation> getPatientReservations(String patientId) {
-		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
+	public List<DrugReservation> getPatientReservations(String patientId, Pageable pageable) {
+		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null),pageable);
 		return reservations;
 	}
 
@@ -133,14 +171,16 @@ public class DrugReservationService {
 		String drugId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrug().getId();
 		String drugstoreId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrugstore().getId();
 		
-		drugreservationRespository.deleteById(drugReservationId);
 		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
 		for(DrugStock stok:drst) {
 			if(stok.getDrugstore().getId().equals(drugstoreId)) {
-				stok.setAmount(stok.getAmount() + 1);
+				stok.setAmount(stok.getAmount() + drugreservationRespository.findById(drugReservationId).orElse(null).getAmount());
 				drugstockRepository.save(stok);
 			}
 		}
+		drugreservationRespository.deleteById(drugReservationId);
+		
+		
 		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
 		System.out.println(reservations.size());
 		return reservations;
@@ -156,7 +196,7 @@ public class DrugReservationService {
 			Date dateRes=new SimpleDateFormat("yyyy-MM-dd").parse(dr.getDate()); 
 			Date dateNow = new Date(System.currentTimeMillis()-24*60*60*1000);
 			
-			if(dateRes.after(dateNow)) {
+			if(dateRes.after(dateNow) && !dr.isIssued()) {
 				wanted.add(dr);
 			}
 		}
@@ -178,6 +218,52 @@ public class DrugReservationService {
 		}else {
 			return "Confirmation code is not valid!";
 		}
+	}
+
+	public Integer getPatientReservations(String patientId) {
+		return  drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null)).size();
+  }
+  
+	public String saveReservationEmployee(DrugReservationEmployeeDto drugreservationEmployeeDto) throws MessagingException {
+		
+		DrugReservationDto drugreservationDto = new DrugReservationDto(
+				drugreservationEmployeeDto.getPatientId(),
+				drugreservationEmployeeDto.getDrugstoreId(),
+				drugreservationEmployeeDto.getDrugId(),
+				drugreservationEmployeeDto.getDate(),
+				drugreservationEmployeeDto.getAmount()
+		);
+		
+		String confirmationCode = saveSingleReservation(drugreservationDto,false);
+		if(confirmationCode == null) {
+			return "Not enough drug on stock!";
+		}
+		
+		if(drugreservationEmployeeDto.getCheck().equals("derm")) {
+			DermatologistAppointment da = dermAppointmentRepository.findById(drugreservationEmployeeDto.getAppointmentId()).orElse(null);
+			if(da.getAppointmentReport() != null) {
+				da.setAppointmentReport(da.getAppointmentReport()+"\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+				+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");}
+				else {
+					da.setAppointmentReport("\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+							+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");
+				}
+			dermAppointmentRepository.save(da);
+		}else {
+			PharmacistAppointment da = pharmAppointmentRepository.findById(drugreservationEmployeeDto.getAppointmentId()).orElse(null);
+			if(da.getAppointmentReport() != null) {
+			da.setAppointmentReport(da.getAppointmentReport()+"\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+			+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");}
+			else {
+				da.setAppointmentReport("\nReserved: -" + drugRepository.findById(drugreservationEmployeeDto.getDrugId()).orElse(null).getName()
+						+"*"+drugreservationEmployeeDto.getAmount()+"\nTherapy duration: "+ drugreservationEmployeeDto.getDuration()+" days.\n");
+			}
+			pharmAppointmentRepository.save(da);
+		}
+		
+		Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
+		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCode);
+		return "Success!";
 	}
 
 }

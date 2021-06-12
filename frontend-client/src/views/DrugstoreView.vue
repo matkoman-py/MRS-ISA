@@ -403,6 +403,8 @@ export default {
                         drugstoreId: this.currentDrugstoreId,
                         rating: this.userRating,
                     },
+                }).then(() => {
+                    this.getCurrentDrugstore();
                 })
                 .catch((error) => console.log(error));
         },
@@ -496,6 +498,7 @@ export default {
         },
         getAppointments: function() {
             //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
+            if(this.user != null){
             this.$http
                 .get(
                     "http://localhost:8081/pharmacist-appointment/get-appointments",
@@ -517,9 +520,11 @@ export default {
                     );
                 })
                 .catch((error) => console.log(error));
+            }
         },
         getDermatologyAppointments: function() {
             //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
+            if(this.user != null){
             this.$http
                 .get(
                     "http://localhost:8081/dermatologist-appointment/returnAppointments",
@@ -541,8 +546,10 @@ export default {
                     );
                 })
                 .catch((error) => console.log(error));
+                }
         },
         getDrugReservations: function() {
+            if(this.user != null){
             this.$http
                 .get(
                     "http://localhost:8081/drugReservation/getPatientReservations",
@@ -563,6 +570,7 @@ export default {
                     );
                 })
                 .catch((error) => console.log(error));
+                }
         },
         getDrugstoreId() {
             this.currentDrugstoreId = this.$route.path.slice(

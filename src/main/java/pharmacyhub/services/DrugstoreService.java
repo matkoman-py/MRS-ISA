@@ -12,8 +12,8 @@ import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
+import pharmacyhub.domain.Point;
 import pharmacyhub.domain.RatingDrugstore;
-import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.dto.DrugStockPriceDto;
 import pharmacyhub.dto.DrugstoreAverageRatingDto;
@@ -27,6 +27,7 @@ import pharmacyhub.repositories.DrugRequestRepository;
 import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
+import pharmacyhub.repositories.PointRepository;
 import pharmacyhub.repositories.RatingDrugstoreRepository;
 import pharmacyhub.repositories.specifications.drugstores.DrugstoreSpecifications;
 import pharmacyhub.repositories.users.DrugstoreAdminRepository;
@@ -69,6 +70,9 @@ public class DrugstoreService {
 	@Autowired
 	private RatingDrugstoreRepository ratingDrugstoreRepository;
 	
+	@Autowired
+	private PointRepository pointRepository;
+	
 	public List<Drugstore> findAll() {
 		return drugstoreRepository.findAll();
 	}
@@ -90,6 +94,11 @@ public class DrugstoreService {
 		if(drugstore.getLocation() != null) {
 			Location location = drugstore.getLocation();
 			locationRepository.save(location);
+		}
+		
+		if(drugstore.getPoint() != null) {
+			Point point = drugstore.getPoint();
+			pointRepository.save(point);
 		}
 		
 		return drugstoreRepository.save(drugstore);
@@ -223,6 +232,13 @@ public class DrugstoreService {
 
 		d.setLocation(location);
 		
+		Point point = d.getPoint();
+		
+		if (d.getPoint().getLatitude() != 0) point.setLatitude(drugstore.getPoint().getLatitude());
+		if (d.getPoint().getLongitude() != 0) point.setLongitude(drugstore.getPoint().getLongitude());
+		
+		d.setPoint(point);
+		
 		drugstoreRepository.save(d);
 		return true;
 	}
@@ -241,6 +257,10 @@ public class DrugstoreService {
 			averageRate = (double)ratesScore / (double)numberOfRates;
 		System.out.println(numberOfRates);
 		return new DrugstoreAverageRatingDto(averageRate, numberOfRates);
+	}
+
+	public Integer returnDrugStores(DrugstoreSearchDto drugstoreSearchDto) {
+		return drugstoreRepository.findAll(DrugstoreSpecifications.withSearch(drugstoreSearchDto)).size();
 	}
 }
 

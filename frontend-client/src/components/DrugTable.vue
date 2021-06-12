@@ -113,10 +113,12 @@
                                     )
                                 "
                                 class="mr-1"
+                            :disabled="employee.penaltyCounter >= 3"
                             >
                                 Reserve
                             </b-button>
-                            <b-button
+                            
+                             <b-button
                                 variant="outline-hub"
                                 v-if="row.item && passedPatientId != null"
                                 size="sm"
@@ -128,9 +130,11 @@
                                     )
                                 "
                                 class="mr-1"
+
                             >
                                 Reserve
                             </b-button>
+                            
                         </template>
                         <template #cell(rateAction)="row">
                             <b-button
@@ -165,6 +169,8 @@
                         :patientId="patientId"
                         :passedDrugstoreId="passedDrugstoreId"
                         :drugSubstitutions="drugSubstitutions"
+                        :appointmentId="passedAppointmentId"
+                        :check="passedCheck"
                     >
                     </drug-reservation>
                     <h1 v-if="drugs.length == 0">
@@ -205,7 +211,13 @@
           <b-form @submit="makeReservation">
             <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
             <br>
-            <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
+            <p>Now choose how much you want</p>
+            <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
+            <br>
+            <p>Duration of therapy (in days):</p>
+            <b-form-input :value="1" :min="1" v-model="duration" type="number"></b-form-input>
+            <br>
+            <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
           </b-form>
         </b-modal>
 
@@ -224,6 +236,8 @@ export default {
     props: {
         passedDrugstoreId: String,
         passedPatientId: String,
+        passedAppointmentId: String,
+        passedCheck: String,
     },
     computed: {
         ...mapState({
@@ -231,9 +245,9 @@ export default {
             email: (state) => state.userModule.loggedInUser.email,
             role: (state) => state.userModule.loggedInUser.type,
         }),
-        rows() {
-            return (this.currentPage + 1) * 3;
-        },
+        //rows() {
+            //return (this.currentPage + 1) * 3;
+        //},
     },
     watch: {
         currentPage: function() {
@@ -249,6 +263,7 @@ export default {
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
         const minDate = new Date(today)
         return {
+            amount:'',
             minDate : minDate,
             userRating: "1",
             canRate: false,
@@ -315,6 +330,10 @@ export default {
             currentSearch: {},
             patientId: "",
             selectedDrugId: "",
+            rows: 0,
+            appointmentId: '',
+            check: '',
+            duration: '',
         };
     },
     methods: {
@@ -345,20 +364,25 @@ export default {
         },
         
         makeReservation: function() {
-        
-        this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+        //alert(this.check)
+        this.$http.post('http://localhost:8081/drugReservation/saveReservationEmployee', {
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selectedDrugId,
-            date: this.date
+            date: this.date,
+            amount: this.amount,
+            duration: this.duration,
+            appointmentId: this.appointmentId,
+            check: this.check,
           })
           .then(response => {
             alert(response.data);
-            this.$root.$emit('bv::hide::modal', 'my-modal');
+            this.$root.$emit('bv::hide::modal', 'my-modal1');
           })
           .catch(error => console.log(error));
         },
         getDrugReservations: function() {
+            if(this.user != null){
             this.$http
                 .get(
                     "http://localhost:8081/drugReservation/getPatientReservations",
@@ -379,6 +403,7 @@ export default {
                     );
                 })
                 .catch((error) => console.log(error));
+            }
         },
         getDrugstores: function(data) {
             if (this.user == null) {
@@ -433,9 +458,22 @@ export default {
                         this.selectedDrugId = data.id;
                         this.drugstoreId = this.passedDrugstoreId;
                         this.patientId = this.passedPatientId;
+                        this.check = this.passedCheck;
+                        this.appointmentId = this.passedAppointmentId;
                         this.$root.$emit('bv::show::modal', 'my-modal1');}
                     });
             }
+        },
+        getLength: function() {
+            this.$http
+                .post(
+                    `http://localhost:8081/drugs/searchLength`,
+                    this.currentSearch
+                )
+                .then((response) => {
+                    this.rows = response.data;
+                })
+                .catch((error) => console.log(error));
         },
         searchDrugs: function() {
             this.currentSearch = JSON.parse(JSON.stringify(this.searchForm));
@@ -449,11 +487,14 @@ export default {
                     this.currentSearch
                 )
                 .then((response) => {
+                    this.getLength();
                     if (response.data.length == 0) {
-                        this.suppress = true;
-                        this.currentPage--;
+                        //this.suppress = true;
+                        //this.currentPage--;
+                        this.drugs = this.mapDrugs(response);
+                        //alert(this.currentPage)
                     } else {
-                        this.suppress = false;
+                        //this.suppress = false;
                         this.drugs = this.mapDrugs(response);
                     }
                 })
@@ -516,9 +557,28 @@ export default {
                     .join(", "),
             }));
         },
+        getEmployee: function () {
+            if(this.user != null){
+                this.$http
+                    .get("http://localhost:8081/patients/id", {
+                        params: {
+                            patientId: this.user.id,
+                        },
+                    })
+                    .then((response) => {
+                        this.employee = response.data;
+                        console.log(this.employee.penaltyCounter);
+                    })
+                    .catch((error) => console.log(error));
+                }
+                else{
+                    this.employee = "not logged in";
+                }
+            },
     },
 
     mounted: function() {
+        this.getEmployee();
         this.getDrugReservations();
         this.getManufacturers();
         this.getIngrediants();

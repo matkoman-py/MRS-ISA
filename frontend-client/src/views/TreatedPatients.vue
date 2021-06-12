@@ -33,13 +33,45 @@
                 <b-button type="button" variant="outline-hub" @click="handleClose">Cancel</b-button>
             </b-form>
         </b-modal>
- 
-        <b-row>
+        <b-row align-h="center" style="margin: 20px;" >
+            <b-form-select style="width:30%;margin: 2px;" v-model="selectedOption" :options="options" ></b-form-select>
+            <b-button                                  
+                                                    style="margin: 2px;"
+                                                    variant="outline-hub"
+                                                    size="sm"
+                                                    class="mr-1"
+                                                    @click="sort"
+                                                >
+                                                    Sort
+                                                </b-button>
+        </b-row>
+        <b-row style="margin: 20px;" align-h="center">
             <b-col>
-                <b-table id="tabela_pacijenata" striped hover :items="patients" :fields="fields" @row-clicked="showModal"></b-table>
+                <b-table id="tabela_pacijenata" striped hover :items="patients" :fields="fields" @row-clicked="showModal">
+                    <template #cell(actions)="row">
+                                                <b-button
+                                                    variant="outline-hub"
+                                                    size="sm"
+                                                    class="mr-1"
+                                                    @click="patientProfileView(row.item,
+                                                            row.index,
+                                                            $event.target)"
+                                                >
+                                                    Visit patient profile
+                                                </b-button>
+                                               
+                                            </template>
+                </b-table>
+                <h1 v-if="patients.length == 0"> You have no history of appointments!</h1>
             </b-col>
         </b-row>
-        
+        <b-row align-h="center">
+            <b-pagination
+                        v-model="currentPage"
+                        per-page="5"
+                        :total-rows="rows"
+            ></b-pagination>
+        </b-row>
 
     </b-container>
 </template>
@@ -58,81 +90,63 @@
         },
         data: function () {
             return {
-                //substitutions: [],
+                selectedOption: '',
+                options:[{text: "First Name", value:"patient.name"},
+                        {text: "Last Name", value:"patient.surname"},
+                        {text: "Drugstore", value:"drugstore.name"},
+                        {text: "Start", value:"date"},
+                        {text: "Duration", value:"duration"}],
                 selected: {},
-                //modified: {},
                 patients: [],
                 fields: [
                     {
-                        key: 'last_name',
-                        sortable: true
+                        key: 'last_name'
                     },
                     {
-                        key: 'first_name',
-                        sortable: true
+                        key: 'first_name'
+                        
                     },
                     {
                         key: 'drugstore',
-                        sortable: true
+                        
                     },
                     {
                         key: 'start',
-                        sortable: true
+                        
                     },
                     {
-                        key: 'duration',
-                        sortable: true
+                        key: 'duration'
+                        
+                    },
+                    {
+                    key: "actions",
+                    label: "Visit",
                     },
                 ],
-                // form: {
-                //     email: '',
-                //     name: '',
-                //     surname: '',
-                //     food: null,
-                //     substitutions: [],
-                // },
-                // foods: [{
-                //     text: 'Select One',
-                //     value: null
-                // }, 'Bronze', 'Silver', 'Gold'],
-                // show: true
+                rows: 0,
+                currentPage: 1,
             }
         },
-        
+        watch:{
+            currentPage: function() {
+                this.getAllPatients();
+            },
+        },
         methods: {
-            // search: function () {
-            //     this.$http.get('http://localhost:8081/dermatologist/search', {
-            //             params: {
-            //                 patientNameParam: this.form.name,
-            //                 patientSurnameParam: this.form.surname
-            //             }
-            //         })
-            //         .then(response => {
-            //             this.patients = response.data.map(patient =>
-            //                 ({
-            //                     name: patient.name,
-            //                     surname: patient.surname,
-            //                     email: patient.email,
-            //                     phoneNumber: patient.phoneNumber,
-            //                     adress: patient.location ? patient.location.address : "Null",
-            //                     country: patient.location ? patient.location.country : "Null",
-            //                     city: patient.location ? patient.location.city : "Null",
-            //                     points: patient.points,
-            //                     category: patient.category,
-            //                 }));
-            //         })
-            //         .catch(error => console.log(error));
-            // },
             getAllPatients: function () {
                 if(this.user.type == "Dermatologist"){
-                this.$http.get('http://localhost:8081/dermatologist-appointment/all-derm-done', {
+                this.$http.get(`http://localhost:8081/dermatologist-appointment/all-derm-done?page=${this
+                        .currentPage - 1}&size=5`, {
                         params: {
-                            dermatologistId:  this.user.id// 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
+                            dermatologistId:  this.user.id,
+                            sortBy: this.selectedOption
                         }
                     })
                     .then(response => {
+                        this.getRows()
                         this.patients = response.data.map(currentEvent =>
                             ({
+                                id: currentEvent.patient.id,
                                 first_name: currentEvent.patient.name,
                                 last_name:  currentEvent.patient.surname,
                                 drugstore: currentEvent.drugstore.name,
@@ -142,19 +156,21 @@
                                 appointment_report: currentEvent.appointmentReport,
                             }));
                     })
-                    .then(() => {
-                        this.mountedTrue = true;
-                        }
-                    )    
+                     
                 }else{
-                this.$http.get('http://localhost:8081/pharmacist-appointment/all-pharm-done', {
+                
+                this.$http.get(`http://localhost:8081/pharmacist-appointment/all-pharm-done?page=${this
+                        .currentPage - 1}&size=5`, {
                         params: {
-                            pharmacistId:  this.user.id// 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
+                            pharmacistId:  this.user.id,
+                            sortBy: this.selectedOption
                         }
                     })
                     .then(response => {
+                        this.getRows()
                         this.patients = response.data.map(currentEvent =>
                             ({
+                                id: currentEvent.patient.id,
                                 first_name: currentEvent.patient.name,
                                 last_name:  currentEvent.patient.surname,
                                 drugstore: currentEvent.pharmacist.drugstore.name,
@@ -164,29 +180,10 @@
                                 appointment_report: currentEvent.appointmentReport,
                             }));
                     })
-                    .then(() => {
-                        this.mountedTrue = true;
-                        }
-                    )
+                    
                 }
 
             },
-            // onSubmit(event) {
-            //     event.preventDefault();
-            //     this.modified.name = this.selected.name;
-            //     this.modified.surname = this.selected.surname;
-            //     this.modified.email = this.selected.email;
-            //     this.modified.phoneNumber = this.selected.phoneNumber;
-            //     this.modified.allergens = this.selected.substitutions;
-            //     this.$root.$emit('bv::hide::modal', 'my-modal');
-            //     console.log(this.modified);
-            //     this.$http.put("http://localhost:8081/patients", this.modified)
-            //         .then(response => {
-            //             console.log(response);
-            //             console.log("ovde");
-            //         })
-            //         .catch(error => console.log(error));
-            // },
             handleClose() {
                 this.$root.$emit('bv::hide::modal', 'my-modal');
             },
@@ -194,16 +191,41 @@
                 this.$root.$emit('bv::show::modal', 'my-modal');
                 this.selected = JSON.parse(JSON.stringify(item));
                 console.log(this.selected);
-                //this.modified = item;
-                //this.getDrugs();
             },
-            // getDrugs: function () {
-            //     this.$http.get("http://localhost:8081/ingredients")
-            //         .then(response => {
-            //             this.substitutions = response.data;
-            //         })
-            //         .catch(error => console.log(error));
-            // },
+            patientProfileView(item){
+                if(this.user.type == "Dermatologist"){
+                this.$router.push({ name: 'PatientProfileView', params: { passedId: item.id, check: "derm" } });
+                }
+                else{
+                    this.$router.push({ name: 'PatientProfileView', params: { passedId: item.id, check: "pharm" } });
+                }
+            },
+            getRows(){
+                if(this.user.type == "Dermatologist"){
+                this.$http.get(`http://localhost:8081/dermatologist-appointment/all-derm-done-length`, {
+                        params: {
+                            dermatologistId:  this.user.id
+                        }
+                    })
+                    .then(response => {
+                        this.rows = response.data;
+                    })
+                       
+                }else{
+                this.$http.get(`http://localhost:8081/pharmacist-appointment/all-pharm-done-length`, {
+                        params: {
+                            pharmacistId:  this.user.id
+                        }
+                    })
+                    .then(response => {
+                        this.rows = response.data;
+                    })
+                    
+                }
+            },
+            sort: function(){
+                this.getAllPatients()
+            }
         },
         mounted: function () {
             this.getAllPatients();

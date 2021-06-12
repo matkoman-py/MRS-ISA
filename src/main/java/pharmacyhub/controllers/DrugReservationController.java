@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.dto.DrugReservationDto;
+import pharmacyhub.dto.DrugReservationEmployeeDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
 import pharmacyhub.services.DrugReservationService;
 
@@ -37,15 +40,29 @@ public class DrugReservationController {
 		return new ResponseEntity<>(drugReservationService.saveReservation(drugreservationDto), HttpStatus.OK);
 	}
 	
+
+	@PostMapping(path = "/saveReservationEmployee",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationEmployeeDto drugreservationDto) throws Exception {
+		return new ResponseEntity<>(drugReservationService.saveReservationEmployee(drugreservationDto), HttpStatus.OK);
+	}
 	
 	@PostMapping(path = "/saveMultipleReservations", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveMultipleReservations(@RequestBody List<DrugReservationDto> drugreservationDtos) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveMultipleReservations(drugreservationDtos), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/getPatientReservations",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<DrugReservation>> getPatientReservations(@RequestParam(value = "patientId", required = false, defaultValue = "0") String patientId) throws Exception {
+	@GetMapping(path = "/getPatientReservationsLength",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getPatientReservationsLength(@RequestParam(value = "patientId", required = false, defaultValue = "0") String patientId) throws Exception {
 		return new ResponseEntity<>(drugReservationService.getPatientReservations(patientId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/getPatientReservations",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<DrugReservation>> getPatientReservations(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam(value = "patientId", required = false, defaultValue = "0") String patientId) throws Exception {
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return new ResponseEntity<>(drugReservationService.getPatientReservations(patientId, pageable), HttpStatus.OK);
 	}
 	
 	@PutMapping(path = "/cancelReservation",produces = MediaType.APPLICATION_JSON_VALUE)

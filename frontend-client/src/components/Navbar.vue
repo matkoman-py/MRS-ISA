@@ -228,12 +228,15 @@ export default {
                     { name: "Treated patients", path: "/treated" },
                     { name: "Drug issuing", path: "/drug-issuing" },
                     { name: "Absence", path: "/absence-request" },
+                    { name: "Appointments", path: "/appointment-page" },
+
                 ],
                 Dermatologist: [
                     { name: "Schedule", path: "/schedule" },
                     { name: "Patients", path: "/patientoverview" },
                     { name: "Treated patients", path: "/treated" },
                     { name: "Absence", path: "/absence-request" },
+                    { name: "Appointments", path: "/appointment-page" },
                 ],
                 Patient: [
                     { name: "Subscriptions", path: "/subscriptions" },

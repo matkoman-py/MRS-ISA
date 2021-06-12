@@ -93,7 +93,7 @@ public class UserNotificationService {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
 
-		String emailContent = "You have succesfully reserved a drug! <br> Show this code to your pharmacist to claim your drug: "
+		String emailContent = "You have succesfully reserved a drug! <br> Show this code to your pharmacist to claim your drug "
 				+ confirmationCode;
 
 		helper = new MimeMessageHelper(message, true);

@@ -1,37 +1,21 @@
 <template>
     <b-container>
-        <b-modal id="my-modal" title="Your profile" hide-footer>
-            <b-form @submit="onSubmit">
-                <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required">
-                    <b-form-input id="name-input" v-model="selected.name" disabled></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="Surame" label-for="surname-input" invalid-feedback="Surname is required">
-                    <b-form-input id="surname-input" v-model="selected.surname" disabled></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="E-mail" label-for="email-input" invalid-feedback="E-mail is required">
-                    <b-form-input id="email-input" type="email" v-model="selected.email" disabled></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="Phone number" label-for="phonenumber-input"
-                    invalid-feedback="Phone number is required">
-                    <b-form-input id="phonenumber-input" v-model="selected.phoneNumber" disabled></b-form-input>
-                </b-form-group>
-                
-               <!-- <searchable-tags labelName="Add alergens" :updateValue="(data) => selected.substitutions = data"
-                    :data="substitutions" v-model="selected.substitutions">
-                </searchable-tags> -->
-
-                <b-button type="submit" variant="outline-hub">Save</b-button>
-                <b-button type="button" variant="outline-hub" @click="handleClose">Cancel</b-button>
-            </b-form>
-        </b-modal>
- 
-        <b-row>
+        <b-row align-h="center">
+            
             <b-col>
                 <b-table id="tabela_pacijenata" striped hover :items="patients" ></b-table>
+                <h3  v-if="patients.length == 0">Sorry, there are no patients with this name/surname!</h3>
             </b-col>
+            
+            
+        </b-row>
+        <b-row align-h="center">
+            <b-pagination
+                        v-if="patients.length != 0"
+                        v-model="currentPage"
+                        per-page="5"
+                        :total-rows="rows"
+            ></b-pagination>
         </b-row>
         <b-row align-h="center">
             <b-col sm="3" md="4" lg="4">
@@ -56,17 +40,10 @@
 </template>
 
 <script>
-    //import SearchableTags from "../components/SearchableTags"
-
     export default {
-        components: {
-            //SearchableTags
-        },
         data: function () {
             return {
                 substitutions: [],
-                selected: {},
-                modified: {},
                 patients: [],
                 form: {
                     email: '',
@@ -79,19 +56,28 @@
                     text: 'Select One',
                     value: null
                 }, 'Bronze', 'Silver', 'Gold'],
-                show: true
+                show: true,
+                rows: 0,
+                currentPage: 1,
             }
         },
-        
+        watch:{
+            currentPage: function() {
+                this.search();
+            },
+        },
         methods: {
+            
             search: function () {
-                this.$http.get('http://localhost:8081/patients/search', {
+                this.$http.get(`http://localhost:8081/patients/search?page=${this
+                        .currentPage - 1}&size=5`, {
                         params: {
                             patientNameParam: this.form.name,
-                            patientSurnameParam: this.form.surname
+                            patientSurnameParam: this.form.surname 
                         }
                     })
                     .then(response => {
+                        
                         this.patients = response.data.map(patient =>
                             ({
                                 name: patient.name,
@@ -102,65 +88,30 @@
                                 country: patient.location ? patient.location.country : "Null",
                                 city: patient.location ? patient.location.city : "Null",
                                 points: patient.points,
-                                category: patient.category,
+                                category: patient.category? patient.category.name : "Null",
                             }));
+                        this.getRows()
+                        
                     })
                     .catch(error => console.log(error));
             },
-            getAllPatients: function () {
-                this.$http.get('http://localhost:8081/patients')
+            getRows(){
+                this.$http.get(`http://localhost:8081/patients/searchLength`, {
+                        params: {
+                            patientNameParam: this.form.name,
+                            patientSurnameParam: this.form.surname 
+                        }
+                    })
                     .then(response => {
-                        this.patients = response.data.map(patient =>
-                            ({
-                                name: patient.name,
-                                surname: patient.surname,
-                                email: patient.email,
-                                phoneNumber: patient.phoneNumber,
-                                adress: patient.location ? patient.location.address : "Null",
-                                country: patient.location ? patient.location.country : "Null",
-                                city: patient.location ? patient.location.city : "Null",
-                                points: patient.points,
-                                category: patient.category,
-                            }));
+                        
+                        this.rows = response.data;
+                        
                     })
                     .catch(error => console.log(error));
-
-            },
-            onSubmit(event) {
-                event.preventDefault();
-                this.modified.name = this.selected.name;
-                this.modified.surname = this.selected.surname;
-                this.modified.email = this.selected.email;
-                this.modified.phoneNumber = this.selected.phoneNumber;
-                this.modified.allergens = this.selected.substitutions;
-                this.$root.$emit('bv::hide::modal', 'my-modal');
-                console.log(this.modified);
-                this.$http.put("http://localhost:8081/patients", this.modified)
-                    .then(response => {
-                        console.log(response);
-                        console.log("ovde");
-                    })
-                    .catch(error => console.log(error));
-            },
-            handleClose() {
-                this.$root.$emit('bv::hide::modal', 'my-modal');
-            },
-            showModal(item) {
-                this.$root.$emit('bv::show::modal', 'my-modal');
-                this.selected = JSON.parse(JSON.stringify(item));
-                this.modified = item;
-                this.getDrugs();
-            },
-            getDrugs: function () {
-                this.$http.get("http://localhost:8081/ingredients")
-                    .then(response => {
-                        this.substitutions = response.data;
-                    })
-                    .catch(error => console.log(error));
-            },
+            }
         },
         mounted: function () {
-            this.getAllPatients();
+            this.search();
         }
     }
 </script>

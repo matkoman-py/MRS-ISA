@@ -91,7 +91,7 @@ public class AbsenceRequestService {
 		List<DermatologistAppointment> appointments = dermatologistAppointmentRepository.findByDermatologistAndProcessed((Dermatologist)request.getEmployee(), false);
 		for (DermatologistAppointment appointment : appointments) {
 			if ((appointment.getDate().equals(request.getStartDate()) || appointment.getDate().after(request.getStartDate())) && (appointment.getDate().equals(request.getEndDate()) || appointment.getDate().before(request.getEndDate()))) {
-				appointment.setAppointmentReport("Appointment canceled due to pharmacist absence.");
+				appointment.setAppointmentReport("Appointment canceled due to dermatologist absence.");
 				appointment.setProcessed(true);
 				dermatologistAppointmentRepository.save(appointment);
 				userNotificationService.notifyPatientAboutCancelation(appointment);

@@ -19,7 +19,10 @@
       <b-form @submit="makeReservation">
         <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
         <br>
-        <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
+        <p>Now choose how much you want</p>
+         <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
+         <br>
+        <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
       </b-form>
     </b-modal>
     </template>
@@ -47,10 +50,15 @@
 
         <b-modal id="my-modal" title="Almost done!" hide-footer>
           <p>Before you finish the reservation process you must select the date to wait for your order</p>
-          <b-form @submit="makeReservation">
+          <b-form @submit="makeReservationEmployee">
             <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
+            <p>Now choose how much you want</p>
+            <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
             <br>
-            <b-button :disabled="date == ''" type="submit" variant="outline-hub">Save</b-button>
+            <p>Duration of therapy (in days):</p>
+            <b-form-input :value="1" :min="1" v-model="duration" type="number"></b-form-input>
+            <br>
+            <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
           </b-form>
         </b-modal>
     </template>
@@ -71,12 +79,13 @@
         role: state => state.userModule.loggedInUser.type
       }),
     },
-    props: ['drugstores', 'reserved', 'selecteddrug', 'patientId', 'passedDrugstoreId'],
+    props: ['drugstores', 'reserved', 'selecteddrug', 'patientId', 'passedDrugstoreId', 'appointmentId', 'check'],
     data: function () {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
       const minDate = new Date(today)
       return {
+        amount:'',
         minDate : minDate,
         drugstoreId: '',
         date: '',
@@ -118,6 +127,7 @@
             label: ''
           }
         ],
+        duration: '',
       }
     },
     methods: {
@@ -138,14 +148,33 @@
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selecteddrug.id,
-            date: this.date
+            date: this.date,
+            amount: this.amount,
           })
           .then(response => {
             alert(response.data);
             this.$root.$emit('bv::hide::modal', 'my-modal');
           })
           .catch(error => console.log(error));
-      }
+      },
+      makeReservationEmployee: function() {
+        //alert(this.check)
+        this.$http.post('http://localhost:8081/drugReservation/saveReservationEmployee', {
+            patientId: this.patientId,
+            drugstoreId: this.drugstoreId,
+            drugId: this.selecteddrug.id,
+            date: this.date,
+            amount: this.amount,
+            duration: this.duration,
+            appointmentId: this.appointmentId,
+            check: this.check,
+          })
+          .then(response => {
+            alert(response.data);
+            this.$root.$emit('bv::hide::modal', 'my-modal1');
+          })
+          .catch(error => console.log(error));
+        },
     },
     mounted: function(){
         //alert(this.passedDrugstoreId);
