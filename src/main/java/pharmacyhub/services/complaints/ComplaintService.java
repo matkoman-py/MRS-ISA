@@ -160,7 +160,6 @@ public class ComplaintService {
 		return toComplaintDto(complaint);
 	}
 
-	@Transactional
 	public ReplyDto getReply(String complaintId) throws Exception {
 		Complaint complaint = complaintRepository.findById(complaintId).orElse(null);
 		

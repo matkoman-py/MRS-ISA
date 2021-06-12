@@ -9,7 +9,9 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugPrice;
@@ -67,38 +69,30 @@ public class DrugReservationService {
 		return drugreservationRespository.findAll();
 	}
 	
-	private String saveSingleReservation(DrugReservationDto drugreservationDto,boolean eReceit) {
+	@Transactional(rollbackFor = PessimisticLockingFailureException.class)
+	private String saveSingleReservation(DrugReservationDto drugreservationDto, boolean eReceit) {
 		String drugId = drugreservationDto.getDrugId();
 		String drugstoreId = drugreservationDto.getDrugstoreId();
 		String patientId = drugreservationDto.getPatientId();
 		String date = drugreservationDto.getDate();
 
-		
 		Drug drug = drugRepository.findById(drugId).orElse(null);
 		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
 		Patient patient = patientRepository.findById(patientId).orElse(null);
 		String confirmationCode = RadnomGeneratorUtil.generateDrugReservationCode(patient.getEmail());
 
-		
 		DrugReservation drr = new DrugReservation(drug, drugstore, 1, patient, date,eReceit);
 		drr.setConfirmationCode(confirmationCode);
 
-
-		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
-		for(DrugStock stok:drst) {
-			if(stok.getDrugstore().getId().equals(drugstoreId)) {
-				if(stok.getAmount()-1>=0) {
-					stok.setAmount(stok.getAmount() - 1);
-					drugstockRepository.save(stok);
-					break;
-				}
-				else {
-					//NAPRAVITI DRUG REQUEST !!!
-					DrugRequest dr = new DrugRequest(drugstoreRepository.findById(drugstoreId).orElse(null),drugRepository.findById(drugId).orElse(null),false);
-					drugRequestRepository.save(dr);
-					return "Drug not on stock!";
-				}
-			}
+		DrugStock drst = drugstockRepository.findByDrugAndDrugstore(drug, drugstore);
+		if(drst.getAmount() - 1 >= 0) {
+			drst.setAmount(drst.getAmount() - 1);
+			drugstockRepository.save(drst);
+		}
+		else {
+			DrugRequest dr = new DrugRequest(drugstoreRepository.findById(drugstoreId).orElse(null),drugRepository.findById(drugId).orElse(null),false);
+			drugRequestRepository.save(dr);
+			return "Drug not on stock!";
 		}
 		DrugPrice drugPrice = drugStockService.getLastPriceByDrugAndDrugStore(drug, drugstore);
 		drr.setPrice(patientCategoryService.getPriceWithDiscount(patient, drugPrice.getPrice()));
@@ -107,6 +101,7 @@ public class DrugReservationService {
 		return drr.getConfirmationCode();
 	}
 	
+	@Transactional(rollbackFor = PessimisticLockingFailureException.class)
 	public String saveMultipleReservations(List<DrugReservationDto>  drugReservationDtos) throws Exception {
 		String confirmationCodes = "";
 		if (drugReservationDtos.isEmpty()) {
