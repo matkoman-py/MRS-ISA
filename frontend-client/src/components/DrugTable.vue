@@ -246,6 +246,14 @@
                 >
             </b-form>
         </b-modal>
+
+        <b-modal
+            :id="drugDetailsModal.id"
+            :title="drugDetailsModal.title"
+            size="lg"
+        >
+            Are you sure that you want to delete this drug?
+        </b-modal>
     </b-container>
 </template>
 
@@ -390,6 +398,11 @@ export default {
             currentSearch: {},
             patientId: "",
             selectedDrugId: "",
+            drugDetailsModal: {
+                id: "",
+                title: "",
+                drug: "",
+            },
         };
     },
     methods: {
