@@ -111,7 +111,7 @@
                     .catch(error => console.log(error));
             },
             getAllDrugstores: function () {
-                this.$http.get('http://localhost:8081/drugstores')
+                this.$http.get('http://mrs-isa-usijani.herokuapp.com/drugstores')
                     .then(response => {
                         this.drugstores = this.mapDrugstores(response);
                     })
