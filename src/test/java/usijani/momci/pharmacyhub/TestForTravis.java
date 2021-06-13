@@ -11,7 +11,7 @@ import pharmacyhub.PharmacyhubApplication;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(classes = PharmacyhubApplication.class)
 public class TestForTravis {
 
 	@Test
