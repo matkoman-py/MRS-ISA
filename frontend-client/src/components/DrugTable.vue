@@ -377,6 +377,7 @@ export default {
           })
           .then(response => {
             alert(response.data);
+            console.log(response.data);
             this.$root.$emit('bv::hide::modal', 'my-modal1');
           })
           .catch(error => console.log(error));
