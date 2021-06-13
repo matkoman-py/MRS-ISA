@@ -3,11 +3,13 @@ package pharmacyhub.repositories;
 import java.util.List;
 
 import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.QueryHints;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugStock;
@@ -19,7 +21,10 @@ public interface DrugStockRepository extends JpaRepository<DrugStock, String>{
 	List<DrugStock> findByDrugId(String drugId);
 	List<DrugStock> findByDrugstore(Drugstore drugstore);
 
+
+	@Transactional
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
+//	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	DrugStock findByDrugAndDrugstore(Drug drug, Drugstore drugstore);
 
 	@Transactional

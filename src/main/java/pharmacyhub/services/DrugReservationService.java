@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.persistence.PessimisticLockException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;
@@ -39,6 +40,7 @@ import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.utils.RadnomGeneratorUtil;
 
 @Service
+@Transactional
 public class DrugReservationService {
 
 	@Autowired
@@ -81,7 +83,8 @@ public class DrugReservationService {
 		return drugreservationRespository.findAll();
 	}
 	
-	@Transactional(rollbackFor = PessimisticLockingFailureException.class)
+	//, rollbackFor = OptimisticLockException.class
+	@Transactional(readOnly = false, rollbackFor = PessimisticLockingFailureException.class)
 	private String saveSingleReservation(DrugReservationDto drugreservationDto, boolean eReceit) {
 		String drugId = drugreservationDto.getDrugId();
 		String drugstoreId = drugreservationDto.getDrugstoreId();
@@ -94,16 +97,17 @@ public class DrugReservationService {
 		Patient patient = patientRepository.findById(patientId).orElse(null);
 		String confirmationCode = RadnomGeneratorUtil.generateDrugReservationCode(patient.getEmail());
 
-		DrugReservation drr = new DrugReservation(drug, drugstore, 1, patient, date,eReceit);
+		DrugReservation drr = new DrugReservation(drug, drugstore, amount, patient, date,eReceit);
 		drr.setConfirmationCode(confirmationCode);
 
 		DrugStock drst = drugstockRepository.findByDrugAndDrugstore(drug, drugstore);
+		
 		if(drst.getAmount() - amount >= 0) {
 			drst.setAmount(drst.getAmount() - amount);
 			drugstockRepository.save(drst);
 		}
-		else {
-			DrugRequest dr = new DrugRequest(drugstoreRepository.findById(drugstoreId).orElse(null),drugRepository.findById(drugId).orElse(null),false);
+		else if (!hasDrugRequest(drugstore, drug)){
+			DrugRequest dr = new DrugRequest(drugstore, drug, false);
 			drugRequestRepository.save(dr);
 			return "Drug not on stock!";
 		}
@@ -112,6 +116,10 @@ public class DrugReservationService {
 		drugreservationRespository.save(drr);
 		
 		return drr.getDrug().getName() + ": " + drr.getConfirmationCode();
+	}
+	
+	private boolean hasDrugRequest(Drugstore drugstore, Drug drug) {
+		return drugRequestRepository.findByDrugAndDrugstoreAndHandledFalse(drug, drugstore).size() > 0;
 	}
 	
 	private boolean isDrugOnStock(String drugstoreId, String drugId, int amount) {
@@ -128,7 +136,7 @@ public class DrugReservationService {
 		return true;
 	}
 	
-	@Transactional(rollbackFor = PessimisticLockingFailureException.class)
+	@Transactional(readOnly = false, rollbackFor = PessimisticLockingFailureException.class)
 	public String saveMultipleReservations(List<DrugReservationDto>  drugReservationDtos) throws Exception {
 		String confirmationCodes = "";
 		if (drugReservationDtos.isEmpty()) {
@@ -137,7 +145,7 @@ public class DrugReservationService {
 		
 		Patient patient = patientRepository.findById(drugReservationDtos.get(0).getPatientId()).orElse(null);
 		if(!areDrugReservationsOnStock(drugReservationDtos)) {
-			//throw new Exception("Not enough drug on stock");
+			throw new Exception("Not enough drug on stock");
 		}
 		
 		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
@@ -165,23 +173,20 @@ public class DrugReservationService {
 		return reservations;
 	}
 
+	@Transactional(readOnly=false, rollbackFor = PessimisticLockingFailureException.class)
 	public List<DrugReservation> cancelReservation(DrugReservationCancelDto drugreservationcancelDto) {
 		String drugReservationId = drugreservationcancelDto.getDrugReservationId();
 		String patientId = drugreservationcancelDto.getPatientId();
-		String drugId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrug().getId();
-		String drugstoreId = drugreservationRespository.findById(drugReservationId).orElse(null).getDrugstore().getId();
+		Drug drug = drugreservationRespository.findById(drugReservationId).orElse(null).getDrug();
+		Drugstore drugstore = drugreservationRespository.findById(drugReservationId).orElse(null).getDrugstore();
 		
-		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
-		for(DrugStock stok:drst) {
-			if(stok.getDrugstore().getId().equals(drugstoreId)) {
-				stok.setAmount(stok.getAmount() + drugreservationRespository.findById(drugReservationId).orElse(null).getAmount());
-				drugstockRepository.save(stok);
-			}
-		}
+		DrugStock drst = drugstockRepository.findByDrugAndDrugstore(drug, drugstore);
+		
+		drst.setAmount(drst.getAmount() + drugreservationRespository.findById(drugReservationId).orElse(null).getAmount());
+		drugstockRepository.save(drst);
 		drugreservationRespository.deleteById(drugReservationId);
 		
-		
-		List<DrugReservation> reservations = drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
+		List<DrugReservation> reservations =  drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
 		System.out.println(reservations.size());
 		return reservations;
 	}

@@ -1,5 +1,9 @@
 package pharmacyhub.controllers;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +25,12 @@ public class ConcurentTestController {
 	@Autowired
 	private DrugReservationService drugReservationService;
 	
-	@PostMapping(path = "/saveReservation",produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/saveReservation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationDto drugreservationDto) throws Exception {
-		Thread request1 = new Thread() {
+		
+		Runnable request = new Runnable() {
+
+			@Override
 			public void run() {
 				try {
 					drugReservationService.saveReservation(drugreservationDto);
@@ -31,19 +38,20 @@ public class ConcurentTestController {
 					e.printStackTrace();
 				}
 			}
-		};
-		Thread request2 = new Thread() {
-			public void run() {
-				try {
-					drugReservationService.saveReservation(drugreservationDto);
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
-			}
+			
 		};
 		
-		request1.start();
-		request2.start();
+		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+		executor.schedule(request, 1000, TimeUnit.MILLISECONDS);
+		executor.schedule(request, 4000, TimeUnit.MILLISECONDS);
+		executor.schedule(request, 200, TimeUnit.MILLISECONDS);
+		executor.schedule(request, 800, TimeUnit.MILLISECONDS);
+		executor.schedule(request, 1500, TimeUnit.MILLISECONDS);
+		executor.schedule(request, 50, TimeUnit.MILLISECONDS);
+		executor.schedule(request, 0, TimeUnit.MILLISECONDS);
+		
+		executor.shutdown();
+		//executor.awaitTermination(1, TimeUnit.MINUTES);
 		
 		return new ResponseEntity<>("test", HttpStatus.OK);
 	}

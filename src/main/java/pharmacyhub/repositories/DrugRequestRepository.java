@@ -13,6 +13,7 @@ import pharmacyhub.domain.Drugstore;
 public interface DrugRequestRepository extends JpaRepository<DrugRequest, String>{
 	
 	List<DrugRequest> findByDrugAndDrugstore(Drug drug, Drugstore drugstore);
+	List<DrugRequest> findByDrugAndDrugstoreAndHandledFalse(Drug drug, Drugstore drugstore);
 	@Transactional
 	void deleteByDrugstoreAndDrug(Drugstore drugstore, Drug drug);
 	
