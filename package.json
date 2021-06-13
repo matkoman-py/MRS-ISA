@@ -1,8 +1,6 @@
 {
   "dependencies": {
     "vue-multiselect": "^2.1.6"
-  },
-  "scripts": {
-    "heroku-postbuild": "cd frontend-client && npm install && npm run serve"
   }
+  
 }
