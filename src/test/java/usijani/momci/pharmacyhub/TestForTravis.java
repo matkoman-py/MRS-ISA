@@ -7,8 +7,11 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import pharmacyhub.PharmacyhubApplication;
+
+
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = { PharmacyhubApplication.class })
 public class TestForTravis {
 
 	@Test
