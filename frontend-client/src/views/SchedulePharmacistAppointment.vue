@@ -85,7 +85,7 @@
                 this.saveData.date = this.inputValues.date;
                 this.saveData.time = this.inputValues.time;
                 this.saveData.patientId = this.user.id;
-                this.$http.post("http://localhost:8081/pharmacist-appointment/with-patient", JSON.parse(JSON
+                this.$http.post("https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/with-patient", JSON.parse(JSON
                         .stringify(
                             this.saveData)))
                     .then(response => {
@@ -101,7 +101,7 @@
                     })
             },
             getPharmacists: function (data) {
-                this.$http.get('http://localhost:8081/pharmacist-appointment/get-pharmacists', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/get-pharmacists', {
                         params: {
                             drugstoreId: data.id,
                             pharmacistAppointmentDate: this.inputValues.date,
@@ -128,7 +128,7 @@
                 event.preventDefault();
                 if (this.inputValues.date == "" || this.inputValues.time == "") return;
                 this.searched = 1;
-                this.$http.get('http://localhost:8081/pharmacist-appointment/get-drugstores', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/get-drugstores', {
                         params: {
                             pharmacistAppointmentDate: this.inputValues.date,
                             pharmacistAppointmentTime: this.inputValues.time,

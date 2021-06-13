@@ -190,7 +190,7 @@
                 this.getDrugs();
             },
             getDrugs: function () {
-                this.$http.post(`http://localhost:8081/drugs/search?page=${this.currentPage-1}&size=3`, this
+                this.$http.post(`https://mrs-isa-usijani.herokuapp.com/drugs/search?page=${this.currentPage-1}&size=3`, this
                         .currentSearch)
                     .then(response => {
                         if (response.data.length == 0 && this.currentPage != 1) {
@@ -204,7 +204,7 @@
                     .catch(error => console.log(error));
             },
             getManufacturers: function () {
-                this.$http.get("http://localhost:8081/manufacturers")
+                this.$http.get("https://mrs-isa-usijani.herokuapp.com/manufacturers")
                     .then(response => {
                         this.manufacturerOptions = response.data.map((manufacturer) =>
                             ({
@@ -216,7 +216,7 @@
                     .catch(error => console.log(error));
             },
             getDrugTypes: function () {
-                this.$http.get("http://localhost:8081/drug-types")
+                this.$http.get("https://mrs-isa-usijani.herokuapp.com/drug-types")
                     .then(response => {
                         this.drugTypeOptions = response.data.map((drugType) =>
                             ({
@@ -228,14 +228,14 @@
                     .catch(error => console.log(error));
             },
             getIngrediants: function () {
-                this.$http.get("http://localhost:8081/ingredients")
+                this.$http.get("https://mrs-isa-usijani.herokuapp.com/ingredients")
                     .then(response => {
                         this.ingrediants = response.data;
                     })
                     .catch(error => console.log(error));
             },
             getSubstitutionDrugs: function () {
-                this.$http.get("http://localhost:8081/drugs")
+                this.$http.get("https://mrs-isa-usijani.herokuapp.com/drugs")
                     .then(response => {
                         this.substitutions = response.data;
                     })

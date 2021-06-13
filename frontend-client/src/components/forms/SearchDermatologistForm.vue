@@ -42,7 +42,7 @@ export default {
   methods : {
     onSubmit(event){
           event.preventDefault();
-          this.$http.post("http://localhost:8081/employees/search/dermatologist", this.form)
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/employees/search/dermatologist", this.form)
           .then(response => {
               this.dermatologists = response.data;
               this.$emit("dermatologist-search", this.dermatologists);

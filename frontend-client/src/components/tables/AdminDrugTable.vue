@@ -120,7 +120,7 @@ export default {
             this.deleteModal.title = '';
       },
       deleteDrug: function(){
-          this.$http.delete(`http://localhost:8081/drugs/${this.deleteModal.drug.id}`)
+          this.$http.delete(`https://mrs-isa-usijani.herokuapp.com/drugs/${this.deleteModal.drug.id}`)
             .then(response => {
                 let index = this.drugs.findIndex(drug => drug.id == this.deleteModal.drug.id);
                 this.drugs.splice(index, 1);
@@ -129,7 +129,7 @@ export default {
             .catch(error => this.$toastr.e(error));
       },
       getDrugs: function () {
-            this.$http.get('http://localhost:8081/drugs')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugs')
             .then(response => {
                 this.drugs = response.data;
             })

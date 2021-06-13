@@ -101,8 +101,8 @@ export default {
               alert("Not yet supported");
               return;
           }
-          console.log(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`);
-          this.$http.delete(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`)
+          console.log(`https://mrs-isa-usijani.herokuapp.com/${userTypes}/${this.deleteModal.user.id}`);
+          this.$http.delete(`https://mrs-isa-usijani.herokuapp.com/${userTypes}/${this.deleteModal.user.id}`)
             .then(response => {
                 let index = this.users.findIndex(user => user.id == this.deleteModal.user.id);
                 this.users.splice(index, 1);
@@ -111,7 +111,7 @@ export default {
             .catch(error => console.log(error));
       },
       getUsers: function () {
-            this.$http.get('http://localhost:8081/suppliers-and-admins')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/suppliers-and-admins')
             .then(response => {
                 this.users = response.data;
             })

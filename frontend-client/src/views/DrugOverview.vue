@@ -17,7 +17,7 @@
     },
     methods: {
         getDrugs : function(){
-            this.$http.get('http://localhost:8081/drugs')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugs')
             .then(response => {
 		console.log(response);
                 this.drugs = response.data.map(drug => 

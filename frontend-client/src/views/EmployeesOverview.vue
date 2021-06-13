@@ -79,7 +79,7 @@
     },
     methods: {
         getDrugstore() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -90,7 +90,7 @@
               .catch(error => console.log(error));
         },
         getEmployees : function(){
-            this.$http.get('http://localhost:8081/employees', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees', {
               params: {
                 drugstoreAdminId: this.user.id
             }
@@ -114,7 +114,7 @@
             .catch(error => console.log(error));
         },
         employeesSearchResult : function() {
-            this.$http.get('http://localhost:8081/employees/search', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees/search', {
               params: {
                 drugstoreAdminId: this.user.id,
                 searchText: this.searchText,
@@ -167,14 +167,14 @@
         }, deleteEmployee(event) {
             event.preventDefault();
             if (this.selectedEmployee[0].type == 'Pharmacist') {
-              this.$http.delete("http://localhost:8081/employees/delete/", {params :{ pharmacistEmail: this.selectedEmployee[0].email}})
+              this.$http.delete("https://mrs-isa-usijani.herokuapp.com/employees/delete/", {params :{ pharmacistEmail: this.selectedEmployee[0].email}})
               .then(() => {
                 alert("Pharmacist is succesfully removed from drugstore!");
                 this.getEmployees();
               })
               .catch(error => console.log(error));
             } else {
-              this.$http.delete("http://localhost:8081/employment/delete", {data : { dermatologistEmail: this.selectedEmployee[0].email, drugstoreId: this.drugstoreId }})
+              this.$http.delete("https://mrs-isa-usijani.herokuapp.com/employment/delete", {data : { dermatologistEmail: this.selectedEmployee[0].email, drugstoreId: this.drugstoreId }})
               .then(() => {
                 alert("Dermatologist is succesfully removed from drugstore!");
                 this.getEmployees();

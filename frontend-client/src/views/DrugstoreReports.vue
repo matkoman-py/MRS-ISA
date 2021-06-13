@@ -112,7 +112,7 @@
     },
     methods: {
         getDrugstore() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -126,7 +126,7 @@
               .catch(error => console.log(error));
         },
         getMonthReport() {
-            this.$http.get("http://localhost:8081/reports/month", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/reports/month", {
               params: {
                 drugstoreId: this.drugstoreId,
                 currentYear: this.monthReport.currentYear,
@@ -182,7 +182,7 @@
             this.getMonthReport();
         },
         getQuartalReport() {
-            this.$http.get("http://localhost:8081/reports/quartal", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/reports/quartal", {
               params: {
                 drugstoreId: this.drugstoreId,
                 currentYear: this.quartalReport.currentYear,
@@ -212,7 +212,7 @@
             this.getQuartalReport();
         },
         getYearReport() {
-            this.$http.get("http://localhost:8081/reports/year", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/reports/year", {
               params: {
                 drugstoreId: this.drugstoreId,
                 currentYear: this.yearReport.currentYear,

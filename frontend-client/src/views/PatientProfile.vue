@@ -412,7 +412,7 @@
                 //alert(item.id);
                 this.$http
                     .get(
-                        "http://localhost:8081/pharmacist-appointment/cancelAppointment", {
+                        "https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/cancelAppointment", {
                             params: {
                                 pharmacistAppointmentId: item.id,
                             },
@@ -439,7 +439,7 @@
                 //alert(item.id);
                 this.$http
                     .get(
-                        "http://localhost:8081/dermatologist-appointment/cancelAppointment", {
+                        "https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/cancelAppointment", {
                             params: {
                                 dermatologistAppointmentId: item.id,
                             },
@@ -470,7 +470,7 @@
 
                     if(this.drugReservations[drug].date == this.today){
                         //alert("You recieved a penalty");
-                            this.$http.get('http://localhost:8081/patients/penalty', {
+                            this.$http.get('https://mrs-isa-usijani.herokuapp.com/patients/penalty', {
                         params: {
                             patientId: this.user.id,//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                             reservationId: this.drugReservations[drug].id,
@@ -490,7 +490,7 @@
                 //alert(item.id);
                 this.$http
                     .put(
-                        "http://localhost:8081/drugReservation/cancelReservation", {
+                        "https://mrs-isa-usijani.herokuapp.com/drugReservation/cancelReservation", {
                             drugReservationId: item.id,
                             patientId: this.user.id,
                         }
@@ -532,7 +532,7 @@
                 this.employee.id = this.user.id;
 
                 this.$http
-                    .get("http://localhost:8081/patients/id", {
+                    .get("https://mrs-isa-usijani.herokuapp.com/patients/id", {
                         params: {
                             patientId: this.employee.id,
                         },
@@ -555,7 +555,7 @@
                 this.name = this.employee.name;
                 this.editEnabled = true;
                 this.$http
-                    .put("http://localhost:8081/patients", this.employee)
+                    .put("https://mrs-isa-usijani.herokuapp.com/patients", this.employee)
                     .then((response) => {
                         console.log(response);
                         console.log("ovde");
@@ -568,7 +568,7 @@
             getDrugReservationsLength: function () {
                 this.$http
                     .get(
-                        `http://localhost:8081/drugReservation/getPatientReservationsLength`, {
+                        `https://mrs-isa-usijani.herokuapp.com/drugReservation/getPatientReservationsLength`, {
                             params: {
                                 patientId: this.user.id
                             }
@@ -582,7 +582,7 @@
             getPharmacistAppointmentLength: function () {
                 this.$http
                     .get(
-                        `http://localhost:8081/pharmacist-appointment/reservations-length`, {
+                        `https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/reservations-length`, {
                             params: {
                                 patientId: this.user.id
                             }
@@ -596,7 +596,7 @@
             getDermatologistAppointmentLength: function () {
                 this.$http
                     .get(
-                        `http://localhost:8081/dermatologist-appointment/reservations-length`, {
+                        `https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/reservations-length`, {
                             params: {
                                 patientId: this.user.id
                             }
@@ -610,7 +610,7 @@
             getDrugReservations: function () {
                 this.$http
                     .get(
-                        `http://localhost:8081/drugReservation/getPatientReservations?page=${this.currentPage - 1}&size=3`, {
+                        `https://mrs-isa-usijani.herokuapp.com/drugReservation/getPatientReservations?page=${this.currentPage - 1}&size=3`, {
                             params: {
                                 patientId: this.user.id
                             }
@@ -635,7 +635,7 @@
                 //PHARMACIST
                 this.$http
                     .get(
-                        `http://localhost:8081/pharmacist-appointment/get-appointments?page=${this.currentPagePharmacist - 1}&size=3`, {
+                        `https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/get-appointments?page=${this.currentPagePharmacist - 1}&size=3`, {
                             params: {
                                 patientId: this.user.id,
                             },
@@ -659,7 +659,7 @@
                 //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
                 this.$http
                     .get(
-                        `http://localhost:8081/dermatologist-appointment/returnAppointments?page=${this.currentPageDermatologist - 1}&size=3`, {
+                        `https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/returnAppointments?page=${this.currentPageDermatologist - 1}&size=3`, {
                             params: {
                                 patientId: this.user.id,
                             },

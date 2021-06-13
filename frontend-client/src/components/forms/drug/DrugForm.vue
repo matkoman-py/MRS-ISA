@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     getManufacturers: function(){
-      this.$http.get("http://localhost:8081/manufacturers")
+      this.$http.get("https://mrs-isa-usijani.herokuapp.com/manufacturers")
       .then(response => {
         this.manufacturerOptions = response.data.map((manufacturer) => 
         ({
@@ -124,7 +124,7 @@ export default {
       .catch(error => this.$toastr.e(error));
     },
     getDrugTypes: function(){
-      this.$http.get("http://localhost:8081/drug-types")
+      this.$http.get("https://mrs-isa-usijani.herokuapp.com/drug-types")
       .then(response => {
         this.drugTypeOptions = response.data.map((drugType) => 
         ({
@@ -137,14 +137,14 @@ export default {
       .catch(error => this.$toastr.e(error));
     },
     getIngredients: function(){
-      this.$http.get("http://localhost:8081/ingredients")
+      this.$http.get("https://mrs-isa-usijani.herokuapp.com/ingredients")
       .then(response => {
         this.ingredients = response.data;
       })
       .catch(error => this.$toastr.e(error));
     },
     getSubstitutionDrugs: function(){
-      this.$http.get("http://localhost:8081/drugs")
+      this.$http.get("https://mrs-isa-usijani.herokuapp.com/drugs")
       .then(response => {
         this.substitutions = response.data;
       })

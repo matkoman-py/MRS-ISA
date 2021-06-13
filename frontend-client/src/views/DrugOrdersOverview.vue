@@ -113,7 +113,7 @@
     },
     methods: {
         initialize() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -125,7 +125,7 @@
               .catch(error => console.log(error));
         },
         getDrugOrders() {
-            this.$http.get("http://localhost:8081/drug-orders", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/drug-orders", {
               params: {
                 drugstoreId: this.drugstoreId,
                 filter: this.selected
@@ -173,7 +173,7 @@
           this.selectedOffer = item[0].Offer_id;
         }, showOffersForOrder(row) {
           this.selectedOrder = row.item.Order_id;
-           this.$http.get("http://localhost:8081/offers", {
+           this.$http.get("https://mrs-isa-usijani.herokuapp.com/offers", {
               params: {
                 orderId: this.selectedOrder
               }
@@ -205,7 +205,7 @@
           if (this.selectedOffer == "") {
             alert("To complete order you need to select one of available offers!");
           } else {
-            this.$http.post("http://localhost:8081/drug-orders/accepted/" + this.selectedOffer)
+            this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-orders/accepted/" + this.selectedOffer)
               .then(() => {
                 this.getDrugOrders();
                 this.showOferrs = false;
@@ -216,7 +216,7 @@
         }, decline() {
             this.$root.$emit('bv::show::modal', 'declineConfirmation');
         }, declineAllOffers() {
-          this.$http.post("http://localhost:8081/drug-orders/declined/" + this.selectedOrder)
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-orders/declined/" + this.selectedOrder)
               .then(() => {
                 this.getDrugOrders();
                 this.showOferrs = false;
@@ -226,7 +226,7 @@
         }, cancel() {
             this.$root.$emit('bv::hide::modal', 'declineConfirmation');
         }, orderExpired() {
-          this.$http.post("http://localhost:8081/drug-orders/expired/" + this.selectedOrder)
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-orders/expired/" + this.selectedOrder)
               .then(() => {
                 this.getDrugOrders();
               })

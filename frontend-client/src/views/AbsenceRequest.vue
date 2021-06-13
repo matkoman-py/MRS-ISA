@@ -88,7 +88,7 @@ export default {
                 reason:this.reason,
                 employeeId:this.user.id
             }
-            this.$http.post('http://localhost:8081/absence-request/create',  JSON.parse(JSON.stringify(dto)))
+            this.$http.post('https://mrs-isa-usijani.herokuapp.com/absence-request/create',  JSON.parse(JSON.stringify(dto)))
                     .then(response => {
                         alert(response.data);
                     })

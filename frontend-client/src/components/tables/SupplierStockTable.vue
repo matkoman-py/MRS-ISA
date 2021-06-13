@@ -101,7 +101,7 @@
                 this.$root.$emit('bv::show::modal', this.editModal.id, button);
             },
             editStock: function () {
-                this.$http.put(`http://localhost:8081/supplier-stocks/`, this.editModal.stock)
+                this.$http.put(`https://mrs-isa-usijani.herokuapp.com/supplier-stocks/`, this.editModal.stock)
                     .then(() => {
                         this.$refs['supplierStockSearch'].search();
                     })
@@ -113,7 +113,7 @@
                 this.$root.$emit('bv::show::modal', this.deleteModal.id, button);
             },
             deleteStock: function () {
-                this.$http.delete(`http://localhost:8081/supplier-stocks/${this.deleteModal.stock.id}`)
+                this.$http.delete(`https://mrs-isa-usijani.herokuapp.com/supplier-stocks/${this.deleteModal.stock.id}`)
                     .then(() => {
                         this.$refs['supplierStockSearch'].search();
                     })

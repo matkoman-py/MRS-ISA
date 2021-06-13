@@ -1,0 +1,1 @@
+export default 'https://mrs-isa-usijani.herokuapp.com';

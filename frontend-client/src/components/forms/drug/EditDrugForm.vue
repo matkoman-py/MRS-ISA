@@ -26,7 +26,7 @@ export default {
   methods: {
     editDrug: function(event){
       event.preventDefault();
-      this.$http.put("http://localhost:8081/drugs", this.form)
+      this.$http.put("https://mrs-isa-usijani.herokuapp.com/drugs", this.form)
       .then(response => {
         this.$emit("update-drug-success", response.data);
         this.$toastr.s("Drug edited successfully!");

@@ -121,7 +121,7 @@
     onSubmit(event){
           event.preventDefault();
           console.log(this.form);
-          this.$http.post("http://localhost:8081/employees/pharmacist", JSON.parse(JSON.stringify(this.form)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/employees/pharmacist", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
               alert("New pharmacist successfully added.");
@@ -130,7 +130,7 @@
               .catch(error => console.log(error));
       },
     getDrugstore() {
-       this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+       this.$http.get("https://mrs-isa-usijani.herokuapp.com/employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }

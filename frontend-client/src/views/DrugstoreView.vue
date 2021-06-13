@@ -375,7 +375,7 @@ export default {
     methods: {
         saveRatingPharmacist() {
             this.$http
-                .get("http://localhost:8081/rating-pharmacist/saveRating", {
+                .get("https://mrs-isa-usijani.herokuapp.com/rating-pharmacist/saveRating", {
                     params: {
                         patientId: this.user.id,
                         pharmacistId: this.saveRatingPharmacistId,
@@ -386,7 +386,7 @@ export default {
         },
         saveRatingDermatologist() {
             this.$http
-                .get("http://localhost:8081/rating-dermatologist/saveRating", {
+                .get("https://mrs-isa-usijani.herokuapp.com/rating-dermatologist/saveRating", {
                     params: {
                         patientId: this.user.id,
                         dermatologistId: this.saveRatingDermatologistId,
@@ -397,7 +397,7 @@ export default {
         },
         saveRatingDrugstore() {
             this.$http
-                .get("http://localhost:8081/rating-drugsore/saveRating", {
+                .get("https://mrs-isa-usijani.herokuapp.com/rating-drugsore/saveRating", {
                     params: {
                         patientId: this.user.id,
                         drugstoreId: this.currentDrugstoreId,
@@ -501,7 +501,7 @@ export default {
             if(this.user != null){
             this.$http
                 .get(
-                    "http://localhost:8081/pharmacist-appointment/get-appointments",
+                    "https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/get-appointments",
                     {
                         params: {
                             patientId: this.user.id,
@@ -527,7 +527,7 @@ export default {
             if(this.user != null){
             this.$http
                 .get(
-                    "http://localhost:8081/dermatologist-appointment/returnAppointments",
+                    "https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/returnAppointments",
                     {
                         params: {
                             patientId: this.user.id,
@@ -552,7 +552,7 @@ export default {
             if(this.user != null){
             this.$http
                 .get(
-                    "http://localhost:8081/drugReservation/getPatientReservations",
+                    "https://mrs-isa-usijani.herokuapp.com/drugReservation/getPatientReservations",
                     {
                         params: {
                             patientId: this.user.id,
@@ -580,7 +580,7 @@ export default {
         },
         checkSubscription() {
             this.$http
-                .get("http://localhost:8081/subscription/check", {
+                .get("https://mrs-isa-usijani.herokuapp.com/subscription/check", {
                     params: {
                         patientId: this.user.id,
                         drugstoreId: this.drugstore.id,
@@ -593,7 +593,7 @@ export default {
         getCurrentDrugstore() {
             this.$http
                 .get(
-                    "http://localhost:8081/drugstores/" +
+                    "https://mrs-isa-usijani.herokuapp.com/drugstores/" +
                         this.currentDrugstoreId,
                     {}
                 )
@@ -606,7 +606,7 @@ export default {
         },
         getAverageRating() {
             this.$http
-                .get("http://localhost:8081/drugstores/averageRate", {
+                .get("https://mrs-isa-usijani.herokuapp.com/drugstores/averageRate", {
                     params: {
                         drugstoreId: this.drugstore.id,
                     },
@@ -623,7 +623,7 @@ export default {
         getAllDermatologists() {
             this.$http
                 .get(
-                    "http://localhost:8081/employment/dermatologist-employments",
+                    "https://mrs-isa-usijani.herokuapp.com/employment/dermatologist-employments",
                     {
                         params: {
                             drugstoreId: this.currentDrugstoreId,
@@ -644,7 +644,7 @@ export default {
         getAllPharmacists() {
             this.$http
                 .get(
-                    "http://localhost:8081/employment/pharmacist-employments",
+                    "https://mrs-isa-usijani.herokuapp.com/employment/pharmacist-employments",
                     {
                         params: {
                             drugstoreId: this.currentDrugstoreId,
@@ -668,7 +668,7 @@ export default {
         },
         subscribe() {
             this.$http
-                .post("http://localhost:8081/subscription/subscribe", {
+                .post("https://mrs-isa-usijani.herokuapp.com/subscription/subscribe", {
                     patientId: this.user.id,
                     drugstoreId: this.drugstore.id,
                 })
@@ -678,7 +678,7 @@ export default {
         },
         unsubscribe() {
             this.$http
-                .post("http://localhost:8081/subscription/unsubscribe", {
+                .post("https://mrs-isa-usijani.herokuapp.com/subscription/unsubscribe", {
                     patientId: this.user.id,
                     drugstoreId: this.drugstore.id,
                 })
