@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
-import javax.persistence.PessimisticLockException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;
@@ -84,8 +83,8 @@ public class DrugReservationService {
 	}
 	
 	//, rollbackFor = OptimisticLockException.class
-	@Transactional(readOnly = false, rollbackFor = PessimisticLockingFailureException.class)
-	private String saveSingleReservation(DrugReservationDto drugreservationDto, boolean eReceit) {
+	@Transactional(readOnly = false)
+	private String saveSingleReservation(DrugReservationDto drugreservationDto, boolean eReceit) throws Exception {
 		String drugId = drugreservationDto.getDrugId();
 		String drugstoreId = drugreservationDto.getDrugstoreId();
 		String patientId = drugreservationDto.getPatientId();
@@ -109,7 +108,7 @@ public class DrugReservationService {
 		else if (!hasDrugRequest(drugstore, drug)){
 			DrugRequest dr = new DrugRequest(drugstore, drug, false);
 			drugRequestRepository.save(dr);
-			return "Drug not on stock!";
+			throw new Exception("Drug not on stock!");
 		}
 		DrugPrice drugPrice = drugStockService.getLastPriceByDrugAndDrugStore(drug, drugstore);
 		drr.setPrice(patientCategoryService.getPriceWithDiscount(patient, drugPrice.getPrice()));
@@ -122,21 +121,21 @@ public class DrugReservationService {
 		return drugRequestRepository.findByDrugAndDrugstoreAndHandledFalse(drug, drugstore).size() > 0;
 	}
 	
-	private boolean isDrugOnStock(String drugstoreId, String drugId, int amount) {
-		return drugreservationRespository.existsByDrugstoreIdAndDrugIdAndAmountGreaterThanEqual(drugstoreId, drugId, amount);
-		
-	}
+//	private boolean isDrugOnStock(String drugstoreId, String drugId, int amount) {
+//		return drugreservationRespository.existsByDrugstoreIdAndDrugIdAndAmountGreaterThanEqual(drugstoreId, drugId, amount);
+//		
+//	}
 	
-	private boolean areDrugReservationsOnStock(List<DrugReservationDto>  drugReservationDtos) {
-		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
-			if(!isDrugOnStock(drugReservationDto.getDrugstoreId(), drugReservationDto.getDrugId(), drugReservationDto.getAmount())) {
-				return false;
-			}
-		}
-		return true;
-	}
+//	private boolean areDrugReservationsOnStock(List<DrugReservationDto>  drugReservationDtos) {
+//		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
+//			if(!isDrugOnStock(drugReservationDto.getDrugstoreId(), drugReservationDto.getDrugId(), drugReservationDto.getAmount())) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 	
-	@Transactional(readOnly = false, rollbackFor = PessimisticLockingFailureException.class)
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public String saveMultipleReservations(List<DrugReservationDto>  drugReservationDtos) throws Exception {
 		String confirmationCodes = "";
 		if (drugReservationDtos.isEmpty()) {
@@ -144,11 +143,12 @@ public class DrugReservationService {
 		}
 		
 		Patient patient = patientRepository.findById(drugReservationDtos.get(0).getPatientId()).orElse(null);
-		if(!areDrugReservationsOnStock(drugReservationDtos)) {
-			throw new Exception("Not enough drug on stock");
-		}
+//		if(!areDrugReservationsOnStock(drugReservationDtos)) {
+//			throw new Exception("Not enough drug on stock");
+//		}
 		
 		for (DrugReservationDto drugReservationDto : drugReservationDtos) {
+			System.out.println(drugReservationDto.getAmount());
 			confirmationCodes += "<br/>" + saveSingleReservation(drugReservationDto, true);
 		}
 		userNotificationService.sendReservationConfirmationDrug(patient.getEmail(), confirmationCodes);
@@ -156,7 +156,7 @@ public class DrugReservationService {
 		return "Success!";
 	}
 
-	public String saveReservation(DrugReservationDto drugreservationDto) throws MessagingException {
+	public String saveReservation(DrugReservationDto drugreservationDto) throws Exception {
 		String confirmationCode = saveSingleReservation(drugreservationDto, false);
 		if(confirmationCode != null) {
 			Patient patient = patientRepository.findById(drugreservationDto.getPatientId()).orElse(null);
@@ -229,7 +229,7 @@ public class DrugReservationService {
 		return  drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null)).size();
   }
   
-	public String saveReservationEmployee(DrugReservationEmployeeDto drugreservationEmployeeDto) throws MessagingException {
+	public String saveReservationEmployee(DrugReservationEmployeeDto drugreservationEmployeeDto) throws Exception {
 		
 		DrugReservationDto drugreservationDto = new DrugReservationDto(
 				drugreservationEmployeeDto.getPatientId(),

@@ -3,17 +3,21 @@ package pharmacyhub.dto.search;
 public class DrugSearchDto {
 
 	private String id;
-	
+
 	private String name;
-	
+
 	private String form;
-	
+
 	private String type;
-	
+
 	private String manufacturerId;
-	
+
 	private Boolean receipt;
+
+	private String sortByField;
 	
+	private Boolean ascending;
+
 	public String getId() {
 		return id;
 	}
@@ -62,4 +66,25 @@ public class DrugSearchDto {
 		this.receipt = receipt;
 	}
 
+	public String getSortByField() {
+		return sortByField;
+	}
+
+	public void setSortByField(String sortByField) {
+		this.sortByField = sortByField;
+	}
+
+	public Boolean getAscending() {
+		return ascending;
+	}
+
+	public void setAscending(Boolean ascending) {
+		this.ascending = ascending;
+	}
+
+	public Boolean getReceipt() {
+		return receipt;
+	}
+
+	
 }

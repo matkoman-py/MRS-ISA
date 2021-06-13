@@ -35,12 +35,12 @@ INSERT INTO public.ingredient (id, deleted, name) VALUES ('0e940928-4756-403e-b6
 ----
 ---- Data for Name: drug;
 ----
-INSERT INTO public.drug (id, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('d7d2d173-9f15-4bd2-979c-6933746f6be4', false, 'a', 'tablet', 'Zanax', 200, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug (id, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('6602618d-067d-487b-95f1-21cee6bb6e43', false, 'a', 'tablet', 'Prostamol uno', 0, false, 'b137c265-6e12-4b59-947e-ab5504335dc4', 'cb22173a-4b0b-4f98-9c03-e19682520ff2');
-INSERT INTO public.drug (id, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a329071d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'vaccine', 'Pfizer', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug (id, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a32asd1d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'herb', 'Caj od nane', 0, true, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug (id, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a3ew071d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'bandage', 'Nikotinski flaster', 0, false, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
-INSERT INTO public.drug (id, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', false, 'a', 'vaccine', 'Astra-zeneca', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug (id, code, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('d7d2d173-9f15-4bd2-979c-6933746f6be4', 'AS2222', false, 'a', 'tablet', 'Zanax', 200, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug (id, code, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('6602618d-067d-487b-95f1-21cee6bb6e43', 'AR2222', false, 'a', 'tablet', 'Prostamol uno', 0, false, 'b137c265-6e12-4b59-947e-ab5504335dc4', 'cb22173a-4b0b-4f98-9c03-e19682520ff2');
+INSERT INTO public.drug (id, code, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a329071d-b38c-4014-9fa3-2e7367d9ee49', 'AG2222', false, 'a', 'vaccine', 'Pfizer', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug (id, code, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a32asd1d-b38c-4014-9fa3-2e7367d9ee49', 'AZ2222', false, 'a', 'herb', 'Caj od nane', 0, true, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug (id, code, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a3ew071d-b38c-4014-9fa3-2e7367d9ee49', 'ZS2222', false, 'a', 'bandage', 'Nikotinski flaster', 0, false, 'b137c265-6e12-4b59-947e-ab5504335dc4', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
+INSERT INTO public.drug (id, code, deleted, description, form, name, point, receipt, manufacturer_fk, drug_type_fk) VALUES ('a329a71d-b38c-4014-9fa3-2e7367d9ee49', 'BS2222', false, 'a', 'vaccine', 'Astra-zeneca', 0, true, 'd9a1b6b2-df11-4071-88c6-887411477a48', '5fa27c02-d6b4-431b-b3ce-9dc66588b918');
 
 ----
 ---- Data for Name: Point;
@@ -124,8 +124,6 @@ INSERT INTO public.employment VALUES ('2', false, '12-06-2021', 0, '10:00', '12:
 ----
 ------ Data for Name: dermatologist_appointment; 
 ------
-INSERT INTO public.dermatologist_appointment VALUES ('4a73ae19-2001-450a-a050-85f51717ab76', false, '12-06-2021', 0, NULL, '2021-04-13 02:00:00', 8, 200,true,'12:00:00', '13:00:00','da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
-INSERT INTO public.dermatologist_appointment VALUES ('3effdfe3-9ca4-4789-817c-5b6a802bce2b', false, '12-06-2021', 0, NULL, '2021-04-19 02:00:00', 10, 200,true,'16:59:00', '17:59:00','79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
 
 ------
 ------ Data for Name: roles; 

@@ -195,6 +195,7 @@ export default {
                     patientId: this.user.id,
                     drugstoreId: this.drugstoreId,
                     drugId: drug,
+                    amount: this.receipt[drug],
                     date: this.reservationDate,
                 });
                 counter += 1;

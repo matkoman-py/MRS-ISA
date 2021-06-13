@@ -3,13 +3,11 @@ package pharmacyhub.repositories;
 import java.util.List;
 
 import javax.persistence.LockModeType;
-import javax.persistence.QueryHint;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.QueryHints;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugStock;

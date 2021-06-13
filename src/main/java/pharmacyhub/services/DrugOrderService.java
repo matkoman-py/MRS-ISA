@@ -11,9 +11,9 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.DrugOrder;
-import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Offer;
@@ -35,6 +35,7 @@ import pharmacyhub.repositories.OrderStockRepository;
 import pharmacyhub.repositories.specifications.drugOrders.DrugOrderSpecifications;
 
 @Service
+@Transactional
 public class DrugOrderService {
 
 	@Autowired
@@ -124,8 +125,15 @@ public class DrugOrderService {
 		return true;
 	}
 
-	public Boolean orderAccepted(String offerId) throws MessagingException {
-		Offer offer = offerRepository.findById(offerId).orElse(null);
+	@Transactional(readOnly = false, rollbackFor=Exception.class)
+	public Boolean orderAccepted(String offerId) throws Exception {
+		Offer offer = offerRepository.findByIdAndStatus(offerId, OfferStatus.Pending);
+		
+		if(offer == null) {
+			System.out.println("Sacemo videti");
+			throw new Exception("Offer already accepted or rejected");
+		}
+		
 		DrugOrder order = drugOrderRepository.findById(offer.getDrugOrder().getId()).orElse(null);
 		List<Offer> offers = offerRepository.findByDrugOrder(order);
 		for (Offer o : offers) {
@@ -152,7 +160,7 @@ public class DrugOrderService {
 	}
 
 	public Boolean orderDeclined(String orderId) throws MessagingException {
-		DrugOrder order = drugOrderRepository.findById(orderId).orElse(null);
+		DrugOrder order = drugOrderRepository.findByOrderIdAndStatus(orderId, OrderStatus.Pending);
 		List<Offer> offers = offerRepository.findByDrugOrder(order);
 		for (Offer o : offers) {
 			o.setStatus(OfferStatus.Rejected);

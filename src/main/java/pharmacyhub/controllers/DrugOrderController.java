@@ -56,7 +56,7 @@ public class DrugOrderController {
 	}
 	
 	@PostMapping(path = "/accepted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> orderAccepted(@PathVariable("id") String offerId) throws MessagingException{
+	public ResponseEntity<Boolean> orderAccepted(@PathVariable("id") String offerId) throws Exception{
 		return new ResponseEntity<>(drugOrderService.orderAccepted(offerId), HttpStatus.OK);
 	}
 	
