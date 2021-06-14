@@ -21,6 +21,11 @@ public class PatientService {
 	@Autowired
 	private PenaltyRepository penaltyRepository;
 	
+	public List<Patient> findAll()
+	{
+		return patientRepository.findAll();
+	}
+	
 	public List<Patient> findAll(Pageable pageable)
 	{
 		return patientRepository.findAll(pageable).toList();

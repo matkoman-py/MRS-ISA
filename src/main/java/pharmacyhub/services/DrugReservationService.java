@@ -19,6 +19,7 @@ import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
@@ -95,7 +96,17 @@ public class DrugReservationService {
 		
 		DrugReservation drr = new DrugReservation(drug, drugstore, amount, patient, date,eReceit);
 		drr.setConfirmationCode(confirmationCode);
-
+		
+		//provera za alergicnost
+		
+		int foundAllergen = 0;
+		for(Ingredient ing : patient.getAllergens()) {
+			if(drug.getIngredients().contains(ing)) {
+				return null;
+			}
+		}
+			
+		
 
 		List<DrugStock> drst = drugstockRepository.findByDrugId(drugId);
 		for(DrugStock stok:drst) {

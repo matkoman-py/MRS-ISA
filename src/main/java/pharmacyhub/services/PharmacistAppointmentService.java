@@ -11,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
+import pharmacyhub.repositories.AbsenceRequestRepository;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
@@ -47,6 +50,8 @@ public class PharmacistAppointmentService {
 	@Autowired
 	private PatientCategoryService patientCategoryService;
 
+	@Autowired
+	private AbsenceRequestRepository absenceRequestRepository;
 	
     public List<PharmacistAppointment> getAppointments(String patientId, Pageable pageable) {
 		return pharmacistAppointmentRepository.findByPatientId(patientId,pageable);
@@ -64,6 +69,13 @@ public class PharmacistAppointmentService {
 		long vremePocetak = vreme.getTime();
 		vreme.setMinutes(pharmacistAppointmentPatientDto.getTime().getMinutes()+pharmacistAppointmentPatientDto.getDuration());
 		long vremeKraj = vreme.getTime();
+		
+		List<AbsenceRequest> absenceRequests = absenceRequestRepository.findByEmployeeAndStatus(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null), AbsenceRequestStatus.Approved);
+		for(AbsenceRequest ar : absenceRequests) {
+			if(ar.getStartDate().before(vreme) && ar.getEndDate().after(vreme)) {
+				throw new Exception("Pharmacist is on absence at that time.");
+			}
+		}
 		
 		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
 		for(PharmacistAppointment pa : pharmacistAppointments) {
@@ -137,11 +149,13 @@ public class PharmacistAppointmentService {
 		int inputTime = hours * 3600;
 		int minutes = pharmacistAppointmentPatientDto.getTime().getMinutes();
 		inputTime += minutes * 60;
-		
+		int inputTimeTo = inputTime + pharmacistAppointmentPatientDto.getDuration()*60;
 		if(inputTime<=workingFrom || inputTime>=workingTo) {
 			throw new Exception("Pharmacist is not working at that time.");
 		}
-		
+		if(inputTimeTo >= workingTo) {
+			throw new Exception("Pharmacist is finishing his shift at that time.");
+		}
 		Pharmacist pharmacist = pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null);
 		Patient patient = patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null);
 		
