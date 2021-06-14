@@ -2,6 +2,7 @@ package pharmacyhub.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
+import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.RatingDermatologist;
 import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.enums.AbsenceRequestStatus;
@@ -448,14 +450,23 @@ public class EmployeeService {
 	}
 
 	public String deletePharmacist(String pharmacistEmail) {
-		checkFuturePharmacistAppointments(pharmacistEmail);
+		if (checkFuturePharmacistAppointments(pharmacistEmail)) {
+			return "Denied";
+		}
 		pharmacistRepository.deleteByEmail(pharmacistEmail);
-		return "success";
+		return "Success";
 	}
 
-	private void checkFuturePharmacistAppointments(String pharmacistEmail) {
-		String pharmacistId = pharmacistRepository.findByEmail(pharmacistEmail).getId();
-		pharmacistAppointmentRepository.deleteByPharmacist((Pharmacist)pharmacistRepository.findByEmail(pharmacistEmail)); //treba samo one koji predstoje?
+	private boolean checkFuturePharmacistAppointments(String pharmacistEmail) {
+		List<PharmacistAppointment> appointments = pharmacistAppointmentRepository.findByPharmacistEmailAndProcessedFalse(pharmacistEmail);
+		for (PharmacistAppointment appointment : appointments) {
+			if (appointment.getDate().after(new Date())) {
+				return true;
+			}
+		}
+		return false;
+		//String pharmacistId = pharmacistRepository.findByEmail(pharmacistEmail).getId();
+		//pharmacistAppointmentRepository.deleteByPharmacist((Pharmacist)pharmacistRepository.findByEmail(pharmacistEmail)); //treba samo one koji predstoje?
 	}
 	
 	public boolean passwordValid(String employeeId, String passwordInput) {

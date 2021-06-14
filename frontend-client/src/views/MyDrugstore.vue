@@ -9,7 +9,7 @@
                     <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
                     <p v-if="averageRate != null" style="margin:20px"><b>Average rating</b>: {{ averageRate.toFixed(2) }} (From {{numberOfRates}} rates)</p>
                     <p v-if="averageRate == null" style="margin:20px"><b>Average rating</b>: There are currently no rates for your drugstore</p>
-                    <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
+                    <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom.slice(0,5)}} - {{drugstore.workingHoursTo.slice(0,5)}}</p>
                     <p style="margin:20px"><b>Pharmacist appointment price</b>: {{drugstore.pharmacistAppointmentPrice}}</p>
                 </div>
             </b-col>
@@ -18,6 +18,11 @@
             <b-col> 
                 <router-link to="/drugstore-reports">
                     <b-button variant="outline-hub" style="margin:20px"> Drugstore reports </b-button> 
+                </router-link>
+            </b-col>
+            <b-col> 
+                <router-link to="/pharmacist-absence-requests">
+                    <b-button variant="outline-hub" style="margin:20px"> Absence requests </b-button>
                 </router-link>
             </b-col>
             <b-col> 
@@ -39,7 +44,19 @@ export default {
     },
     data: function() {
       return {
-        drugstore: {},
+        drugstore: {
+                name: "",
+                location: {
+                    address: "",
+                    city: "",
+                    country: ""
+                },
+                employements: "",
+                drugStock: "",
+                workingHoursFrom: "",
+                workingHoursTo: "",
+                pharmacistappointmentPrice: ""
+            },
         averageRate:0,
         numberOfRates:0
       }

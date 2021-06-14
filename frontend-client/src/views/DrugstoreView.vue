@@ -2,12 +2,20 @@
     <b-container>
         <b-row style="margin:20px">
             <b-col>
-                <b-img
+                <div style="width:100%; height:300px; border-style:solid" left
+                    alt="Left image"
+                    fluid>
+                <map-for-drugstore-view
+                    ref="map-container" 
+                    :coordinates="[drugstore.point.longitude, drugstore.point.latitude]"
+                ></map-for-drugstore-view>
+                </div>
+                <!--b-img
                     left
                     src="https://cdn.sanity.io/images/0vv8moc6/mhe/35d3654e121cea13826925b77336d022384fcb78-1000x667.png?auto=format"
                     alt="Left image"
                     fluid
-                ></b-img>
+                ></b-img-->
             </b-col>
             <b-col style="padding-left:25px;">
                 <div align="left" style="margin-top:30px">
@@ -30,8 +38,8 @@
                         this drugstore
                     </p>
                     <p style="margin:20px">
-                        <b>Working hours</b>: {{ drugstore.workingHoursFrom }} -
-                        {{ drugstore.workingHoursTo }}
+                        <b>Working hours</b>: {{ drugstore.workingHoursFrom.slice(0,5) }} -
+                        {{ drugstore.workingHoursTo.slice(0,5) }}
                     </p>
                     <b-button
                         variant="outline-hub"
@@ -78,7 +86,7 @@
         <b-row>
             <b-col>
                 <div
-                    style="margin-top:20px; margin-right:20px; margin-left:20px; border-style:solid;"
+                    style="margin-top:20px; margin-right:10px; margin-left:10px; border-style:solid;"
                 >
                     <b-table :items="dermatologists" :fields="dTableFields">
                         <template #cell(rateActionD)="row">
@@ -124,7 +132,7 @@
 
             <b-col>
                 <div
-                    style="margin-top:20px; margin-left:20px; margin-right:20px; border-style:solid;"
+                    style="margin-top:20px; margin-left:10px; margin-right:10px; border-style:solid;"
                 >
                     <b-table :items="pharmacists" :fields="pTableFields">
                         <template #cell(rateActionP)="row">
@@ -176,7 +184,7 @@
             </b-col>
             <b-col style="margin:20px">
                 <router-link
-                    :to="'/pharmacist-appointments/' + currentDrugstoreId"
+                    :to="'/schedule-pharm-app-drugstore/' + this.currentDrugstoreId"
                 >
                     <b-button variant="outline-hub" style="margin:30px"
                         >Make appointment with pharmacist</b-button
@@ -288,9 +296,11 @@
 
 <script>
 //Name Surname Works From Works To
+  import {fromLonLat} from 'ol/proj';
 import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable";
 import { mapState } from "vuex";
 import MakeComplaintForm from "./complaints/MakeComplaintForm.vue";
+import MapForDrugstoreView from '../components/MapForDrugstoreView.vue';
 export default {
     computed: {
         ...mapState({
@@ -300,6 +310,7 @@ export default {
     components: {
         DrugInDrugstoreTable,
         MakeComplaintForm,
+        MapForDrugstoreView,
     },
     data: function() {
         return {
@@ -313,7 +324,23 @@ export default {
             userRating: "3",
             currentDrugstoreId: "",
             subscribed: false,
-            drugstore: {},
+            drugstore: {
+                name: "",
+                location: {
+                    address: "",
+                    city: "",
+                    country: ""
+                },
+                employements: "",
+                drugStock: "",
+                workingHoursFrom: "",
+                workingHoursTo: "",
+                pharmacistappointmentPrice: "",
+                point: {
+                    longitude: "",
+                    latitude: ""
+                }
+            },
             dermatologists: [],
             pharmacists: [],
             date: "",
@@ -601,6 +628,7 @@ export default {
                     this.drugstore = response.data;
                     this.getAverageRating();
                     this.checkSubscription();
+                    this.$refs["map-container"].addMarker(fromLonLat([this.drugstore.point.longitude, this.drugstore.point.latitude]));
                 })
                 .catch((error) => console.log(error));
         },
@@ -635,8 +663,8 @@ export default {
                         employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
-                        worksFrom: employment.workingHoursFrom,
-                        worksTo: employment.workingHoursTo,
+                        worksFrom: employment.workingHoursFrom.slice(0,5),
+                        worksTo: employment.workingHoursTo.slice(0,5),
                     }));
                 })
                 .catch((error) => console.log(error));
@@ -656,8 +684,8 @@ export default {
                         employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
-                        worksFrom: employment.workingHoursFrom,
-                        worksTo: employment.workingHoursTo,
+                        worksFrom: employment.workingHoursFrom.slice(0,5),
+                        worksTo: employment.workingHoursTo.slice(0,5),
                     }));
                 })
                 .catch((error) => console.log(error));

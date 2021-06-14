@@ -63,6 +63,14 @@
             olMap: null,
             vectorLayer: null,
             vectorSource: null,
+
+            //dodato
+            value: {
+              street: "",
+              city: "",
+              country: ""
+            }
+
         }
     },methods : {
         updateSource(geojson) {
@@ -97,7 +105,76 @@
             this.vectorSource.addFeature(marker);
             this.$parent.$parent.drugstore.point.longitude = toLonLat(coordinates)[0];
             this.$parent.$parent.drugstore.point.latitude = toLonLat(coordinates)[1];
+            //dodato
+            this.guessLocationFromCoordinates(toLonLat(coordinates)[0], toLonLat(coordinates)[1]);
+        },
+
+
+      guessLocationFromCoordinates: function(lon, lat) {
+			this.$http.get("https://nominatim.openstreetmap.org/reverse", {
+					params: {
+						lat: lat,
+						lon: lon,
+						format: "json",
+					},
+				})
+				.then((response) => {
+					this.updateFieldsFromResponseData(response.data);
+				})
+				.catch(function(error) {
+					//toastr.error('Could not find a location based on given coordinates.', '');
+				});
+		},
+		
+		updateFieldsFromResponseData: function(data) {
+			const { address } = data;
+			if (address) {
+				if (address.street) {
+					this.value.street = address.street;
+          if (address["house-number"]) {
+					this.value.street = this.value.street + ", " + address["house-number"];
+          }
+          else if (address["house_number"]) {
+            this.value.street = this.value.street + ", " + address["house_number"];
+          }
+				}
+        if (address.road) {
+					this.value.street = address.road;
+          if (address["house-number"]) {
+					this.value.street = this.value.street + ", " + address["house-number"];
+          }
+          else if (address["house_number"]) {
+            this.value.street = this.value.street + ", " + address["house_number"];
+          }
+				}
+				if (address.town) {
+					this.value.city = address.town;
+          if (address.postCode) {
+					this.value.city = this.value.city + ", " + address.postCode;
+          }
+          else if (address.postcode) {
+            this.value.city = this.value.city + ", " + address.postcode;  
+          }
+				}
+				else if (address.city) {
+					this.value.city = address.city;
+          if (address.postCode) {
+					this.value.city = this.value.city + ", " + address.postCode;
+          }
+          else if (address.postcode) {
+            this.value.city = this.value.city + ", " + address.postcode;  
+          }
+				}
+        if (address.country) {
+          this.value.country = address.country;
         }
+      }
+      this.$parent.$parent.drugstore.location.address = this.value.street;
+      this.$parent.$parent.drugstore.location.city = this.value.city;
+      this.$parent.$parent.drugstore.location.country = this.value.country;
+		},
+
+
     }, watch: {
       geojson(value) {
         // call `updateSource` whenever the input changes as well
