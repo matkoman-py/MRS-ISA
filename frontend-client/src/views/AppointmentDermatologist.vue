@@ -123,7 +123,7 @@ export default {
     },  
     data: function () {
             const now = new Date()
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
             const minDate = new Date(today)
             return {
                 derm: 'derm',

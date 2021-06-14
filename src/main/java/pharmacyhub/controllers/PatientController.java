@@ -24,6 +24,14 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 	
+	@GetMapping(path ="/add-alergen", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> addAlergen(
+			@RequestParam(value = "patientId", required = false) String patientId,
+			@RequestParam(value = "alergenId", required = false) String alergenId
+			) {
+		return new ResponseEntity<>(patientService.addAlergen(patientId,alergenId), HttpStatus.OK);
+	}
+	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Patient>> getGreetings(
 			@RequestParam(value = "page", required = false) Integer page,

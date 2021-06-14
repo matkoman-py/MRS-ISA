@@ -124,15 +124,13 @@
                                             " :items="pharmacistappointments">
                                             <template #cell(actions)="row">
                                                 <b-button variant="outline-danger" v-if="row.item.processed == 'No'"
-                                                    size="sm" 
-                                                    @click="
+                                                    size="sm" @click="
                                                         cancelPharmacistAppointment(
                                                             row.item,
                                                             row.index,
                                                             $event.target
                                                         )
-                                                    "
-                                                    class="mr-1">
+                                                    " class="mr-1">
                                                     Cancel appointment
                                                 </b-button>
                                                 <b-button variant="outline-danger" v-if="row.item.processed == 'Yes'"
@@ -149,14 +147,12 @@
                                             You have no pharmacist appointments
                                             scheduled
                                         </h3>
-                                        <b-pagination 
-                                        v-if="rowsPharmacist > 3"
-                                        v-model="currentPagePharmacist" 
-                                        per-page="3" 
-                                        :total-rows="rowsPharmacist">
+                                        <b-pagination v-if="rowsPharmacist > 3" v-model="currentPagePharmacist"
+                                            per-page="3" :total-rows="rowsPharmacist">
                                         </b-pagination>
                                         <router-link :to="'/schedule-appointment'">
-                                            <b-button :disabled="employee.penaltyCounter >= 3" variant="outline-hub">Schedule pharmacist appointment</b-button>
+                                            <b-button :disabled="employee.penaltyCounter >= 3" variant="outline-hub">
+                                                Schedule pharmacist appointment</b-button>
                                         </router-link>
                                     </b-card>
                                 </b-tab>
@@ -192,10 +188,8 @@
                                             appointments scheduled
                                         </h3>
                                         <b-pagination v-if="
-                                                rowsDermatologist > 3" 
-                                                v-model="currentPageDermatologist" 
-                                                per-page="3" 
-                                                :total-rows="rowsDermatologist">
+                                                rowsDermatologist > 3" v-model="currentPageDermatologist" per-page="3"
+                                            :total-rows="rowsDermatologist">
                                         </b-pagination>
                                     </b-card>
                                 </b-tab>
@@ -219,13 +213,26 @@
                                         <h3 v-if="rows == 0">
                                             You have no drug reservations
                                         </h3>
-                                        <b-pagination 
-                                        v-if="rows > 3"
-                                        v-model="currentPage" 
-                                        per-page="3" 
-                                        :total-rows="rows">
+                                        <b-pagination v-if="rows > 3" v-model="currentPage" per-page="3"
+                                            :total-rows="rows">
                                         </b-pagination>
                                     </b-card>
+                                </b-tab>
+                                <b-tab style="height: 370px;" title="Add alergens">
+                                    <b-form @submit="AddAlergens" label-for="tags-component-select">
+                                        <b-card>
+                                            <h3>Choose an ingrediant from the list and add it to your list of allergens
+                                            </h3>
+                                            <br>
+                                            <b-form-select v-model="alergenToAdd" :options="ingrediants"
+                                                value-field="id" text-field="name">
+                                            </b-form-select>
+                                            <br>
+                                            <br>
+                                            <b-button :disabled="alergenToAdd == null" type="submit"
+                                                variant="outline-hub">Add alergen</b-button>
+                                        </b-card>
+                                    </b-form>
                                 </b-tab>
                             </b-tabs>
                         </b-card>
@@ -239,64 +246,6 @@
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <!-- <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Password</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" id="password-input"
-                                            v-model="employee.password" type="password" required></b-form-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Validate</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <b-form-input :disabled="editEnabled" :state="validationState"
-                                            id="validatepassword-input" v-model="validationPassword" type="password"
-                                            required></b-form-input>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Adress</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.address"
-                                                
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>City</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.city"
-                                                
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Country</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <b-form-input :disabled="editEnabled"
-                                                id="address-input"
-                                                v-model="employee.location.country"
-    
-                                                required
-                                                ></b-form-input>
-                                            </div>
-                                        </div>-->
                             </div>
                         </div>
                     </div>
@@ -319,15 +268,13 @@
             currentPagePharmacist: function () {
                 this.getAppointments();
             },
-            currentPageDermatologist : function () {
+            currentPageDermatologist: function () {
                 this.getDermatologyAppointments();
             },
         },
         data: function () {
-            //const now = new Date()
-            //const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-            //const minDate = new Date(today)
             return {
+                alergenToAdd: null,
                 today: '',
                 rowsPharmacist: 0,
                 rows: 0,
@@ -398,6 +345,7 @@
                         label: "",
                     },
                 ],
+                ingrediants: [],
                 pharmacistappointments: [],
                 itemm: {},
                 currentPage: 1,
@@ -407,9 +355,36 @@
         },
 
         methods: {
-            //cancelPharmacistAppointment
+            AddAlergens: function () {
+                this.$http.get('http://localhost:8081/patients/add-alergen', {
+                        params: {
+                            patientId: this.user.id,
+                            alergenId: this.alergenToAdd,
+                        }
+                    })
+                    .then(response => {
+                        alert(response.data);
+                    })
+                    .catch(error => console.log(error));
+            },
+            getIngrediants: function () {
+                this.$http.get("http://localhost:8081/ingredients")
+                    .then(response => {
+                        this.ingrediants = response.data;
+                    })
+                    .catch(error => console.log(error));
+            },
             cancelPharmacistAppointment(item) {
-                //alert(item.id);
+                const date = new Date()
+                var d = date.getDate();
+                var m = date.getMonth() + 1; //Month from 0 to 11
+                var y = date.getFullYear();
+                var dateOfReservation = item.date;
+                var dateNow = '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+                if (dateOfReservation <= dateNow) {
+                    alert("You can't cancel appointments one or more days before they are due")
+                    return;
+                }
                 this.$http
                     .get(
                         "http://localhost:8081/pharmacist-appointment/cancelAppointment", {
@@ -419,7 +394,7 @@
                         }
                     )
                     .then(() => {
-                        if(this.currentPagePharmacist > 1)
+                        if (this.currentPagePharmacist > 1)
                             this.currentPagePharmacist--;
                         else
                             this.getAppointments();
@@ -436,7 +411,16 @@
                     .catch((error) => console.log(error));
             },
             cancelDermatologyAppointment(item) {
-                //alert(item.id);
+                const date = new Date()
+                var d = date.getDate();
+                var m = date.getMonth() + 1; //Month from 0 to 11
+                var y = date.getFullYear();
+                var dateOfReservation = item.date;
+                var dateNow = '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+                if (dateOfReservation <= dateNow) {
+                    alert("You can't cancel appointments one or more days before they are due")
+                    return;
+                }
                 this.$http
                     .get(
                         "http://localhost:8081/dermatologist-appointment/cancelAppointment", {
@@ -446,7 +430,7 @@
                         }
                     )
                     .then((response) => {
-                        if(this.currentPageDermatologist > 1)
+                        if (this.currentPageDermatologist > 1)
                             this.currentPageDermatologist--;
                         else
                             this.getDermatologyAppointments();
@@ -463,31 +447,40 @@
                     .then(alert("Dermatology appointment succesfully canceled!"))
                     .catch((error) => console.log(error));
             },
-            reservationNotPickedUp(){
-                for (var drug in this.drugReservations){
+            reservationNotPickedUp() {
+                for (var drug in this.drugReservations) {
                     //alert(this.drugReservations[drug].date);
                     //alert(this.drugReservations[drug].date);
 
-                    if(this.drugReservations[drug].date == this.today){
+                    if (this.drugReservations[drug].date == this.today) {
                         //alert("You recieved a penalty");
-                            this.$http.get('http://localhost:8081/patients/penalty', {
-                        params: {
-                            patientId: this.user.id,//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
-                            reservationId: this.drugReservations[drug].id,
-                            type: "Drug reservation"
-                        }
-                    })
-                    .then(response => {
-                      console.log(response);
-                      //alert("Patient received a penalty.");
-                      //prvo = true;
-                    })
-                    .catch(error => console.log(error));
+                        this.$http.get('http://localhost:8081/patients/penalty', {
+                                params: {
+                                    patientId: this.user.id, //'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
+                                    reservationId: this.drugReservations[drug].id,
+                                    type: "Drug reservation"
+                                }
+                            })
+                            .then(response => {
+                                console.log(response);
+                                //alert("Patient received a penalty.");
+                                //prvo = true;
+                            })
+                            .catch(error => console.log(error));
                     }
                 }
             },
             cancelDrugReservation(item) {
-                //alert(item.id);
+                const date = new Date()
+                var d = date.getDate();
+                var m = date.getMonth() + 1; //Month from 0 to 11
+                var y = date.getFullYear();
+                var dateOfReservation = item.date;
+                var dateNow = '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+                if (dateOfReservation <= dateNow) {
+                    alert("You can't cancel reservations one or more days before they are due")
+                    return;
+                }
                 this.$http
                     .put(
                         "http://localhost:8081/drugReservation/cancelReservation", {
@@ -496,7 +489,7 @@
                         }
                     )
                     .then(() => {
-                        if(this.currentPage > 1)
+                        if (this.currentPage > 1)
                             this.currentPage--;
                         else
                             this.getDrugReservations();
@@ -682,11 +675,12 @@
         },
         mounted: function () {
             //appointments
+            this.getIngrediants();
             this.getDrugReservations();
             this.getEmployee();
             this.getAppointments();
             this.getDermatologyAppointments();
-            
+
         },
         computed: {
             ...mapState({
