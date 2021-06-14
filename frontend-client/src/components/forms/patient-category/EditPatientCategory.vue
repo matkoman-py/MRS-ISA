@@ -39,7 +39,7 @@ export default {
         editConfiguration: function(event) {
             event.preventDefault();
             this.$http
-                .put("http://localhost:8081/patient-categories/", this.form)
+                .put("https://mrs-isa-usijani.herokuapp.com//patient-categories/", this.form)
                 .then((response) => {
                     this.$emit("update-category-success", response.data);
                     console.log(response);

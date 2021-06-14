@@ -69,7 +69,7 @@
         methods: {
             
             search: function () {
-                this.$http.get(`http://localhost:8081/patients/search?page=${this
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//patients/search?page=${this
                         .currentPage - 1}&size=5`, {
                         params: {
                             patientNameParam: this.form.name,
@@ -96,7 +96,7 @@
                     .catch(error => console.log(error));
             },
             getRows(){
-                this.$http.get(`http://localhost:8081/patients/searchLength`, {
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//patients/searchLength`, {
                         params: {
                             patientNameParam: this.form.name,
                             patientSurnameParam: this.form.surname 

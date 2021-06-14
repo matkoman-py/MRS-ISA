@@ -261,7 +261,7 @@ export default {
     methods: {
         getEmployee : function(){
             
-            this.$http.get('http://localhost:8081/employees/id', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees/id', {
                         params: {
                             employeeId: this.user.id
                         }
@@ -285,7 +285,7 @@ export default {
             event.preventDefault();
             this.name = this.employee.name;
             this.editEnabled = true;
-            this.$http.put("http://localhost:8081/employees", this.employee)
+            this.$http.put("https://mrs-isa-usijani.herokuapp.com//employees", this.employee)
                 .then(response => {
                 console.log(response);
                 console.log("ovde");
@@ -298,7 +298,7 @@ export default {
         oldPasswordValidate: function(event){
             event.preventDefault();
             var valid = false;
-            this.$http.get('http://localhost:8081/employees/password', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees/password', {
                         params: {
                             employeeId: this.user.id,
                             passwordInput: this.oldPasswordInput
@@ -320,7 +320,7 @@ export default {
             
             if(this.validatePassword()){
                 this.employee.password = this.newPasswordInput;
-                this.$http.put("http://localhost:8081/employees/updatepassword", this.employee)
+                this.$http.put("https://mrs-isa-usijani.herokuapp.com//employees/updatepassword", this.employee)
                 .then(response => {
                 console.log(response);
                 console.log("ovde");

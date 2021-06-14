@@ -103,7 +103,7 @@ export default {
         edit: function() {
             this.$http
                 .put(
-                    "http://localhost:8081/drugstores",
+                    "https://mrs-isa-usijani.herokuapp.com//drugstores",
                     this.editModal.drugstore
                 )
                 .then((response) => {
@@ -127,7 +127,7 @@ export default {
         deleteDrugstore: function() {
             this.$http
                 .delete(
-                    `http://localhost:8081/drugstores/${this.deleteModal.drugstore.id}`
+                    `https://mrs-isa-usijani.herokuapp.com//drugstores/${this.deleteModal.drugstore.id}`
                 )
                 .then((response) => {
                     let index = this.drugstores.findIndex(
@@ -141,7 +141,7 @@ export default {
         },
         getDrugstores: function() {
             this.$http
-                .get("http://localhost:8081/drugstores")
+                .get("https://mrs-isa-usijani.herokuapp.com//drugstores")
                 .then((response) => {
                     this.drugstores = response.data;
                 })

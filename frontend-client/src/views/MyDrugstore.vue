@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         getMyDrugstore() {
-            this.$http.get('http://localhost:8081/drugstores/adminsDrugstore', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugstores/adminsDrugstore', {
                     params : {
                         adminId : this.user.id
                     }

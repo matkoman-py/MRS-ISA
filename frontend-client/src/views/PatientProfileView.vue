@@ -293,7 +293,7 @@ export default {
             this.employee.id = this.passedId;
 
             this.$http
-                .get("http://localhost:8081/patients/id", {
+                .get("https://mrs-isa-usijani.herokuapp.com//patients/id", {
                     params: {
                         patientId: this.employee.id,
                     },
@@ -309,7 +309,7 @@ export default {
             
             this.$http
                 .get(
-                    `http://localhost:8081/pharmacist-appointment/get-appointments?page=${this
+                    `https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/get-appointments?page=${this
                         .currentPage - 1}&size=4`,
                     {
                         params: {
@@ -338,7 +338,7 @@ export default {
             else{
                 this.$http
                 .get(
-                    `http://localhost:8081/dermatologist-appointment/returnAppointments?page=${this
+                    `https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/returnAppointments?page=${this
                         .currentPage - 1}&size=4`,
                     {
                         params: {
@@ -374,7 +374,7 @@ export default {
         },
         getRows(){
             if(this.check == "derm"){
-                this.$http.get(`http://localhost:8081/dermatologist-appointment/returnAppointments-length`, {
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/returnAppointments-length`, {
                         params: {
                             patientId: this.passedId,
                         },
@@ -384,7 +384,7 @@ export default {
                     })
                        
                 }else{
-                this.$http.get(`http://localhost:8081/pharmacist-appointment/get-appointments-length`, {
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/get-appointments-length`, {
                         params: {
                             patientId: this.passedId,
                         },

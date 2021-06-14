@@ -163,7 +163,7 @@ export default {
         getReceiptData: function(receipt, searchData) {
             this.receipt = receipt;
             this.$http
-                .post(`http://localhost:8081/drugstores/search-receipt`, {
+                .post(`https://mrs-isa-usijani.herokuapp.com//drugstores/search-receipt`, {
                     receiptData: receipt,
                     ...searchData,
                 })
@@ -178,7 +178,7 @@ export default {
             event.preventDefault();
             this.$http
                 .post(
-                    `http://localhost:8081/drugReservation/saveMultipleReservations`,
+                    `https://mrs-isa-usijani.herokuapp.com//drugReservation/saveMultipleReservations`,
                     this.makeReservationRequestBody()
                 )
                 .then((response) => {

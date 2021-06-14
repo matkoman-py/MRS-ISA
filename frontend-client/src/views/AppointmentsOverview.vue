@@ -123,7 +123,7 @@
         getAllApointments : function(){
         },
         initialize() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com//employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -136,7 +136,7 @@
               .catch(error => console.log(error));
         },
         getAllDermatologistForThisDrugstore : function() {
-            this.$http.get("http://localhost:8081/employment/dermatologists", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com//employment/dermatologists", {
                 params: {
                             drugstoreId: this.inputValues.drugstoreId
                         }})
@@ -156,7 +156,7 @@
         },
         addNewApointment(event) {
           event.preventDefault();
-          this.$http.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New appointment is successfully created.");

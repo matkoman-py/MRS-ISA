@@ -43,7 +43,7 @@ export default {
     methods: {
         getSelectedDrugstoreInfo: function() {
             this.$http
-                .get("http://localhost:8081/drugstores/adminsDrugstore", {
+                .get("https://mrs-isa-usijani.herokuapp.com//drugstores/adminsDrugstore", {
                     params: {
                         adminId: this.user.id,
                     },
@@ -55,7 +55,7 @@ export default {
         },
         saveChanges: function() {
             this.$http
-                .put("http://localhost:8081/drugstores/update", this.drugstore)
+                .put("https://mrs-isa-usijani.herokuapp.com//drugstores/update", this.drugstore)
                 .then(() => {
                     this.$router.push('my-drugstore');
                     alert("You succesfully updated drugstore informations!");

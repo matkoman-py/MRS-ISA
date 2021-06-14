@@ -100,7 +100,7 @@
     },
     methods: {
         initialize() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com//employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -112,7 +112,7 @@
               .catch(error => console.log(error));
         },
         getDrugs() {
-            this.$http.get("http://localhost:8081/drugs/createOrderView", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com//drugs/createOrderView", {
               params: {
                 drugstoreId: this.drugstoreId,
                 drugsToBeShown: this.selected
@@ -162,7 +162,7 @@
         createOrder(event) {
           event.preventDefault();
           this.orderAtributtes.drugstoreId = this.drugstoreId;
-          this.$http.post("http://localhost:8081/drug-orders/create", JSON.parse(JSON.stringify(this.orderAtributtes)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com//drug-orders/create", JSON.parse(JSON.stringify(this.orderAtributtes)))
               .then(() => {
                 this.$root.$emit('bv::hide::modal', 'createOrderModal');
                 alert("Order successfully created!");

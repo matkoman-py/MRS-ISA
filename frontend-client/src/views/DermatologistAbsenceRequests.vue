@@ -66,7 +66,7 @@
     },
     methods: {
         getRequests : function(){
-            this.$http.get('http://localhost:8081/employment/dermatologistRequests')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employment/dermatologistRequests')
             .then(response => {
               this.requests = response.data.map(request => 
               (
@@ -86,7 +86,7 @@
             if (this.selectedRequest.length == 0) {
                 alert("You need to select absence request that you want to accept.")
           } else {
-                this.$http.post('http://localhost:8081/absence-request/approveDermatologist/' + this.selectedRequest[0].requestId)
+                this.$http.post('https://mrs-isa-usijani.herokuapp.com//absence-request/approveDermatologist/' + this.selectedRequest[0].requestId)
                   .then(response => {
                     alert(response.data); // zasto se ne prikaze ovo??
                     this.getRequests();
@@ -101,7 +101,7 @@
                 this.$root.$emit('bv::show::modal', 'rejectConfirmation');
           }
         }, reject() {
-            this.$http.post('http://localhost:8081/absence-request/reject', {
+            this.$http.post('https://mrs-isa-usijani.herokuapp.com//absence-request/reject', {
                     requestId: this.selectedRequest[0].requestId,
                     reasonOfRejection: this.reasonOfRejection
             })

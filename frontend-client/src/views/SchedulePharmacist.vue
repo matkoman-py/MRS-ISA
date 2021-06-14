@@ -149,7 +149,7 @@ export default {
       //var prvo = false;
       //var drugo = false;
       // OVDE TREBA DA SE POZOVE BEK I DA SE KAZNI PACIJENT,  TO RADIS PREKO SELECTED
-      this.$http.get('http://localhost:8081/patients/penalty', {
+      this.$http.get('https://mrs-isa-usijani.herokuapp.com//patients/penalty', {
                         params: {
                             patientId: this.selected.extendedProps.patient.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }
@@ -161,7 +161,7 @@ export default {
                     })
                     .catch(error => console.log(error));
       
-      this.$http.get('http://localhost:8081/pharmacist-appointment/end-appointment', {
+      this.$http.get('https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/end-appointment', {
                         params: {
                             pharmacistAppointmentId: this.selected.id,
                             appointmentReport: "Patient did not show up!",
@@ -216,7 +216,7 @@ export default {
 
     },
     handleEvents: function() {
-      this.$http.get('http://localhost:8081/pharmacist-appointment/all-appointments', {
+      this.$http.get('https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/all-appointments', {
                         params: {
                             pharmacistId: this.user.id//'ccb953a7-d244-48bb-8627-4b2437491dc1'
                         }
@@ -243,7 +243,7 @@ export default {
                     
     },
     addEmployment: function() {
-        this.$http.get('http://localhost:8081/employment/employment-for-derm', {
+        this.$http.get('https://mrs-isa-usijani.herokuapp.com//employment/employment-for-derm', {
                         params: {
                             dermatologistId: this.user.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }
