@@ -260,20 +260,28 @@ public class DermatologistAppointmentService {
 		return wantedAppontments;
 	}
 
-	public List<DermatologistAppointment> createReservation(String patientId,String appointmentId,String drugstoreId) throws MessagingException {
-		List<DermatologistAppointment> allAppointments = findAll();
+	@Transactional(rollbackFor = Exception.class)
+	public List<DermatologistAppointment> createReservation(String patientId, String appointmentId, String drugstoreId) throws MessagingException {
 		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
 		
-		Patient patient = new Patient();
-		for(DermatologistAppointment appointment : allAppointments) {
-			//str += appointment.getDrugstore().getId() + "    " +  drugstoreId + "\n";
-			if(appointment.getId().equals(appointmentId)) {
-				patient = patientRepository.findById(patientId).orElse(null);;
-				appointment.setPatient(patient);
-				dermatologistAppointmentRepository.save(appointment);
-			}
-
+		DermatologistAppointment selectedAppointment = dermatologistAppointmentRepository.findOneById(appointmentId);
+		Patient patient = patientRepository.findById(patientId).orElse(null);
+		
+		if (patient == null) {
+			throw new RuntimeException("This patient doesn't exist!");
 		}
+		
+		if (selectedAppointment == null) {
+			throw new RuntimeException("This appointment doesn't exist!");
+		}
+		
+		if (selectedAppointment.getPatient() != null) {
+			throw new RuntimeException("This appointemt already has a patient!");
+		}
+		
+		selectedAppointment.setPatient(patient);
+		dermatologistAppointmentRepository.save(selectedAppointment);
+
 		userNotificationService.sendReservationConfirmation(patient.getEmail(), "dermatologist");
 		
 		wantedAppontments = findAvailable(drugstoreId);

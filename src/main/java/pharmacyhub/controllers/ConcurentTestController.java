@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DrugReservationDto;
@@ -169,11 +170,6 @@ public class ConcurentTestController {
 			Date date = new GregorianCalendar(2021, Calendar.JULY, 18).getTime();
 			Time time = Time.valueOf("11:00:00");
 			Dermatologist derma = dermatologistAppointmentService.findById("68eec890-3bc5-47e3-8a5b-d3544ebbfeb3");
-//			private String pharmacistId;
-//			private Date date;
-//			private Time time;
-//			private int duration;
-//			private String patientId;
 			PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto = new PharmacistAppointmentPatientDto(
 					"9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27",
 					date,
@@ -200,6 +196,38 @@ public class ConcurentTestController {
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 		executor.schedule(() -> pharmacistAppointmentService.saveWithPatient(wrapper1.pharmacistAppointmentPatientDto), 1000, TimeUnit.MILLISECONDS);
 		executor.schedule(() -> pharmacistAppointmentService.saveWithPatient(wrapper2.pharmacistAppointmentPatientDto), 700, TimeUnit.MILLISECONDS);
+
+		executor.shutdown();
+		//executor.awaitTermination(1, TimeUnit.MINUTES);
+		
+		return new ResponseEntity<>("test", HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/createReservation", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> testAppointment() throws Exception {
+		
+		Date date = new GregorianCalendar(2021, Calendar.JULY, 18).getTime();
+		Time time = Time.valueOf("11:00:00");
+		Dermatologist derma = dermatologistAppointmentService.findById("68eec890-3bc5-47e3-8a5b-d3544ebbfeb3");
+		DermatologistAppointmentDto dermatologistAppointmentDto = new DermatologistAppointmentDto(
+				derma,
+				"2b7933e9-6523-463a-974b-ded43ad63843",
+				date,
+				time,
+				60,
+				1000
+				);
+		
+		DermatologistAppointment dermatologistAppointment = dermatologistAppointmentService.save(dermatologistAppointmentDto);
+			
+		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+		executor.schedule(() -> dermatologistAppointmentService
+				.createReservation("393dca36-3778-4802-939c-de7a0a265c9d", dermatologistAppointment.getId(), "2b7933e9-6523-463a-974b-ded43ad63843"),
+				1000, TimeUnit.MILLISECONDS);
+		executor.schedule(() -> dermatologistAppointmentService
+				.createReservation("664783ca-84a1-4a2b-ae27-a2b820bc3c71", dermatologistAppointment.getId(), "2b7933e9-6523-463a-974b-ded43ad63843"),
+				1000, TimeUnit.MILLISECONDS);
+
 
 		executor.shutdown();
 		//executor.awaitTermination(1, TimeUnit.MINUTES);

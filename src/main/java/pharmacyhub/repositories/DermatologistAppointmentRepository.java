@@ -14,8 +14,14 @@ import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Dermatologist;
 
 public interface DermatologistAppointmentRepository  extends JpaRepository<DermatologistAppointment, String> {
+	
+	@Transactional
+	@Lock(LockModeType.OPTIMISTIC)
+	DermatologistAppointment findOneById(String dermatologistId);
+	
 	DermatologistAppointment findByDrugstoreId(String drugstoreId);
 	List<DermatologistAppointment> findByDermatologistAndProcessed(Dermatologist dermatologist, boolean processed);
+	
 	@Transactional
 	void deleteByDermatologist(Dermatologist dermatologist);
 	
