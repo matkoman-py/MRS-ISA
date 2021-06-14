@@ -19,12 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.DermatologistAppointment;
+import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.Dermatologist;
+import pharmacyhub.dto.AbsenceRequestDto;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DrugReservationDto;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
+import pharmacyhub.dto.RequestRejectionDto;
 import pharmacyhub.dto.complaint.MakeReplyDto;
+import pharmacyhub.repositories.AbsenceRequestRepository;
+import pharmacyhub.services.AbsenceRequestService;
 import pharmacyhub.services.DermatologistAppointmentService;
 import pharmacyhub.services.DrugOrderService;
 import pharmacyhub.services.DrugReservationService;
@@ -49,6 +55,12 @@ public class ConcurentTestController {
 	
 	@Autowired
 	private PharmacistAppointmentService pharmacistAppointmentService;
+	
+	@Autowired
+	private AbsenceRequestService absenceRequestService;
+	
+	@Autowired
+	private AbsenceRequestRepository absenceRequestRepository;
 
 	
 	@PostMapping(path = "/saveReservation", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -228,6 +240,30 @@ public class ConcurentTestController {
 				.createReservation("664783ca-84a1-4a2b-ae27-a2b820bc3c71", dermatologistAppointment.getId(), "2b7933e9-6523-463a-974b-ded43ad63843"),
 				1000, TimeUnit.MILLISECONDS);
 
+
+		executor.shutdown();
+		//executor.awaitTermination(1, TimeUnit.MINUTES);
+		
+		return new ResponseEntity<>("test", HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/absence", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> testAbsence() throws Exception {
+		
+//		private String startDate;
+//		private String endDate;
+//		private String reason;
+//		private String employeeId;
+		
+		AbsenceRequestDto createAbsenceRequestDto = new AbsenceRequestDto("2021-09-12", "2021-09-14", "I have a reason", "9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27");
+		absenceRequestService.createNewRequest(createAbsenceRequestDto);
+		AbsenceRequest absenceRequst = absenceRequestRepository.findByEmployeeIdAndStatus("9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27", AbsenceRequestStatus.Pending);
+		
+		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+		executor.schedule(() -> absenceRequestService.approveRequest(absenceRequst.getId()),
+				1000, TimeUnit.MILLISECONDS);
+		executor.schedule(() -> absenceRequestService.rejectRequest(new RequestRejectionDto(absenceRequst.getId(), "nooo")),
+				1000, TimeUnit.MILLISECONDS);
 
 		executor.shutdown();
 		//executor.awaitTermination(1, TimeUnit.MINUTES);
