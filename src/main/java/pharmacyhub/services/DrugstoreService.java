@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugRequest;
@@ -35,6 +36,7 @@ import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.repositories.users.UserRepository;
 
 @Service
+@Transactional
 public class DrugstoreService {
 	
 	@Autowired
@@ -213,8 +215,9 @@ public class DrugstoreService {
 		return admin.getDrugstore();
 	}
 
+	@Transactional
 	public boolean drugstoreUpdate(Drugstore drugstore) throws Exception {
-		Drugstore d = drugstoreRepository.findById(drugstore.getId()).orElse(null);
+		Drugstore d = drugstoreRepository.findOneById(drugstore.getId());
 		if (d == null) {
 			throw new Exception("This drugstore does not exist!");
 		}

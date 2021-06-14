@@ -114,7 +114,7 @@ public class DrugService {
 
 	public Drug update(Drug drug) throws Exception {
 		// TODO Auto-generated method stub
-		if (drugRepository.findById(drug.getId()) == null) {
+		if (drugRepository.findOneById(drug.getId()) == null) {
 			throw new Exception("Drug doesn't exists");
 		}
 		return save(drug);

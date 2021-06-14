@@ -91,7 +91,8 @@ public class DrugReservationService {
 		String date = drugreservationDto.getDate();
 		Integer amount = drugreservationDto.getAmount();
 
-		Drug drug = drugRepository.findById(drugId).orElse(null);
+		Drug drug = drugRepository.findByIdWithLock(drugId);
+
 		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
 		Patient patient = patientRepository.findById(patientId).orElse(null);
 		String confirmationCode = RadnomGeneratorUtil.generateDrugReservationCode(patient.getEmail());
