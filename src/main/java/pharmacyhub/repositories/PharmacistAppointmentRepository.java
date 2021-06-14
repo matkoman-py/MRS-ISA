@@ -17,13 +17,20 @@ import pharmacyhub.domain.users.Pharmacist;
 
 public interface PharmacistAppointmentRepository extends JpaRepository<PharmacistAppointment, String> {
 	
-//	@Transactional
-//	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	List<PharmacistAppointment> findByPharmacistId(String pharmacistId);
-
 	@Transactional
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+	List<PharmacistAppointment> findByPharmacistId(String pharmacistId);
+
+//	1 -> findByPatientId = READ
+//	2 -> findByPatientId = READ
+//	1/2 -> WRITE
+//	2 -> 1
+//  pharamcist_id, patient_id, date, time
+//	1 -> WRITE -> x -> 2
+//	
+	
+	@Transactional
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	List<PharmacistAppointment> findByPatientId(String patientId);
 	
 	

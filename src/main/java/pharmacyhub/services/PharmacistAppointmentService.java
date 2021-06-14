@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.DermatologistAppointment;
@@ -57,7 +58,7 @@ public class PharmacistAppointmentService {
 	}
     
 
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional(rollbackFor = Exception.class)
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
 		
 		Date vreme = pharmacistAppointmentPatientDto.getDate();
@@ -68,7 +69,7 @@ public class PharmacistAppointmentService {
 		long vremeKraj = vreme.getTime();
 		
 		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
-		
+		System.out.println(pharmacistAppointments.size());
 		for(PharmacistAppointment pa : pharmacistAppointments) {
 			Date pVreme = pa.getDate();
 			pVreme.setHours(pa.getTime().getHours());
