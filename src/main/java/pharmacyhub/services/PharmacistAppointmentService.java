@@ -14,12 +14,19 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.RatingDrugstore;
+import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
+import pharmacyhub.dto.DrugstoreDto;
+import pharmacyhub.dto.EmployeeOverviewDto;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
+import pharmacyhub.dto.PharmacistDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
+import pharmacyhub.repositories.RatingDrugstoreRepository;
+import pharmacyhub.repositories.RatingPharmacistRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
@@ -38,11 +45,17 @@ public class PharmacistAppointmentService {
 	@Autowired 
 	private PatientRepository patientRepository;
 	
+	@Autowired	
+	private RatingPharmacistRepository ratingPharmacistRepository;
+	
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
 	
     @Autowired
 	private UserNotificationService userNotificationService;
+    
+    @Autowired
+    private RatingDrugstoreRepository ratingDrugstoreRepository;
     
 	@Autowired
 	private PatientCategoryService patientCategoryService;
@@ -166,6 +179,7 @@ public class PharmacistAppointmentService {
 	public List<Drugstore> findDrugstores(String pharmacistAppointmentTime, String pharmacistAppointmentDate) {
 		List<Pharmacist> allPharmacists = pharmacistRepository.findAll();
 		List<Drugstore>  wantedDrugstores = new ArrayList<>();
+		List<DrugstoreDto> wantedDrugstores1 = new ArrayList<>();
 		
 		String hours = pharmacistAppointmentTime.substring(0,2);
 		int inputTime = Integer.parseInt(hours) * 3600;
@@ -195,9 +209,10 @@ public class PharmacistAppointmentService {
 		return wantedDrugstores;
 	}
 
-	public List<Pharmacist> findPharmacists(String drugstoreId,String pharmacistAppointmentDate,String pharmacistAppointmentTime) {
+	public List<PharmacistDto> findPharmacists(String drugstoreId,String pharmacistAppointmentDate,String pharmacistAppointmentTime) {
 		List<Pharmacist> allPharmacists =  pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
 		List<Pharmacist> wantedPharmacist = new ArrayList<>();
+		List<PharmacistDto> wantedPharmacist1 = new ArrayList<>();
 		
 		pharmacistAppointmentRepository.findAll();
 		Time in = new Time(Integer.parseInt(pharmacistAppointmentTime.substring(0,2)),Integer.parseInt(pharmacistAppointmentTime.substring(3,5)),0);
@@ -219,7 +234,20 @@ public class PharmacistAppointmentService {
 			}
 			if(free == true) wantedPharmacist.add(ph);
 		}
-		return wantedPharmacist; 
+		for(Pharmacist e:wantedPharmacist) {
+			int ratesScore = 0;
+			int numberOfRates = 0;
+			List<RatingPharmacist> rates = ratingPharmacistRepository.findByPharmacist((Pharmacist)e);
+			for (RatingPharmacist rate : rates) {
+				ratesScore += rate.getRating();
+				numberOfRates++;
+			}
+			double averageRate = 0;
+			if (numberOfRates > 0)
+				averageRate = (double)ratesScore / (double)numberOfRates;
+			wantedPharmacist1.add(new PharmacistDto(e.getId(),e.getName(),e.getSurname(),e.getEmail(),averageRate));
+		}
+		return wantedPharmacist1; 
   }
    
 	public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {

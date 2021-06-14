@@ -1,29 +1,40 @@
 <template>
     <b-container>
-        <h1 v-if="employees.length == 0 & drugstores.length == 0">Choose a date and time for your appointment</h1>
-        <h1 v-if="employees.length == 0 & drugstores.length != 0">Choose a drugstore for your appointment</h1>
-        <h1 v-if="employees.length != 0 & drugstores.length != 0">Choose a pharmacist for your appointment</h1>
+        <b-card>
+            <h1 v-if="employees.length == 0 & drugstores.length == 0">Choose a date and time for your appointment</h1>
+            <h1 v-if="employees.length == 0 & drugstores.length != 0">Choose a drugstore for your appointment</h1>
+            <h1 v-if="employees.length != 0 & drugstores.length != 0">Choose a pharmacist for your appointment</h1>
 
-        <b-form v-if="employees.length == 0 & drugstores.length == 0" @submit="showDrugstores">
-            <b-form-group label="Pharmacist appointment date" label-for="date-picker"
-                invalid-feedback="Appointment date is required">
-                <b-form-datepicker id="date-input" v-model="inputValues.date" :min="min" required>
-                </b-form-datepicker>
-            </b-form-group>
+            <b-form v-if="employees.length == 0 & drugstores.length == 0" @submit="showDrugstores">
+                <b-form-group label="Pharmacist appointment date" label-for="date-picker"
+                    invalid-feedback="Appointment date is required">
+                    <b-form-datepicker id="date-input" v-model="inputValues.date" :min="min" required>
+                    </b-form-datepicker>
+                </b-form-group>
 
-            <b-form-group label="Pharmacist appointment time" label-for="time-picker"
-                invalid-feedback="Appointment time is required">
-                <b-form-timepicker v-model="inputValues.time" locale="en" required>
-                </b-form-timepicker>
-            </b-form-group>
-            <b-button type="submit" variant="outline-hub">Search</b-button>
-        </b-form>
-        <br>
-        <h1 v-if="searched == 1 & drugstores.length == 0">Sorry, there are no available pharmacists at this time.</h1>
-        <b-table striped hover v-if="employees.length == 0 & drugstores.length != 0" :items="drugstores" :fields="fieldsDrugstores"
-            @row-clicked="getPharmacists"></b-table>
-        <b-table striped hover v-if="employees.length != 0" :items="employees" :fields="fieldsPharmacists"
-            @row-clicked="saveAppointment"></b-table>
+                <b-form-group label="Pharmacist appointment time" label-for="time-picker"
+                    invalid-feedback="Appointment time is required">
+                    <b-form-timepicker v-model="inputValues.time" locale="en" required>
+                    </b-form-timepicker>
+                </b-form-group>
+                <b-button type="submit" variant="outline-hub">Search</b-button>
+            </b-form>
+            <br>
+            <h1 v-if="searched == 1 & drugstores.length == 0">Sorry, there are no available pharmacists at this time.
+            </h1>
+
+            <b-table id="my-table1" striped hover v-if="employees.length == 0 & drugstores.length != 0" :current-page="currentPage1" :per-page="4" :items="drugstores"
+                :fields="fieldsDrugstores" @row-clicked="getPharmacists">
+            </b-table>
+            <b-pagination v-model="currentPage" v-if="employees.length == 0 & drugstores.length != 0" :total-rows="drugstores.length" :per-page="4" aria-controls="my-table1">
+            </b-pagination>
+
+            <b-table id="my-table" striped hover v-if="employees.length != 0" :current-page="currentPage" :items="employees" :per-page="4" :fields="fieldsPharmacists"
+                @row-clicked="saveAppointment">
+            </b-table>
+            <b-pagination v-model="currentPage" v-if="employees.length != 0" :total-rows="employees.length" :per-page="4" aria-controls="my-table">
+            </b-pagination>
+        </b-card>
     </b-container>
 </template>
 
@@ -34,10 +45,12 @@
     export default {
         data: function () {
             const now = new Date()
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
             const minDate = new Date(today)
             return {
-                searched : 0,
+                currentPage1: 1,
+                currentPage: 1,
+                searched: 0,
                 drugstores: [],
                 employees: [],
                 min: minDate,
@@ -60,6 +73,11 @@
                     },
                     {
                         key: 'city'
+                    },
+                    {
+                        key: 'pharmacistAppointmentPrice',
+                        label: "Appointment price",
+                        sortable: true,
                     },
                     {
                         key: 'rating',
@@ -114,12 +132,7 @@
                                 id: employee.id,
                                 name: employee.name,
                                 surname: employee.surname,
-                                email: employee.email,
-                                phoneNumber: employee.phoneNumber,
-                                address: employee.location ? employee.location.address : null,
-                                city: employee.location ? employee.location.city : null,
-                                country: employee.location ? employee.location.country : null,
-                                type: employee.type,
+                                rating: employee.rating
                             }));
                     })
                     .catch(error => console.log(error));
@@ -135,15 +148,16 @@
                         }
                     })
                     .then(response => {
-                        this.drugstores = response.data.map(drugstore =>
+                        this.drugstores = response.data.map(drugstoreDto =>
                             ({
-                                id: drugstore.id,
-                                name: drugstore.name,
-                                adress: drugstore.location.address,
-                                country: drugstore.location.country,
-                                city: drugstore.location.city,
-                                description: drugstore.decription,
-                                rating: drugstore.averageRating,
+                                id: drugstoreDto.id,
+                                name: drugstoreDto.name,
+                                adress: drugstoreDto.location.address,
+                                country: drugstoreDto.location.country,
+                                city: drugstoreDto.location.city,
+                                description: drugstoreDto.decription,
+                                rating: drugstoreDto.rating,
+                                pharmacistAppointmentPrice: drugstoreDto.pharmacistAppointmentPrice
                             }));
                     })
                     .catch(error => console.log(error));
