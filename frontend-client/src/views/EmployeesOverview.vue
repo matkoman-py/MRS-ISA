@@ -21,9 +21,9 @@
                 <p style="margin-top:20px">Average rate:</p>
                 <b-row align-h="center">   
                   <b-form align="center" inline>
-                    <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
+                    <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
                       <b-label> - </b-label>
-                    <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
+                    <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
                   </b-form>
               </b-row>
                 <p style="margin-top:20px">Filter employees by workplace:</p>
@@ -176,7 +176,7 @@
         searchText: '',
         selected: 'All_Employees',
         filterRateMin: 0,
-        filterRateMax: 10,
+        filterRateMax: 5,
         options: [
           { value: 'All_Employees', text: 'All Employees' },
           { value: 'Dermatologists', text: 'Dermatologists' },
@@ -232,7 +232,7 @@
                     {
                         name: employee.name,
                         surname: employee.surname,
-                        averageRate: employee.numberOfRates > 0 ? employee.averageRate + " (From " + employee.numberOfRates + " rates)" : "No rates",
+                        averageRate: employee.averageRate,
                         email: employee.email, 
                         phoneNumber: employee.phoneNumber,
                         address: employee.location ? employee.location.address : null,//+ ", " + employee.location.city + ", " + employee.location.country: null,
@@ -281,7 +281,7 @@
             this.searchText = ''
             this.selected = 'All_Employees'
             this.filterRateMin = 0
-            this.filterRateMax = 10
+            this.filterRateMax = 5
         },
         showModal(event) {
           event.preventDefault()

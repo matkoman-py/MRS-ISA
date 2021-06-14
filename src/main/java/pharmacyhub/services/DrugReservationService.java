@@ -23,6 +23,7 @@ import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.enums.DrugReservationStatus;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DrugReservationDto;
@@ -212,7 +213,7 @@ public class DrugReservationService {
 			Date dateRes=new SimpleDateFormat("yyyy-MM-dd").parse(dr.getDate()); 
 			Date dateNow = new Date(System.currentTimeMillis()-24*60*60*1000);
 			
-			if(dateRes.after(dateNow) && !dr.isIssued()) {
+			if(dateRes.after(dateNow) && !dr.getStatus().equals(DrugReservationStatus.Issued)) {
 				wanted.add(dr);
 			}
 		}
@@ -225,7 +226,7 @@ public class DrugReservationService {
 			Date dateRes = new SimpleDateFormat("yyyy-MM-dd").parse(dr.getDate());
 			Date dateNow = new Date(System.currentTimeMillis()+24*60*60*1000);
 			if(dateRes.after(dateNow)) {
-				dr.setIssued(true);
+				dr.setStatus(DrugReservationStatus.Issued);
 				userNotificationService.sendPickUpConfirmation(dr.getPatient().getEmail(),dr.getDrug().getName(), new Date().toString());
 				patientCategoryService.updatePatientCategory(dr.getPatient(), dr.getDrug().getPoint());
 				return "Confirmation code is valid, drug is issued!";

@@ -24,9 +24,9 @@
         <b-row style="margin-left:20px" align-h="left">         
             <b-form align="center" style="width:80%" inline>
                 <b-label>Average rate:</b-label>
-                <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
+                <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
                 <b-label> - </b-label>
-                <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
+                <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
             </b-form>
         </b-row>
         <b-row style="margin-left:20px" align-h="left">         
@@ -56,7 +56,7 @@
         searchName: '',
         searchSurname: '',
         filterRateMin: 0,
-        filterRateMax: 10,
+        filterRateMax: 5,
         selected:'',
         drugstores: []
       }
@@ -119,7 +119,7 @@
             this.searchName = ''
             this.searchSurname = ''
             this.filterRateMin = 0
-            this.filterRateMax = 10
+            this.filterRateMax = 5
             this.selected = ''
             this.getDermatologists()
         },

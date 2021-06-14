@@ -246,21 +246,7 @@ public class DrugstoreService {
 		return true;
 	}
 	
-	public DrugstoreAverageRatingDto calculateAverageRate(String drugstoreId) {
-		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
-		int ratesScore = 0;
-		int numberOfRates = 0;
-		List<RatingDrugstore> rates = ratingDrugstoreRepository.findByDrugstore(drugstore);
-		for (RatingDrugstore rate : rates) {
-			ratesScore += rate.getRating();
-			numberOfRates++;
-		}
-		double averageRate = 0;
-		if (numberOfRates > 0)
-			averageRate = (double)ratesScore / (double)numberOfRates;
-		System.out.println(numberOfRates);
-		return new DrugstoreAverageRatingDto(averageRate, numberOfRates);
-	}
+	
 
 	public Integer returnDrugStores(DrugstoreSearchDto drugstoreSearchDto) {
 		return drugstoreRepository.findAll(DrugstoreSpecifications.withSearch(drugstoreSearchDto)).size();

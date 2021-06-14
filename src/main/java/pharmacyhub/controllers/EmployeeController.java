@@ -38,7 +38,7 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstore(drugstoreAdminId), HttpStatus.OK);
 	}
 	
-	@GetMapping(path="pharmacistRequests", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="/pharmacistRequests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistAbsenceRequestDto>> getPharmacistRequests(@RequestParam(value = "drugstoreId") String drugstoreId) {
 		return new ResponseEntity<>(employeeService.getPharmacistRequests(drugstoreId), HttpStatus.OK);
 	}

@@ -277,17 +277,7 @@ public class PharmacistAppointmentService {
 			if(free == true) wantedPharmacist.add(ph);
 		}
 		for(Pharmacist e:wantedPharmacist) {
-			int ratesScore = 0;
-			int numberOfRates = 0;
-			List<RatingPharmacist> rates = ratingPharmacistRepository.findByPharmacist((Pharmacist)e);
-			for (RatingPharmacist rate : rates) {
-				ratesScore += rate.getRating();
-				numberOfRates++;
-			}
-			double averageRate = 0;
-			if (numberOfRates > 0)
-				averageRate = (double)ratesScore / (double)numberOfRates;
-			wantedPharmacist1.add(new PharmacistDto(e.getId(),e.getName(),e.getSurname(),e.getEmail(),averageRate));
+			wantedPharmacist1.add(new PharmacistDto(e.getId(),e.getName(),e.getSurname(),e.getEmail(),e.getRating()));
 		}
 		return wantedPharmacist1; 
   }

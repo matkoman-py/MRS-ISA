@@ -3,6 +3,8 @@ package pharmacyhub.domain.users;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.enums.UserType;
 
@@ -18,6 +20,10 @@ public class Employee extends User {
 	private String workingHoursFrom;
 	@Column
 	private String workingHoursTo;
+	
+	@Column
+	@ColumnDefault("0")
+	private double rating;
 
 	public Employee() {
 		super();
@@ -28,6 +34,17 @@ public class Employee extends User {
 		super(email, password, name, surname, phoneNumber, location, type, status, activationCode);
 		this.workingHoursFrom = workingHoursFrom;
 		this.workingHoursTo = workingHoursTo;
+		
+	}
+	
+	
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
 	public String getWorkingHoursFrom() {

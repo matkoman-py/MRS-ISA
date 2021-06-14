@@ -28,15 +28,12 @@
                     <p style="margin:20px">
                         <b>Description</b>: {{ drugstore.description }}
                     </p>
-                    <p v-if="averageRate != null" style="margin:20px">
+                    <p  style="margin:20px">
                         <b>Average rating</b>:
-                        {{ averageRate.toFixed(2) }} (From
-                        {{ numberOfRates }} rates)
+                        {{ drugstore.rating.toFixed(2) }} 
+                        
                     </p>
-                    <p v-if="averageRate == null" style="margin:20px">
-                        <b>Average rating</b>: There are currently no rates for
-                        this drugstore
-                    </p>
+                    
                     <p style="margin:20px">
                         <b>Working hours</b>: {{ drugstore.workingHoursFrom.slice(0,5) }} -
                         {{ drugstore.workingHoursTo.slice(0,5) }}
@@ -408,6 +405,10 @@ export default {
                         pharmacistId: this.saveRatingPharmacistId,
                         rating: this.userRating,
                     },
+                }).then(() => {
+                    alert("You successfully rated a pharmacist")
+                    this.getCurrentDrugstore();
+                    this.$root.$emit("bv::hide::modal", "my-modalP");
                 })
                 .catch((error) => console.log(error));
         },
@@ -419,6 +420,10 @@ export default {
                         dermatologistId: this.saveRatingDermatologistId,
                         rating: this.userRating,
                     },
+                }).then(() => {
+                    alert("You successfully rated a dermatologist")
+                    this.getCurrentDrugstore();
+                    this.$root.$emit("bv::hide::modal", "my-modalD");
                 })
                 .catch((error) => console.log(error));
         },
@@ -431,7 +436,9 @@ export default {
                         rating: this.userRating,
                     },
                 }).then(() => {
+                    alert("You successfully rated a drugstore")
                     this.getCurrentDrugstore();
+                    this.$root.$emit("bv::hide::modal", "my-modal1");
                 })
                 .catch((error) => console.log(error));
         },
@@ -632,22 +639,7 @@ export default {
                 })
                 .catch((error) => console.log(error));
         },
-        getAverageRating() {
-            this.$http
-                .get("http://localhost:8081/drugstores/averageRate", {
-                    params: {
-                        drugstoreId: this.drugstore.id,
-                    },
-                })
-                .then((response) => {
-                    this.averageRate =
-                        response.data.numberOfRates > 0
-                            ? response.data.averageRate
-                            : null;
-                    this.numberOfRates = response.data.numberOfRates;
-                })
-                .catch((error) => console.log(error));
-        },
+       
         getAllDermatologists() {
             this.$http
                 .get(

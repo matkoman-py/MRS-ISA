@@ -64,35 +64,35 @@ INSERT INTO public.drugstore (id, deleted, description, name, pharmacist_appoint
 ----
 ---- Data for Name: Employee;
 ----
-INSERT INTO public.users VALUES ('Pharmacist', 'ccb953a7-d244-48bb-8627-4b2437491dc1', false, '12-06-2021', 0, '', 'pera@peric.com', false, 'Pera', '$2a$10$3SbblMBSK7acH373BqcAjuFK4yYkLjeIq/cCKGKL8Z.6R8tzIsJcm', NULL, TRUE, 'Peric', '07:50', '18:40', 0, NULL, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
-INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', false, '12-06-2021', 0, '', 'mika@mikic.com', false, 'Mika', '$2a$10$pYcWpOc3UzGmKJeJnblKN.ZUeC6pjUb.z2gnGXW5h5S7n1OimS.yO', NULL, TRUE, 'Mikic', '07:50', '18:40', 0, NULL,   '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
-INSERT INTO public.users VALUES ('Dermatologist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', false, '12-06-2021', 0, '', 'zika@zikic.com', false, 'Zika', '$2a$10$pYcWpOc3UzGmKJeJnblKN.ZUeC6pjUb.z2gnGXW5h5S7n1OimS.yO', NULL, TRUE, 'Zikic', NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
-INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', false, '12-06-2021', 0, '', 'djoka@djokic.com', false, 'Djoka', '$2a$10$ajJFXVzGMM83jmCnGxEMpuDAR2T3rpyGTIetAbuCKKuezbkVFGd2u', NULL, TRUE, 'Djokic', NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
-INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', false, '12-06-2021', 0, '', 'steva@stevic.com', false, 'Steva', '$2a$10$acJM/JgRqMyULOtpJifMLex6HqfbFP8GPgOzxv6IrRBQabRkJiyKy', NULL, TRUE, 'Stevic', NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Pharmacist', 'ccb953a7-d244-48bb-8627-4b2437491dc1', false, '12-06-2021', 0, '', 'pera@peric.com', false, 'Pera', '$2a$10$3SbblMBSK7acH373BqcAjuFK4yYkLjeIq/cCKGKL8Z.6R8tzIsJcm', NULL, TRUE, 'Peric', 0,'07:50', '18:40', 0, NULL, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('Pharmacist', '9d5b9e63-b86c-4a53-bfbf-fdaaa3f20f27', false, '12-06-2021', 0, '', 'mika@mikic.com', false, 'Mika', '$2a$10$pYcWpOc3UzGmKJeJnblKN.ZUeC6pjUb.z2gnGXW5h5S7n1OimS.yO', NULL, TRUE, 'Mikic', 0,'07:50', '18:40', 0, NULL,   '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('Dermatologist', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', false, '12-06-2021', 0, '', 'zika@zikic.com', false, 'Zika', '$2a$10$pYcWpOc3UzGmKJeJnblKN.ZUeC6pjUb.z2gnGXW5h5S7n1OimS.yO', NULL, TRUE, 'Zikic', 0,NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Dermatologist', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', false, '12-06-2021', 0, '', 'djoka@djokic.com', false, 'Djoka', '$2a$10$ajJFXVzGMM83jmCnGxEMpuDAR2T3rpyGTIetAbuCKKuezbkVFGd2u', NULL, TRUE, 'Djokic', 0,NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Dermatologist', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', false, '12-06-2021', 0, '', 'steva@stevic.com', false, 'Steva', '$2a$10$acJM/JgRqMyULOtpJifMLex6HqfbFP8GPgOzxv6IrRBQabRkJiyKy', NULL, TRUE, 'Stevic', 0, NULL, NULL, 0, NULL,  '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
 --
 ----
 ---- Data for Name: Patient;
 ----
-INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', false, '12-06-2021', 0, NULL, 'marko@markoviccc.com', false, 'Marko', '$2a$12$unh6kPZiK0naKYjUQQTKCeTewEPE7/FhS5SjcfZMvUIwDm3bQGXYa', '060123456123', true, 'Markovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
-INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', false, '12-06-2021', 0, NULL, 'mirko@mirkovic.com', false, 'Mirko', '$2a$12$Fq8JFCN1p2pQAyBKEIHA7enwqoDgZLdKFLJJ3mJKZ04PdXsgRgTnG', '060555522555', true, 'Mirkovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
-INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', false, '12-06-2021', 0, NULL, 'petar@markovic.com', false, 'Petar', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', '06512345432', true, 'Markovic', NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Patient', '8128d806-c29b-4086-aae6-877d17eeb6fa', false, '12-06-2021', 0, NULL, 'marko@markoviccc.com', false, 'Marko', '$2a$12$unh6kPZiK0naKYjUQQTKCeTewEPE7/FhS5SjcfZMvUIwDm3bQGXYa', '060123456123', true, 'Markovic',0, NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Patient', '664783ca-84a1-4a2b-ae27-a2b820bc3c71', false, '12-06-2021', 0, NULL, 'mirko@mirkovic.com', false, 'Mirko', '$2a$12$Fq8JFCN1p2pQAyBKEIHA7enwqoDgZLdKFLJJ3mJKZ04PdXsgRgTnG', '060555522555', true, 'Mirkovic', 0,NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
+INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9d', false, '12-06-2021', 0, NULL, 'petar@markovic.com', false, 'Petar', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', '06512345432', true, 'Markovic',0, NULL, NULL, 0, 0, '71bfb5bf-f58f-45a9-8dea-2820a6e4d25d', NULL);
 --
 ----
 ---- Data for Name: Drugstore Admin;
 ----
-INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a2', false, '12-06-2021', 0, '', 'kata@ketamin.com', false, 'Kata', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Ketamin', NULL, NULL, NULL, NULL, NULL, '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a3', false, '12-06-2021', 0, '', 'admin@adminovic.com', false, 'Djordje', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Djordjevic', NULL, NULL, NULL, NULL, NULL, '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a2', false, '12-06-2021', 0, '', 'kata@ketamin.com', false, 'Kata', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Ketamin',0, NULL, NULL, NULL, NULL, NULL, '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a3', false, '12-06-2021', 0, '', 'admin@adminovic.com', false, 'Djordje', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Djordjevic',0, NULL, NULL, NULL, NULL, NULL, '2b7933e9-6523-463a-974b-ded43ad63843');
 
 ----
 ---- Data for Name: System Admin;
 ----
-INSERT INTO public.users VALUES ('SystemAdmin', '2d2eacbf-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'gvozden@karadjordjevic.com', false, 'Gvozden', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Karadjordjevic', '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.users VALUES ('SystemAdmin', '332eacbf-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'sys@admin.com', false, 'Admin', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'System', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('SystemAdmin', '2d2eacbf-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'gvozden@karadjordjevic.com', false, 'Gvozden', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Karadjordjevic',0, '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('SystemAdmin', '332eacbf-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'sys@admin.com', false, 'Admin', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'System', 0,'2b7933e9-6as3-463a-974b-ded43ad63843');
 
 ----
 ---- Data for Name: Supplier;
 ----
-INSERT INTO public.users VALUES ('Supplier', '4f3bgfza-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'supplier@primer.com', false, 'Supplier', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Primer', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('Supplier', '4f3bgfza-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'supplier@primer.com', false, 'Supplier', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Primer', 0,'2b7933e9-6as3-463a-974b-ded43ad63843');
 
 
 ------
