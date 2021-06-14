@@ -11,13 +11,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.users.Dermatologist;
+import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DermatologistAppointmentPatientDto;
+import pharmacyhub.repositories.AbsenceRequestRepository;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
@@ -53,6 +56,8 @@ public class DermatologistAppointmentService {
 	@Autowired
 	private PatientCategoryService patientCategoryService;
 
+	@Autowired
+	private AbsenceRequestRepository absenceRequestRepository;
 	
 	public List<DermatologistAppointment> findAll(){
 		return dermatologistAppointmentRepository.findAll();
@@ -69,6 +74,13 @@ public class DermatologistAppointmentService {
 		vreme.setMinutes(dermatologistAppointmentDto.getTime().getMinutes()+dermatologistAppointmentDto.getDuration());
 		long vremeKraj = vreme.getTime();
 		System.out.println("vreme poc: "+ vremePocetak+ "vreme kraj:" + vremeKraj);
+		
+		List<AbsenceRequest> absenceRequests = absenceRequestRepository.findByEmployeeAndStatus(dermatologistAppointmentDto.getDermatologist(), AbsenceRequestStatus.Approved);
+		for(AbsenceRequest ar : absenceRequests) {
+			if(ar.getStartDate().before(vreme) && ar.getEndDate().after(vreme)) {
+				throw new Exception("Dermatologist is on absence at that time.");
+			}
+		}
 		
 		List<DermatologistAppointment> dermatologistAppointments = dermatologistAppointmentRepository.findByDermatologistId(dermatologistAppointmentDto.getDermatologist().getId());
 		for(DermatologistAppointment da : dermatologistAppointments) {
@@ -106,11 +118,17 @@ public class DermatologistAppointmentService {
 		int minutes = dermatologistAppointmentDto.getTime().getMinutes();
 		inputTime += minutes * 60;
 
+		int inputTimeTo = inputTime + dermatologistAppointmentDto.getDuration()*60;
+		
 		if(inputTime<=workingFrom || inputTime>=workingTo) {
 			System.out.println("inputTime: " + inputTime);
 			System.out.println("workingFrom: " + workingFrom);
 			System.out.println("workingTo: " + workingTo);
 			throw new Exception("Dermatologist is not working at that time.");
+		}
+		
+		if(inputTimeTo >= workingTo) {
+			throw new Exception("Dermatologist is finishing his shift at that time.");
 		}
 		
 		return dermatologistAppointmentRepository.save(
@@ -138,6 +156,14 @@ public class DermatologistAppointmentService {
 		vreme.setMinutes(dermatologistAppointmentPatientDto.getTime().getMinutes()+dermatologistAppointmentPatientDto.getDuration());
 		long vremeKraj = vreme.getTime();
 		System.out.println("vreme poc: "+ vremePocetak+ "vreme kraj:" + vremeKraj);
+		
+		
+		List<AbsenceRequest> absenceRequests = absenceRequestRepository.findByEmployeeAndStatus(dermatologistRepository.findById(dermatologistAppointmentPatientDto.getDermatologistId()).orElse(null), AbsenceRequestStatus.Approved);
+		for(AbsenceRequest ar : absenceRequests) {
+			if(ar.getStartDate().before(vreme) && ar.getEndDate().after(vreme)) {
+				throw new Exception("Dermatologist is on absence at that time.");
+			}
+		}
 		
 		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(dermatologistAppointmentPatientDto.getPatientId());
 		for(PharmacistAppointment pa : pharmacistAppointments) {
@@ -225,11 +251,13 @@ public class DermatologistAppointmentService {
 		int inputTime = hours * 3600;
 		int minutes = dermatologistAppointmentPatientDto.getTime().getMinutes();
 		inputTime += minutes * 60;
-		
+		int inputTimeTo = inputTime + dermatologistAppointmentPatientDto.getDuration()*60;
 		if(inputTime<=workingFrom || inputTime>=workingTo) {
 			throw new Exception("Dermatologist is not working at that time.");
 		}
-		
+		if(inputTimeTo >= workingTo) {
+			throw new Exception("Dermatologist is finishing his shift at that time.");
+		}
 		Patient patient = patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null);
 		
 		userNotificationService.sendReservationConfirmation(patientRepository.findById(dermatologistAppointmentPatientDto.getPatientId()).orElse(null).getEmail(), "dermatologist");

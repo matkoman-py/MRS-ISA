@@ -45,4 +45,5 @@ public interface PharmacistAppointmentRepository extends JpaRepository<Pharmacis
 	List<PharmacistAppointment> findByPharmacistIdAndProcessedFalseAndPatientNotNull(String pharmacistId, Pageable pageable);
 	List<PharmacistAppointment> findByPharmacistIdAndProcessedFalseAndPatientNotNull(String pharmacistId);
 	List<PharmacistAppointment> findByPharmacistDrugstoreAndProcessedTrue(Drugstore drugstore);
+	List<PharmacistAppointment> findByPharmacistEmailAndProcessedFalse(String pharmacistEmail);
 }

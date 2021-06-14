@@ -99,7 +99,7 @@ public class DrugService {
 		return drugsInDrugstore;
   }
 
- public boolean delete(String id) throws Exception {
+	public boolean delete(String id) throws Exception {
 		Drug drug = drugRepository.findById(id).orElse(null);
 		if(drug == null) {
 			throw new Exception("No such drug");
@@ -228,5 +228,11 @@ public class DrugService {
 	public Integer returnDrugsLength(DrugSearchDto searchDto) {
 		return drugRepository.findAll(DrugSpecifications.withSearch(searchDto)).size();
 	}
-
+	
+	public Drug getOne(String id) {
+		return drugRepository.findById(id).orElse(null);
+	}
+	public Drug getOneName(String name) {
+		return drugRepository.findByName(name);
+	}
 }
