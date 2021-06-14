@@ -25,6 +25,10 @@ public class PatientService {
 	
 	@Autowired
 	private IngredientRepository ingredientRepository;
+	public List<Patient> findAll()
+	{
+		return patientRepository.findAll();
+	}
 	
 	public List<Patient> findAll(Pageable pageable)
 	{

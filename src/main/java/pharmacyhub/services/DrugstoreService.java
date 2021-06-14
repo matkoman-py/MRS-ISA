@@ -182,7 +182,7 @@ public class DrugstoreService {
 		return drugs;
 	}
 	
-	public Drugstore findDrugstore(String drugstoreId) throws Exception {
+	public Drugstore findDrugstore(String drugstoreId) {
 		
 		return drugstoreRepository.findById(drugstoreId).orElse(null);
 	}
