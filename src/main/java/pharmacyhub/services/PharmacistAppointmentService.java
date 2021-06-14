@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
@@ -24,6 +23,7 @@ import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
 @Service
+@Transactional
 public class PharmacistAppointmentService {
 	
 	@Autowired 
@@ -56,6 +56,8 @@ public class PharmacistAppointmentService {
 		return pharmacistAppointmentRepository.findByPatientId(patientId).size();
 	}
     
+
+    @Transactional(rollbackFor=Exception.class)
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
 		
 		Date vreme = pharmacistAppointmentPatientDto.getDate();
@@ -66,6 +68,7 @@ public class PharmacistAppointmentService {
 		long vremeKraj = vreme.getTime();
 		
 		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+		
 		for(PharmacistAppointment pa : pharmacistAppointments) {
 			Date pVreme = pa.getDate();
 			pVreme.setHours(pa.getTime().getHours());
@@ -85,6 +88,7 @@ public class PharmacistAppointmentService {
 		
 		
 		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistId(pharmacistAppointmentPatientDto.getPharmacistId());
+		
 		for(PharmacistAppointment pa : pharmacistAppointmentsPharm) {
 			System.out.println(pa.getDate());
 			System.out.println(pa.getTime());
@@ -106,6 +110,7 @@ public class PharmacistAppointmentService {
 		
 		
 		List<DermatologistAppointment> dermatologistAppointmentsPatient = dermatologistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+		
 		for(DermatologistAppointment da : dermatologistAppointmentsPatient) {
 			Date pVreme = da.getDate();
 			pVreme.setHours(da.getTime().getHours());

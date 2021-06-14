@@ -17,7 +17,7 @@ public interface DrugOrderRepository extends JpaRepository<DrugOrder, String>, J
 	
 	@Transactional
 	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
-	DrugOrder findByOrderIdAndStatus(String id, OrderStatus status);
+	DrugOrder findByIdAndStatus(String id, OrderStatus status);
 	List<DrugOrder> findByDrugstore(Drugstore drugstore);
 	
 }

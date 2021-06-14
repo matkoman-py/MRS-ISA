@@ -31,6 +31,7 @@ public class BaseEntity {
 
 	@Version
 	@ColumnDefault("0")
+	@Column(nullable = false)
 	private long version;
 
 	public String getId() {

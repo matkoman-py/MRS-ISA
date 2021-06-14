@@ -175,11 +175,12 @@ public class ComplaintService {
 //		return replyRepository.findByComplaintId(complaint.getId());
 //	}
 	
-    @Transactional
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
 	public ReplyDto makeReply(MakeReplyDto makeReplyDto) throws Exception {
 		Reply alreadyGivenReply = replyRepository.findByComplaintId(makeReplyDto.getComplaintId());
-		Complaint complaint = complaintRepository.findById(makeReplyDto.getComplaintId()).orElse(null);
+		Complaint complaint = complaintRepository.findByIdAndHasReplyFalse(makeReplyDto.getComplaintId());
 		User user = userRepository.findById(makeReplyDto.getAdminId()).orElse(null);
+		System.out.println("pokusam");
 		
 		if(user == null || user.getType() != UserType.SystemAdmin) {
 			throw new Exception("The given system admin doesn't exist!");
@@ -188,16 +189,21 @@ public class ComplaintService {
 		if(complaint == null) {
 			throw new Exception("The given complaint doesn't exist!");
 		}
+		else {
+			System.out.println("Version: " + complaint.getVersion());
+		}
 		
 		if (alreadyGivenReply != null) {
 			throw new Exception("Reply already given!");
 		}
-		complaint.setHasReply(true);
-		complaintRepository.save(complaint);
 		
 		Reply reply = new Reply(complaint, user, makeReplyDto.getText());
 		reply = replyRepository.save(reply);
 		//userNotificationService.notifyAboutComplaintReply(complaint, reply);
+
+		complaint.setHasReply(true);
+		complaint = complaintRepository.save(complaint);
+		
 		return new ReplyDto(reply);
 	}
 }

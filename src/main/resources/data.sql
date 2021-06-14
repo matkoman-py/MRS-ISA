@@ -87,6 +87,7 @@ INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b5
 ---- Data for Name: System Admin;
 ----
 INSERT INTO public.users VALUES ('SystemAdmin', '2d2eacbf-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'gvozden@karadjordjevic.com', false, 'Gvozden', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'Karadjordjevic', '2b7933e9-6as3-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('SystemAdmin', '332eacbf-fda8-4a50-aa05-be2be4fb2884', false, '12-06-2021', 0, '', 'sys@admin.com', false, 'Admin', '$2a$10$AICSnLaNooad6nAkY55K9uSSMFPiwOW9VLjU8CCVEbwcKrGZddKpq', NULL, TRUE, 'System', '2b7933e9-6as3-463a-974b-ded43ad63843');
 
 ----
 ---- Data for Name: Supplier;
@@ -121,6 +122,8 @@ INSERT INTO public.drug_price VALUES ('5', false, '12-06-2021', 0, '2021-01-22',
 INSERT INTO public.employment VALUES ('0', false, '12-06-2021', 0, '10:00', '12:00', 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.employment VALUES ('1', false, '12-06-2021', 0, '10:00', '12:00', '79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.employment VALUES ('2', false, '12-06-2021', 0, '10:00', '12:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.employment VALUES ('3', false, '12-06-2021', 0, '10:00', '12:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2fasdfe9-6523-463a-974b-ded43ad63843');
+
 ----
 ------ Data for Name: dermatologist_appointment; 
 ------

@@ -9,10 +9,12 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.DermatologistAppointmentDto;
 import pharmacyhub.dto.DermatologistAppointmentPatientDto;
@@ -24,6 +26,7 @@ import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 
 @Service
+@Transactional
 public class DermatologistAppointmentService {
 	
 	@Autowired 
@@ -55,6 +58,7 @@ public class DermatologistAppointmentService {
 		return dermatologistAppointmentRepository.findAll();
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
 	public DermatologistAppointment save(DermatologistAppointmentDto dermatologistAppointmentDto) throws Exception {
 		//treba provera da li je dermatolog u datom periodu slobodan
 		
@@ -101,8 +105,11 @@ public class DermatologistAppointmentService {
 		int inputTime = hours * 3600;
 		int minutes = dermatologistAppointmentDto.getTime().getMinutes();
 		inputTime += minutes * 60;
-		
+
 		if(inputTime<=workingFrom || inputTime>=workingTo) {
+			System.out.println("inputTime: " + inputTime);
+			System.out.println("workingFrom: " + workingFrom);
+			System.out.println("workingTo: " + workingTo);
 			throw new Exception("Dermatologist is not working at that time.");
 		}
 		
@@ -369,6 +376,11 @@ public class DermatologistAppointmentService {
 
 	public int findAllDermatologistAppointmentsTodoLength(String dermatologistId) {
 		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedFalseAndPatientNotNull(dermatologistId).size();
+	}
+
+	public Dermatologist findById(String dermatologistId) {
+		// TODO Auto-generated method stub
+		return dermatologistRepository.findById(dermatologistId).orElse(null);
 	}
 	
 }

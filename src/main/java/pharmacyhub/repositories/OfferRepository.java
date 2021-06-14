@@ -15,10 +15,17 @@ import pharmacyhub.domain.enums.OfferStatus;
 
 public interface OfferRepository extends JpaRepository<Offer, String>, JpaSpecificationExecutor<Offer>{
 	
-	List<Offer> findByDrugOrder(DrugOrder drugOrder);
+//	@Transactional
+//	@Lock(LockModeType.OPTIMISTIC)
+	List<Offer> findByDrugOrderOrderByIdAsc(DrugOrder drugOrder);
+	
 	@Transactional
-	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+	@Lock(LockModeType.OPTIMISTIC)
 	Offer findByIdAndStatus(String id, OfferStatus status);
+	
+//	@Transactional
+//	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+//	Optional<Offer> findById(String id);
 
 
 }

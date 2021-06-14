@@ -2,10 +2,12 @@ package pharmacyhub.repositories;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
@@ -16,7 +18,11 @@ public interface DermatologistAppointmentRepository  extends JpaRepository<Derma
 	List<DermatologistAppointment> findByDermatologistAndProcessed(Dermatologist dermatologist, boolean processed);
 	@Transactional
 	void deleteByDermatologist(Dermatologist dermatologist);
+	
+	@Transactional
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	List<DermatologistAppointment> findByDermatologistId(String dermatologistId);
+	
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedTrue(String dermatologistId);
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedTrue(String dermatologistId, Pageable pageable);
 	List<DermatologistAppointment> findByPatientId(String patientId);
