@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.users.DrugstoreAdmin;
-import pharmacyhub.domain.users.Employee;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.UserRegistrationDto;
 import pharmacyhub.services.RegistrationService;
@@ -38,9 +37,9 @@ public class UserController {
 	}
 	
 	@GetMapping(path = "/register/activate/{activation-code}")
-	public ResponseEntity<String> activate(@PathVariable("activation-code") String activationCode) throws Exception {
+	public ResponseEntity<Boolean> activate(@PathVariable("activation-code") String activationCode) throws Exception {
 		boolean success = registrationService.verifyActivationCodeAndActivateUser(activationCode);
-		return new ResponseEntity<>(success ? "Success" : "Failure", HttpStatus.OK);
+		return new ResponseEntity<>(success, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/drugstoreAdmin")

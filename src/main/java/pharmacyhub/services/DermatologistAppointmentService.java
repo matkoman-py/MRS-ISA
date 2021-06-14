@@ -9,11 +9,13 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.DermatologistAppointmentDto;
@@ -27,6 +29,7 @@ import pharmacyhub.repositories.users.DermatologistRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 
 @Service
+@Transactional
 public class DermatologistAppointmentService {
 	
 	@Autowired 
@@ -60,6 +63,7 @@ public class DermatologistAppointmentService {
 		return dermatologistAppointmentRepository.findAll();
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
 	public DermatologistAppointment save(DermatologistAppointmentDto dermatologistAppointmentDto) throws Exception {
 		//treba provera da li je dermatolog u datom periodu slobodan
 		
@@ -113,9 +117,13 @@ public class DermatologistAppointmentService {
 		int inputTime = hours * 3600;
 		int minutes = dermatologistAppointmentDto.getTime().getMinutes();
 		inputTime += minutes * 60;
+
 		int inputTimeTo = inputTime + dermatologistAppointmentDto.getDuration()*60;
 		
 		if(inputTime<=workingFrom || inputTime>=workingTo) {
+			System.out.println("inputTime: " + inputTime);
+			System.out.println("workingFrom: " + workingFrom);
+			System.out.println("workingTo: " + workingTo);
 			throw new Exception("Dermatologist is not working at that time.");
 		}
 		
@@ -280,20 +288,28 @@ public class DermatologistAppointmentService {
 		return wantedAppontments;
 	}
 
-	public List<DermatologistAppointment> createReservation(String patientId,String appointmentId,String drugstoreId) throws MessagingException {
-		List<DermatologistAppointment> allAppointments = findAll();
+	@Transactional(rollbackFor = Exception.class)
+	public List<DermatologistAppointment> createReservation(String patientId, String appointmentId, String drugstoreId) throws MessagingException {
 		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
 		
-		Patient patient = new Patient();
-		for(DermatologistAppointment appointment : allAppointments) {
-			//str += appointment.getDrugstore().getId() + "    " +  drugstoreId + "\n";
-			if(appointment.getId().equals(appointmentId)) {
-				patient = patientRepository.findById(patientId).orElse(null);;
-				appointment.setPatient(patient);
-				dermatologistAppointmentRepository.save(appointment);
-			}
-
+		DermatologistAppointment selectedAppointment = dermatologistAppointmentRepository.findOneById(appointmentId);
+		Patient patient = patientRepository.findById(patientId).orElse(null);
+		
+		if (patient == null) {
+			throw new RuntimeException("This patient doesn't exist!");
 		}
+		
+		if (selectedAppointment == null) {
+			throw new RuntimeException("This appointment doesn't exist!");
+		}
+		
+		if (selectedAppointment.getPatient() != null) {
+			throw new RuntimeException("This appointemt already has a patient!");
+		}
+		
+		selectedAppointment.setPatient(patient);
+		dermatologistAppointmentRepository.save(selectedAppointment);
+
 		userNotificationService.sendReservationConfirmation(patient.getEmail(), "dermatologist");
 		
 		wantedAppontments = findAvailable(drugstoreId);
@@ -396,6 +412,11 @@ public class DermatologistAppointmentService {
 
 	public int findAllDermatologistAppointmentsTodoLength(String dermatologistId) {
 		return dermatologistAppointmentRepository.findByDermatologistIdAndProcessedFalseAndPatientNotNull(dermatologistId).size();
+	}
+
+	public Dermatologist findById(String dermatologistId) {
+		// TODO Auto-generated method stub
+		return dermatologistRepository.findById(dermatologistId).orElse(null);
 	}
 	
 }

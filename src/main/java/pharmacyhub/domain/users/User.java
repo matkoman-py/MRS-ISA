@@ -18,7 +18,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,6 +64,9 @@ public class User extends BaseEntity implements UserDetails{
 
 	@Column(nullable = true)
 	private boolean status;
+	
+	@Column(nullable = true)
+	private boolean firstLogin;
 
 	@Column(nullable = true)
 	private String activationCode;

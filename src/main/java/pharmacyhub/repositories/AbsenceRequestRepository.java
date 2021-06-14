@@ -12,4 +12,6 @@ public interface AbsenceRequestRepository extends JpaRepository<AbsenceRequest, 
 	
 	List<AbsenceRequest> findByEmployeeAndStatus(User user, AbsenceRequestStatus status);
 	
+	AbsenceRequest findByEmployeeIdAndStatus(String id, AbsenceRequestStatus status);
+	
 }

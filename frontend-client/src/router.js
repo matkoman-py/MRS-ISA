@@ -14,6 +14,7 @@ import AddDermatologistForm from "./views/AddDermatologistForm";
 import AddDrugstoreForm from "./views/AddDrugstoreForm";
 import AddPharmacistForm from "./views/AddPharmacistForm";
 import AppointmentDermatologist from "./views/AppointmentDermatologist";
+import AppointmentPage from "./views/AppointmentPage";
 import AppointmentPharmacist from "./views/AppointmentPharmacist";
 import AppointmentsOverview from "./views/AppointmentsOverview";
 import AdminComplaintsView from "./views/complaints/AdminComplaintsView";
@@ -28,6 +29,7 @@ import DrugOverview from "./views/DrugOverview";
 import DrugStockOverview from "./views/DrugStockOverview";
 import DrugstoreAdministratorProfile from "./views/DrugstoreAdministratorProfile";
 import DrugstoreUpdate from "./views/DrugstoreBasicInfoUpdate";
+import DrugstoreReports from "./views/DrugstoreReports";
 import DrugstoreSearch from "./views/DrugstoreSearch";
 import DrugstoreView from "./views/DrugstoreView";
 import DrugViewSearch from "./views/DrugViewSearch";
@@ -39,9 +41,11 @@ import LoginPage from "./views/LoginPage";
 import MyDrugstore from "./views/MyDrugstore";
 import PatientOverview from "./views/PatientOverview";
 import PatientProfile from "./views/PatientProfile";
+import PatientProfileView from "./views/PatientProfileView";
 import PharmacistAbsenceRequests from "./views/PharmacistAbsenceRequests";
 import PharmacistOverview from "./views/PharmacistOverview";
 import PharmDermProfile from "./views/PharmDermProfile";
+import ActivateAccountView from "./views/postRegistration/ActivateAccountView";
 import RegistrationPage from "./views/RegistrationPage";
 import Schedule from "./views/Schedule";
 import SchedulePharmacist from "./views/SchedulePharmacist";
@@ -297,6 +301,11 @@ const routes = [
         path: "/dermatologist-absence-requests",
         name: "DermatologistAbsenceRequests",
         component: DermatologistAbsenceRequests,
+    },
+    {
+        path: "/activate-account/:activationCode",
+        name: "ActivateAccount",
+        component: ActivateAccountView,
     },
     {
         path: "/patient-profile-view",

@@ -81,6 +81,32 @@
                             </b-form-select>
                         </b-form-group>
 
+                        <b-form-group
+                            id="input-group-3"
+                            label="Sort by:"
+                            label-for="input-3"
+                        >
+                            <b-form-select
+                                id="input-3"
+                                v-model="searchForm.sortByField"
+                                :options="sortOptions"
+                            >
+                            </b-form-select>
+                        </b-form-group>
+
+                        <b-form-group
+                            id="input-group-3"
+                            label="Order by:"
+                            label-for="input-3"
+                        >
+                            <b-form-select
+                                id="input-3"
+                                v-model="searchForm.ascending"
+                                :options="sortOrderOptions"
+                            >
+                            </b-form-select>
+                        </b-form-group>
+
                         <b-button type="submit" variant="outline-hub"
                             >Submit</b-button
                         >
@@ -113,12 +139,12 @@
                                     )
                                 "
                                 class="mr-1"
-                            :disabled="employee.penaltyCounter >= 3"
+                                :disabled="employee.penaltyCounter >= 3"
                             >
                                 Reserve
                             </b-button>
-                            
-                             <b-button
+
+                            <b-button
                                 variant="outline-hub"
                                 v-if="row.item && passedPatientId != null"
                                 size="sm"
@@ -130,15 +156,12 @@
                                     )
                                 "
                                 class="mr-1"
-
                             >
                                 Reserve
                             </b-button>
-                            
                         </template>
                         <template #cell(rateAction)="row">
                             <b-button
-                                
                                 variant="outline-hub"
                                 v-if="row.item && passedPatientId == null"
                                 size="sm"
@@ -207,20 +230,71 @@
         </b-modal>
 
         <b-modal id="my-modal1" title="Almost done!" hide-footer>
-          <p>Before you finish the reservation process you must select the date to wait for your order</p>
-          <b-form @submit="makeReservation">
-            <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
-            <br>
-            <p>Now choose how much you want</p>
-            <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
-            <br>
-            <p>Duration of therapy (in days):</p>
-            <b-form-input :value="1" :min="1" v-model="duration" type="number"></b-form-input>
-            <br>
-            <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
-          </b-form>
+            <p>
+                Before you finish the reservation process you must select the
+                date to wait for your order
+            </p>
+            <b-form @submit="makeReservation">
+                <b-form-datepicker
+                    :min="minDate"
+                    id="example-datepicker"
+                    v-model="date"
+                    class="mb-2"
+                ></b-form-datepicker>
+                <br />
+                <p>Now choose how much you want</p>
+                <b-form-input
+                    :value="1"
+                    :min="1"
+                    v-model="amount"
+                    type="number"
+                ></b-form-input>
+                <br />
+                <p>Duration of therapy (in days):</p>
+                <b-form-input
+                    :value="1"
+                    :min="1"
+                    v-model="duration"
+                    type="number"
+                ></b-form-input>
+                <br />
+                <b-button
+                    :disabled="date == '' || amount == ''"
+                    type="submit"
+                    variant="outline-hub"
+                    >Save</b-button
+                >
+            </b-form>
+            =======
+            <p>
+                Before you finish the reservation process you must select the
+                date to wait for your order
+            </p>
+            <b-form @submit="makeReservation">
+                <b-form-datepicker
+                    :min="minDate"
+                    id="example-datepicker"
+                    v-model="date"
+                    class="mb-2"
+                ></b-form-datepicker>
+                <br />
+                <b-button
+                    :disabled="date == ''"
+                    type="submit"
+                    variant="outline-hub"
+                    >Save</b-button
+                >
+            </b-form>
+            >>>>>>> refactor_student4
         </b-modal>
 
+        <b-modal
+            :id="drugDetailsModal.id"
+            :title="drugDetailsModal.title"
+            size="lg"
+        >
+            Are you sure that you want to delete this drug?
+        </b-modal>
     </b-container>
 </template>
 
@@ -246,7 +320,7 @@ export default {
             role: (state) => state.userModule.loggedInUser.type,
         }),
         //rows() {
-            //return (this.currentPage + 1) * 3;
+        //return (this.currentPage + 1) * 3;
         //},
     },
     watch: {
@@ -259,12 +333,16 @@ export default {
         },
     },
     data: function() {
-        const now = new Date()
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        const minDate = new Date(today)
+        const now = new Date();
+        const today = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+        );
+        const minDate = new Date(today);
         return {
-            amount:'',
-            minDate : minDate,
+            amount: "",
+            minDate: minDate,
             userRating: "1",
             canRate: false,
             reserved: 0,
@@ -277,6 +355,8 @@ export default {
                 form: "",
                 manufacturerId: "",
                 receipt: "",
+                sortByField: "",
+                ascending: true,
             },
             fields: [
                 {
@@ -317,6 +397,38 @@ export default {
                     text: "No",
                 },
             ],
+            sortOptions: [
+                {
+                    value: "name",
+                    text: "Name",
+                },
+                {
+                    value: "type",
+                    text: "Type",
+                },
+                {
+                    value: "form",
+                    text: "Form",
+                },
+                {
+                    value: "manufacturer.name",
+                    text: "Manufacturer",
+                },
+                {
+                    value: "receipt",
+                    text: "Receipt",
+                },
+            ],
+            sortOrderOptions: [
+                {
+                    value: true,
+                    text: "Ascending",
+                },
+                {
+                    value: false,
+                    text: "Descending",
+                },
+            ],
             drugReservations: [],
             selectedDrug: null,
             drugs: [],
@@ -331,9 +443,14 @@ export default {
             patientId: "",
             selectedDrugId: "",
             rows: 0,
-            appointmentId: '',
-            check: '',
-            duration: '',
+            appointmentId: "",
+            check: "",
+            duration: "",
+            drugDetailsModal: {
+                id: "",
+                title: "",
+                drug: "",
+            },
         };
     },
     methods: {
@@ -352,7 +469,7 @@ export default {
             var x = 1;
             for (i = 0; i < this.drugReservations.length; i++) {
                 //alert(this.drugReservations[i].drug);
-               // alert(item.name);
+                // alert(item.name);
                 if (this.drugReservations[i].drug == item.name) {
                     //alert("JUPI");
                     this.canRate = true;
@@ -362,47 +479,51 @@ export default {
             if (x == 1) this.canRate = false;
             this.$root.$emit("bv::show::modal", "my-modalR");
         },
-        
+
         makeReservation: function() {
-        //alert(this.check)
-        this.$http.post('http://localhost:8081/drugReservation/saveReservationEmployee', {
-            patientId: this.patientId,
-            drugstoreId: this.drugstoreId,
-            drugId: this.selectedDrugId,
-            date: this.date,
-            amount: this.amount,
-            duration: this.duration,
-            appointmentId: this.appointmentId,
-            check: this.check,
-          })
-          .then(response => {
-            alert(response.data);
-            this.$root.$emit('bv::hide::modal', 'my-modal1');
-          })
-          .catch(error => console.log(error));
-        },
-        getDrugReservations: function() {
-            if(this.user != null){
+            //alert(this.check)
             this.$http
-                .get(
-                    "http://localhost:8081/drugReservation/getPatientReservations",
+                .post(
+                    "http://localhost:8081/drugReservation/saveReservationEmployee",
                     {
-                        params: {
-                            patientId: this.user.id,
-                        },
+                        patientId: this.patientId,
+                        drugstoreId: this.drugstoreId,
+                        drugId: this.selectedDrugId,
+                        date: this.date,
+                        amount: this.amount,
+                        duration: this.duration,
+                        appointmentId: this.appointmentId,
+                        check: this.check,
                     }
                 )
                 .then((response) => {
-                    this.drugReservations = response.data.map(
-                        (drugReservation) => ({
-                            id: drugReservation.id,
-                            drug: drugReservation.drug.name,
-                            drugstore: drugReservation.drugstore.name,
-                            date: drugReservation.date,
-                        })
-                    );
+                    alert(response.data);
+                    this.$root.$emit("bv::hide::modal", "my-modal1");
                 })
                 .catch((error) => console.log(error));
+        },
+        getDrugReservations: function() {
+            if (this.user != null) {
+                this.$http
+                    .get(
+                        "http://localhost:8081/drugReservation/getPatientReservations",
+                        {
+                            params: {
+                                patientId: this.user.id,
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        this.drugReservations = response.data.map(
+                            (drugReservation) => ({
+                                id: drugReservation.id,
+                                drug: drugReservation.drug.name,
+                                drugstore: drugReservation.drugstore.name,
+                                date: drugReservation.date,
+                            })
+                        );
+                    })
+                    .catch((error) => console.log(error));
             }
         },
         getDrugstores: function(data) {
@@ -454,13 +575,14 @@ export default {
                             city: stock.drugstore.location.city,
                             rating: stock.drugstore.averageRating,
                         }));
-                        if(this.drugstores.length != 0){
-                        this.selectedDrugId = data.id;
-                        this.drugstoreId = this.passedDrugstoreId;
-                        this.patientId = this.passedPatientId;
-                        this.check = this.passedCheck;
-                        this.appointmentId = this.passedAppointmentId;
-                        this.$root.$emit('bv::show::modal', 'my-modal1');}
+                        if (this.drugstores.length != 0) {
+                            this.selectedDrugId = data.id;
+                            this.drugstoreId = this.passedDrugstoreId;
+                            this.patientId = this.passedPatientId;
+                            this.check = this.passedCheck;
+                            this.appointmentId = this.passedAppointmentId;
+                            this.$root.$emit("bv::show::modal", "my-modal1");
+                        }
                     });
             }
         },
@@ -557,8 +679,8 @@ export default {
                     .join(", "),
             }));
         },
-        getEmployee: function () {
-            if(this.user != null){
+        getEmployee: function() {
+            if (this.user != null) {
                 this.$http
                     .get("http://localhost:8081/patients/id", {
                         params: {
@@ -570,11 +692,10 @@ export default {
                         console.log(this.employee.penaltyCounter);
                     })
                     .catch((error) => console.log(error));
-                }
-                else{
-                    this.employee = "not logged in";
-                }
-            },
+            } else {
+                this.employee = "not logged in";
+            }
+        },
     },
 
     mounted: function() {

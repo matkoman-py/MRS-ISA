@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,11 @@ public class DrugController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			@RequestBody DrugSearchDto searchDto) {
-		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		Sort sortSetting = Sort.by("name");
+		if(searchDto.getSortByField() != null && !searchDto.getSortByField().isBlank()) {
+			sortSetting = (searchDto.getAscending()) ? Sort.by(searchDto.getSortByField()).ascending() : Sort.by(searchDto.getSortByField()).descending();
+		}
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size, sortSetting);
 		return new ResponseEntity<>(drugService.returnDrugs(searchDto, pageable), HttpStatus.OK);
 	}
 	

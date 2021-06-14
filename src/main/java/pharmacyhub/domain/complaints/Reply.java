@@ -10,7 +10,7 @@ import pharmacyhub.domain.users.User;
 
 @Entity
 public class Reply extends BaseEntity {
-
+	
 	@OneToOne
 	private Complaint complaint;
 
