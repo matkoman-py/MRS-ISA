@@ -199,7 +199,7 @@ public class ConcurentTestController {
 			
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 		executor.schedule(() -> pharmacistAppointmentService.saveWithPatient(wrapper1.pharmacistAppointmentPatientDto), 1000, TimeUnit.MILLISECONDS);
-		executor.schedule(() -> pharmacistAppointmentService.saveWithPatient(wrapper2.pharmacistAppointmentPatientDto), 500, TimeUnit.MILLISECONDS);
+		executor.schedule(() -> pharmacistAppointmentService.saveWithPatient(wrapper2.pharmacistAppointmentPatientDto), 700, TimeUnit.MILLISECONDS);
 
 		executor.shutdown();
 		//executor.awaitTermination(1, TimeUnit.MINUTES);
