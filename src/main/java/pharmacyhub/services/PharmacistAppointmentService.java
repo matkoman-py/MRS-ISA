@@ -214,8 +214,9 @@ public class PharmacistAppointmentService {
 		List<Pharmacist> wantedPharmacist = new ArrayList<>();
 		
 		pharmacistAppointmentRepository.findAll();
+		System.out.println(pharmacistAppointmentTime);
 		Time in = new Time(Integer.parseInt(pharmacistAppointmentTime.substring(0,2)),Integer.parseInt(pharmacistAppointmentTime.substring(3,5)),0);
-		long inputTime = in.getTime();
+		long inputTime = (Integer.parseInt(pharmacistAppointmentTime.substring(0,2)) * 3600 + Integer.parseInt(pharmacistAppointmentTime.substring(3,5)) * 60) * 1000;
 		
 		for(Pharmacist ph:allPharmacists) {
 			boolean free = true;
@@ -228,9 +229,28 @@ public class PharmacistAppointmentService {
 					
 					if(inputTime >= busyFrom && inputTime <= busyTo) {
 						free = false;
+						break;
 					}
 				}
 			}
+			
+			String hours1 = ph.getWorkingHoursFrom().substring(0,2);
+			int workingFrom = Integer.parseInt(hours1) * 3600 * 1000;
+			String minutes1 = ph.getWorkingHoursFrom().substring(3,5);
+			workingFrom += Integer.parseInt(minutes1) * 60 * 1000;
+			
+			
+			String hours2 = ph.getWorkingHoursTo().substring(0,2);
+			int workingTo = Integer.parseInt(hours2) * 3600 * 1000;
+			String minutes2 = ph.getWorkingHoursTo().substring(3,5);
+			workingTo += Integer.parseInt(minutes2) * 60 * 1000;
+			
+			System.out.println("Input time " + inputTime + "  wokringfrom: " + workingFrom + "  workingTo: " + workingTo);
+			
+			if(inputTime < workingFrom || inputTime > workingTo) {
+				free = false;
+			}
+			
 			if(free == true) wantedPharmacist.add(ph);
 		}
 		return wantedPharmacist; 
