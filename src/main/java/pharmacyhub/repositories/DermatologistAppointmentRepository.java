@@ -40,4 +40,5 @@ public interface DermatologistAppointmentRepository  extends JpaRepository<Derma
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedFalseAndPatientNotNull(String dermatologistId, Pageable pageable);
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedFalseAndPatientNotNull(String dermatologistId);
 	List<DermatologistAppointment> findByDrugstoreAndProcessedTrue(Drugstore drugstore);
+	List<DermatologistAppointment> findByDermatologistEmailAndProcessedFalseAndPatientNotNull(String dermatologistEmail);
 }

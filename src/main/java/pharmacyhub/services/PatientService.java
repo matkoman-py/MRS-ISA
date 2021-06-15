@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.Penalty;
 import pharmacyhub.domain.users.Patient;
+import pharmacyhub.repositories.IngredientRepository;
 import pharmacyhub.repositories.PenaltyRepository;
 import pharmacyhub.repositories.specifications.PatientSpecifications;
 import pharmacyhub.repositories.users.PatientRepository;
@@ -20,6 +22,13 @@ public class PatientService {
 	
 	@Autowired
 	private PenaltyRepository penaltyRepository;
+	
+	@Autowired
+	private IngredientRepository ingredientRepository;
+	public List<Patient> findAll()
+	{
+		return patientRepository.findAll();
+	}
 	
 	public List<Patient> findAll(Pageable pageable)
 	{
@@ -79,6 +88,19 @@ public class PatientService {
 	public Integer returnPatientsLength(String patientName, String patientSurname) {
 		// TODO Auto-generated method stub
 		return patientRepository.findAll(PatientSpecifications.withSearch(patientName, patientSurname)).size();
+	}
+
+	public String addAlergen(String patientId, String alergenId) {
+		Ingredient ingredient = ingredientRepository.findById(alergenId).orElse(null);
+		Patient patient = patientRepository.findById(patientId).orElse(null);
+		List<Ingredient> alergens = patient.getAllergens();
+		if(alergens.contains(ingredient)) {
+			return "You have already added " + ingredient.getName() + " to you'r allergens list!";
+		}
+		alergens.add(ingredient);
+		patient.setAllergens(alergens);
+		patientRepository.save(patient);
+		return "You have succesfully added " + ingredient.getName() + "to your allergens list!";
 	}
 
 }

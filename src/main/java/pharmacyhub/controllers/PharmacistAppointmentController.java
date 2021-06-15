@@ -19,7 +19,9 @@ import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DermatologistAppointmentPatientDto;
+import pharmacyhub.dto.DrugstoreDto;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
+import pharmacyhub.dto.PharmacistDto;
 import pharmacyhub.services.DermatologistAppointmentService;
 import pharmacyhub.services.PharmacistAppointmentService;
 
@@ -41,13 +43,13 @@ public class PharmacistAppointmentController {
 	}
 	
 	@GetMapping(path ="/get-drugstores", produces = MediaType.APPLICATION_JSON_VALUE)
-	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<Drugstore>> getDrugstores(@RequestParam (value = "pharmacistAppointmentDate", required=false,  defaultValue = "0") String pharmacistAppointmentDate,
+	public ResponseEntity<Collection<Drugstore>> getDrugstores(@RequestParam (value = "pharmacistAppointmentDate", required=false,  defaultValue = "0") String pharmacistAppointmentDate,
 															   @RequestParam (value = "pharmacistAppointmentTime", required=false,  defaultValue = "0") String pharmacistAppointmentTime) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findDrugstores(pharmacistAppointmentTime,pharmacistAppointmentDate), HttpStatus.OK);
 	}
 	
 	@GetMapping(path ="/get-pharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
-	public /*ResponseEntity<Integer>*/ResponseEntity<Collection<Pharmacist>> getPharmacists(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
+	public ResponseEntity<Collection<PharmacistDto>> getPharmacists(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
 			@RequestParam (value = "pharmacistAppointmentDate", required=false,  defaultValue = "0") String pharmacistAppointmentDate,
 			   @RequestParam (value = "pharmacistAppointmentTime", required=false,  defaultValue = "0") String pharmacistAppointmentTime) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findPharmacists(drugstoreId,pharmacistAppointmentDate,pharmacistAppointmentTime), HttpStatus.OK);

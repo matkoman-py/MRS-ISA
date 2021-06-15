@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.dto.AddDermatologistToDrugstoreDto;
 import pharmacyhub.dto.DermatologistAbsenceRequestDto;
+import pharmacyhub.dto.DermatologistAppointmentCreationDto;
 import pharmacyhub.dto.DermatologistDto;
 import pharmacyhub.dto.EmploymentDrugstoreDto;
 import pharmacyhub.dto.EmploymentDto;
+import pharmacyhub.dto.HireDermatologistDto;
 import pharmacyhub.dto.RemoveDermatologistDto;
 import pharmacyhub.services.EmploymentService;
 
@@ -30,16 +32,27 @@ public class EmploymentController {
 	@Autowired
 	private EmploymentService employmentService;
 		
+	@PostMapping(path="/dermatologist/hire", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> addDermatologistToDrugstore(
+			@RequestBody HireDermatologistDto hireDermatologistDto) throws Exception {
+		return new ResponseEntity<>(employmentService.hireDermatologist(hireDermatologistDto), HttpStatus.OK);
+
+	}
+	
 	@PostMapping(path="/dermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DermatologistDto> addDermatologistToDrugstore(
 			@RequestBody AddDermatologistToDrugstoreDto requestDto) throws Exception {
 		return new ResponseEntity<>(employmentService.addDermatologistToDrugstore(requestDto), HttpStatus.OK);
-
 	}
 		
 	@GetMapping(path="/dermatologists", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Dermatologist>> getAllDermatologistsForDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
+	public ResponseEntity<Collection<DermatologistAppointmentCreationDto>> getAllDermatologistsForDrugstore(@RequestParam(value = "drugstoreId") String drugstoreId) {
 		return new ResponseEntity<>(employmentService.getAllDermatologistsForDrugstore(drugstoreId), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/dermatologists/notEmployed", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Dermatologist>> getNotEmployedDermatologists(@RequestParam(value = "drugstoreId") String drugstoreId) {
+		return new ResponseEntity<>(employmentService.getNotEmployedDermatologists(drugstoreId), HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/dermatologist-employments", produces = MediaType.APPLICATION_JSON_VALUE)

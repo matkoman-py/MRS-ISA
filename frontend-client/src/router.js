@@ -50,6 +50,7 @@ import RegistrationPage from "./views/RegistrationPage";
 import Schedule from "./views/Schedule";
 import SchedulePharmacist from "./views/SchedulePharmacist";
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
+import SchedulePharmacistAppointmentFromDrugstore from "./views/SchedulePharmacistAppointmentFromDrugstore";
 import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
 
@@ -318,6 +319,11 @@ const routes = [
         path: "/drugstore-reports",
         name: "DrugstoreReports",
         component: DrugstoreReports,
+    },
+    {
+        path: "/schedule-pharm-app-drugstore/:id",
+        name: "SchedulePharmacistAppointmentFromDrugstore",
+        component: SchedulePharmacistAppointmentFromDrugstore,
     },
 ];
 

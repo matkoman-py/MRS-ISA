@@ -21,6 +21,7 @@ import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
@@ -99,7 +100,7 @@ public class DrugReservationService {
 
 		DrugReservation drr = new DrugReservation(drug, drugstore, amount, patient, date,eReceit);
 		drr.setConfirmationCode(confirmationCode);
-
+    
 		DrugStock drst = drugstockRepository.findByDrugAndDrugstore(drug, drugstore);
 		
 		if(drst.getAmount() - amount >= 0) {
@@ -110,7 +111,16 @@ public class DrugReservationService {
 			DrugRequest dr = new DrugRequest(drugstore, drug, false);
 			drugRequestRepository.save(dr);
 			throw new Exception("Drug not on stock!");
+    }		
+		//provera za alergicnost
+		
+		int foundAllergen = 0;
+		for(Ingredient ing : patient.getAllergens()) {
+			if(drug.getIngredients().contains(ing)) {
+				return null;
+			}
 		}
+		
 		DrugPrice drugPrice = drugStockService.getLastPriceByDrugAndDrugStore(drug, drugstore);
 		drr.setPrice(patientCategoryService.getPriceWithDiscount(patient, drugPrice.getPrice()));
 		drugreservationRespository.save(drr);
