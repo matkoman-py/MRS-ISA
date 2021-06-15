@@ -43,7 +43,7 @@ public class DermatologistAppointmentController {
 	public ResponseEntity<DermatologistAppointment> getAllDermatologistsForDrugstore(@RequestBody DermatologistAppointmentPatientDto dermatologistAppointmentDto) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.saveWithPatient(dermatologistAppointmentDto), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('PATIENT')")
+	@PreAuthorize("hasAnyRole('PATIENT','DERMATOLOGIST','DRUGSTOREADMIN')")
 	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> getAllDermatologistAppointments(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAvailable(drugstoreId), HttpStatus.OK);
@@ -55,7 +55,7 @@ public class DermatologistAppointmentController {
 			@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId) throws Exception {
 		  return new ResponseEntity<>(dermatologistAppointmentService.createReservation(patientId, appointmentId,drugstoreId), HttpStatus.OK);	
 	}
-	@PreAuthorize("hasAnyRole('PATIENT', 'DERMATOLOGIST')")
+	@PreAuthorize("hasAnyRole('PATIENT', 'DERMATOLOGIST','DRUGSTOREADMIN')")
 	@GetMapping(path ="/returnAppointments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> returnAppointments(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
 			@RequestParam(value = "page", required = false) Integer page,
@@ -64,12 +64,12 @@ public class DermatologistAppointmentController {
 
 		  return new ResponseEntity<>(dermatologistAppointmentService.returnAppointments(patientId, pageable), HttpStatus.OK);	
 	}
-	@PreAuthorize("hasAnyRole('PATIENT')")
+	@PreAuthorize("hasAnyRole('PATIENT','DERMATOLOGIST','DRUGSTOREADMIN')")
 	@GetMapping(path ="/reservations-length", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> reservationsLength(@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.reservationsLength(patientId), HttpStatus.OK);	
 	}
-	@PreAuthorize("hasAnyRole('DERMATOLOGIST')")
+	@PreAuthorize("hasAnyRole('PATIENT','DERMATOLOGIST','DRUGSTOREADMIN')")
 	@GetMapping(path ="/returnAppointments-length", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> returnAppointmentsLength(
 			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId) throws Exception {
@@ -80,20 +80,20 @@ public class DermatologistAppointmentController {
 	public ResponseEntity<DermatologistAppointment> getDermatologistAppointment(@RequestParam (value = "dermatologistAppointmentId", required=false,  defaultValue = "0") String dermatologistAppointmentId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAppointment(dermatologistAppointmentId), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DERMATOLOGIST')")
+	@PreAuthorize("hasAnyRole('PATIENT','DERMATOLOGIST','DRUGSTOREADMIN')")
 	@GetMapping(path ="/available", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> getAllAvailableDermatologistAppointments(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
 			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {
 		return new ResponseEntity<>(dermatologistAppointmentService.findAvailable(drugstoreId,dermatologistId), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DERMATOLOGIST')")
+	@PreAuthorize("hasAnyRole('DERMATOLOGIST','PATIENT')")
 	@GetMapping(path ="/reserveAppointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> reserveAppointment(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
 			@RequestParam (value = "patientId", required=false,  defaultValue = "0") String patientId,
 			@RequestParam (value = "appointmentId", required=false,  defaultValue = "0") String appointmentId) throws Exception {
 		  return new ResponseEntity<>(dermatologistAppointmentService.reserveAppointment( drugstoreId,patientId,appointmentId), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DERMATOLOGIST')")
+	@PreAuthorize("hasAnyRole('PATIENT','DERMATOLOGIST','DRUGSTOREADMIN')")
 	@GetMapping(path ="/all-derm-app", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistAppointment>> getAllADermatologistAppointments(
 			@RequestParam (value = "dermatologistId", required=false,  defaultValue = "0") String dermatologistId) throws Exception {

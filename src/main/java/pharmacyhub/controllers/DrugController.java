@@ -105,6 +105,7 @@ public class DrugController {
 		return new ResponseEntity<>(drugService.findAllSubstitutesDrugstore(drugId,drugstoreId,patientId), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
 	@GetMapping(path = "/createOrderView", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<CreateDrugOrderDto>> getDrugsForCreateOrderView(
 			@RequestParam(value = "drugstoreId", required = true) String drugstoreId,

@@ -200,7 +200,7 @@ public class ComplaintService {
 		
 		Reply reply = new Reply(complaint, user, makeReplyDto.getText());
 		reply = replyRepository.save(reply);
-		//userNotificationService.notifyAboutComplaintReply(complaint, reply);
+		userNotificationService.notifyAboutComplaintReply(complaint, reply);
 
 		complaint.setHasReply(true);
 		complaint = complaintRepository.save(complaint);

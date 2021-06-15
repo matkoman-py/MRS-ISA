@@ -95,7 +95,7 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.searchDermatologist(searchDermatologistDto), HttpStatus.OK);
 	}
 	
-
+	
 	@GetMapping(path ="/id",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Employee> findOne(@RequestParam (value = "employeeId", required=false,  defaultValue = "0") String employeeId) throws Exception {
 		return new ResponseEntity<>(employeeService.findOne(employeeId), HttpStatus.OK);

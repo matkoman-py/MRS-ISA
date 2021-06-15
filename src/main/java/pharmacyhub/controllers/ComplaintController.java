@@ -51,7 +51,7 @@ public class ComplaintController {
 	public ResponseEntity<ComplaintDto> makeComplaint(@RequestBody MakeComplaintDto makeComplaintDto) throws Exception {
 		return new ResponseEntity<>(complaintService.makeComplaint(makeComplaintDto), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN', 'PATIENT')")
 	@GetMapping(path = "/reply/{complaintId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ReplyDto> getReply(@PathVariable("complaintId") String complaintId) throws Exception {
 		return new ResponseEntity<>(complaintService.getReply(complaintId), HttpStatus.OK);

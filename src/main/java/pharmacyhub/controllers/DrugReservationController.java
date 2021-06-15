@@ -36,7 +36,7 @@ public class DrugReservationController {
 	public ResponseEntity<Collection<DrugReservation>> getDrugStock() throws Exception {
 		return new ResponseEntity<>(drugReservationService.findAll(), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DERMATOLOGIST', 'PATIENT', 'PHARMACIST')")
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@PostMapping(path = "/saveReservation",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationDto drugreservationDto) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveReservation(drugreservationDto), HttpStatus.OK);

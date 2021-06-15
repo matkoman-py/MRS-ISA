@@ -25,22 +25,22 @@ public class PatientCategoryController {
 
 	@Autowired
 	private PatientCategoryService patientCategoryService;
-	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PatientCategory>> getAll() {
 		return new ResponseEntity<>(patientCategoryService.getAll(), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(path="/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LoyaltyConfiguration> getLoyaltyConfiguration() {
 		return new ResponseEntity<>(patientCategoryService.getLoyaltyConfiguration(), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PatientCategory> update(@RequestBody PatientCategoryDto patientCategory) throws Exception {
 		return new ResponseEntity<>(patientCategoryService.updatePatientCategory(patientCategory), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PutMapping(path="/configuration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LoyaltyConfiguration> update(@RequestBody LoyaltyConfigurationDto loyaltyConfiguration) throws Exception {
 		return new ResponseEntity<>(patientCategoryService.updateLoyaltyConfiguration(loyaltyConfiguration), HttpStatus.OK);

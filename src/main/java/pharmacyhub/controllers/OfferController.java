@@ -40,7 +40,7 @@ public class OfferController {
 	public ResponseEntity<OfferDto> makeOffer(@RequestBody OfferDto offerDto) throws Exception{
 		return new ResponseEntity<>(offerService.makeOffer(offerDto), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SYSTEMADMIN')")
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SYSTEMADMIN','SUPPLIER')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Offer>> getOffersForOrder(@RequestParam String orderId) throws Exception {
 		return new ResponseEntity<>(offerService.getOffersForOrder(orderId), HttpStatus.OK);

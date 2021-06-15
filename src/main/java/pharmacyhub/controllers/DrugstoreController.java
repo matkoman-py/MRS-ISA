@@ -51,7 +51,7 @@ public class DrugstoreController {
 	public ResponseEntity<Drugstore> update(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.update(drugstore), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> update(@PathVariable String id) {
 		try {
@@ -116,7 +116,7 @@ public class DrugstoreController {
 		//Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.findDrugstoreEmployee(drugId,drugstoreId/*pageable*/), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@GetMapping(path="/adminsDrugstore", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> getAdminsDrugstore(@RequestParam(value = "adminId") String adminId) throws Exception {
 		return new ResponseEntity<>(drugstoreService.getAdminsDrugstore(adminId), HttpStatus.OK);
