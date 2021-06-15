@@ -21,6 +21,7 @@ public interface DermatologistAppointmentRepository  extends JpaRepository<Derma
 	
 	DermatologistAppointment findByDrugstoreId(String drugstoreId);
 	List<DermatologistAppointment> findByDermatologistAndProcessed(Dermatologist dermatologist, boolean processed);
+	List<DermatologistAppointment> findByDermatologistEmailAndProcessedFalse(String email);
 	
 	@Transactional
 	void deleteByDermatologist(Dermatologist dermatologist);

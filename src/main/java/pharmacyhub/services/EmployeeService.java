@@ -12,11 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.AbsenceRequest;
+import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.PharmacistAppointment;
-import pharmacyhub.domain.RatingDermatologist;
-import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
@@ -30,6 +29,7 @@ import pharmacyhub.dto.PharmacistAbsenceRequestDto;
 import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
 import pharmacyhub.repositories.AbsenceRequestRepository;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
@@ -67,6 +67,9 @@ public class EmployeeService {
 	
 	@Autowired
 	private PharmacistAppointmentRepository pharmacistAppointmentRepository;
+	
+	@Autowired
+	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	
 	@Autowired
 	private AbsenceRequestRepository abensceRequestRepository;
@@ -421,6 +424,27 @@ public class EmployeeService {
 	private boolean checkFuturePharmacistAppointments(String pharmacistEmail) {
 		List<PharmacistAppointment> appointments = pharmacistAppointmentRepository.findByPharmacistEmailAndProcessedFalse(pharmacistEmail);
 		for (PharmacistAppointment appointment : appointments) {
+			if (appointment.getDate().after(new Date())) {
+				return true;
+			}
+		}
+		return false;
+		//String pharmacistId = pharmacistRepository.findByEmail(pharmacistEmail).getId();
+		//pharmacistAppointmentRepository.deleteByPharmacist((Pharmacist)pharmacistRepository.findByEmail(pharmacistEmail)); //treba samo one koji predstoje?
+	}
+	
+	
+	public String deleteDermatologist(String dermatologistEmail) {
+		if (checkFutureDermatologistAppointments(dermatologistEmail)) {
+			return "Denied";
+		}
+		dermatologistRepository.deleteByEmail(dermatologistEmail);
+		return "Success";
+	}
+
+	private boolean checkFutureDermatologistAppointments(String dermatologistEmail) {
+		List<DermatologistAppointment> appointments = dermatologistAppointmentRepository.findByDermatologistEmailAndProcessedFalse(dermatologistEmail);
+		for (DermatologistAppointment appointment : appointments) {
 			if (appointment.getDate().after(new Date())) {
 				return true;
 			}

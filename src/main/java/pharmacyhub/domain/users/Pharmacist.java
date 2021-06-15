@@ -16,6 +16,7 @@ import pharmacyhub.domain.enums.UserType;
 @Entity
 @DiscriminatorValue("Pharmacist")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ? and version = ?")
+@Where(clause = "deleted = false")
 public class Pharmacist extends Employee {
 
 	/**

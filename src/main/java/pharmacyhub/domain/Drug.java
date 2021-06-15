@@ -14,7 +14,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@SQLDelete(sql = "UPDATE drug SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE drug SET deleted = true WHERE id = ? and version = ?")
 @Where(clause = "deleted = false")
 public class Drug extends BaseEntity {
 

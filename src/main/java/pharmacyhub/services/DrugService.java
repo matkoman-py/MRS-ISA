@@ -49,12 +49,6 @@ public class DrugService {
 	private DrugStockRepository drugStockRepository;
 	
 	@Autowired
-	private DrugStockRepository orderStockRepository;
-	
-	@Autowired
-	private DrugStockRepository orderStockRepository;
-	
-	@Autowired
 	private DrugstoreRepository drugstoreRepository;
 	
 	@Autowired

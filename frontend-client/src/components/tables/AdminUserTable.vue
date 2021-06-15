@@ -152,19 +152,32 @@ export default {
             this.deleteModal.title = "";
         },
         deleteUser: function() {
-            let userTypes = "";
             if (this.deleteModal.user.type == "Supplier") {
-                userTypes = "suppliers";
-            } else {
-                alert("Not yet supported");
-                return;
+                this.deleteSupplier();
+            } else if (this.deleteModal.user.type == "Dermatologist") {
+                this.deleteDermatologist();
+            } else if (this.deleteModal.user.type == "DrugstoreAdmin") {
+                console.log("bice");
             }
-            console.log(
-                `http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`
-            );
+        },
+        deleteDermatologist: function() {
             this.$http
                 .delete(
-                    `http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`
+                    `http://localhost:8081/employees/delete/dermatologist?dermatologistEmail=${this.deleteModal.user.email}`
+                )
+                .then((response) => {
+                    let index = this.users.findIndex(
+                        (user) => user.id == this.deleteModal.user.id
+                    );
+                    this.users.splice(index, 1);
+                    alert("success", response);
+                })
+                .catch((error) => console.log(error));
+        },
+        deleteSupplier: function() {
+            this.$http
+                .delete(
+                    `http://localhost:8081/suppliers/${this.deleteModal.user.id}`
                 )
                 .then((response) => {
                     let index = this.users.findIndex(
