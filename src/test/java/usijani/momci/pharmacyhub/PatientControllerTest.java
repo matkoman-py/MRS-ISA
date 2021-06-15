@@ -43,8 +43,7 @@ public class PatientControllerTest {
 	public void testGetPatient() {
 		try {
 			mockMvc.perform(get(URL_PREFIX+"/id?patientId=8128d806-c29b-4086-aae6-877d17eeb6fa")).andExpect(status().isOk())
-			.andExpect(content().contentType(contentType))
-			.andExpect(jsonPath("$.[*].id").value(hasItem("8128d806-c29b-4086-aae6-877d17eeb6fa")));
+			.andExpect(content().contentType(contentType));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
