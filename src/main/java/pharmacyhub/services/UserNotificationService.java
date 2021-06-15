@@ -43,8 +43,8 @@ public class UserNotificationService {
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
-		String emailContent = "Thank you for your registration. In order to use your account, you'll need to activate it. <br><br>Click <a href='http://localhost:8080/#/activate-account/"
-				+ activationCode + "'>here</a> to activate your account.";
+		String emailContent = "Thank you for your registration. In order to use your account, you'll need to activate it. <br><br>Click "
+				+ activationCode + "here to activate your account.";
 
 		helper = new MimeMessageHelper(message, true);
 		helper.setFrom("notification@pharmacyhub.com");
