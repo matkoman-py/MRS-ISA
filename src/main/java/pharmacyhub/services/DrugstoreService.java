@@ -18,6 +18,7 @@ import pharmacyhub.domain.RatingDrugstore;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.dto.DrugStockPriceDto;
 import pharmacyhub.dto.DrugstoreAverageRatingDto;
+import pharmacyhub.dto.DrugstoreDtoAll;
 import pharmacyhub.dto.ereceipt.DrugstoreAndPriceDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
@@ -79,30 +80,43 @@ public class DrugstoreService {
 		return drugstoreRepository.findAll();
 	}
 	
-	public Drugstore update(Drugstore drugstore) throws Exception {
+	public Drugstore update(DrugstoreDtoAll drugstoreDto) throws Exception {
 		
 		//TODO: odraditi provere za vreme
 		
-		if(drugstoreRepository.findById(drugstore.getId()) == null) {
+		if(drugstoreRepository.findById(drugstoreDto.getId()) == null) {
 			throw new Exception("No such drugstore");
 		}
 		
-		return save(drugstore);
-	}
-	
-
-	public Drugstore save(Drugstore drugstore) throws Exception {
-
-		if(drugstore.getLocation() != null) {
-			Location location = drugstore.getLocation();
+		if(drugstoreDto.getLocation() != null) {
+			Location location = drugstoreDto.getLocation();
 			locationRepository.save(location);
 		}
 		
-		if(drugstore.getPoint() != null) {
-			Point point = drugstore.getPoint();
+		if(drugstoreDto.getPoint() != null) {
+			Point point = drugstoreDto.getPoint();
 			pointRepository.save(point);
 		}
+		Drugstore drugstore=new Drugstore(drugstoreDto.getName(),drugstoreDto.getLocation(),drugstoreDto.getDescription(), 0,
+			drugstoreDto.getPharmacistAppointmentPrice(), drugstoreDto.getPoint());
+		drugstore.setId(drugstoreDto.getId());
+		return drugstoreRepository.save(drugstore);
+	}
+	
+
+	public Drugstore save(DrugstoreDtoAll drugstoreDto) throws Exception {
+
+		if(drugstoreDto.getLocation() != null) {
+			Location location = drugstoreDto.getLocation();
+			locationRepository.save(location);
+		}
 		
+		if(drugstoreDto.getPoint() != null) {
+			Point point = drugstoreDto.getPoint();
+			pointRepository.save(point);
+		}
+		Drugstore drugstore=new Drugstore(drugstoreDto.getName(),drugstoreDto.getLocation(),drugstoreDto.getDescription(), 0,
+			drugstoreDto.getPharmacistAppointmentPrice(), drugstoreDto.getPoint());
 		return drugstoreRepository.save(drugstore);
 	}
 	
@@ -216,7 +230,7 @@ public class DrugstoreService {
 	}
 
 	@Transactional
-	public boolean drugstoreUpdate(Drugstore drugstore) throws Exception {
+	public boolean drugstoreUpdate(DrugstoreDtoAll drugstore) throws Exception {
 		Drugstore d = drugstoreRepository.findOneById(drugstore.getId());
 		if (d == null) {
 			throw new Exception("This drugstore does not exist!");
@@ -241,7 +255,7 @@ public class DrugstoreService {
 		if (d.getPoint().getLongitude() != 0) point.setLongitude(drugstore.getPoint().getLongitude());
 		
 		d.setPoint(point);
-		
+		d.setId(drugstore.getId());
 		drugstoreRepository.save(d);
 		return true;
 	}

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.dto.DrugstoreAverageRatingDto;
+import pharmacyhub.dto.DrugstoreDtoAll;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.dto.search.EReceiptSearchDto;
@@ -39,12 +40,12 @@ public class DrugstoreController {
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Drugstore> add(@RequestBody Drugstore drugstore) throws Exception {
+	public ResponseEntity<Drugstore> add(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.save(drugstore), HttpStatus.OK);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Drugstore> update(@RequestBody Drugstore drugstore) throws Exception {
+	public ResponseEntity<Drugstore> update(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.update(drugstore), HttpStatus.OK);
 	}
 
@@ -113,7 +114,7 @@ public class DrugstoreController {
 	}
 	
 	@PutMapping(path = "/update",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> drugstoreUpdate(@RequestBody Drugstore drugstore) throws Exception {
+	public ResponseEntity<Boolean> drugstoreUpdate(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.drugstoreUpdate(drugstore), HttpStatus.OK);
 	}
 	

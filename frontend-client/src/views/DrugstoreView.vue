@@ -35,8 +35,8 @@
                     </p>
                     
                     <p style="margin:20px">
-                        <b>Working hours</b>: {{ drugstore.workingHoursFrom.slice(0,5) }} -
-                        {{ drugstore.workingHoursTo.slice(0,5) }}
+                        <b>Working hours</b>: {{ drugstore.workingHoursFrom }} -
+                        {{ drugstore.workingHoursTo }}
                     </p>
                     <b-button
                         variant="outline-hub"
@@ -633,7 +633,8 @@ export default {
                 )
                 .then((response) => {
                     this.drugstore = response.data;
-                    this.getAverageRating();
+                    this.drugstore.workingHoursFrom? this.drugstore.workingHoursFrom.slice(0,5) : this.drugstore.workingHoursFrom;
+                    this.drugstore.workingHoursTo? this.drugstore.workingHoursTo.slice(0,5) : this.drugstore.workingHoursTo;
                     this.checkSubscription();
                     this.$refs["map-container"].addMarker(fromLonLat([this.drugstore.point.longitude, this.drugstore.point.latitude]));
                 })
