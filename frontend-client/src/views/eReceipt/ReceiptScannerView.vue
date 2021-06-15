@@ -201,9 +201,6 @@ export default {
                 counter += 1;
                 console.log(counter);
             }
-            console.log(Object.keys(this.receipt));
-            console.log(this.receipt);
-            console.log(requestBodyData);
 
             return requestBodyData;
         },

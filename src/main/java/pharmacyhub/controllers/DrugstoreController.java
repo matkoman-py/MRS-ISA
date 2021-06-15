@@ -1,6 +1,7 @@
 package pharmacyhub.controllers;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
-import pharmacyhub.dto.DrugstoreAverageRatingDto;
 import pharmacyhub.dto.DrugstoreDtoAll;
+import pharmacyhub.dto.ereceipt.DrugstoreAndPriceDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
+import pharmacyhub.dto.ereceipt.SingleDrugstoreEReceiptDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.services.DrugstoreService;
@@ -76,6 +78,12 @@ public class DrugstoreController {
 			@RequestBody EReceiptSearchDto eReceiptSearchDto) throws Exception {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.eReceiptSearch(eReceiptSearchDto, pageable), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/single-receipt", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DrugstoreAndPriceDto>> searchSingleReceipt(
+			@RequestBody SingleDrugstoreEReceiptDto eReceiptSearchDto) throws Exception {
+		return new ResponseEntity<>(drugstoreService.getSingleReceiptPrices(eReceiptSearchDto), HttpStatus.OK);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

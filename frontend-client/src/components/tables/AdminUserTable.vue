@@ -165,12 +165,12 @@ export default {
                 .delete(
                     `http://localhost:8081/drugstoreAdmin?id=${this.deleteModal.user.id}`
                 )
-                .then((response) => {
+                .then(() => {
                     let index = this.users.findIndex(
                         (user) => user.id == this.deleteModal.user.id
                     );
                     this.users.splice(index, 1);
-                    this.$toastr.s("Success")
+                    this.$toastr.s("Success");
                 })
                 .catch((error) => console.log(error));
         },
@@ -179,12 +179,12 @@ export default {
                 .delete(
                     `http://localhost:8081/employees/delete/dermatologist?dermatologistEmail=${this.deleteModal.user.email}`
                 )
-                .then((response) => {
+                .then(() => {
                     let index = this.users.findIndex(
                         (user) => user.id == this.deleteModal.user.id
                     );
                     this.users.splice(index, 1);
-                    this.$toastr.s("Success")
+                    this.$toastr.s("Success");
                 })
                 .catch((error) => console.log(error));
         },
@@ -193,12 +193,12 @@ export default {
                 .delete(
                     `http://localhost:8081/suppliers/${this.deleteModal.user.id}`
                 )
-                .then((response) => {
+                .then(() => {
                     let index = this.users.findIndex(
                         (user) => user.id == this.deleteModal.user.id
                     );
                     this.users.splice(index, 1);
-                    this.$toastr.s("Success")
+                    this.$toastr.s("Success");
                 })
                 .catch((error) => console.log(error));
         },
