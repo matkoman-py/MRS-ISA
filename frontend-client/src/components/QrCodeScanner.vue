@@ -65,15 +65,26 @@
                                     <label for="minimumRatingInput"
                                         >Minimum Rating:</label
                                     >
-                                    <b-form-rating
-                                        size="sm"
-                                        id="minimumRatingInput"
-                                        variant="hub"
-                                        min="0"
-                                        max="10"
-                                        v-model="formData.minimumRating"
-                                        >5</b-form-rating
-                                    >
+                                    <b-col cols="6">
+                                        <b-form-rating
+                                            size="sm"
+                                            id="minimumRatingInput"
+                                            variant="hub"
+                                            min="0"
+                                            max="5"
+                                            v-model="formData.minimumRating"
+                                            >5</b-form-rating
+                                        >
+                                    </b-col>
+                                    <b-col>
+                                        <b-button
+                                            @click="resetValues"
+                                            variant="outline-hub"
+                                            size="sm"
+                                        >
+                                            Reset stars
+                                        </b-button>
+                                    </b-col>
                                 </b-form-row>
                                 <b-form-row class="mt-3">
                                     <label>Price:</label>
@@ -173,6 +184,9 @@ export default {
                 result[key] = amount;
             }
             return result;
+        },
+        resetValues: function() {
+            this.formData.minimumRating = 0;
         },
     },
 };

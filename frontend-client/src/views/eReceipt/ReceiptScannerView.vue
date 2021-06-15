@@ -4,6 +4,7 @@
             <b-col>
                 <b-card>
                     <qr-code-scanner
+                        ref="qrScanner"
                         v-on:qr-code-scanned="getReceiptData"
                     ></qr-code-scanner>
                 </b-card>

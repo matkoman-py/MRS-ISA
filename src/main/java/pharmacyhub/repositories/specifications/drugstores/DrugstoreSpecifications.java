@@ -47,9 +47,9 @@ public class DrugstoreSpecifications {
 				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("location").get("city")), "%" + eReceiptSearchDto.getDrugstoreCity().toLowerCase() + "%"));
 			}
 			
-			/*if(eReceiptSearchDto.getMinimumRating() != null) {
-				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("averageRating"), eReceiptSearchDto.getMinimumRating()));
-			}*/
+			if(eReceiptSearchDto.getMinimumRating() != null) {
+				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), eReceiptSearchDto.getMinimumRating()));
+			}
 			
 			
 			for (String drugId : eReceiptSearchDto.getReceiptData().keySet()) {

@@ -338,7 +338,7 @@ INSERT INTO public.dermatologist_appointment VALUES ('9j91de3c-3995-4bf8-b2ad-ea
 ----
 ---- Data for Name: dermatologist_appointment; 
 ----
-INSERT INTO public.dermatologist_appointment VALUES ('9b91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-15 13:41:32.959006', 0, NULL, '2021-06-15 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+--INSERT INTO public.dermatologist_appointment VALUES ('9b91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-15 13:41:32.959006', 0, NULL, '2021-06-15 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
 --INSERT INTO public.dermatologist_appointment VALUES ('2', false, NULL, '2021-02-16 02:00:00', 10, 500,true,'16:59:00', '17:59:00','79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6523-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
 --INSERT INTO public.dermatologist_appointment VALUES ('3', false, NULL, '2021-03-13 02:00:00', 8, 2500,true,'12:00:00', '13:00:00','da9e4ee3-c67c-4511-ad43-82e34d10ddc2', '2b7933e9-6523-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
 --INSERT INTO public.dermatologist_appointment VALUES ('4', false, NULL, '2021-01-16 02:00:00', 10, 1200,true,'16:59:00', '17:59:00','79e53b5a-9977-46dc-b5a5-11b54ac677a1', '2b7933e9-6523-463a-974b-ded43ad63843', '8128d806-c29b-4086-aae6-877d17eeb6fa');
