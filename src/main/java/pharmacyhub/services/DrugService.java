@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugOrder;
@@ -103,6 +104,7 @@ public class DrugService {
 		return drugsInDrugstore;
   }
 
+	@Transactional
 	public boolean delete(String id) throws Exception {
 		Drug drug = drugRepository.findById(id).orElse(null);
 		if(drug == null) {
@@ -116,6 +118,7 @@ public class DrugService {
 		return true;
 	}
 
+	@Transactional
 	public Drug update(DrugDto drugDto) throws Exception {
 		Drug drug = new Drug(drugDto.getName(),drugDto.getForm(), drugDto.isReceipt(), drugDto.getCode(), drugDto.getDailyDose(), drugDto.getWeight(), drugDto.getType(),
 				drugDto.getManufacturer(), drugDto.getSubstitutions(), drugDto.getIngredients(), drugDto.getDescription(),

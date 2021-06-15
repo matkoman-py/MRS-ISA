@@ -16,7 +16,7 @@ import pharmacyhub.domain.users.Supplier;
 
 @Entity
 @Table(name = "offer")
-@SQLDelete(sql = "UPDATE offer SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE offer SET deleted = true WHERE id = ?  AND version = ?")
 @Where(clause = "deleted = false")
 public class Offer extends BaseEntity {
 

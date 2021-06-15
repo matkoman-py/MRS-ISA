@@ -98,6 +98,12 @@ INSERT INTO public.users VALUES ('Supplier', '4f3bgfza-fda8-4a50-aa05-be2be4fb28
 ------
 ------ Data for Name: Drugstock;
 ------
+INSERT INTO public.supplierstock VALUES ('0', false, '12-06-2021', 0, 0, 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '4f3bgfza-fda8-4a50-aa05-be2be4fb2884');
+INSERT INTO public.supplierstock VALUES ('1', false, '12-06-2021', 0, 0, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '4f3bgfza-fda8-4a50-aa05-be2be4fb2884');
+
+------
+------ Data for Name: Drugstock;
+------
 INSERT INTO public.drugstock VALUES ('0', false, '12-06-2021', 0, 55, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.drugstock VALUES ('1', false, '12-06-2021', 0, 922, 'a329071d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6as3-463a-974b-ded43ad63843');
 INSERT INTO public.drugstock VALUES ('2', false, '12-06-2021', 0, 82, 'd7d2d173-9f15-4bd2-979c-6933746f6be4', '2b7933e9-6as3-463a-974b-ded43ad63843');

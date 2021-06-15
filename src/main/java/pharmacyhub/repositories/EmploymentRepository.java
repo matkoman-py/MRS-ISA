@@ -15,4 +15,6 @@ public interface EmploymentRepository extends JpaRepository<Employment, String>{
 	List<Employment> findByDermatologistId(String dermatologistId);
 	@Transactional
 	void deleteByDermatologistAndDrugstore(Dermatologist dermatologist, Drugstore drugstore);
+	@Transactional
+	void deleteByDermatologistEmail(String dermatologistEmail);
 }

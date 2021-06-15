@@ -16,7 +16,7 @@ import pharmacyhub.domain.users.Patient;
 
 @Entity
 @Table(name = "drug_reservation")
-@SQLDelete(sql = "UPDATE drug_reservation SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE drug_reservation SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class DrugReservation extends BaseEntity {
 

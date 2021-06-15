@@ -11,7 +11,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "drugstock")
-@SQLDelete(sql = "UPDATE drugstock SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE drugstock SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class DrugStock extends BaseEntity{
 	

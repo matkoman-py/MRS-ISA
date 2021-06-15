@@ -14,10 +14,8 @@ import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.Point;
-import pharmacyhub.domain.RatingDrugstore;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.dto.DrugStockPriceDto;
-import pharmacyhub.dto.DrugstoreAverageRatingDto;
 import pharmacyhub.dto.DrugstoreDtoAll;
 import pharmacyhub.dto.ereceipt.DrugstoreAndPriceDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
@@ -30,7 +28,6 @@ import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.PointRepository;
-import pharmacyhub.repositories.RatingDrugstoreRepository;
 import pharmacyhub.repositories.specifications.drugstores.DrugstoreSpecifications;
 import pharmacyhub.repositories.users.DrugstoreAdminRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
@@ -71,9 +68,6 @@ public class DrugstoreService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private RatingDrugstoreRepository ratingDrugstoreRepository;
-	
-	@Autowired
 	private PointRepository pointRepository;
 	
 	public List<Drugstore> findAll() {
@@ -81,8 +75,6 @@ public class DrugstoreService {
 	}
 	
 	public Drugstore update(DrugstoreDtoAll drugstoreDto) throws Exception {
-		
-		//TODO: odraditi provere za vreme
 		
 		if(drugstoreRepository.findById(drugstoreDto.getId()) == null) {
 			throw new Exception("No such drugstore");

@@ -25,4 +25,7 @@ public interface DrugRepository extends JpaRepository<Drug, String>, JpaSpecific
 	@Lock(LockModeType.PESSIMISTIC_READ)
 	@Query("select d from Drug d where d.id = ?1")
 	Drug findByIdWithLock(String drugId);
+	
+	@Transactional
+	void deleteById(String id);
 }

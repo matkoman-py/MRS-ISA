@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.enums.UserType;
+import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Role;
@@ -62,6 +64,9 @@ public class RegistrationService {
 		case SystemAdmin:
 			saveSystemAdmin(requestUser);
 			break;
+		case Dermatologist:
+			saveDermatologist(requestUser);
+			break;
 		default:
 		}
 
@@ -76,6 +81,16 @@ public class RegistrationService {
 		systemAdmin = userRepository.save(systemAdmin);
 
 		userNotificationService.sendEmployeeInitialPassword(systemAdmin.getEmail(), initialPassword);
+	}
+	
+	private void saveDermatologist(UserRegistrationDto requestUser) throws MessagingException {
+		Dermatologist dermatologist = getDermatologistFromUserRegistrationDto(requestUser);
+		String initialPassword = updateUserWithInitialPasswordAndEncode(dermatologist);
+		dermatologist.setType(UserType.Dermatologist);
+		dermatologist.setStatus(true);
+		dermatologist = userRepository.save(dermatologist);
+
+		userNotificationService.sendEmployeeInitialPassword(dermatologist.getEmail(), initialPassword);
 	}
 
 	private void saveDrugstoreAdmin(UserRegistrationDto requestUser) throws Exception {
@@ -156,6 +171,14 @@ public class RegistrationService {
 		List<Role> roles = roleService.findByName("SystemAdmin");
 		systemAdmin.setRoles(roles);
 		return systemAdmin;
+	}
+	
+	private Dermatologist getDermatologistFromUserRegistrationDto(UserRegistrationDto requestUser) {
+		Dermatologist dermatologist = new Dermatologist();
+		updateUserFromRequestDto(dermatologist, requestUser);
+		List<Role> roles = roleService.findByName("Dermatologist");
+		dermatologist.setRoles(roles);
+		return dermatologist;
 	}
 
 	private void updateUserFromRequestDto(User user, UserRegistrationDto requestUser) {

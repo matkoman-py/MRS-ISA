@@ -110,6 +110,11 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.deletePharmacist(pharmacistEmail), HttpStatus.OK);
 	}
 	
+	@DeleteMapping(path="/delete/dermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deleteDermatologist(@RequestParam (value = "dermatologistEmail") String dermatologistEmail) throws Exception {
+		return new ResponseEntity<>(employeeService.deleteDermatologist(dermatologistEmail), HttpStatus.OK);
+	}
+	
 	@GetMapping(path ="/password",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> passwordValid(@RequestParam (value = "employeeId") String employeeId,
 			@RequestParam (value = "passwordInput") String passwordInput) throws Exception {
