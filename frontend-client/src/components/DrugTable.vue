@@ -139,7 +139,10 @@
                                     )
                                 "
                                 class="mr-1"
-                                :disabled="employee.penaltyCounter >= 3 || role != 'Patient'"
+                                :disabled="
+                                    employee.penaltyCounter >= 3 ||
+                                        role != 'Patient'
+                                "
                             >
                                 Reserve
                             </b-button>
@@ -258,12 +261,13 @@
                     type="number"
                 ></b-form-input>
                 <br />
-                <p>Price: {{price*amount}}</p>
+                <p>Price: {{ price * amount }}</p>
                 <b-button
                     :disabled="date == '' || amount == ''"
                     type="submit"
                     variant="outline-hub"
-                    >Save</b-button>
+                    >Save</b-button
+                >
             </b-form>
         </b-modal>
 
@@ -296,7 +300,10 @@ export default {
         ...mapState({
             user: (state) => state.userModule.loggedInUser,
             email: (state) => state.userModule.loggedInUser.email,
-            role: (state) => state.userModule.loggedInUser.type,
+            role: (state) =>
+                state.userModule.loggedInUser
+                    ? state.userModule.loggedInUser.type
+                    : "",
         }),
         //rows() {
         //return (this.currentPage + 1) * 3;
@@ -320,7 +327,7 @@ export default {
         );
         const minDate = new Date(today);
         return {
-            price:0,
+            price: 0,
             amount: "",
             minDate: minDate,
             userRating: "1",
@@ -434,19 +441,21 @@ export default {
         };
     },
     methods: {
-        getPrice(drug,drugstore) {
-        //alert(drug);
-        //alert(drugstore);
-        this.$http.get('http://localhost:8081/drug-price', {
-          params:{
-            drugId: drug,
-            drugstoreId: drugstore,
-          }})
-          .then(response => {
-            this.price = response.data;
-          })
-          .catch(error => console.log(error));
-      },
+        getPrice(drug, drugstore) {
+            //alert(drug);
+            //alert(drugstore);
+            this.$http
+                .get("http://localhost:8081/drug-price", {
+                    params: {
+                        drugId: drug,
+                        drugstoreId: drugstore,
+                    },
+                })
+                .then((response) => {
+                    this.price = response.data;
+                })
+                .catch((error) => console.log(error));
+        },
         saveRating() {
             return true;
         },
@@ -578,7 +587,8 @@ export default {
                             this.appointmentId = this.passedAppointmentId;
                             this.$root.$emit("bv::show::modal", "my-modal1");
                         }
-                    }).then(this.getPrice(data.id,this.passedDrugstoreId));
+                    })
+                    .then(this.getPrice(data.id, this.passedDrugstoreId));
             }
         },
         getLength: function() {

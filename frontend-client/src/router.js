@@ -36,6 +36,7 @@ import DrugViewSearch from "./views/DrugViewSearch";
 import EmployeesOverview from "./views/EmployeesOverview";
 import ReceiptGeneratorView from "./views/eReceipt/ReceiptGeneratorView";
 import ReceiptScannerView from "./views/eReceipt/ReceiptScannerView";
+import FirstLoginPage from "./views/FirstLoginPage";
 import HomePage from "./views/HomePage";
 import LoginPage from "./views/LoginPage";
 import MyDrugstore from "./views/MyDrugstore";
@@ -52,10 +53,8 @@ import SchedulePharmacist from "./views/SchedulePharmacist";
 import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment";
 import SchedulePharmacistAppointmentFromDrugstore from "./views/SchedulePharmacistAppointmentFromDrugstore";
 import SubscriptionsView from "./views/SubscriptionsView";
-import TreatedPatients from "./views/TreatedPatients";
 import SystemAdministratorProfile from "./views/SystemAdministratorProfile";
-import FirstLoginPage from "./views/FirstLoginPage";
-
+import TreatedPatients from "./views/TreatedPatients";
 
 Vue.use(VueRouter);
 
@@ -329,7 +328,6 @@ const routes = [
         component: SchedulePharmacistAppointmentFromDrugstore,
     },
     {
-
         path: "/system-administrator-profile",
         name: "SystemAdministratorProfile",
         component: SystemAdministratorProfile,
@@ -341,8 +339,40 @@ const routes = [
     },
 ];
 
+// const routeAllowedRoles = {
+//     "": [""],
+//     "/login": [""],
+//     "/drugstoreSearch": [""],
+//     "/drugSearch": [""],
+//     "/register": [""],
+// };
+
+// const checkIfInArray = function(array) {
+//     if (array.includes("")) {
+//         return true;
+//     }
+//     if (!store.state.userModule.loggedInUser) {
+//         return false;
+//     }
+//     return array.includes(store.state.userModule.loggedInUser);
+// };
+
+// const isUserAllowed = function(to, from, next) {
+//     if (to.matched.length == 0) {
+//         next(from);
+//     } else if (checkIfInArray(to.matched[0].path)) {
+//         next();
+//     } else {
+//         next(from);
+//     }
+// };
+
+// console.log(routeAllowedRoles);
+
 const router = new VueRouter({
     routes,
 });
+
+// router.beforeEach(isUserAllowed);
 
 export default router;

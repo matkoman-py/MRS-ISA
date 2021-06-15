@@ -369,6 +369,7 @@ export default {
     computed: {
         ...mapState({
             user: (state) => state.userModule.loggedInUser,
+            role: (state) => state.userModule.loggedInUser.type,
         }),
     },
     components: {

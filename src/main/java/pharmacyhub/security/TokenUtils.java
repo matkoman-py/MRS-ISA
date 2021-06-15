@@ -22,7 +22,7 @@ public class TokenUtils {
 	@Value("somesecret")
 	public String SECRET;
 
-	@Value("200")
+	@Value("360000")
 	private int EXPIRES_IN;
 
 	@Value("Authorization")
@@ -50,8 +50,12 @@ public class TokenUtils {
 	public String getToken(HttpServletRequest request) {
 
 		String authHeader = request.getHeader(AUTH_HEADER);
+		
+		System.out.println(request.getMethod());
+		System.out.println(authHeader);
 
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			System.out.println("pusim kurac");
 			return authHeader.substring(7);
 		}
 

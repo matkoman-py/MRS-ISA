@@ -37,7 +37,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
 		
 		String authToken = tokenUtils.getToken(request);
 		try {
-			
+
 			if (authToken != null) {
 				
 				// 2. Citanje korisnickog imena iz tokena
@@ -47,6 +47,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
 					
 					// 3. Preuzimanje korisnika na osnovu username-a
 					UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+					System.out.println("picka materin2");
+					
+					for (var a : userDetails.getAuthorities()) {
+						System.out.println(a.getAuthority());
+					}
+					
 					
 					// 4. Provera da li je prosledjeni token validan
 					if (tokenUtils.validateToken(authToken, userDetails)) {
