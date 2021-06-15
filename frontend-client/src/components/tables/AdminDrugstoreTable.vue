@@ -173,7 +173,7 @@ export default {
                 .then((response) => {
                     this.drugstores.push(response.data);
                     //this.drugstores.splice(index, 1, response.data);
-                    alert("success");
+                    this.$toastr.s("Success!");
                 })
                 .catch((error) => console.log(error));
         },

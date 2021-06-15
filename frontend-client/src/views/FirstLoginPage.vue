@@ -53,7 +53,8 @@ import router from "../router";
                     this.dto.id = this.user.id;
                     this.$http.put("https://mrs-isa-usijani.herokuapp.com/firstLoginPasswordChange", this.dto)
                     .then(() => {
-                        alert("You succesfully updated your password!");
+                        //alert("You succesfully updated your password!");
+                        this.$toastr.s("You succesfully updated your password!");
                         this.$root.$emit('bv::hide::modal', 'my-modal');
                         router.push("/");
                     })
@@ -62,7 +63,7 @@ import router from "../router";
                     this.dto.password= '';
                     this.newPasswordValidateInput= '';
                 }else{
-                    alert("New passwords not ok!");
+                    this.$toastr.e("Passwords don't match!");
                 }   
             },
         }

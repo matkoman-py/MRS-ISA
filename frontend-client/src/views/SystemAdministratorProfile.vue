@@ -156,7 +156,8 @@
                 this.editEnabled = true;
                 this.$http.put("https://mrs-isa-usijani.herokuapp.com/systemAdminUpdate", this.profile)
                     .then(() => {
-                        alert("You succesfully updated your profile informations!")
+                        //alert("You succesfully updated your profile informations!")
+                        this.$toastr.s("You succesfully updated your profile information!");
                     })
                     .catch(error => console.log(error));
             },
@@ -180,7 +181,8 @@
                             if(valid){
                                 this.changePassword();
                             }else{
-                                alert("Old password does not match!");
+                                //alert("Old password does not match!");
+                                this.$toastr.e("Old password does not match!");
                             }
                         })
                         .catch(error => console.log(error));
@@ -190,7 +192,7 @@
                     this.profile.password = this.newPasswordInput;
                     this.$http.put("https://mrs-isa-usijani.herokuapp.com/systemAdmin/updatepassword", this.profile)
                     .then(() => {
-                        alert("You succesfully updated your password!");
+                        this.$toastr.s("Success!");
                         this.$root.$emit('bv::hide::modal', 'my-modal');
                     })
                     .catch(error => console.log(error));
@@ -199,7 +201,7 @@
                     this.newPasswordInput= '';
                     this.newPasswordValidateInput= '';
                 }else{
-                    alert("New passwords not ok!");
+                    this.$toastr.e("New password not ok!");
 
                 }   
             },
