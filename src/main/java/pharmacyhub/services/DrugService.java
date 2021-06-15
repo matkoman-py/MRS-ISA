@@ -13,12 +13,15 @@ import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugOrder;
 import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
+import pharmacyhub.domain.DrugType;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Ingredient;
+import pharmacyhub.domain.Manufacturer;
 import pharmacyhub.domain.OrderStock;
 import pharmacyhub.domain.enums.OrderStatus;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.CreateDrugOrderDto;
+import pharmacyhub.dto.DrugDto;
 import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.dto.search.DrugSearchDto;
 import pharmacyhub.repositories.DrugOrderRepository;
@@ -66,8 +69,11 @@ public class DrugService {
 		return drugRepository.findAll(DrugSpecifications.withSearch(drugSearchDto), pageable).toList();
 	}
 	
-	public Drug save(Drug drug) throws Exception {
-
+	public Drug save(DrugDto drugDto) throws Exception {
+		
+		Drug drug = new Drug(drugDto.getName(),drugDto.getForm(), drugDto.isReceipt(), drugDto.getCode(), drugDto.getDailyDose(), drugDto.getWeight(), drugDto.getType(),
+				drugDto.getManufacturer(), drugDto.getSubstitutions(), drugDto.getIngredients(), drugDto.getDescription(),
+				drugDto.getPoint(),0);
 		if (drug.getIngredients().isEmpty()) {
 			throw new Exception("Empty ingredients list!");
 		}
@@ -112,12 +118,23 @@ public class DrugService {
 		return true;
 	}
 
-	public Drug update(Drug drug) throws Exception {
-		// TODO Auto-generated method stub
+	public Drug update(DrugDto drugDto) throws Exception {
+		Drug drug = new Drug(drugDto.getName(),drugDto.getForm(), drugDto.isReceipt(), drugDto.getCode(), drugDto.getDailyDose(), drugDto.getWeight(), drugDto.getType(),
+				drugDto.getManufacturer(), drugDto.getSubstitutions(), drugDto.getIngredients(), drugDto.getDescription(),
+				drugDto.getPoint(),0);
+		drug.setId(drugDto.getId());
 		if (drugRepository.findOneById(drug.getId()) == null) {
 			throw new Exception("Drug doesn't exists");
 		}
-		return save(drug);
+		if (drug.getIngredients().isEmpty()) {
+			throw new Exception("Empty ingredients list!");
+		}
+
+		if (!areIngredientsValid(drug.getIngredients())) {
+			throw new Exception("This ingrediant does not exist");
+		}
+
+		return drugRepository.save(drug);
 	}
 
 	public List<Drug> findAllSubstitutes(String drugId) {
