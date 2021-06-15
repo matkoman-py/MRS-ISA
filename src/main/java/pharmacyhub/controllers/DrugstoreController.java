@@ -117,8 +117,5 @@ public class DrugstoreController {
 		return new ResponseEntity<>(drugstoreService.drugstoreUpdate(drugstore), HttpStatus.OK);
 	}
 	
-	@GetMapping(path="/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DrugstoreAverageRatingDto> calculateAverageRate(@RequestParam(value = "drugstoreId") String drugstoreId) throws Exception {
-		return new ResponseEntity<>(drugstoreService.calculateAverageRate(drugstoreId), HttpStatus.OK);
-	}
+	
 }

@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -30,8 +32,9 @@ public class Drugstore extends BaseEntity {
 	@Column(nullable = false)
 	public String description;
 
-	//@Column(name = "average_rating")
-	//public double averageRating;
+	@Column(name = "rating")
+	@ColumnDefault("0")
+	public double rating;
 
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -67,6 +70,15 @@ public class Drugstore extends BaseEntity {
 		//this.averageRating = averageRating;
 		this.pharmacistAppointmentPrice = pharmacistAppointmentPrice;
 		this.point = point;
+	}
+	
+	
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
 	public Point getPoint() {

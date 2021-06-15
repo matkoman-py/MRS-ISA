@@ -14,6 +14,7 @@ import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.enums.DrugReservationStatus;
 import pharmacyhub.dto.ReportDto;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugReservationRepository;
@@ -170,7 +171,7 @@ public class ReportService {
 	}
 	
 	private int getDrugReservationProfit(Date from, Date to, Drugstore drugstore) {
-		List<DrugReservation> drugsSold = drugReservationRepository.findByDrugstoreAndIssuedTrue(drugstore);
+		List<DrugReservation> drugsSold = drugReservationRepository.findByDrugstoreAndStatus(drugstore,DrugReservationStatus.Issued);
 		int profit = 0;
 		for (DrugReservation reservation : drugsSold) {
 			Date date = Date.valueOf(reservation.getDate());

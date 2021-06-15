@@ -59,13 +59,17 @@ public class Drug extends BaseEntity {
 
 	@Column(nullable = false)
 	private int point;
-
+	
+	@Column
+	@ColumnDefault("0")
+	private double rating;
+	
 	public Drug() {
 		super();
 	}
 
 	public Drug(String id, String name, String form, boolean receipt, DrugType type, Manufacturer manufacturer,
-			List<Drug> substitutions, List<Ingredient> ingredients, String description, int point) {
+			List<Drug> substitutions, List<Ingredient> ingredients, String description) {
 		super();
 		this.name = name;
 		this.form = form;
@@ -76,6 +80,16 @@ public class Drug extends BaseEntity {
 		this.ingredients = ingredients;
 		this.description = description;
 		this.point = point;
+		
+	}
+	
+	
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
 	public String getName() {

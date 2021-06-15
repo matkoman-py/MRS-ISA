@@ -7,8 +7,8 @@
                     <p style="margin:20px"><b>Name</b>: {{drugstore.name}}</p>
                     <p style="margin:20px"><b>Address</b>: {{drugstore.location.address}}, {{drugstore.location.city}}, {{drugstore.location.country}}</p>
                     <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
-                    <p v-if="averageRate != null" style="margin:20px"><b>Average rating</b>: {{ averageRate.toFixed(2) }} (From {{numberOfRates}} rates)</p>
-                    <p v-if="averageRate == null" style="margin:20px"><b>Average rating</b>: There are currently no rates for your drugstore</p>
+                    <p  style="margin:20px"><b>Average rating</b>: {{ drugstore.rating.toFixed(2) }}</p>
+                    
                     <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom.slice(0,5)}} - {{drugstore.workingHoursTo.slice(0,5)}}</p>
                     <p style="margin:20px"><b>Pharmacist appointment price</b>: {{drugstore.pharmacistAppointmentPrice}}</p>
                 </div>
@@ -73,18 +73,6 @@ export default {
                         this.getAverageRating();
                     })
                     .catch(error => console.log(error));
-        }, getAverageRating() {
-                this.$http.get("http://localhost:8081/drugstores/averageRate", {
-                    params: {
-                        drugstoreId: this.drugstore.id
-                    }
-                })
-                .then((response) => {
-                    this.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
-                    this.numberOfRates = response.data.numberOfRates;
-                })
-                .catch((error) => console.log(error));
-
         },
     },
     mounted: function(){
