@@ -42,7 +42,8 @@ const actions = {
                 localStorage.setItem("token", response.data.accessToken);
                 commit("setLoggedInUser", response.data.user);
                 commit("setError", "");
-                if (response.data.user.firstLogin && (response.data.user.type == 'DrugstoreAdmin' || response.data.user.type == 'SystemAdmin' || response.data.user.type == 'Supplier')) {
+                if (response.data.user.firstLogin && (response.data.user.type == 'DrugstoreAdmin' || response.data.user.type == 'SystemAdmin' || response.data.user.type == 'Supplier' 
+                || response.data.user.type == 'Dermatologist' || response.data.user.type == 'Pharmacist')) {
                     router.push("/first-login");
                 } else {
                     router.push("/");
