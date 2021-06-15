@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,22 +33,23 @@ public class PharmacistAppointmentController {
 	@Autowired
 	private PharmacistAppointmentService pharmacistAppointmentService;
 	
+	@PreAuthorize("hasAnyRole('PATIENT','PHARMACIST')")
 	@PostMapping(path ="/with-patient",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PharmacistAppointment> getAllPharmacistsForDrugstore(@RequestBody PharmacistAppointmentPatientDto pharmacistAppointmentDto) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.saveWithPatient(pharmacistAppointmentDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path ="/begin-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PharmacistAppointment> getPharmacistAppointment(@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String pharmacistAppointmentId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findAppointment(pharmacistAppointmentId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@GetMapping(path ="/get-drugstores", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Drugstore>> getDrugstores(@RequestParam (value = "pharmacistAppointmentDate", required=false,  defaultValue = "0") String pharmacistAppointmentDate,
 															   @RequestParam (value = "pharmacistAppointmentTime", required=false,  defaultValue = "0") String pharmacistAppointmentTime) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.findDrugstores(pharmacistAppointmentTime,pharmacistAppointmentDate), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@GetMapping(path ="/get-pharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistDto>> getPharmacists(@RequestParam (value = "drugstoreId", required=false,  defaultValue = "0") String drugstoreId,
 			@RequestParam (value = "pharmacistAppointmentDate", required=false,  defaultValue = "0") String pharmacistAppointmentDate,
@@ -78,14 +80,14 @@ public class PharmacistAppointmentController {
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllPharmacistAppointments(@RequestParam (value = "pharmacistId", required=false,  defaultValue = "0") String pharmacistId) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.getAllPharmacistAppointments(pharmacistId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path ="/end-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PharmacistAppointment> endAppointment(
 			@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String appointmentId,
 			@RequestParam (value = "appointmentReport", required=false,  defaultValue = "0") String appointmentReport) throws Exception {
 		return new ResponseEntity<>(pharmacistAppointmentService.endAppointment(appointmentId,appointmentReport), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path ="/all-pharm-done", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsDone(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -100,7 +102,7 @@ public class PharmacistAppointmentController {
 		}
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDone(pharmacistId,pageable), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path ="/all-pharm-done-length", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getAllADermatologistAppointmentsDoneLength(
 			
@@ -108,7 +110,7 @@ public class PharmacistAppointmentController {
 		
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsDoneLength(pharmacistId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path ="/all-pharm-todo", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistAppointment>> getAllAPharmacistAppointmentsTodo(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -123,7 +125,7 @@ public class PharmacistAppointmentController {
 		}
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsTodo(pharmacistId,pageable), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path ="/all-pharm-todo-length", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getAllAPharmacistAppointmentsTodoLength(
 			
@@ -131,7 +133,7 @@ public class PharmacistAppointmentController {
 		
 		return new ResponseEntity<>(pharmacistAppointmentService.findAllPharmacistAppointmentsTodoLength(pharmacistId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@GetMapping(path = "/cancelAppointment",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistAppointment>> cancelReservation(@RequestParam (value = "pharmacistAppointmentId", required=false,  defaultValue = "0") String appointmentId) throws Exception {
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,12 +39,12 @@ public class DrugStockController {
 		System.out.println(searchedText);
 		return new ResponseEntity<>(drugStockService.search(searchedText, drugstoreId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> addNewDrugToDrugstore(@RequestBody AddNewDrugToDrugstoreDto drugDto) throws Exception {
 		return new ResponseEntity<>(drugStockService.addNewDrugToDrugstore(drugDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
 	@DeleteMapping(path="/delete", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> deleteFromStock(@RequestBody DeleteDrugFromStockDto deleteDrugDto) throws Exception {
 		return new ResponseEntity<>(drugStockService.deleteFromStock(deleteDrugDto), HttpStatus.OK);

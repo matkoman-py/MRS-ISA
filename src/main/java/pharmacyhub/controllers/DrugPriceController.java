@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,12 +20,12 @@ public class DrugPriceController {
 	
 	@Autowired
 	private DrugPriceService drugPriceService;
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DrugPrice> add(@RequestBody CreateNewPriceForDrugDto drugPrice) throws Exception {
 		return new ResponseEntity<>(drugPriceService.save(drugPrice), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
 	@PostMapping(path="/promotion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DrugPrice> createPromotion(@RequestBody CreateNewPriceForDrugDto drugPromotion) throws Exception {
 		return new ResponseEntity<>(drugPriceService.savePromotion(drugPromotion), HttpStatus.OK);

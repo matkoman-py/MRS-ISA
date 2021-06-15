@@ -229,6 +229,14 @@ INSERT INTO public.reply VALUES ('99038a9a-a754-11eb-bcbc-0242ac130002', false, 
 --
 ----Data for drug reservations
 --
+INSERT INTO public.dermatologist_appointment VALUES ('9b91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-15 13:41:32.959006', 0, NULL, '2021-06-15 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+INSERT INTO public.dermatologist_appointment VALUES ('9a91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-16 13:41:32.959006', 0, NULL, '2021-06-16 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+INSERT INTO public.dermatologist_appointment VALUES ('9c91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-17 13:41:32.959006', 0, NULL, '2021-06-17 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+INSERT INTO public.dermatologist_appointment VALUES ('9d91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-18 13:41:32.959006', 0, NULL, '2021-06-18 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+INSERT INTO public.dermatologist_appointment VALUES ('9f91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-19 13:41:32.959006', 0, NULL, '2021-06-16 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+INSERT INTO public.dermatologist_appointment VALUES ('9g91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-20 13:41:32.959006', 0, NULL, '2021-06-17 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+INSERT INTO public.dermatologist_appointment VALUES ('9j91de3c-3995-4bf8-b2ad-eaee77567bae', false, '2021-06-21 13:41:32.959006', 0, NULL, '2021-06-18 11:30:00', 30, 100, false, '11:00:00', '11:30:00', '68eec890-3bc5-47e3-8a5b-d3544ebbfeb3', '2b7933e9-6523-463a-974b-ded43ad63843', NULL);
+
 --INSERT INTO public.drug_reservation VALUES ('01', false, 2, 'nekiKod1', '2021-05-26', true, true, 5000, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843', '393dca36-3778-4802-939c-de7a0a265c9d');
 --INSERT INTO public.drug_reservation VALUES ('02', false, 2, 'nekiKod1', '2021-02-26', true, true, 55000, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843', '393dca36-3778-4802-939c-de7a0a265c9d');
 --INSERT INTO public.drug_reservation VALUES ('03', false, 2, 'nekiKod1', '2021-01-26', true, true, 8000, 'a32asd1d-b38c-4014-9fa3-2e7367d9ee49', '2b7933e9-6523-463a-974b-ded43ad63843', '393dca36-3778-4802-939c-de7a0a265c9d');

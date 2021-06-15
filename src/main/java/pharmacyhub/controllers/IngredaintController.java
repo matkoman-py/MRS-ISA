@@ -19,7 +19,7 @@ public class IngredaintController {
 
 	@Autowired
 	private IngredientService ingrediantService;
-
+	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Ingredient>> getIngredaints() {
 		return new ResponseEntity<>(ingrediantService.findAll(), HttpStatus.OK);

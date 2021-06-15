@@ -171,6 +171,11 @@
                         to="/drugstore-administrator-profile"
                         >{{ email }}</router-link
                     >
+                    <router-link
+                        v-else-if="role == 'SystemAdmin'"
+                        to="/system-administrator-profile"
+                        >{{ email }}</router-link
+                    >
                     <router-link v-else to="/">{{ email }}</router-link>
                 </b-navbar-brand>
                 <b-navbar-brand tag="h3" class="nav-link" v-on:click="logout">

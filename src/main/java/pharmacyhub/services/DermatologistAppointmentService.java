@@ -289,7 +289,7 @@ public class DermatologistAppointmentService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public List<DermatologistAppointment> createReservation(String patientId, String appointmentId, String drugstoreId) throws MessagingException {
+	public List<DermatologistAppointment> createReservation(String patientId, String appointmentId, String drugstoreId) throws Exception {
 		List<DermatologistAppointment> wantedAppontments = new ArrayList<>();
 		
 		DermatologistAppointment selectedAppointment = dermatologistAppointmentRepository.findOneById(appointmentId);
@@ -305,6 +305,60 @@ public class DermatologistAppointmentService {
 		
 		if (selectedAppointment.getPatient() != null) {
 			throw new RuntimeException("This appointemt already has a patient!");
+		}
+		
+		Date vreme = selectedAppointment.getDate();
+		vreme.setHours(selectedAppointment.getTime().getHours());
+		vreme.setMinutes(selectedAppointment.getTime().getMinutes());
+		long vremePocetak = vreme.getTime();
+		vreme.setMinutes(selectedAppointment.getTime().getMinutes()+selectedAppointment.getDuration());
+		long vremeKraj = vreme.getTime();
+		
+		List<DermatologistAppointment> dermatologistAppointmentsPatient = dermatologistAppointmentRepository.findByPatientId(patientId);
+		for(DermatologistAppointment da : dermatologistAppointmentsPatient) {
+			Date pVreme = da.getDate();
+			pVreme.setHours(da.getTime().getHours());
+			pVreme.setMinutes(da.getTime().getMinutes());
+			long pvremePocetak = pVreme.getTime();
+			pVreme.setHours(da.getTimeEnd().getHours());
+			pVreme.setMinutes(da.getTimeEnd().getMinutes());
+			long pvremeKraj = pVreme.getTime();
+			System.out.println("3 pvreme poc: "+ pvremePocetak+ "pvreme kraj:" + pvremeKraj);
+			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
+				System.out.println("USO JE 5");
+				throw new Exception("Patient already has an appointment at that time.");
+				// kako throw exception
+			}
+			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
+				System.out.println("USO JE 6");
+				throw new Exception("Patient already has an appointment at that time.");
+				// kako throw exception
+			}
+		}
+		
+		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(patientId);
+		for(PharmacistAppointment pa : pharmacistAppointments) {
+			System.out.println(pa.getDate());
+			System.out.println(pa.getTime());
+			Date pVreme = pa.getDate();
+			pVreme.setHours(pa.getTime().getHours());
+			pVreme.setMinutes(pa.getTime().getMinutes());
+			long pvremePocetak = pVreme.getTime();
+			pVreme.setHours(pa.getTimeEnd().getHours());
+			pVreme.setMinutes(pa.getTimeEnd().getMinutes());
+			long pvremeKraj = pVreme.getTime();
+			System.out.println("pvreme poc: "+ pvremePocetak+ "pvreme kraj:" + pvremeKraj);
+			
+			if(vremePocetak >= pvremePocetak && vremePocetak<=pvremeKraj) {
+				System.out.println("USO JE 1");
+				throw new Exception("Patient already has an appointment at that time.");
+				// kako throw exception
+			}
+			if(vremeKraj >= pvremePocetak && vremeKraj<=pvremeKraj) {
+				System.out.println("USO JE 2");
+				throw new Exception("Patient already has an appointment at that time.");
+				// kako throw exception
+			}
 		}
 		
 		selectedAppointment.setPatient(patient);

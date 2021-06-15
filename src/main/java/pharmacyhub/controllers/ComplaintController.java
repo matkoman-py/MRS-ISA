@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class ComplaintController {
 	
 	@Autowired
 	private ComplaintService complaintService;
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<ComplaintDto>> getComplaints(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -36,7 +37,7 @@ public class ComplaintController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(complaintService.getComplaints(pageable), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN', 'PATIENT')")
 	@GetMapping(path="/patient/{patientId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<ComplaintDto>> getComplaints(
 			@PathVariable("patientId") String patientId,
@@ -45,17 +46,17 @@ public class ComplaintController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(complaintService.getComplaintsByPatientId(patientId, pageable), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ComplaintDto> makeComplaint(@RequestBody MakeComplaintDto makeComplaintDto) throws Exception {
 		return new ResponseEntity<>(complaintService.makeComplaint(makeComplaintDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(path = "/reply/{complaintId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ReplyDto> getReply(@PathVariable("complaintId") String complaintId) throws Exception {
 		return new ResponseEntity<>(complaintService.getReply(complaintId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PostMapping(path = "/reply/{complaintId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ReplyDto> getReply(@RequestBody MakeReplyDto makeReplyDto) throws Exception {
 		return new ResponseEntity<>(complaintService.makeReply(makeReplyDto), HttpStatus.OK);

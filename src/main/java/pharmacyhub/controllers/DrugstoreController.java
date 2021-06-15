@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,22 +34,22 @@ public class DrugstoreController {
 
 	@Autowired
 	private DrugstoreService drugstoreService;
-
+	
 	@PostMapping(path = "/searchLength", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> searchLength(@RequestBody DrugstoreSearchDto drugstoreSearchDto) throws Exception {
 		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugstoreSearchDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> add(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.save(drugstore), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> update(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.update(drugstore), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> update(@PathVariable String id) {
 		try {
@@ -107,12 +108,12 @@ public class DrugstoreController {
 		//Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.findDrugstoreEmployee(drugId,drugstoreId/*pageable*/), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(path="/adminsDrugstore", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> getAdminsDrugstore(@RequestParam(value = "adminId") String adminId) throws Exception {
 		return new ResponseEntity<>(drugstoreService.getAdminsDrugstore(adminId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@PutMapping(path = "/update",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> drugstoreUpdate(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.drugstoreUpdate(drugstore), HttpStatus.OK);

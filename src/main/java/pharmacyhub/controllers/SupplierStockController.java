@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class SupplierStockController {
 
 	@Autowired
 	private SupplierStockService supplierStockService;
-
+	@PreAuthorize("hasAnyRole('SUPPLIER')")
 	@PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<SupplierStockDto>> search(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -38,18 +39,18 @@ public class SupplierStockController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(supplierStockService.search(searchDto, pageable), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SUPPLIER')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SupplierStockDto> add(@RequestBody SupplierStockDto supplierStockDto) throws Exception {
 		return new ResponseEntity<>(supplierStockService.add(supplierStockDto), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SUPPLIER')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SupplierStockDto> update(@RequestBody EditSupplierStockDto editSupplierStockDto)
 			throws Exception {
 		return new ResponseEntity<>(supplierStockService.update(editSupplierStockDto), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SUPPLIER')")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Boolean> deleteDrug(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(supplierStockService.delete(id), HttpStatus.OK);
