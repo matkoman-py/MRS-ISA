@@ -47,7 +47,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
 					
 					// 3. Preuzimanje korisnika na osnovu username-a
 					UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-					System.out.println("picka materin2");
 					
 					for (var a : userDetails.getAuthorities()) {
 						System.out.println(a.getAuthority());

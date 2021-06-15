@@ -210,7 +210,10 @@ export default {
         ...mapState({
             user: (state) => state.userModule.loggedInUser,
             email: (state) => state.userModule.loggedInUser.email,
-            role: (state) => state.userModule.loggedInUser.type,
+            role: (state) =>
+                state.userModule.loggedInUser
+                    ? state.userModule.loggedInUser.type
+                    : "",
         }),
         rows() {
             return (this.currentPage + 1) * 3;

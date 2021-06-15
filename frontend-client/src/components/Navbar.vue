@@ -57,21 +57,26 @@
             <template
                 v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'"
             >
-            <b-nav-item-dropdown
-                text="Explore workers"
-                right
-                v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'"
-                class="nav-dropdown link-font"
-            >
-                <b-dropdown-item
-                    v-for="route in userSpecificRoutes['DrugstoreAdminExplore']"
-                    :key="route.name"
+                <b-nav-item-dropdown
+                    text="Explore workers"
+                    right
+                    v-if="
+                        !$helpers.isObjectEmpty(user) &&
+                            role == 'DrugstoreAdmin'
+                    "
+                    class="nav-dropdown link-font"
                 >
-                    <router-link :to="route.path" class="link-font">{{
-                        route.name
-                    }}</router-link>
-                </b-dropdown-item>
-            </b-nav-item-dropdown>
+                    <b-dropdown-item
+                        v-for="route in userSpecificRoutes[
+                            'DrugstoreAdminExplore'
+                        ]"
+                        :key="route.name"
+                    >
+                        <router-link :to="route.path" class="link-font">{{
+                            route.name
+                        }}</router-link>
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
                 <b-navbar-brand
                     v-for="route in userSpecificRoutes['DrugstoreAdmin']"
                     :key="route.name"
@@ -193,7 +198,10 @@ export default {
         ...mapState({
             user: (state) => state.userModule.loggedInUser,
             email: (state) => state.userModule.loggedInUser.email,
-            role: (state) => state.userModule.loggedInUser.type,
+            role: (state) =>
+                state.userModule.loggedInUser
+                    ? state.userModule.loggedInUser.type
+                    : "",
         }),
         // routes: function(){
         // return (this.$helpers.isObjectEmpty(this.user)) ? this.commonRoutes : [...this.commonRoutes, ...this.userSpecificRoutes[this.role]];
@@ -247,7 +255,7 @@ export default {
                     {
                         name: "All pharmacists",
                         path: "/pharmacist-overview",
-                    }
+                    },
                 ],
                 DrugstoreAdmin: [
                     //{ name: "Employees", path: "/employeesOverview" },
@@ -263,7 +271,6 @@ export default {
                     { name: "Drug issuing", path: "/drug-issuing" },
                     { name: "Absence", path: "/absence-request" },
                     { name: "Appointments", path: "/appointment-page" },
-
                 ],
                 Dermatologist: [
                     { name: "Schedule", path: "/schedule" },

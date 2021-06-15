@@ -50,7 +50,7 @@ public class EmployeeController {
 			@RequestParam(value = "maxRate") double maxRate, @RequestParam(value = "type") String employeeType) {
 		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstoreBySearch(drugstoreAdminId, searchText, minRate, maxRate, employeeType), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('ROLE_DRUGSTOREADMIN','ROLE_PATIENT')")
+	@PreAuthorize("hasAnyRole('ROLE_DRUGSTOREADMIN','PATIENT')")
 	@GetMapping(path="/pharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistOverviewDto>> getAllPharmacists() {
 		return new ResponseEntity<>(employeeService.getAllPharmacists(), HttpStatus.OK);
