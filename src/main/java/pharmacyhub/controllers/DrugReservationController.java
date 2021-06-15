@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,28 +36,28 @@ public class DrugReservationController {
 	public ResponseEntity<Collection<DrugReservation>> getDrugStock() throws Exception {
 		return new ResponseEntity<>(drugReservationService.findAll(), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DERMATOLOGIST', 'PATIENT', 'PHARMACIST')")
 	@PostMapping(path = "/saveReservation",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationDto drugreservationDto) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveReservation(drugreservationDto), HttpStatus.OK);
 	}
 	
-
+	@PreAuthorize("hasAnyRole('DERMATOLOGIST',  'PHARMACIST')")
 	@PostMapping(path = "/saveReservationEmployee",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveReservation(@RequestBody DrugReservationEmployeeDto drugreservationDto) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveReservationEmployee(drugreservationDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@PostMapping(path = "/saveMultipleReservations", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveMultipleReservations(@RequestBody List<DrugReservationDto> drugreservationDtos) throws Exception {
 		return new ResponseEntity<>(drugReservationService.saveMultipleReservations(drugreservationDtos), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@GetMapping(path = "/getPatientReservationsLength",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getPatientReservationsLength(@RequestParam(value = "patientId", required = false, defaultValue = "0") String patientId) throws Exception {
 		return new ResponseEntity<>(drugReservationService.getPatientReservations(patientId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@GetMapping(path = "/getPatientReservations",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugReservation>> getPatientReservations(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -65,19 +66,19 @@ public class DrugReservationController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugReservationService.getPatientReservations(patientId, pageable), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@PutMapping(path = "/cancelReservation",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugReservation>> cancelReservation(@RequestBody DrugReservationCancelDto drugreservationcancelDto) throws Exception {
 
 		return new ResponseEntity<>(drugReservationService.cancelReservation(drugreservationcancelDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path = "/getPatientReservationsInDrugstore",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugReservation>> getPatientReservationsInDrugstore(@RequestParam(value = "patientEmail", required = false, defaultValue = "0") String patientEmail,
 			@RequestParam(value = "pharmacistId", required = false, defaultValue = "0") String pharmacistId) throws Exception {
 		return new ResponseEntity<>(drugReservationService.getPatientReservationsInDrugstore(patientEmail, pharmacistId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PHARMACIST')")
 	@GetMapping(path = "/issueReservation",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> issueReservation(@RequestParam(value = "reservationId", required = false, defaultValue = "0") String reservationId,
 			@RequestParam(value = "confirmationCode", required = false, defaultValue = "0") String confirmationCode) throws Exception {

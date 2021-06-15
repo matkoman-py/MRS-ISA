@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +32,13 @@ public class DrugOrderController {
 	@Autowired
 	private DrugOrderService drugOrderService;
 	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN', 'SUPPLIER')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugOrderOverviewDto>> getOrdersForDrugstore(@RequestParam String drugstoreId, @RequestParam String filter) throws Exception {
 		return new ResponseEntity<>(drugOrderService.getOrdersForDrugstore(drugstoreId, filter), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SUPPLIER')")
 	@PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DrugOrderDto>> search(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -45,21 +48,22 @@ public class DrugOrderController {
 		return new ResponseEntity<>(drugOrderService.search(drugOrderSearchDto, pageable), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
 	@PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> create(@RequestBody CreateOrderDto createOrderDto){
 		return new ResponseEntity<>(drugOrderService.createNewOrder(createOrderDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SUPPLIER')")
 	@PostMapping(path = "/expired/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> orderExpired(@PathVariable("id") String orderId){
 		return new ResponseEntity<>(drugOrderService.orderExpired(orderId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SUPPLIER')")
 	@PostMapping(path = "/accepted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> orderAccepted(@PathVariable("id") String offerId) throws Exception{
 		return new ResponseEntity<>(drugOrderService.orderAccepted(offerId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SUPPLIER')")
 	@PostMapping(path = "/declined/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> orderDeclined(@PathVariable("id") String orderId) throws MessagingException{
 		return new ResponseEntity<>(drugOrderService.orderDeclined(orderId), HttpStatus.OK);

@@ -265,27 +265,6 @@
                     >Save</b-button
                 >
             </b-form>
-            =======
-            <p>
-                Before you finish the reservation process you must select the
-                date to wait for your order
-            </p>
-            <b-form @submit="makeReservation">
-                <b-form-datepicker
-                    :min="minDate"
-                    id="example-datepicker"
-                    v-model="date"
-                    class="mb-2"
-                ></b-form-datepicker>
-                <br />
-                <b-button
-                    :disabled="date == ''"
-                    type="submit"
-                    variant="outline-hub"
-                    >Save</b-button
-                >
-            </b-form>
-            >>>>>>> refactor_student4
         </b-modal>
 
         <b-modal

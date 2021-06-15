@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +67,7 @@ public class DrugController {
 			@RequestParam(value = "drugstoreId", required = true) String drugstoreId){
 		return new ResponseEntity<>(drugService.getDrugsNotOnStock(drugstoreId), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drug> add(@RequestBody DrugDto drugDto) throws Exception {
 		return new ResponseEntity<>(drugService.save(drugDto), HttpStatus.OK);
@@ -79,12 +80,12 @@ public class DrugController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.getDrugsInDrugstore(drugstoreId, pageable), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drug> update(@RequestBody DrugDto drugDto) throws Exception {
 		return new ResponseEntity<>(drugService.update(drugDto), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Boolean> deleteDrug(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(drugService.delete(id), HttpStatus.OK);

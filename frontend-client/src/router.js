@@ -53,8 +53,9 @@ import SchedulePharmacistAppointment from "./views/SchedulePharmacistAppointment
 import SchedulePharmacistAppointmentFromDrugstore from "./views/SchedulePharmacistAppointmentFromDrugstore";
 import SubscriptionsView from "./views/SubscriptionsView";
 import TreatedPatients from "./views/TreatedPatients";
-import SchedulePharmacistAppointmentFromDrugstore from "./views/SchedulePharmacistAppointmentFromDrugstore";
+import SystemAdministratorProfile from "./views/SystemAdministratorProfile";
 import FirstLoginPage from "./views/FirstLoginPage";
+
 
 Vue.use(VueRouter);
 
@@ -326,6 +327,12 @@ const routes = [
         path: "/schedule-pharm-app-drugstore/:id",
         name: "SchedulePharmacistAppointmentFromDrugstore",
         component: SchedulePharmacistAppointmentFromDrugstore,
+    },
+    {
+
+        path: "/system-administrator-profile",
+        name: "SystemAdministratorProfile",
+        component: SystemAdministratorProfile,
     },
     {
         path: "/first-login",
