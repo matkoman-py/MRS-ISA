@@ -117,7 +117,7 @@ export default {
           this.$http.post("http://localhost:8081/employment/dermatologist/", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
-              alert("New dermatologist successfully added.");
+              this.$toastr.s("New dermatologist succesfully added!");
               this.$router.push('employeesOverview');
               })
               .catch(error => console.log(error));

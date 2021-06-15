@@ -58,7 +58,7 @@ export default {
                 .put("http://localhost:8081/drugstores/update", this.drugstore)
                 .then(() => {
                     this.$router.push('my-drugstore');
-                    alert("You succesfully updated drugstore informations!");
+                    this.$toastr.s("You succesfully updated drugstore informations!")
                 })
                 .catch((error) => console.log(error));
         },

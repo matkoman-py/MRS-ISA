@@ -20,23 +20,15 @@
         <b-form-datepicker :min="minDate" id="example-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
         <br>
         <p>Now choose how much you want</p>
-         <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
+         <b-form-input :value="1" min="1" v-model="amount" type="number"></b-form-input>
          <br>
+         <p>Price: {{price*amount}}</p>
         <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
       </b-form>
     </b-modal>
     </template>
     <template v-else>
         <h1 v-if="drugstores.length == 0 & reserved == 1">Sorry, the selected drug is not on stock in this pharmacy :( Substitutes: </h1>
-        <!-- <b-table head-variant="dark" striped hover :fields="drugstoreFields" v-if="drugstores.length != 0"
-          :items="drugstores">
-          <template #cell(actions)="row">
-            <b-button variant="outline-hub" v-if="row.item" size="sm"
-              @click="showModal(row.item, row.index, $event.target)" class="mr-1">
-              Reserve
-            </b-button>
-          </template>
-        </b-table> -->
 
         <b-table  striped hover :fields="drugFields" v-if="drugstores.length == 0"
           :items="drugSubstitutions">
@@ -58,6 +50,7 @@
             <p>Duration of therapy (in days):</p>
             <b-form-input :value="1" :min="1" v-model="duration" type="number"></b-form-input>
             <br>
+            <p>Price: {{price*amount}}</p>
             <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
           </b-form>
         </b-modal>
@@ -89,6 +82,7 @@
         minDate : minDate,
         drugstoreId: '',
         date: '',
+        price:0,
         drugSubstitutions: [],
         drugstoreFields: [{
             key: "name"
@@ -129,17 +123,29 @@
         ],
         duration: '',
       }
-    },
+    },//drug-price
     methods: {
+      getPrice() {
+        this.$http.get('http://localhost:8081/drug-price', {
+          params:{
+            drugId: this.selecteddrug.id,
+            drugstoreId: this.drugstoreId,
+          }})
+          .then(response => {
+            this.price = response.data;
+          })
+          .catch(error => console.log(error));
+      },
       showModal(item) {
         this.drugstoreId = item.id;
+        this.getPrice();
         this.$root.$emit('bv::show::modal', 'my-modal');
         //this.modified = item;
       },
       showSubstituteModal(item){
-        
         this.selecteddrug.id = item.id;
         this.drugstoreId = this.passedDrugstoreId;
+        this.getPrice();
         this.$root.$emit('bv::show::modal', 'my-modal');
       },
       makeReservation() {
@@ -152,7 +158,7 @@
             amount: this.amount,
           })
           .then(response => {
-            alert(response.data);
+            this.$toastr.s(response.data)
             this.$root.$emit('bv::hide::modal', 'my-modal');
           })
           .catch(error => console.log(error));
@@ -170,7 +176,7 @@
             check: this.check,
           })
           .then(response => {
-            alert(response.data);
+            this.$toastr.s(response.data)
             this.$root.$emit('bv::hide::modal', 'my-modal1');
           })
           .catch(error => console.log(error));

@@ -18,7 +18,7 @@ export default {
         getSelectedDrugstoreInfo: function() {},
         submitHandler(event) {
             event.preventDefault();
-            alert("Update saved.");
+            this.$toastr.s("Update saved!");
         },
     },
     mounted: function() {

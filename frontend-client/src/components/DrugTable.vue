@@ -139,7 +139,7 @@
                                     )
                                 "
                                 class="mr-1"
-                                :disabled="employee.penaltyCounter >= 3"
+                                :disabled="employee.penaltyCounter >= 3 || role != 'Patient'"
                             >
                                 Reserve
                             </b-button>
@@ -258,34 +258,13 @@
                     type="number"
                 ></b-form-input>
                 <br />
+                <p>Price: {{price*amount}}</p>
                 <b-button
                     :disabled="date == '' || amount == ''"
                     type="submit"
                     variant="outline-hub"
-                    >Save</b-button
-                >
+                    >Save</b-button>
             </b-form>
-            =======
-            <p>
-                Before you finish the reservation process you must select the
-                date to wait for your order
-            </p>
-            <b-form @submit="makeReservation">
-                <b-form-datepicker
-                    :min="minDate"
-                    id="example-datepicker"
-                    v-model="date"
-                    class="mb-2"
-                ></b-form-datepicker>
-                <br />
-                <b-button
-                    :disabled="date == ''"
-                    type="submit"
-                    variant="outline-hub"
-                    >Save</b-button
-                >
-            </b-form>
-            >>>>>>> refactor_student4
         </b-modal>
 
         <b-modal
@@ -341,6 +320,7 @@ export default {
         );
         const minDate = new Date(today);
         return {
+            price:0,
             amount: "",
             minDate: minDate,
             userRating: "1",
@@ -454,12 +434,26 @@ export default {
         };
     },
     methods: {
+        getPrice(drug,drugstore) {
+        //alert(drug);
+        //alert(drugstore);
+        this.$http.get('http://localhost:8081/drug-price', {
+          params:{
+            drugId: drug,
+            drugstoreId: drugstore,
+          }})
+          .then(response => {
+            this.price = response.data;
+          })
+          .catch(error => console.log(error));
+      },
         saveRating() {
             return true;
         },
         showModal(item) {
             if (this.user == null) {
-                alert("You must be logged in to rate a drug!");
+                this.$toastr.e("You must be logged in to rate a drug!");
+                //alert("You must be logged in to rate a drug!");
                 return;
             }
             //alert(item.name);
@@ -497,7 +491,7 @@ export default {
                     }
                 )
                 .then((response) => {
-                    alert(response.data);
+                    this.$toastr.s(response.data);
                     this.$root.$emit("bv::hide::modal", "my-modal1");
                 })
                 .catch((error) => console.log(error));
@@ -528,7 +522,8 @@ export default {
         },
         getDrugstores: function(data) {
             if (this.user == null) {
-                alert("You must be logged in to reserve a drug!");
+                this.$toastr.e("You must be logged in to reserve a drug!");
+                //alert("You must be logged in to reserve a drug!");
                 return;
             }
             if (this.passedPatientId == null) {
@@ -583,7 +578,7 @@ export default {
                             this.appointmentId = this.passedAppointmentId;
                             this.$root.$emit("bv::show::modal", "my-modal1");
                         }
-                    });
+                    }).then(this.getPrice(data.id,this.passedDrugstoreId));
             }
         },
         getLength: function() {

@@ -87,7 +87,8 @@
                                 patient: appointment.patient ? appointment.patient.name : "Available",
                             }));
                             //this.getAllAppointments();
-                    }).catch(error => console.log(error));
+                    }).then(this.$toastr.s("You have succesfully reserved a dermatologist appointment"))
+                    .catch(error => console.log(error));
             },
         },
         mounted: function () {

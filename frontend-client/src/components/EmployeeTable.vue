@@ -136,7 +136,7 @@ export default {
         onSubmit(event){
             event.preventDefault();
             if(!this.validatePassword()){
-                    alert("Passwords aren't matching!")
+                    this.$toastr.e("Passwords aren't matching!")
                     return;
             }
             this.modified.name = this.selected.name;

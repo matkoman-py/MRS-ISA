@@ -95,7 +95,7 @@ export default {
                         (drugstore) => drugstore.id == response.data.id
                     );
                     this.drugstores.splice(index, 1, response.data);
-                    alert("success");
+                    this.$toastr.s("Success!");
                 })
                 .catch((error) => console.log(error));
         },

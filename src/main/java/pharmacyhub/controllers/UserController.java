@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.users.DrugstoreAdmin;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.UserRegistrationDto;
 import pharmacyhub.services.RegistrationService;
@@ -68,5 +69,20 @@ public class UserController {
 	public ResponseEntity<Collection<User>> getSuppliersAndAdmins() throws Exception {
 		return new ResponseEntity<>(userService.getSuppliersAndAdmins(), HttpStatus.OK);
 	}
+	////////////////////////////
+	@GetMapping(path = "/user")
+	public ResponseEntity<Patient> getUser(@RequestParam String drugstoreAdminId) throws Exception {
+		return new ResponseEntity<>(userService.getUser(drugstoreAdminId), HttpStatus.OK);
+	}
 	
+	@GetMapping(path = "/user/password")
+	public ResponseEntity<Boolean> validateUserPassword(@RequestParam (value = "drugstoreAdminId") String drugstoreAdminId,
+			@RequestParam (value = "passwordInput") String passwordInput) throws Exception {
+		return new ResponseEntity<>(userService.validatePasswordUser(drugstoreAdminId, passwordInput), HttpStatus.OK);
+	}
+	
+	@PutMapping(path = "/user/updatepassword",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> userPasswordUpdate(@RequestBody DrugstoreAdmin drugstoreAdmin) throws Exception {
+		return new ResponseEntity<>(userService.userPasswordUpdate(drugstoreAdmin), HttpStatus.OK);
+	}
 }

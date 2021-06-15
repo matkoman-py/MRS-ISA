@@ -165,7 +165,7 @@ export default {
     },
     methods: {
         endAppointment: function(){
-            this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
+            this.currentAppointment.id = this.passedId? this.passedId:"9b91de3c-3995-4bf8-b2ad-eaee77567bae";
             this.$http.get('http://localhost:8081/dermatologist-appointment/end-appointment', {
                         params: {
                             dermatologistAppointmentId: this.currentAppointment.id,
@@ -179,7 +179,7 @@ export default {
             
         },
         beginAppointment: function(){
-            this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
+            this.currentAppointment.id = this.passedId? this.passedId:"9b91de3c-3995-4bf8-b2ad-eaee77567bae";
             this.$http.get('http://localhost:8081/dermatologist-appointment/begin-appointment', {
                         params: {
                             dermatologistAppointmentId: this.currentAppointment.id
@@ -231,7 +231,7 @@ export default {
           this.$http.post("http://localhost:8081/dermatologist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
-              alert("New appointment is successfully created.");
+              this.$toastr.s("New appointment is successfully created.")
               })
               .catch(error => console.log(error));
           this.$root.$emit('bv::hide::modal', 'appointmentmodal');

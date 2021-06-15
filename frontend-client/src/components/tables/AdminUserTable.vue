@@ -98,7 +98,7 @@ export default {
               userTypes = "suppliers"
           }
           else{
-              alert("Not yet supported");
+              this.$toastr.e("Not yet supported!");
               return;
           }
           console.log(`http://localhost:8081/${userTypes}/${this.deleteModal.user.id}`);
@@ -106,7 +106,7 @@ export default {
             .then(response => {
                 let index = this.users.findIndex(user => user.id == this.deleteModal.user.id);
                 this.users.splice(index, 1);
-                alert("success", response);
+                this.$toastr.s(response.data);
             })
             .catch(error => console.log(error));
       },

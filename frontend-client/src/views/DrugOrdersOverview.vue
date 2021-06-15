@@ -152,7 +152,7 @@
         showModal(event) {
           event.preventDefault()
           if (this.orderAtributtes.selectedDrugs.length == 0) {
-            alert("You need to select at least one drug for which you want to create order!")
+            this.$toastr.w("You need to select at least one drug for which you want to create order!")
           }  else {
             var flag = false;
             var i;
@@ -163,7 +163,7 @@
                 }
             }
             if (flag) {
-                alert("You need first to add drugs that are not currently available in drugstore to create order for them!");
+              this.$toastr.w("You need first to add drugs that are not currently available in drugstore to create order for them!")
             } else {
                 this.$root.$emit('bv::show::modal', 'createOrderModal');
             }
@@ -192,7 +192,7 @@
                   if (this.offers.length > 0) {
                     this.showOferrs = true;
                   } else {
-                    alert("For this order there are no offers, so this expired order will be automatically archived.")
+                    this.$toastr.w("For this order there are no offers, so this expired order will be automatically archived.")
                     this.orderExpired();
                     //ovde treba da se ugasi order
                   }
@@ -203,13 +203,13 @@
           this.selectedOrder = "";
         }, completeOrder() {
           if (this.selectedOffer == "") {
-            alert("To complete order you need to select one of available offers!");
+            this.$toastr.w("To complete order you need to select one of available offers!")
           } else {
             this.$http.post("http://localhost:8081/drug-orders/accepted/" + this.selectedOffer)
               .then(() => {
                 this.getDrugOrders();
                 this.showOferrs = false;
-                alert("You successfully accepted offer!");
+                this.$toastr.e("You successfully accepted offer!")
               })
               .catch(error => console.log(error));
           }

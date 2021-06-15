@@ -49,7 +49,7 @@ export default {
                     this.form
                 )
                 .then((response) => {
-                    alert("Configuration updated successfully");
+                    this.$toastr.e("Configuration updated successfully")
                     console.log(response);
                 })
                 .catch((error) => console.log(error));

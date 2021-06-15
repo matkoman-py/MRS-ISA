@@ -118,7 +118,7 @@ public class DrugReservationService {
 		int foundAllergen = 0;
 		for(Ingredient ing : patient.getAllergens()) {
 			if(drug.getIngredients().contains(ing)) {
-				return null;
+				throw new Exception("Patient is alergic to drug!");
 			}
 		}
 		

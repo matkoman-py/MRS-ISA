@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.repositories.users.UserRepository;
 
@@ -28,6 +29,10 @@ public class UserSerivce {
 		return (DrugstoreAdmin) userRepository.findById(drugstoreAdminId).orElse(null);
 	}
 
+	public Patient getUser(String drugstoreAdminId) {
+		return (Patient) userRepository.findById(drugstoreAdminId).orElse(null);
+	}
+	
 	public Boolean drugstoreAdminUpdate(DrugstoreAdmin drugstoreAdmin) throws Exception {
 			DrugstoreAdmin admin = (DrugstoreAdmin) userRepository.findById(drugstoreAdmin.getId()).orElse(null);
 			if (admin.equals(null)) {
@@ -48,7 +53,22 @@ public class UserSerivce {
 		DrugstoreAdmin admin = (DrugstoreAdmin) userRepository.findById(drugstoreAdminId).orElse(null);
 		return passwordEncoder.matches(passwordInput, admin.getPassword());
 	}
-
+	
+	public boolean validatePasswordUser(String drugstoreAdminId, String passwordInput) {
+		Patient admin = (Patient) userRepository.findById(drugstoreAdminId).orElse(null);
+		return passwordEncoder.matches(passwordInput, admin.getPassword());
+	}
+	
+	public boolean userPasswordUpdate(DrugstoreAdmin drugstoreAdmin) throws Exception {
+		Patient admin = (Patient) userRepository.findById(drugstoreAdmin.getId()).orElse(null);
+		if (admin == null) {
+			throw new Exception("This patient does not exist!");
+		}		
+		admin.setPassword(passwordEncoder.encode(drugstoreAdmin.getPassword()));
+		userRepository.save(admin);
+		return true;
+	}
+	
 	public boolean drugstoreAdminPasswordUpdate(DrugstoreAdmin drugstoreAdmin) throws Exception {
 		DrugstoreAdmin admin = (DrugstoreAdmin) userRepository.findById(drugstoreAdmin.getId()).orElse(null);
 		if (admin == null) {

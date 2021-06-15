@@ -309,8 +309,7 @@ export default {
                         if(valid){
                             this.changePassword();
                         }else{
-                            alert("Old password does not match!");
-
+                            this.$toastr.e("Old password does not match!")
                         }
                     })
                     .catch(error => console.log(error));
@@ -332,8 +331,7 @@ export default {
                 this.newPasswordInput= '';
                 this.newPasswordValidateInput= '';
             }else{
-                alert("New passwords not ok!");
-
+                this.$toastr.e("New passwords not ok!")
             }   
         },
     },

@@ -71,15 +71,15 @@ export default {
         createRequest: function(event){
             event.preventDefault();
             if(this.startDate == null){
-                alert("Please input a start date!");
+                this.$toastr.w("Please input a start date!");
                 return;
             }
             if(this.endDate == null){
-                alert("Please input an end date!");
+                this.$toastr.w("Please input a end date!");
                 return;
             }
             if(Date.parse(this.startDate)>Date.parse(this.endDate)){
-                alert("End date must be after start date!");
+                this.$toastr.w("Start date must be before end date!");
                 return;
             }
             var dto = {
@@ -90,7 +90,7 @@ export default {
             }
             this.$http.post('http://localhost:8081/absence-request/create',  JSON.parse(JSON.stringify(dto)))
                     .then(response => {
-                        alert(response.data);
+                        this.$toastr.s(response.data);
                     })
         },
     },

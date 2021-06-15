@@ -234,6 +234,35 @@
                                         </b-card>
                                     </b-form>
                                 </b-tab>
+                                <b-tab style="height: 370px;" title="Change password">
+                                <b-card>
+                                    <b-form  @submit="oldPasswordValidate">
+                                        <b-form-input id="password-input1"
+                                            v-model="oldPasswordInput"
+                                            type="password"
+                                            required
+                                            placeholder="Old password"
+                                        ></b-form-input>
+                                        <br>
+                                        <b-form-input id="password-input2"
+                                            v-model="newPasswordInput"
+                                            type="password"
+                                            required
+                                            placeholder="New password"
+                                        ></b-form-input>
+                                        <br>
+                                        <b-form-input id="password-input3"
+                                            v-model="newPasswordValidateInput"
+                                            type="password"
+                                            required
+                                            :state="validationState"
+                                            placeholder="Repeat new password"
+                                        ></b-form-input>
+                                        <br>
+                                        <b-button type="submit" variant="outline-hub">Save</b-button>
+                                    </b-form>
+                                    </b-card>
+                                </b-tab>
                             </b-tabs>
                         </b-card>
                     </div>
@@ -274,6 +303,9 @@
         },
         data: function () {
             return {
+                oldPasswordInput:'',
+                newPasswordInput:'',
+                newPasswordValidateInput:'',
                 alergenToAdd: null,
                 today: '',
                 rowsPharmacist: 0,
@@ -351,10 +383,58 @@
                 currentPage: 1,
                 currentPagePharmacist: 1,
                 currentPageDermatologist: 1,
+                profile:null,
             };
         },
 
         methods: {
+            getProfile: function () {
+                this.$http.get('http://localhost:8081/user', {
+                        params: {
+                            drugstoreAdminId: this.user.id
+                        }
+                    })
+                    .then(response => {
+                        this.profile = response.data;
+                    })
+                    .catch(error => console.log(error));
+            },
+            oldPasswordValidate: function(event){
+                event.preventDefault();
+                var valid = false;
+                this.$http.get('http://localhost:8081/user/password', {
+                            params: {
+                                drugstoreAdminId: this.user.id,
+                                passwordInput: this.oldPasswordInput
+                            }
+                        })
+                        .then(response => {
+                            valid = response.data;
+                            if(valid){
+                                this.changePassword();
+                            }else{
+                                this.$toastr.e("Old password does not match!");
+                            }
+                        })
+                        .catch(error => console.log(error));
+            },
+            changePassword: function(){
+                if(this.validatePassword1()){
+                    this.profile.password = this.newPasswordInput;
+                    this.$http.put("http://localhost:8081/user/updatepassword", this.profile)
+                    .then(() => {
+                        this.$toastr.s("You succesfully updated your password!");
+                        this.$root.$emit('bv::hide::modal', 'my-modal');
+                    })
+                    .catch(error => console.log(error));
+
+                    this.oldPasswordInput= '';
+                    this.newPasswordInput= '';
+                    this.newPasswordValidateInput= '';
+                }else{
+                    this.$toastr.e("New passwords not ok!");
+                }   
+            },
             AddAlergens: function () {
                 this.$http.get('http://localhost:8081/patients/add-alergen', {
                         params: {
@@ -363,7 +443,10 @@
                         }
                     })
                     .then(response => {
-                        alert(response.data);
+                        if(response.data.includes('You have already added'))
+                            this.$toastr.e(response.data);
+                        else
+                            this.$toastr.s(response.data);
                     })
                     .catch(error => console.log(error));
             },
@@ -382,7 +465,7 @@
                 var dateOfReservation = item.date;
                 var dateNow = '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
                 if (dateOfReservation <= dateNow) {
-                    alert("You can't cancel appointments one or more days before they are due")
+                    this.$toastr.e("You can't cancel appointments one or more days before they are due");
                     return;
                 }
                 this.$http
@@ -407,7 +490,7 @@
                             })
                         );*/
                     })
-                    .then(alert("Pharmacist appointment succesfully canceled!"))
+                    .then(this.$toastr.s("Pharmacist appointment succesfully canceled!"))
                     .catch((error) => console.log(error));
             },
             cancelDermatologyAppointment(item) {
@@ -418,7 +501,7 @@
                 var dateOfReservation = item.date;
                 var dateNow = '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
                 if (dateOfReservation <= dateNow) {
-                    alert("You can't cancel appointments one or more days before they are due")
+                    this.$toastr.e("You can't cancel appointments one or more days before they are due");
                     return;
                 }
                 this.$http
@@ -444,16 +527,13 @@
                             })
                         );
                     })
-                    .then(alert("Dermatology appointment succesfully canceled!"))
+                    .then(this.$toastr.s("Dermatology appointment succesfully canceled!"))
                     .catch((error) => console.log(error));
             },
             reservationNotPickedUp() {
                 for (var drug in this.drugReservations) {
-                    //alert(this.drugReservations[drug].date);
-                    //alert(this.drugReservations[drug].date);
 
                     if (this.drugReservations[drug].date == this.today) {
-                        //alert("You recieved a penalty");
                         this.$http.get('http://localhost:8081/patients/penalty', {
                                 params: {
                                     patientId: this.user.id, //'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
@@ -463,8 +543,6 @@
                             })
                             .then(response => {
                                 console.log(response);
-                                //alert("Patient received a penalty.");
-                                //prvo = true;
                             })
                             .catch(error => console.log(error));
                     }
@@ -478,7 +556,7 @@
                 var dateOfReservation = item.date;
                 var dateNow = '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
                 if (dateOfReservation <= dateNow) {
-                    alert("You can't cancel reservations one or more days before they are due")
+                    this.$toastr.e("You can't cancel reservations one or more days before they are due");
                     return;
                 }
                 this.$http
@@ -504,7 +582,7 @@
                         );
                         */
                     })
-                    .then(alert("Drug reservation succesfully canceled!"))
+                    .then(this.$toastr.s("Drug reservation succesfully canceled!"))
                     .catch((error) => console.log(error));
             },
             handleClose() {
@@ -541,6 +619,7 @@
                 this.editEnabled = false;
             },
             handleSubmit: function (event) {
+
                 event.preventDefault();
                 // if (!this.validatePassword()) {
                 //     return;
@@ -549,14 +628,16 @@
                 this.editEnabled = true;
                 this.$http
                     .put("http://localhost:8081/patients", this.employee)
-                    .then((response) => {
-                        console.log(response);
-                        console.log("ovde");
+                    .then(() => {
+                        this.$toastr.s("You succesfully updated your profile information!")
                     })
                     .catch((error) => console.log(error));
             },
             validatePassword: function () {
                 return this.employee.password == this.validationPassword;
+            },
+            validatePassword1: function(){
+                return this.newPasswordInput == this.newPasswordValidateInput;
             },
             getDrugReservationsLength: function () {
                 this.$http
@@ -678,6 +759,7 @@
             this.getIngrediants();
             this.getDrugReservations();
             this.getEmployee();
+            this.getProfile();
             this.getAppointments();
             this.getDermatologyAppointments();
 

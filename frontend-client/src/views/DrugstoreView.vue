@@ -43,6 +43,7 @@
                         style="margin:20px"
                         v-if="subscribed == false"
                         @click="subscribe"
+                        :disabled="role !='Patient'"
                     >
                         Subscribe</b-button
                     >
@@ -51,6 +52,7 @@
                         style="margin:20px"
                         v-if="subscribed == true"
                         @click="unsubscribe"
+                        :disabled="role !='Patient'"
                     >
                         Unsubscribe</b-button
                     >
@@ -59,6 +61,7 @@
                         variant="outline-hub"
                         @click="showModal()"
                         class="mr-1"
+                        :disabled="role !='Patient'"
                     >
                         Rate drugstore
                     </b-button>
@@ -67,6 +70,7 @@
                         variant="outline-hub"
                         @click="showComplaintModal('Drugstore')"
                         class="mr-1"
+                        :disabled="role !='Patient'"
                     >
                         Make complaint
                     </b-button>
@@ -90,6 +94,7 @@
                             <b-button
                                 variant="outline-hub"
                                 v-if="row.item"
+                                :disabled="role !='Patient'"
                                 size="sm"
                                 @click="
                                     showModalD(
@@ -108,6 +113,7 @@
                                 variant="outline-hub"
                                 v-if="row.item"
                                 size="sm"
+                                :disabled="role !='Patient'"
                                 @click="
                                     showComplaintModal(
                                         'Dermatologist',
@@ -145,6 +151,7 @@
                                     )
                                 "
                                 class="mr-1"
+                                :disabled="role !='Patient'"
                             >
                                 Rate
                             </b-button>
@@ -158,6 +165,7 @@
                                     showComplaintModal('Pharmacist', row.item)
                                 "
                                 class="mr-1"
+                                :disabled="role !='Patient'"
                             >
                                 Complain
                             </b-button>
@@ -174,7 +182,7 @@
                 <router-link
                     :to="'/dermatologist-appointments/' + currentDrugstoreId"
                 >
-                    <b-button variant="outline-hub" style="margin:30px"
+                    <b-button :disabled="this.user == null || role !='Patient'" variant="outline-hub" style="margin:30px"
                         >Make appointment with dermatologist</b-button
                     >
                 </router-link>
@@ -183,7 +191,7 @@
                 <router-link
                     :to="'/schedule-pharm-app-drugstore/' + this.currentDrugstoreId"
                 >
-                    <b-button variant="outline-hub" style="margin:30px"
+                    <b-button :disabled="this.user == null || role !='Patient'" variant="outline-hub" style="margin:30px"
                         >Make appointment with pharmacist</b-button
                     >
                 </router-link>
@@ -406,7 +414,7 @@ export default {
                         rating: this.userRating,
                     },
                 }).then(() => {
-                    alert("You successfully rated a pharmacist")
+                    this.$toastr.s("You successfully rated a pharmacist")
                     this.getCurrentDrugstore();
                     this.$root.$emit("bv::hide::modal", "my-modalP");
                 })
@@ -421,7 +429,7 @@ export default {
                         rating: this.userRating,
                     },
                 }).then(() => {
-                    alert("You successfully rated a dermatologist")
+                    this.$toastr.e("You successfully rated a dermatologist")
                     this.getCurrentDrugstore();
                     this.$root.$emit("bv::hide::modal", "my-modalD");
                 })
@@ -436,7 +444,7 @@ export default {
                         rating: this.userRating,
                     },
                 }).then(() => {
-                    alert("You successfully rated a drugstore")
+                    this.$toastr.w("You successfully rated a drugstore")
                     this.getCurrentDrugstore();
                     this.$root.$emit("bv::hide::modal", "my-modal1");
                 })
@@ -444,7 +452,7 @@ export default {
         },
         showModal() {
             if (this.user == null) {
-                alert("You must be logged in to rate a drugstore!");
+                this.$toastr.e("You must be logged in to rate a drugstore!");
                 return;
             }
             //alert(item.name);
@@ -466,7 +474,8 @@ export default {
         showModalP(item) {
             this.saveRatingPharmacistId = item.employeeId;
             if (this.user == null) {
-                alert("You must be logged in to rate a pharmacist!");
+                this.$toastr.e("You must be logged in to rate a pharmacist!");
+                //alert("You must be logged in to rate a pharmacist!");
                 return;
             }
             this.getAppointments();
@@ -491,6 +500,7 @@ export default {
         showModalD(item) {
             this.saveRatingDermatologistId = item.employeeId;
             if (this.user == null) {
+                this.$toastr.e("You must be logged in to rate a dermatologist!");
                 //alert("You must be logged in to rate a pharmacist!");
                 return;
             }
@@ -515,6 +525,10 @@ export default {
             this.$root.$emit("bv::show::modal", "my-modalD");
         },
         showComplaintModal(complaintType, employee) {
+            if(this.user == null){
+                this.$toastr.e("You must be logged in to make a complaint!");
+                return;
+            }
             this.complaintForm.type = complaintType;
             this.complaintForm.drugstoreId = this.drugstore.id;
             this.complaintForm.patientId = this.user.id;
@@ -687,6 +701,10 @@ export default {
             this.getAllPharmacists();
         },
         subscribe() {
+            if(this.user == null){
+                this.$toastr.e("You must be logged in to subscribe to a drugstore!");
+                return;
+            }
             this.$http
                 .post("http://localhost:8081/subscription/subscribe", {
                     patientId: this.user.id,
@@ -697,6 +715,10 @@ export default {
                 });
         },
         unsubscribe() {
+            if(this.user == null){
+                this.$toastr.e("You must be logged in to unsubscribe to a drugstore!");
+                return;
+            }
             this.$http
                 .post("http://localhost:8081/subscription/unsubscribe", {
                     patientId: this.user.id,

@@ -130,7 +130,7 @@
                         }
                     })
                     .then(response => {
-                        alert(response.data);
+                        this.$toastr.s(response.data);
                         this.search();
                     })
                     .catch(error => console.log(error));

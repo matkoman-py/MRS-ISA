@@ -129,7 +129,7 @@ export default {
                 .post("http://localhost:8081/register/", user)
                 .then((response) => {
                     console.log(response);
-                    alert("New user successfully added.");
+                    this.$toastr.s("New user successfully added.");
                     this.$emit("added-user", user);
                 })
                 .catch((error) => console.log(error));

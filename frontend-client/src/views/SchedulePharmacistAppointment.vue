@@ -108,13 +108,13 @@
                             this.saveData)))
                     .then(response => {
                         console.log(response);
-                        alert("New appointment is successfully created.");
+                        this.$toastr.s("New appointment is successfully created.")
                         this.$router.push({
                             path: 'patient'
                         });
                     })
                     .catch(error => {
-                        alert("You already have an appointment at that time.");
+                        this.$toastr.e("You already have an appointment at that time.")
                         console.log(error);
                     })
             },

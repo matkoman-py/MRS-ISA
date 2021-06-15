@@ -143,7 +143,7 @@ export default {
       
     },
     patientNotShowup: function(){
-      alert("Patient did not show up");
+      this.$toastr.e("Patient did not show up")
       console.log(this.selected.extendedProps.patient.id);
       this.$root.$emit('bv::hide::modal', 'my-modal');
       //var prvo = false;
@@ -154,11 +154,10 @@ export default {
                             patientId: this.selected.extendedProps.patient.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }
                     })
-                    .then(response => {
-                      console.log(response);
-                      alert("Patient received a penalty.");
+                    .then(
+                      this.$toastr.e("Patient received a penalty.")
                       //prvo = true;
-                    })
+                    )
                     .catch(error => console.log(error));
       
       this.$http.get('http://localhost:8081/pharmacist-appointment/end-appointment', {
@@ -180,8 +179,8 @@ export default {
       //this.selected.extendedProps.processed = true;
       // kako refresh page
     },
-    startApp: function(){
-      alert("Appointment started"+this.selected.id);
+    startApp: function() {
+      this.$toastr.e("Appointment started"+this.selected.id)
       this.$root.$emit('bv::hide::modal', 'my-modal');
       this.$router.push({ name: 'AppointmentPharmacist', params: { passedId: this.selected.id } })
       // PREBACUJES NA APPPOINTMENT SA TIM PACIJENTOM I DERM 

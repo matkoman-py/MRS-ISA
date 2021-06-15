@@ -144,7 +144,7 @@ export default {
       
     },
     patientNotShowup: function(){
-      alert("Patient did not show up");
+      this.$toastr.e("Patient did not show up")
       this.$root.$emit('bv::hide::modal', 'my-modal');
       // OVDE TREBA DA SE POZOVE BEK I DA SE KAZNI PACIJENT,  TO RADIS PREKO SELECTED
 
@@ -158,7 +158,7 @@ export default {
                     })
                     .then(response => {
                       console.log(response);
-                      alert("Patient received a penalty.");
+                      this.$toastr.e("Patient received a penalty.")
                       //prvo = true;
                     })
                     .catch(error => console.log(error));
@@ -178,8 +178,7 @@ export default {
       
     },
     startApp: function(){
-      
-      alert("Appointment started"+ this.selected.id);
+      this.$toastr.e("Appointment started"+ this.selected.id)
       this.$root.$emit('bv::hide::modal', 'my-modal');
       this.$router.push({ name: 'AppointmentDermatologist', params: { passedId: this.selected.id } })
       // PREBACUJES NA APPPOINTMENT SA TIM PACIJENTOM I DERM 

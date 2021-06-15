@@ -111,7 +111,7 @@ export default {
                         (drugstore) => drugstore.id == response.data.id
                     );
                     this.drugstores.splice(index, 1, response.data);
-                    alert("success");
+                    this.$toastr.s("Success!");
                 })
                 .catch((error) => console.log(error));
         },
@@ -129,13 +129,13 @@ export default {
                 .delete(
                     `http://localhost:8081/drugstores/${this.deleteModal.drugstore.id}`
                 )
-                .then((response) => {
+                .then(() => {
                     let index = this.drugstores.findIndex(
                         (drugstore) =>
                             drugstore.id == this.deleteModal.drugstore.id
                     );
                     this.drugstores.splice(index, 1);
-                    alert("success", response);
+                    this.$toastr.s("Success!");
                 })
                 .catch((error) => console.log(error));
         },
