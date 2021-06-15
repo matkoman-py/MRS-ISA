@@ -137,7 +137,7 @@
         },
         methods: {
             getProfile: function () {
-                this.$http.get('http://localhost:8081/systemAdmin', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/systemAdmin', {
                         params: {
                             systemAdminId: this.user.id
                         }
@@ -154,7 +154,7 @@
             handleSubmit: function (event) {
                 event.preventDefault();
                 this.editEnabled = true;
-                this.$http.put("http://localhost:8081/systemAdminUpdate", this.profile)
+                this.$http.put("https://mrs-isa-usijani.herokuapp.com/systemAdminUpdate", this.profile)
                     .then(() => {
                         alert("You succesfully updated your profile informations!")
                     })
@@ -169,7 +169,7 @@
             oldPasswordValidate: function(event){
                 event.preventDefault();
                 var valid = false;
-                this.$http.get('http://localhost:8081/systemAdmin/password', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/systemAdmin/password', {
                             params: {
                                 systemAdminId: this.user.id,
                                 passwordInput: this.oldPasswordInput
@@ -188,7 +188,7 @@
             changePassword: function(){
                 if(this.validatePassword()){
                     this.profile.password = this.newPasswordInput;
-                    this.$http.put("http://localhost:8081/systemAdmin/updatepassword", this.profile)
+                    this.$http.put("https://mrs-isa-usijani.herokuapp.com/systemAdmin/updatepassword", this.profile)
                     .then(() => {
                         alert("You succesfully updated your password!");
                         this.$root.$emit('bv::hide::modal', 'my-modal');

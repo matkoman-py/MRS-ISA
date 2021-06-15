@@ -198,7 +198,7 @@
     },
     methods: {
         initialize() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -214,7 +214,7 @@
               .catch(error => console.log(error));
         },
         getDrugStockForDrugstore : function(){
-            this.$http.get('http://localhost:8081/drug-stock', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/drug-stock', {
             params: {
               drugstoreId: this.drugstoreId
             }})
@@ -232,7 +232,7 @@
             .catch(error => console.log(error));
         },
         getDrugsNotOnStock: function () {
-          this.$http.get("http://localhost:8081/drugs/notOnStock", {
+          this.$http.get("https://mrs-isa-usijani.herokuapp.com/drugs/notOnStock", {
             params: {
               drugstoreId: this.drugstoreId
             }
@@ -247,7 +247,7 @@
         },
         search(event) {
             event.preventDefault()
-            this.$http.get('http://localhost:8081/drug-stock/search', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/drug-stock/search', {
             params: {
               searchedText: this.searchText,
               drugstoreId: this.drugstoreId
@@ -296,7 +296,7 @@
         addNewPrice(event) {
           event.preventDefault();
           this.inputValuesForNewPrice.drugName = this.selected[0].drug
-          this.$http.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValuesForNewPrice)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-price/", JSON.parse(JSON.stringify(this.inputValuesForNewPrice)))
               .then(() => {
                 this.$toastr.s("New price for " + this.selected[0].drug + " is successfully added.")
                 this.getDrugStockForDrugstore();
@@ -307,7 +307,7 @@
         createNewPromotion(event) {
           event.preventDefault();
           this.inputValuesForNewPromotion.drugName = this.selected[0].drug
-          this.$http.post("http://localhost:8081/drug-price/promotion", JSON.parse(JSON.stringify(this.inputValuesForNewPromotion)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-price/promotion", JSON.parse(JSON.stringify(this.inputValuesForNewPromotion)))
               .then(() => {
                 this.$toastr.s("New promotion for " + this.selected[0].drug + " is successfully added.")
                 this.getDrugStockForDrugstore();
@@ -317,7 +317,7 @@
         },
         addNewDrugToDrugstore(event) {
           event.preventDefault();
-          this.$http.post("http://localhost:8081/drug-stock", JSON.parse(JSON.stringify(this.inputValuesForNewDrug)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-stock", JSON.parse(JSON.stringify(this.inputValuesForNewDrug)))
               .then(() => {
                 this.$toastr.s("New drug '" + this.inputValuesForNewDrug.selectedDrug.drugName + "' is successfully added to stock.")
                 this.getDrugStockForDrugstore();
@@ -335,7 +335,7 @@
             this.$root.$emit('bv::hide::modal', 'deleteConfirmation');
         }, deleteDrugFromStock(event) {
             event.preventDefault();
-              this.$http.delete("http://localhost:8081/drug-stock/delete/", {data :{ drugName: this.selected[0].drug, drugStoreId: this.drugstoreId}})
+              this.$http.delete("https://mrs-isa-usijani.herokuapp.com/drug-stock/delete/", {data :{ drugName: this.selected[0].drug, drugStoreId: this.drugstoreId}})
               .then((response) => {
                 this.$toastr.s(response.data)
                 this.getDrugStockForDrugstore();

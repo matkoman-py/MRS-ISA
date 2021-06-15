@@ -38,7 +38,7 @@ export default {
         addDrug: function(event) {
             event.preventDefault();
             this.$http
-                .post("http://localhost:8081/drugs", this.form)
+                .post("https://mrs-isa-usijani.herokuapp.com/drugs", this.form)
                 .then((response) => {
                     this.$toastr.e("drug added successfully");
                     console.log(response);

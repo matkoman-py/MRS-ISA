@@ -55,7 +55,7 @@
                 console.log(item)
             },
             getAllAppointments: function () {
-                this.$http.get('http://localhost:8081/dermatologist-appointment/search', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/search', {
                         params: {
                             drugstoreId: this.drugstoreId,
                         }
@@ -74,7 +74,7 @@
                     }).catch(error => console.log(error));
             },
             createReservation :function(item){
-                this.$http.get('http://localhost:8081/dermatologist-appointment/createReserrvation', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/createReserrvation', {
                         params: {
                             appointmentId : item.appointmentId,
                             patientId: this.user.id,

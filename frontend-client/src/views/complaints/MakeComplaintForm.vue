@@ -33,7 +33,7 @@ export default {
         postReplyForComplaint: function() {
             console.log(this.complaintForm);
             this.$http
-                .post("http://localhost:8081/complaints/", this.complaintForm)
+                .post("https://mrs-isa-usijani.herokuapp.com/complaints/", this.complaintForm)
                 .then((response) => {
                     this.$toastr.e("Succes!")
                     this.$emit("complaint-success");

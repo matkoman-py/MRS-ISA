@@ -114,7 +114,7 @@ export default {
   methods : {
     onSubmit(event){
           event.preventDefault();
-          this.$http.post("http://localhost:8081/employment/dermatologist/", JSON.parse(JSON.stringify(this.form)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/employment/dermatologist/", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
               this.$toastr.s("New dermatologist succesfully added!");

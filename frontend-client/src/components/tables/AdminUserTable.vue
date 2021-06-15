@@ -163,7 +163,7 @@ export default {
         deleteDrugstoreAdmin: function() {
             this.$http
                 .delete(
-                    `http://localhost:8081/drugstoreAdmin?id=${this.deleteModal.user.id}`
+                    `https://mrs-isa-usijani.herokuapp.com/drugstoreAdmin?id=${this.deleteModal.user.id}`
                 )
                 .then(() => {
                     let index = this.users.findIndex(
@@ -177,7 +177,7 @@ export default {
         deleteDermatologist: function() {
             this.$http
                 .delete(
-                    `http://localhost:8081/employees/delete/dermatologist?dermatologistEmail=${this.deleteModal.user.email}`
+                    `https://mrs-isa-usijani.herokuapp.com/employees/delete/dermatologist?dermatologistEmail=${this.deleteModal.user.email}`
                 )
                 .then(() => {
                     let index = this.users.findIndex(
@@ -191,7 +191,7 @@ export default {
         deleteSupplier: function() {
             this.$http
                 .delete(
-                    `http://localhost:8081/suppliers/${this.deleteModal.user.id}`
+                    `https://mrs-isa-usijani.herokuapp.com/suppliers/${this.deleteModal.user.id}`
                 )
                 .then(() => {
                     let index = this.users.findIndex(
@@ -204,7 +204,7 @@ export default {
         },
         getUsers: function() {
             this.$http
-                .get("http://localhost:8081/suppliers-and-admins")
+                .get("https://mrs-isa-usijani.herokuapp.com/suppliers-and-admins")
                 .then((response) => {
                     this.users = response.data;
                 })

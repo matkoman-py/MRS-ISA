@@ -126,7 +126,7 @@
     },//drug-price
     methods: {
       getPrice() {
-        this.$http.get('http://localhost:8081/drug-price', {
+        this.$http.get('https://mrs-isa-usijani.herokuapp.com/drug-price', {
           params:{
             drugId: this.selecteddrug.id,
             drugstoreId: this.drugstoreId,
@@ -150,7 +150,7 @@
       },
       makeReservation() {
         
-        this.$http.post('http://localhost:8081/drugReservation/saveReservation', {
+        this.$http.post('https://mrs-isa-usijani.herokuapp.com/drugReservation/saveReservation', {
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selecteddrug.id,
@@ -165,7 +165,7 @@
       },
       makeReservationEmployee: function() {
         //alert(this.check)
-        this.$http.post('http://localhost:8081/drugReservation/saveReservationEmployee', {
+        this.$http.post('https://mrs-isa-usijani.herokuapp.com/drugReservation/saveReservationEmployee', {
             patientId: this.patientId,
             drugstoreId: this.drugstoreId,
             drugId: this.selecteddrug.id,
@@ -185,7 +185,7 @@
     mounted: function(){
         //alert(this.passedDrugstoreId);
         if(this.passedDrugstoreId != null){
-        this.$http.get("http://localhost:8081/drugs/substitutionsDrugstore", {
+        this.$http.get("https://mrs-isa-usijani.herokuapp.com/drugs/substitutionsDrugstore", {
             params:
             {
             drugId: this.selecteddrug.id,

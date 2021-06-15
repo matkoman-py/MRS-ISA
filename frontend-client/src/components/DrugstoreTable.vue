@@ -85,7 +85,7 @@
         },
         methods: {
             getDrugstoresLength: function () {
-                this.$http.post(`http://localhost:8081/drugstores/searchLength`, this.currentSearch)
+                this.$http.post(`https://mrs-isa-usijani.herokuapp.com/drugstores/searchLength`, this.currentSearch)
                     .then(response => {
                         this.rows = response.data;
                     })
@@ -96,7 +96,7 @@
                 this.getDrugstores();
             },
             getDrugstores: function () {
-                this.$http.post(`http://localhost:8081/drugstores/search?page=${this.currentPage-1}&size=4`, this.currentSearch)
+                this.$http.post(`https://mrs-isa-usijani.herokuapp.com/drugstores/search?page=${this.currentPage-1}&size=4`, this.currentSearch)
                     .then(response => {
                         this.getDrugstoresLength()
                         if (response.data.length == 0) {
@@ -111,7 +111,7 @@
                     .catch(error => console.log(error));
             },
             getAllDrugstores: function () {
-                this.$http.get('http://localhost:8081/drugstores')
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugstores')
                     .then(response => {
                         this.drugstores = this.mapDrugstores(response);
                     })
