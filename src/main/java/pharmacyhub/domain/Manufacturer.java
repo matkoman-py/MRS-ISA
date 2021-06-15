@@ -5,7 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
+@SQLDelete(sql = "UPDATE manufacturer SET deleted = true WHERE id = ? AND version = ?")
+@Where(clause = "deleted = false")
 public class Manufacturer extends BaseEntity {
 
 	@Column(nullable = false, unique=true)

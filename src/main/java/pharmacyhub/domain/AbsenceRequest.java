@@ -14,7 +14,7 @@ import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.User;
 
 @Entity
-@SQLDelete(sql = "UPDATE absence_request SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE absence_request SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class AbsenceRequest extends BaseEntity {
 	

@@ -118,6 +118,7 @@ public class DrugService {
 		return true;
 	}
 
+	@Transactional
 	public Drug update(DrugDto drugDto) throws Exception {
 		Drug drug = new Drug(drugDto.getName(),drugDto.getForm(), drugDto.isReceipt(), drugDto.getCode(), drugDto.getDailyDose(), drugDto.getWeight(), drugDto.getType(),
 				drugDto.getManufacturer(), drugDto.getSubstitutions(), drugDto.getIngredients(), drugDto.getDescription(),

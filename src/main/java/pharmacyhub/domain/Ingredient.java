@@ -6,7 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
+@SQLDelete(sql = "UPDATE ingredient SET deleted = true WHERE id = ? AND version = ?")
+@Where(clause = "deleted = false")
 public class Ingredient extends BaseEntity {
 
 	@Column(nullable = false, unique=true)
