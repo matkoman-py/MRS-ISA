@@ -140,15 +140,15 @@ public class DrugService {
 
 	public List<Drug> findAllSubstitutes(String drugId) {
 		Drug drug = drugRepository.findById(drugId).orElse(null);
-		//return drug.getSubstitutions();
-		return drugRepository.findAll();
+		return drug.getSubstitutions();
+		
 	}
 	
 	public List<Drug> findAllSubstitutesDrugstore(String drugId, String drugstoreId, String patientId) {
 		Drug drug = drugRepository.findById(drugId).orElse(null);
-		//List<Drug> drugList =  drug.getSubstitutions();
+		List<Drug> drugList =  drug.getSubstitutions();
 		
-		List<Drug> drugList = drugRepository.findAll();
+		
 
 		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
 		List<DrugStock> drugStockList = drugStockRepository.findByDrugstore(drugstore);
