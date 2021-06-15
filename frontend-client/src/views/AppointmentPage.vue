@@ -220,7 +220,7 @@ export default {
             //this.$root.$emit('bv::show::modal', 'my-modal');
         },
         patientNotShowup: function(){
-                alert("Patient did not show up");
+                this.$toastr.w("Patient did not show up");
                 this.$root.$emit('bv::hide::modal', 'my-modal');
 
                 this.$http.get('http://localhost:8081/patients/penalty', {
@@ -230,7 +230,7 @@ export default {
                                 })
                                 .then(response => {
                                 console.log(response);
-                                alert("Patient received a penalty.");
+                                this.$toastr.e("Patient recieved a penalty!");
                                 //prvo = true;
                                 })
                                 .catch(error => console.log(error));
@@ -247,7 +247,7 @@ export default {
                                 
                                 })
                 }else{
-                    alert("Patient did not show up");
+                    this.$toastr.w("Patient did not show up!");
                     console.log(this.selected.extendedProps.patient.id);
                     this.$root.$emit('bv::hide::modal', 'my-modal');
                     this.$http.get('http://localhost:8081/patients/penalty', {
@@ -257,7 +257,7 @@ export default {
                                     })
                                     .then(response => {
                                     console.log(response);
-                                    alert("Patient received a penalty.");
+                                    this.$toastr.e("Patient recieved a penalty!");
                                     //prvo = true;
                                     })
                                     .catch(error => console.log(error));
@@ -277,11 +277,11 @@ export default {
         },
         startApp: function(){
             if(this.user.type == "Dermatologist"){
-            alert("Appointment started"+ this.selected.id);
+            this.$toastr.s("Appointment started"+ this.selected.id);
             this.$root.$emit('bv::hide::modal', 'my-modal');
             this.$router.push({ name: 'AppointmentDermatologist', params: { passedId: this.selected.id } })
             }else{
-                alert("Appointment started"+this.selected.id);
+                this.$toastr.s("Appointment started"+ this.selected.id);
                 this.$root.$emit('bv::hide::modal', 'my-modal');
                 this.$router.push({ name: 'AppointmentPharmacist', params: { passedId: this.selected.id } })
             }

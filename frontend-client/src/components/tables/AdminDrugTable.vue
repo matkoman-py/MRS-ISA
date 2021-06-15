@@ -146,12 +146,12 @@ export default {
                 .delete(
                     `http://localhost:8081/drugs/${this.deleteModal.drug.id}`
                 )
-                .then((response) => {
+                .then(() => {
                     let index = this.drugs.findIndex(
                         (drug) => drug.id == this.deleteModal.drug.id
                     );
                     this.drugs.splice(index, 1);
-                    alert("success", response);
+                    this.$toastr.s("Success!");
                 })
                 .catch((error) => this.$toastr.e(error));
         },

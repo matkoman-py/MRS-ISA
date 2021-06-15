@@ -159,7 +159,7 @@
           this.$http.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
-              alert("New appointment is successfully created.");
+              this.$toastr.s("New appointment is successfully created.")
               })
               .catch(error => console.log(error));
           this.$root.$emit('bv::hide::modal', 'my-modal');

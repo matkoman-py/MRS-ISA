@@ -97,11 +97,11 @@
             .catch(error => console.log(error));
         }, acceptRequest() {
             if (this.selectedRequest.length == 0) {
-                alert("You need to select absence request that you want to accept.")
+                this.$toastr.e("You need to select absence request that you want to accept.")
           } else {
                 this.$http.post('http://localhost:8081/absence-request/approvePharmacist/' + this.selectedRequest[0].requestId)
                   .then(response => {
-                    alert(response.data); // zasto se ne prikaze ovo??
+                    this.$toastr.s(response.data);
                     this.getRequests();
                   })
                   .catch(error => console.log(error));
@@ -109,7 +109,7 @@
         }, rejectRequest(event) {
           event.preventDefault()
           if (this.selectedRequest.length == 0) {
-                alert("You need to select absence request that you want to reject.")
+                this.$toastr.e("You need to select absence request that you want to reject.")
           } else {
                 this.$root.$emit('bv::show::modal', 'rejectConfirmation');
           }
@@ -119,7 +119,7 @@
                     reasonOfRejection: this.reasonOfRejection
             })
                   .then(response => {
-                    alert(response.data); // zasto se ne prikaze ovo??
+                    this.$toastr.s(response.data);
                     this.getRequests();
                     this.$root.$emit('bv::hide::modal', 'rejectConfirmation');
                   })

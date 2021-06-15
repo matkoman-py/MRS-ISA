@@ -6,9 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugPrice;
 import pharmacyhub.dto.CreateNewPriceForDrugDto;
@@ -31,4 +33,9 @@ public class DrugPriceController {
 		return new ResponseEntity<>(drugPriceService.savePromotion(drugPromotion), HttpStatus.OK);
 	}
 	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getPrice(@RequestParam(value = "drugId", required=true,  defaultValue = "0") String drugId,
+											@RequestParam(value = "drugstoreId", required=true,  defaultValue = "0") String drugstoreId) throws Exception {
+		return new ResponseEntity<>(drugPriceService.getPrice(drugId,drugstoreId), HttpStatus.OK);
+	}
 }

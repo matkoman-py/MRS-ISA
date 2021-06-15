@@ -35,7 +35,7 @@ export default {
             this.$http
                 .post("http://localhost:8081/complaints/", this.complaintForm)
                 .then((response) => {
-                    alert("Success!");
+                    this.$toastr.e("Succes!")
                     this.$emit("complaint-success");
                     console.log(response);
                 })

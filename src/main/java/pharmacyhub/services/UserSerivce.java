@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.SystemAdmin;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.FirstPasswordChangeDto;
 import pharmacyhub.repositories.users.DrugstoreAdminRepository;
@@ -37,6 +37,10 @@ public class UserSerivce {
 	
 	public SystemAdmin getSystemAdmin(String drugstoreAdminId) {
 		return (SystemAdmin) userRepository.findById(drugstoreAdminId).orElse(null);
+	}
+	
+	public Patient getUser(String drugstoreAdminId) {
+		return (Patient) userRepository.findById(drugstoreAdminId).orElse(null);
 	}
 	
 	public Boolean drugstoreAdminUpdate(DrugstoreAdmin drugstoreAdmin) throws Exception {
@@ -68,14 +72,15 @@ public class UserSerivce {
 		if(drugstoreAdmin.getSurname() != null) admin.setSurname(drugstoreAdmin.getSurname());
 
 		userRepository.save(admin);
-	return true;
-}
+		return true;
+	}
 	
 	public boolean validatePassword(String drugstoreAdminId, String passwordInput) {
 		DrugstoreAdmin admin = (DrugstoreAdmin) userRepository.findById(drugstoreAdminId).orElse(null);
 		return passwordEncoder.matches(passwordInput, admin.getPassword());
 	}
 	
+
 	public boolean validatePasswordsystemAdmin(String drugstoreAdminId, String passwordInput) {
 		SystemAdmin admin = (SystemAdmin) userRepository.findById(drugstoreAdminId).orElse(null);
 		return passwordEncoder.matches(passwordInput, admin.getPassword());
@@ -85,6 +90,22 @@ public class UserSerivce {
 		SystemAdmin admin = (SystemAdmin) userRepository.findById(drugstoreAdmin.getId()).orElse(null);
 		if (admin == null) {
 			throw new Exception("This drugstore admin does not exist!");
+		}
+		admin.setPassword(passwordEncoder.encode(drugstoreAdmin.getPassword()));
+		userRepository.save(admin);
+		return true;
+
+	}
+	
+	public boolean validatePasswordUser(String drugstoreAdminId, String passwordInput) {
+		Patient admin = (Patient) userRepository.findById(drugstoreAdminId).orElse(null);
+		return passwordEncoder.matches(passwordInput, admin.getPassword());
+	}
+	
+	public boolean userPasswordUpdate(DrugstoreAdmin drugstoreAdmin) throws Exception {
+		Patient admin = (Patient) userRepository.findById(drugstoreAdmin.getId()).orElse(null);
+		if (admin == null) {
+			throw new Exception("This patient does not exist!");
 		}		
 		admin.setPassword(passwordEncoder.encode(drugstoreAdmin.getPassword()));
 		userRepository.save(admin);

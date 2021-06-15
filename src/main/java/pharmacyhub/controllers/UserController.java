@@ -1,7 +1,6 @@
 package pharmacyhub.controllers;
 
 import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.SystemAdmin;
+import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
 import pharmacyhub.dto.FirstPasswordChangeDto;
 import pharmacyhub.dto.UserRegistrationDto;
@@ -93,6 +92,12 @@ public class UserController {
 	public ResponseEntity<Collection<User>> getSuppliersAndAdmins() throws Exception {
 		return new ResponseEntity<>(userService.getSuppliersAndAdmins(), HttpStatus.OK);
 	}
+	////////////////////////////
+	@PreAuthorize("hasAnyRole('PATIENT')")
+	@GetMapping(path = "/user")
+	public ResponseEntity<Patient> getUser(@RequestParam String drugstoreAdminId) throws Exception {
+		return new ResponseEntity<>(userService.getUser(drugstoreAdminId), HttpStatus.OK);
+	}
 	
 	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(path = "/systemAdmin")
@@ -118,5 +123,18 @@ public class UserController {
 	@PutMapping(path = "/systemAdmin/updatepassword",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> systemAdminPasswordUpdate(@RequestBody SystemAdmin systemAdmin) throws Exception {
 		return new ResponseEntity<>(userService.systemAdminPasswordUpdate(systemAdmin), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasAnyRole('PATIENT')")
+	@GetMapping(path = "/user/password")
+	public ResponseEntity<Boolean> validateUserPassword(@RequestParam (value = "drugstoreAdminId") String drugstoreAdminId,
+			@RequestParam (value = "passwordInput") String passwordInput) throws Exception {
+		return new ResponseEntity<>(userService.validatePasswordUser(drugstoreAdminId, passwordInput), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasAnyRole('PATIENT')")
+	@PutMapping(path = "/user/updatepassword",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> userPasswordUpdate(@RequestBody DrugstoreAdmin drugstoreAdmin) throws Exception {
+		return new ResponseEntity<>(userService.userPasswordUpdate(drugstoreAdmin), HttpStatus.OK);
 	}
 }

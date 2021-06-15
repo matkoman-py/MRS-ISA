@@ -219,7 +219,7 @@ export default {
                 return;
             }
             if (!this.validatePassword()) {
-                alert("Passwords aren't matching!");
+                this.$toastr.e("Passwords aren't matching!")
                 return;
             }
             event.preventDefault();
@@ -230,7 +230,7 @@ export default {
                 .post("http://localhost:8081/register", this.form)
                 .then((response) => {
                     console.log(response);
-                    alert("Check your email for further instructions!");
+                    this.$toastr.s("Check your email for further instructions!")
                 })
                 .catch((error) => console.log(error));
         },

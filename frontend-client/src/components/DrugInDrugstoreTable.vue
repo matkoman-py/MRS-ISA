@@ -35,7 +35,7 @@
       <b-col>
         <b-table head-variant="outline-hub" striped hover :items="drugs" :fields="fields" sticky-header="400px">
           <template #cell(actions)="row">
-            <b-button variant="outline-hub" v-if="row.item" :disabled="employee.penaltyCounter >= 3" size="sm"
+            <b-button variant="outline-hub" v-if="row.item" :disabled="employee.penaltyCounter >= 3 || role !='Patient'" size="sm"
               @click="showModal(row.item, row.index, $event.target)" class="mr-1">
               Reserve
             </b-button>
@@ -52,7 +52,6 @@
         <p>Now choose how much you want</p>
          <b-form-input :value="1" :min="1" v-model="amount" type="number"></b-form-input>
          <br>
-        
         <b-button :disabled="date == '' || amount == ''" type="submit" variant="outline-hub">Save</b-button>
       </b-form>
     </b-modal>
@@ -131,7 +130,8 @@
                     amount: this.amount,
                   })
                   .then(response => {
-                    alert(response.data);
+                    
+                    this.$toastr.s(response.data);
                     this.getAllDrugsOfDrugstore();
                     this.$root.$emit('bv::hide::modal', 'my-modal');
                   })
@@ -145,7 +145,7 @@
                     amount: this.amount
                   })
                   .then(response => {
-                    alert(response.data);
+                    this.$toastr.s(response.data);
                     this.getAllDrugsOfDrugstore();
                     this.$root.$emit('bv::hide::modal', 'my-modal');
                   })
@@ -154,7 +154,7 @@
       },
       showModal(item) {
         if (this.user == null) {
-          alert("You must be logged in to reserve a drug!");
+          this.$toastr.e("You must be logged in to reserve a drug.")
           return;
         }
         //alert(item.name);

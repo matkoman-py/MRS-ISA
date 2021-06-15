@@ -50,7 +50,7 @@ export default {
                 .post("http://localhost:8081/drugstores", this.drugstore)
                 .then((response) => {
                     console.log(response);
-                    alert("Successfully added drugstore");
+                    this.$toastr.s("Succesfully added drugstore");
                 })
                 .catch((error) => console.log(error));
         },

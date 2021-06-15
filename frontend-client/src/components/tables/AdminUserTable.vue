@@ -170,7 +170,7 @@ export default {
                         (user) => user.id == this.deleteModal.user.id
                     );
                     this.users.splice(index, 1);
-                    alert("success", response);
+                    this.$toastr.s("Success")
                 })
                 .catch((error) => console.log(error));
         },
@@ -184,7 +184,7 @@ export default {
                         (user) => user.id == this.deleteModal.user.id
                     );
                     this.users.splice(index, 1);
-                    alert("success", response);
+                    this.$toastr.s("Success")
                 })
                 .catch((error) => console.log(error));
         },
@@ -198,7 +198,7 @@ export default {
                         (user) => user.id == this.deleteModal.user.id
                     );
                     this.users.splice(index, 1);
-                    alert("success", response);
+                    this.$toastr.s("Success")
                 })
                 .catch((error) => console.log(error));
         },

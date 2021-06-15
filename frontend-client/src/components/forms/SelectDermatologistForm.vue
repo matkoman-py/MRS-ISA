@@ -65,7 +65,7 @@ export default {
               let index = this.dermatologists.findIndex(dermatologist => dermatologist.email == updatedDermatologist.email);
               console.log(index);
               this.dermatologists.splice(index, 1, this.mapSingleDermatologist(updatedDermatologist));
-              alert("Success");
+              this.$toastr.s("Succes!");
               console.log(this.dermatologists);
           })
           .catch(error => console.log(error));

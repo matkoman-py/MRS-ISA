@@ -284,7 +284,7 @@
         showModal(event) {
           event.preventDefault()
           if (this.selectedEmployee.length == 0) {
-            alert("You need to select employee that you want to delete.")
+            this.$toastr.w("You need to select employee that you want to delete.")
           } else {
             this.$root.$emit('bv::show::modal', 'deleteConfirmation');
           }
@@ -299,9 +299,9 @@
               this.$http.delete("http://localhost:8081/employees/delete/", {params :{ pharmacistEmail: this.selectedEmployee[0].email}})
               .then(response => {
                 if (response.data == "Denied") {
-                  alert("Pharmacist have scheduled appointments in future so you can't delete him!");
+                  this.$toastr.e("Pharmacist have scheduled appointments in future so you can't delete him!")
                 } else {
-                  alert("Pharmacist is succesfully removed from drugstore!");
+                  this.$toastr.s("Pharmacist is succesfully removed from drugstore!")
                 }
                 this.getEmployees();
               })
@@ -310,9 +310,9 @@
               this.$http.delete("http://localhost:8081/employment/delete", {data : { dermatologistEmail: this.selectedEmployee[0].email, drugstoreId: this.drugstoreId }})
               .then(response => {
                 if (response.data == "Denied") {
-                  alert("Dermatologist have scheduled appointments in future so you can't delete him!");
+                  this.$toastr.e("Dermatologist have scheduled appointments in future so you can't delete him!")
                 } else {
-                  alert("Dermatologist is succesfully removed from drugstore!");
+                  this.$toastr.s("Dermatologist is succesfully removed from drugstore!")
                   this.getAllNotEmployedDermatologists();
                   this.getAllDermatologistForThisDrugstore();
                 }
@@ -346,7 +346,7 @@
           this.$http.post("http://localhost:8081/employment/dermatologist/hire", JSON.parse(JSON.stringify(this.hireDermatologistValues)))
               .then(response => {
               console.log(response);
-              alert("Dermatologist is successfully hired!");
+              this.$toastr.e("Dermatologist is successfully hired!")
               this.getEmployees();
               this.getAllNotEmployedDermatologists();
               this.getAllDermatologistForThisDrugstore();
@@ -381,7 +381,7 @@
           this.$http.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
-              alert("New appointment is successfully created.");
+              this.$toastr.s("New appointment is successfully created.")
               })
               .catch(error => console.log(error));
           this.$root.$emit('bv::hide::modal', 'my-modal');

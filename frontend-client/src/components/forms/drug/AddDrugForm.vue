@@ -40,7 +40,7 @@ export default {
             this.$http
                 .post("http://localhost:8081/drugs", this.form)
                 .then((response) => {
-                    alert("drug added successfully");
+                    this.$toastr.e("drug added successfully");
                     console.log(response);
                 })
                 .catch((error) => console.log(error));
