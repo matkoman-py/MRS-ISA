@@ -50,7 +50,7 @@ public class EmployeeController {
 			@RequestParam(value = "maxRate") double maxRate, @RequestParam(value = "type") String employeeType) {
 		return new ResponseEntity<>(employeeService.getAllEmployeesOfDrugstoreBySearch(drugstoreAdminId, searchText, minRate, maxRate, employeeType), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('ROLE_DRUGSTOREADMIN','ROLE_PATIENT')")
+	
 	@GetMapping(path="/pharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PharmacistOverviewDto>> getAllPharmacists() {
 		return new ResponseEntity<>(employeeService.getAllPharmacists(), HttpStatus.OK);
@@ -62,7 +62,7 @@ public class EmployeeController {
 			@RequestParam(value = "maxRate") double maxRate, @RequestParam(value = "drugstore") String drugstore) {
 		return new ResponseEntity<>(employeeService.getPharmacistBySearch(name, surname, minRate, maxRate, drugstore), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','PATIENT')")
+	
 	@GetMapping(path="/dermatologists", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<DermatologistOverviewDto>> getAlDermatologists() {
 		return new ResponseEntity<>(employeeService.getAllDermatologists(), HttpStatus.OK);
@@ -107,13 +107,13 @@ public class EmployeeController {
 		return new ResponseEntity<>(employeeService.findDrugstoreByDrugstoreAdminId(drugstoreAdminId), HttpStatus.OK);
 	}
   
-	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SYSTEMADMIN')")
+	
 	@DeleteMapping(path="/delete", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> deletePharmacist(@RequestParam (value = "pharmacistEmail") String pharmacistEmail) throws Exception {
 		return new ResponseEntity<>(employeeService.deletePharmacist(pharmacistEmail), HttpStatus.OK);
 	}
   
-  @PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+  
 	@DeleteMapping(path="/delete/dermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> deleteDermatologist(@RequestParam (value = "dermatologistEmail") String dermatologistEmail) throws Exception {
 		return new ResponseEntity<>(employeeService.deleteDermatologist(dermatologistEmail), HttpStatus.OK);

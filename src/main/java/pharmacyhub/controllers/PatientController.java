@@ -60,7 +60,7 @@ public class PatientController {
 		
 		return new ResponseEntity<>(patientService.returnPatientsLength(patientName,patientSurname), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('PATIENT')")
+	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Patient> update(@RequestBody Patient patient) throws Exception {
 		return new ResponseEntity<>(patientService.update(patient), HttpStatus.OK);

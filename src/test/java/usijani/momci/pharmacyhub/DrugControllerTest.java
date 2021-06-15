@@ -73,48 +73,15 @@ public class DrugControllerTest {
 		}
 	}
 	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testSaveDrug() {
-		Drug k = new Drug();
-		k.setName("zezanje");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(k);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(post(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isCreated());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 	
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testDeleteDrug() throws Exception {
-		Drug k = new Drug();
-		k.setName("zezanje");
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
 		try {
-			json = mapper.writeValueAsString(k);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(post(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isCreated());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(delete(URL_PREFIX+"/zezanje")).andExpect(status().isOk());
+			this.mockMvc.perform(delete(URL_PREFIX+"/d7d2d173-9f15-4bd2-979c-6933746f6be4")).andExpect(status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -26,7 +26,7 @@ import pharmacyhub.PharmacyhubApplication;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.Pharmacist;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PharmacyhubApplication.class)
 @AutoConfigureMockMvc
@@ -67,19 +67,10 @@ public class EmployeeControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSaveDermatologist() {
-		Dermatologist k = new Dermatologist();
-		k.setName("zezanje");
+	public void testDeleteDermatologist() {
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
 		try {
-			json = mapper.writeValueAsString(k);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(post(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isCreated());
+			this.mockMvc.perform(delete(URL_PREFIX+"/delete/dermatologist?dermatologistEmail=djoka@djokic.com")).andExpect(status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -88,19 +79,10 @@ public class EmployeeControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSavePharmacist() {
-		Pharmacist k = new Pharmacist();
-		k.setName("zezanje");
+	public void testDeletePharmacist() {
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
 		try {
-			json = mapper.writeValueAsString(k);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(post(URL_PREFIX+"/pharmacist").contentType(contentType).content(json)).andExpect(status().isCreated());
+			this.mockMvc.perform(delete(URL_PREFIX+"/delete?pharmacistEmail=pera@peric.com")).andExpect(status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

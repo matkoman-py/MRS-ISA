@@ -87,7 +87,7 @@ public class UserController {
 		return new ResponseEntity<>(userService.deleteDrugstoreAdmin(drugstoreAdminId), HttpStatus.OK);
 	}
 	
-  @PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+  	
 	@GetMapping(path = "/suppliers-and-admins")
 	public ResponseEntity<Collection<User>> getSuppliersAndAdmins() throws Exception {
 		return new ResponseEntity<>(userService.getSuppliersAndAdmins(), HttpStatus.OK);

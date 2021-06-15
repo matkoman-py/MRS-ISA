@@ -85,7 +85,7 @@ public class DrugController {
 	public ResponseEntity<Drug> update(@RequestBody DrugDto drugDto) throws Exception {
 		return new ResponseEntity<>(drugService.update(drugDto), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+	
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Boolean> deleteDrug(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(drugService.delete(id), HttpStatus.OK);

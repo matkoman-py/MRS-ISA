@@ -3,11 +3,10 @@ package usijani.momci.pharmacyhub;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +22,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pharmacyhub.PharmacyhubApplication;
-import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.users.Patient;
-import pharmacyhub.domain.users.User;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PharmacyhubApplication.class)
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class PatientControllerTest {
 	
-	private static final String URL_PREFIX = "";
+	private static final String URL_PREFIX = "/patients";
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype());
@@ -40,18 +36,45 @@ public class UserControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
+	
 	@Test
-	public void testSuppliersAndAdmins()  {
+	@Transactional
+	@Rollback(true)
+	public void testGetPatient() {
 		try {
-			mockMvc.perform(get(URL_PREFIX+"/suppliers-and-admins")).andExpect(status().isOk())
+			mockMvc.perform(get(URL_PREFIX+"/id?patientId=8128d806-c29b-4086-aae6-877d17eeb6fa")).andExpect(status().isOk())
 			.andExpect(content().contentType(contentType))
-			.andExpect(jsonPath("$.[*].id").value(hasItem("4f3bgfza-fda8-4a50-aa05-be2be4fb2884")));
+			.andExpect(jsonPath("$.[*].id").value(hasItem("8128d806-c29b-4086-aae6-877d17eeb6fa")));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	
-	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdatePatient() {
+		Patient patient = new Patient();
+		patient.setId("8128d806-c29b-4086-aae6-877d17eeb6fa");
+		patient.setName("pera");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(patient);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			mockMvc.perform(put(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isOk())
+			.andExpect(content().contentType(contentType))
+			.andExpect(jsonPath("$.[*].name").value(hasItem("pera")));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

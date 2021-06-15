@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pharmacyhub.PharmacyhubApplication;
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.Location;
+import pharmacyhub.domain.Point;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PharmacyhubApplication.class)
@@ -55,19 +57,12 @@ public class DrugstoreControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSaveDrugstore() {
-		Drugstore k = new Drugstore();
-		k.setName("zezanje");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
+	public void testGetDrugstore() {
 		try {
-			json = mapper.writeValueAsString(k);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(post(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isCreated());
+			mockMvc.perform(get(URL_PREFIX+"/2b7933e9-6523-463a-974b-ded43ad63843")).andExpect(status().isOk())
+			.andExpect(content().contentType(contentType))
+			.andExpect(jsonPath("$.[*].id").value(hasItem("2b7933e9-6523-463a-974b-ded43ad63843")));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,23 +72,9 @@ public class DrugstoreControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testDeleteDrugstore() throws Exception {
-		Drugstore k = new Drugstore();
-		k.setName("zezanje");
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
 		try {
-			json = mapper.writeValueAsString(k);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(post(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isCreated());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			this.mockMvc.perform(delete(URL_PREFIX+"/zezanje")).andExpect(status().isOk());
+			this.mockMvc.perform(delete(URL_PREFIX+"/2b7933e9-6523-463a-974b-ded43ad63843")).andExpect(status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

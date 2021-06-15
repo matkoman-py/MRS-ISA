@@ -41,7 +41,7 @@ public class DrugstoreController {
 	public ResponseEntity<Integer> searchLength(@RequestBody DrugstoreSearchDto drugstoreSearchDto) throws Exception {
 		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugstoreSearchDto), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> add(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.save(drugstore), HttpStatus.OK);
@@ -51,7 +51,7 @@ public class DrugstoreController {
 	public ResponseEntity<Drugstore> update(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.update(drugstore), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
+	
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> update(@PathVariable String id) {
 		try {
