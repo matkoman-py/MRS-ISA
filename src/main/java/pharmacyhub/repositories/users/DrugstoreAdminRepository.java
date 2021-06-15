@@ -10,4 +10,7 @@ public interface DrugstoreAdminRepository extends AbstractUserRepository<Drugsto
 	
 	@Transactional
 	void deleteByDrugstore(Drugstore drugstore);
+	
+	@Transactional
+	void deleteById(String drugstoreAdminId);
 }

@@ -434,10 +434,12 @@ public class EmployeeService {
 	}
 	
 	
-	public String deleteDermatologist(String dermatologistEmail) {
+	public String deleteDermatologist(String dermatologistEmail) throws Exception {
 		if (checkFutureDermatologistAppointments(dermatologistEmail)) {
-			return "Denied";
+			throw new Exception("Can't delete dermatologist!");
 		}
+		
+		employmentRepository.deleteByDermatologistEmail(dermatologistEmail);
 		dermatologistRepository.deleteByEmail(dermatologistEmail);
 		return "Success";
 	}

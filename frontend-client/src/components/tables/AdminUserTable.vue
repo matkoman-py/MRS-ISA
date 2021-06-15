@@ -157,8 +157,22 @@ export default {
             } else if (this.deleteModal.user.type == "Dermatologist") {
                 this.deleteDermatologist();
             } else if (this.deleteModal.user.type == "DrugstoreAdmin") {
-                console.log("bice");
+                this.deleteDrugstoreAdmin();
             }
+        },
+        deleteDrugstoreAdmin: function() {
+            this.$http
+                .delete(
+                    `http://localhost:8081/drugstoreAdmin?id=${this.deleteModal.user.id}`
+                )
+                .then((response) => {
+                    let index = this.users.findIndex(
+                        (user) => user.id == this.deleteModal.user.id
+                    );
+                    this.users.splice(index, 1);
+                    alert("success", response);
+                })
+                .catch((error) => console.log(error));
         },
         deleteDermatologist: function() {
             this.$http

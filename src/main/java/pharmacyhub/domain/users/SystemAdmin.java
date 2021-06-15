@@ -8,7 +8,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @DiscriminatorValue("SystemAdmin")
-@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ? and version = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ? and version = ?")
 @Where(clause = "deleted = false")
 public class SystemAdmin extends User {
 
