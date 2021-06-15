@@ -69,8 +69,6 @@ public class Drug extends BaseEntity {
 	}
 
 	
-	
-	
 	public Drug(String name, String form, boolean receipt, String code, int dailyDose, double weight, DrugType type,
 			Manufacturer manufacturer, List<Drug> substitutions, List<Ingredient> ingredients, String description,
 			int point, double rating) {
