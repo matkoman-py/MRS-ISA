@@ -47,6 +47,7 @@
                         <b-form-input
                             type="number"
                             v-model="form.pharmacistAppointmentPrice"
+                            min=0
                             :required="mode == 'add'"
                         ></b-form-input>
                     </b-input-group>

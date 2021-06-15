@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.User;
+import pharmacyhub.dto.FirstPasswordChangeDto;
 import pharmacyhub.repositories.users.UserRepository;
 
 @Service
@@ -56,6 +57,14 @@ public class UserSerivce {
 		}		
 		admin.setPassword(passwordEncoder.encode(drugstoreAdmin.getPassword()));
 		userRepository.save(admin);
+		return true;
+	}
+	
+	public boolean firstLoginPasswordChange(FirstPasswordChangeDto firstPasswordChangeDto) {
+		User user = userRepository.findById(firstPasswordChangeDto.getId()).orElse(null);
+		user.setPassword(passwordEncoder.encode(firstPasswordChangeDto.getPassword()));
+		user.setFirstLogin(false);
+		userRepository.save(user);
 		return true;
 	}
 	

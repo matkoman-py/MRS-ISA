@@ -81,7 +81,7 @@ INSERT INTO public.users VALUES ('Patient', '393dca36-3778-4802-939c-de7a0a265c9
 ---- Data for Name: Drugstore Admin;
 ----
 INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a2', false, '12-06-2021', 0, '', 'kata@ketamin.com', false, 'Kata', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Ketamin',0, NULL, NULL, NULL, NULL, NULL, '2b7933e9-6as3-463a-974b-ded43ad63843');
-INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a3', false, '12-06-2021', 0, '', 'admin@adminovic.com', false, 'Djordje', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Djordjevic',0, NULL, NULL, NULL, NULL, NULL, '2b7933e9-6523-463a-974b-ded43ad63843');
+INSERT INTO public.users VALUES ('DrugstoreAdmin', '79e53b5a-9977-46dc-b5a5-11b54ac627a3', false, '12-06-2021', 0, '', 'admin@adminovic.com', true, 'Djordje', '$2a$12$FBhkOkiW3ToB1A5i/di8HOZOylq2t7BylKgYIjvSUfgrJTP0R5ZxW', NULL, TRUE, 'Djordjevic',0, NULL, NULL, NULL, NULL, NULL, '2b7933e9-6523-463a-974b-ded43ad63843');
 
 ----
 ---- Data for Name: System Admin;

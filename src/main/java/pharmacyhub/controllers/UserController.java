@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.User;
+import pharmacyhub.dto.FirstPasswordChangeDto;
 import pharmacyhub.dto.UserRegistrationDto;
 import pharmacyhub.services.RegistrationService;
 import pharmacyhub.services.UserSerivce;
@@ -57,6 +58,11 @@ public class UserController {
 	public ResponseEntity<Boolean> drugstoreAdminUpdate(@RequestBody DrugstoreAdmin drugstoreAdmin) throws Exception {
 		return new ResponseEntity<>(userService.drugstoreAdminUpdate(drugstoreAdmin), HttpStatus.OK);
 
+	}
+	
+	@PutMapping(path = "/firstLoginPasswordChange",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> firstLoginPasswordChange(@RequestBody FirstPasswordChangeDto firstPasswordChangeDto) throws Exception {
+		return new ResponseEntity<>(userService.firstLoginPasswordChange(firstPasswordChangeDto), HttpStatus.OK);
 	}
 	
 	@PutMapping(path = "/drugstoreAdmin/updatepassword",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

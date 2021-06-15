@@ -41,7 +41,7 @@
                                             <label>Email</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <b-form-input :disabled="editEnabled" id="email-input" type="email"
+                                            <b-form-input disabled id="email-input" type="email"
                                                 v-model="profile.email" required></b-form-input>
                                         </div>
                                     </div>

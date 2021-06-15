@@ -42,7 +42,11 @@ const actions = {
                 localStorage.setItem("token", response.data.accessToken);
                 commit("setLoggedInUser", response.data.user);
                 commit("setError", "");
-                router.push("/");
+                if (response.data.user.firstLogin && (response.data.user.type == 'DrugstoreAdmin' || response.data.user.type == 'SystemAdmin' || response.data.user.type == 'Supplier')) {
+                    router.push("/first-login");
+                } else {
+                    router.push("/");
+                }
             })
             .catch((error) => {
                 if (error.response.status == "401") {

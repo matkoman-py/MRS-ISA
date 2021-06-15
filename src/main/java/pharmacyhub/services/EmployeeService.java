@@ -238,12 +238,12 @@ public class EmployeeService {
 		
 		for (Employee e : pharmacists) {
 			
-			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Pharmacist"));
 		}
 		for (Employment e : dermatologistEmployments) {
 			
 			
-			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
+			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Dermatologist"));
 		}
 		return employees;
 	}
@@ -269,7 +269,7 @@ public class EmployeeService {
 			if (checkIfSearchedTextIsIncluded(searchText, e)) {
 				if (minRate <= e.getRating() && maxRate >= e.getRating()) { //ovo treba ispraviti
 					
-					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Pharmacist"));
 				}
 			}
 		}
@@ -277,7 +277,7 @@ public class EmployeeService {
 			if (checkIfSearchedTextIsIncluded(searchText, e.getDermatologist())) {
 				if (minRate <= e.getDermatologist().getRating() && maxRate >= e.getDermatologist().getRating()) { //ovo treba ispraviti
 					
-					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
+					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Dermatologist"));
 				}
 			}
 		}

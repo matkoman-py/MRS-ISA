@@ -96,6 +96,14 @@ public class User extends BaseEntity implements UserDetails{
 		this.activationCode = activationCode;
 	}
 
+	public boolean isFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
+
 	public String getEmail() {
 		return email;
 	}
