@@ -1,33 +1,58 @@
 <template>
     <div>
         <b-container>
-            <b-table
-                id="drugstore-table"
-                striped
-                hover
-                :items="drugstores"
-                :fields="fields"
-            >
-                <template #cell(actions)="row">
-                    <b-button
-                        size="sm"
-                        variant="outline-hub"
-                        @click="showEditModal(row.item, $event.target)"
-                        class="mr-1"
-                    >
-                        Edit
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="outline-hub"
-                        @click="showDeleteModal(row.item, $event.target)"
-                        class="mr-1"
-                    >
-                        Delete
-                    </b-button>
-                </template>
-            </b-table>
+            <b-row>
+                <b-col cols="4">
+                    <b-card>
+                        <b-button-group vertical>
+                            <b-button
+                                size="sm"
+                                variant="outline-hub"
+                                @click="showAddModal($event.target)"
+                                class="mr-1"
+                            >
+                                Add Drugstore
+                            </b-button>
+                        </b-button-group>
+                    </b-card>
+                </b-col>
+                <b-col>
+                    <b-card>
+                        <b-table
+                            id="drugstore-table"
+                            striped
+                            hover
+                            :items="drugstores"
+                            :fields="fields"
+                        >
+                            <template #cell(actions)="row">
+                                <b-button
+                                    size="sm"
+                                    variant="outline-hub"
+                                    @click="
+                                        showEditModal(row.item, $event.target)
+                                    "
+                                    class="mr-1"
+                                >
+                                    Edit
+                                </b-button>
+                                <b-button
+                                    size="sm"
+                                    variant="outline-hub"
+                                    @click="
+                                        showDeleteModal(row.item, $event.target)
+                                    "
+                                    class="mr-1"
+                                >
+                                    Delete
+                                </b-button>
+                            </template>
+                        </b-table>
+                    </b-card>
+                </b-col>
+            </b-row>
         </b-container>
+
         <b-modal
             :id="editModal.id"
             :title="editModal.title"
@@ -36,8 +61,27 @@
             @hide="resetEditModal"
             size="xl"
         >
-            <pre><edit-drugstore-form ref="edit-form" :drugstore="editModal.drugstore" submitHandle="null"></edit-drugstore-form></pre>
+            <edit-drugstore-form
+                ref="edit-form"
+                :drugstore="editModal.drugstore"
+                submitHandle="null"
+            ></edit-drugstore-form>
         </b-modal>
+        <b-modal
+            :id="addModal.id"
+            :title="addModal.title"
+            ok-only
+            v-on:ok="add"
+            size="xl"
+        >
+            <add-drugstore-form
+                hideButton="true"
+                ref="add-form"
+                :drugstore="addModal.drugstore"
+                submitHandle="null"
+            ></add-drugstore-form>
+        </b-modal>
+
         <b-modal
             :id="deleteModal.id"
             :title="deleteModal.title"
@@ -60,9 +104,10 @@
 
 <script>
 import EditDrugstoreForm from "../forms/drugstore/EditDrugstoreForm";
+import AddDrugstoreForm from "../../views/AddDrugstoreForm.vue";
 
 export default {
-    components: { EditDrugstoreForm },
+    components: { EditDrugstoreForm, AddDrugstoreForm },
     name: "AdminDrugstoreTable",
     data: function() {
         return {
@@ -73,6 +118,11 @@ export default {
             ],
             editModal: {
                 id: "edit-modal",
+                title: "",
+                drugstore: {},
+            },
+            addModal: {
+                id: "add-modal",
                 title: "",
                 drugstore: {},
             },
@@ -90,12 +140,10 @@ export default {
             this.editModal.drugstore = JSON.parse(JSON.stringify(rowItem));
             console.log(this.editModal.drugstore);
             this.$root.$emit("bv::show::modal", this.editModal.id, button);
-            setTimeout(() =>
-            {
-                 this.$refs["edit-form"].map.updateSize();
-                 this.$refs["edit-form"].map.getView().setZoom(6);
-            }
-            , 300);
+            setTimeout(() => {
+                this.$refs["edit-form"].map.updateSize();
+                this.$refs["edit-form"].map.getView().setZoom(6);
+            }, 300);
         },
         resetEditModal: function() {
             this.editModal.title = "";
@@ -114,6 +162,30 @@ export default {
                     alert("success");
                 })
                 .catch((error) => console.log(error));
+        },
+
+        add: function() {
+            this.$http
+                .post(
+                    "http://localhost:8081/drugstores",
+                    JSON.parse(JSON.stringify(this.$refs["add-form"].drugstore))
+                )
+                .then((response) => {
+                    this.drugstores.push(response.data);
+                    //this.drugstores.splice(index, 1, response.data);
+                    alert("success");
+                })
+                .catch((error) => console.log(error));
+        },
+        showAddModal: function(rowItem, button) {
+            this.addModal.title = `Drugstore`;
+            this.addModal.drugstore = JSON.parse(JSON.stringify(rowItem));
+            console.log(this.addModal.drugstore);
+            this.$root.$emit("bv::show::modal", this.addModal.id, button);
+            setTimeout(() => {
+                this.$refs["add-form"].map.updateSize();
+                this.$refs["add-form"].map.getView().setZoom(6);
+            }, 300);
         },
         showDeleteModal: function(rowItem, button) {
             this.deleteModal.title = `drug: ${rowItem.name}`;
