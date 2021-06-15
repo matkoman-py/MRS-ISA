@@ -70,6 +70,8 @@ public class UserSerivce {
 		user.setPassword(passwordEncoder.encode(firstPasswordChangeDto.getPassword()));
 		user.setFirstLogin(false);
 		userRepository.save(user);
+		return true;
+	}
 	@Transactional
 	public boolean deleteDrugstoreAdmin(String drugstoreAdminId) {
 		drugstoreAdminRepository.deleteById(drugstoreAdminId);
