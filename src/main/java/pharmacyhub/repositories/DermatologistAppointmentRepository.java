@@ -25,9 +25,11 @@ public interface DermatologistAppointmentRepository  extends JpaRepository<Derma
 	@Transactional
 	void deleteByDermatologist(Dermatologist dermatologist);
 	
+	List<DermatologistAppointment> findByDermatologistId(String dermatologistId);
+	
 	@Transactional
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	List<DermatologistAppointment> findByDermatologistId(String dermatologistId);
+	List<DermatologistAppointment> findByDermatologistIdOrderById(String dermatologistId);
 	
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedTrue(String dermatologistId);
 	List<DermatologistAppointment> findByDermatologistIdAndProcessedTrue(String dermatologistId, Pageable pageable);

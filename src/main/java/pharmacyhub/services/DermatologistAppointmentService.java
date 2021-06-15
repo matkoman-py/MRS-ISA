@@ -70,7 +70,7 @@ public class DermatologistAppointmentService {
 		long vremeKraj = vreme.getTime();
 		System.out.println("vreme poc: "+ vremePocetak+ "vreme kraj:" + vremeKraj);
 		
-		List<DermatologistAppointment> dermatologistAppointments = dermatologistAppointmentRepository.findByDermatologistId(dermatologistAppointmentDto.getDermatologist().getId());
+		List<DermatologistAppointment> dermatologistAppointments = dermatologistAppointmentRepository.findByDermatologistIdOrderById(dermatologistAppointmentDto.getDermatologist().getId());
 		for(DermatologistAppointment da : dermatologistAppointments) {
 			Date pVreme = da.getDate();
 			pVreme.setHours(da.getTime().getHours());
@@ -126,6 +126,7 @@ public class DermatologistAppointmentService {
 						false));
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
 	public DermatologistAppointment saveWithPatient(DermatologistAppointmentPatientDto dermatologistAppointmentPatientDto) throws Exception {
 		//treba provera da li je dermatolog u datom periodu slobodan, kao i pacijent
 		System.out.println(dermatologistAppointmentPatientDto.getDate());

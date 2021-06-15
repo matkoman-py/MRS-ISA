@@ -68,7 +68,7 @@ public class PharmacistAppointmentService {
 		vreme.setMinutes(pharmacistAppointmentPatientDto.getTime().getMinutes()+pharmacistAppointmentPatientDto.getDuration());
 		long vremeKraj = vreme.getTime();
 		
-		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientIdOrderById(pharmacistAppointmentPatientDto.getPatientId());
 		System.out.println(pharmacistAppointments.size());
 		for(PharmacistAppointment pa : pharmacistAppointments) {
 			Date pVreme = pa.getDate();
@@ -88,7 +88,7 @@ public class PharmacistAppointmentService {
 		}
 		
 		
-		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistId(pharmacistAppointmentPatientDto.getPharmacistId());
+		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistIdOrderById(pharmacistAppointmentPatientDto.getPharmacistId());
 		
 		for(PharmacistAppointment pa : pharmacistAppointmentsPharm) {
 			System.out.println(pa.getDate());

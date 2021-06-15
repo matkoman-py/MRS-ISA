@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugOrder;
@@ -112,6 +113,7 @@ public class DrugService {
 		return true;
 	}
 
+ 	@Transactional
 	public Drug update(Drug drug) throws Exception {
 		// TODO Auto-generated method stub
 		if (drugRepository.findOneById(drug.getId()) == null) {

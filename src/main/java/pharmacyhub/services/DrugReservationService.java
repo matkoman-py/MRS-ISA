@@ -187,7 +187,7 @@ public class DrugReservationService {
 		drugstockRepository.save(drst);
 		drugreservationRespository.deleteById(drugReservationId);
 		
-		List<DrugReservation> reservations =  drugreservationRespository.findByPatient(patientRepository.findById(patientId).orElse(null));
+		List<DrugReservation> reservations =  drugreservationRespository.findByPatientId(patientId);
 		System.out.println(reservations.size());
 		return reservations;
 	}
