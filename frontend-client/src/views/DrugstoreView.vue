@@ -2,13 +2,19 @@
     <b-container>
         <b-row style="margin:20px">
             <b-col>
-                <div style="width:100%; height:300px; border-style:solid" left
+                <div
+                    style="width:100%; height:300px; border-style:solid"
+                    left
                     alt="Left image"
-                    fluid>
-                <map-for-drugstore-view
-                    ref="map-container" 
-                    :coordinates="[drugstore.point.longitude, drugstore.point.latitude]"
-                ></map-for-drugstore-view>
+                    fluid
+                >
+                    <map-for-drugstore-view
+                        ref="map-container"
+                        :coordinates="[
+                            drugstore.point.longitude,
+                            drugstore.point.latitude,
+                        ]"
+                    ></map-for-drugstore-view>
                 </div>
                 <!--b-img
                     left
@@ -28,12 +34,11 @@
                     <p style="margin:20px">
                         <b>Description</b>: {{ drugstore.description }}
                     </p>
-                    <p  style="margin:20px">
+                    <p style="margin:20px">
                         <b>Average rating</b>:
-                        {{ drugstore.rating.toFixed(2) }} 
-                        
+                        {{ drugstore.rating.toFixed(2) }}
                     </p>
-                    
+
                     <p style="margin:20px">
                         <b>Working hours</b>: {{ drugstore.workingHoursFrom }} -
                         {{ drugstore.workingHoursTo }}
@@ -181,7 +186,10 @@
             </b-col>
             <b-col style="margin:20px">
                 <router-link
-                    :to="'/schedule-pharm-app-drugstore/' + this.currentDrugstoreId"
+                    :to="
+                        '/schedule-pharm-app-drugstore/' +
+                            this.currentDrugstoreId
+                    "
                 >
                     <b-button variant="outline-hub" style="margin:30px"
                         >Make appointment with pharmacist</b-button
@@ -199,7 +207,30 @@
                         <DrugInDrugstoreTable />
                     </b-tab>
                     <b-tab title="From my e-receipt only">
-                        <!--<DrugInDrugstoreTable/>-->
+                        <qr-code-scanner
+                            mode="true"
+                            v-on:qr-code-scanned="getSingleReceipt"
+                        />
+                        <div v-if="priceOfERecipt <= 0">
+                            <b-card class="mt-3">
+                                This drugstore doesn't have the needed drugs.
+                            </b-card>
+                        </div>
+                        <div v-else>
+                            <b-card class="mt-3">
+                                <b-form>
+                                    <b-label>
+                                        Price: {{ priceOfERecipt }} <br />
+                                    </b-label>
+                                    <b-button
+                                        class="mt-3"
+                                        @click="showSaveMultipleModal"
+                                        variant="outline-hub"
+                                        >Reserve eReceipt</b-button
+                                    >
+                                </b-form>
+                            </b-card>
+                        </div>
                     </b-tab>
                 </b-tabs>
             </b-card>
@@ -275,6 +306,27 @@
             </b-form>
         </b-modal>
 
+        <b-modal id="save-multiple" title="Almost done!" hide-footer>
+            <p>
+                Before you finish the reservation process you must select the
+                date to wait for your order
+            </p>
+            <b-form @submit="makeReservation">
+                <b-form-datepicker
+                    id="example-datepicker"
+                    v-model="reservationDate"
+                    class="mb-2"
+                ></b-form-datepicker>
+                <br />
+                <b-button
+                    :disabled="reservationDate == ''"
+                    type="submit"
+                    variant="outline-hub"
+                    >Save</b-button
+                >
+            </b-form>
+        </b-modal>
+
         <b-modal
             id="complaintModal"
             title="Make complaint"
@@ -293,11 +345,12 @@
 
 <script>
 //Name Surname Works From Works To
-  import {fromLonLat} from 'ol/proj';
+import { fromLonLat } from "ol/proj";
 import DrugInDrugstoreTable from "@/components/DrugInDrugstoreTable";
 import { mapState } from "vuex";
 import MakeComplaintForm from "./complaints/MakeComplaintForm.vue";
-import MapForDrugstoreView from '../components/MapForDrugstoreView.vue';
+import MapForDrugstoreView from "../components/MapForDrugstoreView.vue";
+import QrCodeScanner from "../components/QrCodeScanner.vue";
 export default {
     computed: {
         ...mapState({
@@ -308,9 +361,12 @@ export default {
         DrugInDrugstoreTable,
         MakeComplaintForm,
         MapForDrugstoreView,
+        QrCodeScanner,
     },
     data: function() {
         return {
+            reservationDate: "",
+            priceOfERecipt: 0,
             saveRatingPharmacistId: "",
             saveRatingDermatologistId: "",
             dermatologistappointments: [],
@@ -326,7 +382,7 @@ export default {
                 location: {
                     address: "",
                     city: "",
-                    country: ""
+                    country: "",
                 },
                 employements: "",
                 drugStock: "",
@@ -335,8 +391,8 @@ export default {
                 pharmacistappointmentPrice: "",
                 point: {
                     longitude: "",
-                    latitude: ""
-                }
+                    latitude: "",
+                },
             },
             dermatologists: [],
             pharmacists: [],
@@ -397,6 +453,59 @@ export default {
         };
     },
     methods: {
+        showSaveMultipleModal() {
+            this.drugstoreId = this.drugstore.id;
+            this.$root.$emit("bv::show::modal", "save-multiple");
+        },
+        handleClose() {
+            this.$root.$emit("bv::hide::modal", "save-multiple");
+        },
+        getSingleReceipt: function(someData) {
+            this.receipt = someData;
+            let requestData = {
+                drugstoreId: this.drugstore.id,
+                receiptData: this.receipt,
+            };
+            this.$http
+                .post(
+                    "http://localhost:8081/drugstores/single-receipt",
+                    requestData
+                )
+                .then((response) => {
+                    this.priceOfERecipt = response.data[0].totalPrice;
+                })
+                .catch((error) => console.log(error));
+        },
+        makeReservation: function(event) {
+            event.preventDefault();
+            this.$http
+                .post(
+                    `http://localhost:8081/drugReservation/saveMultipleReservations`,
+                    this.makeReservationRequestBody()
+                )
+                .then((response) => {
+                    this.$toastr.s("Success!");
+                    console.log(response.data);
+                })
+                .catch((error) => console.log(error));
+        },
+        makeReservationRequestBody: function() {
+            const requestBodyData = [];
+            let counter = 0;
+            for (let drug of Object.keys(this.receipt)) {
+                requestBodyData.push({
+                    patientId: this.user.id,
+                    drugstoreId: this.drugstoreId,
+                    drugId: drug,
+                    amount: this.receipt[drug],
+                    date: this.reservationDate,
+                });
+                counter += 1;
+                console.log(counter);
+            }
+
+            return requestBodyData;
+        },
         saveRatingPharmacist() {
             this.$http
                 .get("http://localhost:8081/rating-pharmacist/saveRating", {
@@ -405,8 +514,9 @@ export default {
                         pharmacistId: this.saveRatingPharmacistId,
                         rating: this.userRating,
                     },
-                }).then(() => {
-                    alert("You successfully rated a pharmacist")
+                })
+                .then(() => {
+                    alert("You successfully rated a pharmacist");
                     this.getCurrentDrugstore();
                     this.$root.$emit("bv::hide::modal", "my-modalP");
                 })
@@ -420,8 +530,9 @@ export default {
                         dermatologistId: this.saveRatingDermatologistId,
                         rating: this.userRating,
                     },
-                }).then(() => {
-                    alert("You successfully rated a dermatologist")
+                })
+                .then(() => {
+                    alert("You successfully rated a dermatologist");
                     this.getCurrentDrugstore();
                     this.$root.$emit("bv::hide::modal", "my-modalD");
                 })
@@ -435,8 +546,9 @@ export default {
                         drugstoreId: this.currentDrugstoreId,
                         rating: this.userRating,
                     },
-                }).then(() => {
-                    alert("You successfully rated a drugstore")
+                })
+                .then(() => {
+                    alert("You successfully rated a drugstore");
                     this.getCurrentDrugstore();
                     this.$root.$emit("bv::hide::modal", "my-modal1");
                 })
@@ -532,79 +644,79 @@ export default {
         },
         getAppointments: function() {
             //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
-            if(this.user != null){
-            this.$http
-                .get(
-                    "http://localhost:8081/pharmacist-appointment/get-appointments",
-                    {
-                        params: {
-                            patientId: this.user.id,
-                        },
-                    }
-                )
-                .then((response) => {
-                    this.pharmacistappointments = response.data.map(
-                        (appointment) => ({
-                            processed: appointment.processed,
-                            surname: appointment.pharmacist.surname,
-                            pharmacist: appointment.pharmacist.name,
-                            date: appointment.date.slice(0, 10),
-                            time: appointment.time.slice(0, 5),
-                        })
-                    );
-                })
-                .catch((error) => console.log(error));
+            if (this.user != null) {
+                this.$http
+                    .get(
+                        "http://localhost:8081/pharmacist-appointment/get-appointments",
+                        {
+                            params: {
+                                patientId: this.user.id,
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        this.pharmacistappointments = response.data.map(
+                            (appointment) => ({
+                                processed: appointment.processed,
+                                surname: appointment.pharmacist.surname,
+                                pharmacist: appointment.pharmacist.name,
+                                date: appointment.date.slice(0, 10),
+                                time: appointment.time.slice(0, 5),
+                            })
+                        );
+                    })
+                    .catch((error) => console.log(error));
             }
         },
         getDermatologyAppointments: function() {
             //"664783ca-84a1-4a2b-ae27-a2b820bc3c71"
-            if(this.user != null){
-            this.$http
-                .get(
-                    "http://localhost:8081/dermatologist-appointment/returnAppointments",
-                    {
-                        params: {
-                            patientId: this.user.id,
-                        },
-                    }
-                )
-                .then((response) => {
-                    this.dermatologistappointments = response.data.map(
-                        (appointment) => ({
-                            processed: appointment.processed,
-                            surname: appointment.dermatologist.surname,
-                            dermatologist: appointment.dermatologist.name,
-                            date: appointment.date.slice(0, 10),
-                            time: appointment.time.slice(0, 5),
-                        })
-                    );
-                })
-                .catch((error) => console.log(error));
-                }
+            if (this.user != null) {
+                this.$http
+                    .get(
+                        "http://localhost:8081/dermatologist-appointment/returnAppointments",
+                        {
+                            params: {
+                                patientId: this.user.id,
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        this.dermatologistappointments = response.data.map(
+                            (appointment) => ({
+                                processed: appointment.processed,
+                                surname: appointment.dermatologist.surname,
+                                dermatologist: appointment.dermatologist.name,
+                                date: appointment.date.slice(0, 10),
+                                time: appointment.time.slice(0, 5),
+                            })
+                        );
+                    })
+                    .catch((error) => console.log(error));
+            }
         },
         getDrugReservations: function() {
-            if(this.user != null){
-            this.$http
-                .get(
-                    "http://localhost:8081/drugReservation/getPatientReservations",
-                    {
-                        params: {
-                            patientId: this.user.id,
-                        },
-                    }
-                )
-                .then((response) => {
-                    this.drugReservations = response.data.map(
-                        (drugReservation) => ({
-                            id: drugReservation.id,
-                            drug: drugReservation.drug.name,
-                            drugstore: drugReservation.drugstore.name,
-                            date: drugReservation.date,
-                        })
-                    );
-                })
-                .catch((error) => console.log(error));
-                }
+            if (this.user != null) {
+                this.$http
+                    .get(
+                        "http://localhost:8081/drugReservation/getPatientReservations",
+                        {
+                            params: {
+                                patientId: this.user.id,
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        this.drugReservations = response.data.map(
+                            (drugReservation) => ({
+                                id: drugReservation.id,
+                                drug: drugReservation.drug.name,
+                                drugstore: drugReservation.drugstore.name,
+                                date: drugReservation.date,
+                            })
+                        );
+                    })
+                    .catch((error) => console.log(error));
+            }
         },
         getDrugstoreId() {
             this.currentDrugstoreId = this.$route.path.slice(
@@ -633,14 +745,23 @@ export default {
                 )
                 .then((response) => {
                     this.drugstore = response.data;
-                    this.drugstore.workingHoursFrom? this.drugstore.workingHoursFrom.slice(0,5) : this.drugstore.workingHoursFrom;
-                    this.drugstore.workingHoursTo? this.drugstore.workingHoursTo.slice(0,5) : this.drugstore.workingHoursTo;
+                    this.drugstore.workingHoursFrom
+                        ? this.drugstore.workingHoursFrom.slice(0, 5)
+                        : this.drugstore.workingHoursFrom;
+                    this.drugstore.workingHoursTo
+                        ? this.drugstore.workingHoursTo.slice(0, 5)
+                        : this.drugstore.workingHoursTo;
                     this.checkSubscription();
-                    this.$refs["map-container"].addMarker(fromLonLat([this.drugstore.point.longitude, this.drugstore.point.latitude]));
+                    this.$refs["map-container"].addMarker(
+                        fromLonLat([
+                            this.drugstore.point.longitude,
+                            this.drugstore.point.latitude,
+                        ])
+                    );
                 })
                 .catch((error) => console.log(error));
         },
-       
+
         getAllDermatologists() {
             this.$http
                 .get(
@@ -656,8 +777,8 @@ export default {
                         employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
-                        worksFrom: employment.workingHoursFrom.slice(0,5),
-                        worksTo: employment.workingHoursTo.slice(0,5),
+                        worksFrom: employment.workingHoursFrom.slice(0, 5),
+                        worksTo: employment.workingHoursTo.slice(0, 5),
                     }));
                 })
                 .catch((error) => console.log(error));
@@ -677,8 +798,8 @@ export default {
                         employeeId: employment.employeeId,
                         name: employment.name,
                         surname: employment.surname,
-                        worksFrom: employment.workingHoursFrom.slice(0,5),
-                        worksTo: employment.workingHoursTo.slice(0,5),
+                        worksFrom: employment.workingHoursFrom.slice(0, 5),
+                        worksTo: employment.workingHoursTo.slice(0, 5),
                     }));
                 })
                 .catch((error) => console.log(error));

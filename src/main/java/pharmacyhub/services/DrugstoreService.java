@@ -19,6 +19,7 @@ import pharmacyhub.dto.DrugStockPriceDto;
 import pharmacyhub.dto.DrugstoreDtoAll;
 import pharmacyhub.dto.ereceipt.DrugstoreAndPriceDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
+import pharmacyhub.dto.ereceipt.SingleDrugstoreEReceiptDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.repositories.DrugPriceRepository;
@@ -150,6 +151,36 @@ public class DrugstoreService {
 			}
 		}
 		return sum;
+	}
+	
+	private double getSumOfDrugPricesAndCheckIfValid(Drugstore drugstore, SingleDrugstoreEReceiptDto eReceiptSearchDto) {
+		double sum = 0;
+		List<DrugStockPriceDto> drugStockPrices = drugstockService.returnDrugStockForDrugstore(drugstore.getId());
+		
+		int hitCounter = 0;
+		
+		for(String drugId : eReceiptSearchDto.getReceiptData().keySet()) {
+			for (DrugStockPriceDto drugStockPrice : drugStockPrices) {
+				if (drugId.equals(drugStockPrice.getDrugId())) {
+					sum += drugStockPrice.getDrugPrice();
+					hitCounter += 1;
+				}
+			}
+		}
+		
+		if(hitCounter != eReceiptSearchDto.getReceiptData().keySet().size()) {
+			return -1;
+		}
+		
+		return sum;
+	}
+	
+	public List<DrugstoreAndPriceDto> getSingleReceiptPrices(SingleDrugstoreEReceiptDto singleDrugstoreDto) {
+		Drugstore drugstore = drugstoreRepository.findById(singleDrugstoreDto.getDrugstoreId()).orElse(null);
+		DrugstoreAndPriceDto drugstoreAndPriceDto = new DrugstoreAndPriceDto(drugstore, getSumOfDrugPricesAndCheckIfValid(drugstore, singleDrugstoreDto));
+		List<DrugstoreAndPriceDto> drugstoresWithPrices = new ArrayList<>();
+		drugstoresWithPrices.add(drugstoreAndPriceDto);
+		return drugstoresWithPrices;
 	}
 	
 	private List<DrugstoreAndPriceDto> getReceiptDrugstoresAndPrices(EReceiptSearchDto eReceiptSearchDto, Pageable pageable) {
