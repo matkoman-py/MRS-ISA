@@ -88,6 +88,7 @@ public class PharmacistAppointmentService {
 		vreme.setMinutes(pharmacistAppointmentPatientDto.getTime().getMinutes()+pharmacistAppointmentPatientDto.getDuration());
 		long vremeKraj = vreme.getTime();
 		
+
 		List<AbsenceRequest> absenceRequests = absenceRequestRepository.findByEmployeeAndStatus(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null), AbsenceRequestStatus.Approved);
 		for(AbsenceRequest ar : absenceRequests) {
 			if(ar.getStartDate().before(vreme) && ar.getEndDate().after(vreme)) {
@@ -95,7 +96,7 @@ public class PharmacistAppointmentService {
 			}
 		}
 		
-		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientIdOrderById(pharmacistAppointmentPatientDto.getPatientId());
 		System.out.println(pharmacistAppointments.size());
 		for(PharmacistAppointment pa : pharmacistAppointments) {
 			Date pVreme = pa.getDate();
@@ -115,7 +116,7 @@ public class PharmacistAppointmentService {
 		}
 		
 		
-		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistId(pharmacistAppointmentPatientDto.getPharmacistId());
+		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistIdOrderById(pharmacistAppointmentPatientDto.getPharmacistId());
 		
 		for(PharmacistAppointment pa : pharmacistAppointmentsPharm) {
 			System.out.println(pa.getDate());

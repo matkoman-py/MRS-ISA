@@ -11,7 +11,7 @@ import org.hibernate.annotations.Where;
 import pharmacyhub.domain.users.Dermatologist;
 
 @Entity
-@SQLDelete(sql = "UPDATE employment SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE employment SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class Employment extends BaseEntity {
 

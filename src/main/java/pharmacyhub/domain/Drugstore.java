@@ -8,12 +8,18 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@SQLDelete(sql = "UPDATE drugstore SET deleted = true WHERE id = ? AND version = ?")
+@Where(clause = "deleted = false")
 public class Drugstore extends BaseEntity {
 
 	@Column(nullable = false)
