@@ -21,6 +21,7 @@ import pharmacyhub.domain.DrugReservation;
 import pharmacyhub.dto.DrugReservationDto;
 import pharmacyhub.dto.DrugReservationEmployeeDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
+import pharmacyhub.exception.DrugOutOfStockException;
 import pharmacyhub.services.DrugReservationService;
 
 @Controller

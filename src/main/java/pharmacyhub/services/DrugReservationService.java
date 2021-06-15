@@ -29,6 +29,7 @@ import pharmacyhub.domain.users.Pharmacist;
 import pharmacyhub.dto.DrugReservationDto;
 import pharmacyhub.dto.DrugReservationEmployeeDto;
 import pharmacyhub.dto.search.DrugReservationCancelDto;
+import pharmacyhub.exception.DrugOutOfStockException;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugRequestRepository;
@@ -148,7 +149,7 @@ public class DrugReservationService {
 //	}
 	
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
-	public String saveMultipleReservations(List<DrugReservationDto>  drugReservationDtos) throws Exception {
+	public String saveMultipleReservations(List<DrugReservationDto>  drugReservationDtos) throws DrugOutOfStockException, Exception {
 		String confirmationCodes = "";
 		if (drugReservationDtos.isEmpty()) {
 			throw new Exception("Empty drug reservations");
