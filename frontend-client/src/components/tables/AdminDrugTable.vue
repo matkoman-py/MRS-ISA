@@ -144,7 +144,7 @@ export default {
         deleteDrug: function() {
             this.$http
                 .delete(
-                    `https://mrs-isa-usijani.herokuapp.com//drugs/${this.deleteModal.drug.id}`
+                    `https://mrs-isa-usijani.herokuapp.com/drugs/${this.deleteModal.drug.id}`
                 )
                 .then((response) => {
                     let index = this.drugs.findIndex(
@@ -157,7 +157,7 @@ export default {
         },
         getDrugs: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//drugs")
+                .get("https://mrs-isa-usijani.herokuapp.com/drugs")
                 .then((response) => {
                     this.drugs = response.data;
                     console.log(this.drugs);

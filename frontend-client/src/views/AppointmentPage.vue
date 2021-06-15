@@ -127,7 +127,7 @@ export default {
         },
         getAllAppointments: function () {
                 if(this.user.type == "Dermatologist"){
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/all-derm-todo?page=${this
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/all-derm-todo?page=${this
                         .currentPage - 1}&size=5`, {
                         params: {
                             dermatologistId:  this.user.id,
@@ -153,7 +153,7 @@ export default {
                      
                 }else{
                 
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/all-pharm-todo?page=${this
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/all-pharm-todo?page=${this
                         .currentPage - 1}&size=5`, {
                         params: {
                             pharmacistId:  this.user.id,
@@ -181,7 +181,7 @@ export default {
             },
         getRows(){
                 if(this.user.type == "Dermatologist"){
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/all-derm-todo-length`, {
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/all-derm-todo-length`, {
                         params: {
                             dermatologistId:  this.user.id
                         }
@@ -191,7 +191,7 @@ export default {
                     })
                       
                 }else{
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/all-pharm-todo-length`, {
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/all-pharm-todo-length`, {
                         params: {
                             pharmacistId:  this.user.id
                         }
@@ -223,7 +223,7 @@ export default {
                 alert("Patient did not show up");
                 this.$root.$emit('bv::hide::modal', 'my-modal');
 
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//patients/penalty', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/patients/penalty', {
                                     params: {
                                         patientId: this.selected.patient.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                                     }
@@ -235,7 +235,7 @@ export default {
                                 })
                                 .catch(error => console.log(error));
                 if(this.user.type == "Dermatologist"){
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/end-appointment', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/end-appointment', {
                                     params: {
                                         dermatologistAppointmentId: this.selected.id,
                                         appointmentReport: "Patient did not show up!",
@@ -250,7 +250,7 @@ export default {
                     alert("Patient did not show up");
                     console.log(this.selected.extendedProps.patient.id);
                     this.$root.$emit('bv::hide::modal', 'my-modal');
-                    this.$http.get('https://mrs-isa-usijani.herokuapp.com//patients/penalty', {
+                    this.$http.get('https://mrs-isa-usijani.herokuapp.com/patients/penalty', {
                                         params: {
                                             patientId: this.selected.patient.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                                         }
@@ -262,7 +262,7 @@ export default {
                                     })
                                     .catch(error => console.log(error));
                     
-                    this.$http.get('https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/end-appointment', {
+                    this.$http.get('https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/end-appointment', {
                                         params: {
                                             pharmacistAppointmentId: this.selected.id,
                                             appointmentReport: "Patient did not show up!",

@@ -33,7 +33,7 @@ import DrugstoreBasicInfo from '../components/DrugstoreBasicInfo.vue'
 
     methods:{
         submitHandler: function(){
-            this.$http.post("https://mrs-isa-usijani.herokuapp.com//drugstores", this.drugstore)
+            this.$http.post("https://mrs-isa-usijani.herokuapp.com/drugstores", this.drugstore)
             .then(response => {
                 console.log(response);
                 alert("Successfully added drugstore");

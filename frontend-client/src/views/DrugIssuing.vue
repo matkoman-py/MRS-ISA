@@ -94,7 +94,7 @@
         
         methods: {
             search: function () {
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugReservation/getPatientReservationsInDrugstore', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugReservation/getPatientReservationsInDrugstore', {
                         params: {
                             patientEmail: this.form.email,
                             pharmacistId: this.user.id 
@@ -123,7 +123,7 @@
             },
             onSubmit(event) {
                 event.preventDefault();
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugReservation/issueReservation', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugReservation/issueReservation', {
                         params: {
                             reservationId: this.reservationId,
                             confirmationCode: this.confirmationCode

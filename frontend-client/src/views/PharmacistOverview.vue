@@ -63,7 +63,7 @@
     },
     methods: {
         getPharmacists : function(){
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees/pharmacists')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees/pharmacists')
             .then(response => {
             this.pharmacists = response.data.map(pharmacist => 
             (
@@ -78,7 +78,7 @@
             .catch(error => console.log(error));
         },
         getDrugstores : function() {
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugstores')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugstores')
             .then(response => {
             this.drugstores = response.data.map((drugstore) =>
                 ({
@@ -90,7 +90,7 @@
             .catch(error => console.log(error));
         },
         pharmacistSearchResult : function() {
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees/pharmacists/search', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees/pharmacists/search', {
               params: {
                 name: this.searchName,
                 surname: this.searchSurname,

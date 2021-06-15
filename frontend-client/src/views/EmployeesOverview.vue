@@ -206,7 +206,7 @@
     },
     methods: {
         getDrugstore() {
-            this.$http.get("https://mrs-isa-usijani.herokuapp.com//employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -221,7 +221,7 @@
               .catch(error => console.log(error));
         },
         getEmployees : function(){
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees', {
               params: {
                 drugstoreAdminId: this.user.id
             }
@@ -245,7 +245,7 @@
             .catch(error => console.log(error));
         },
         employeesSearchResult : function() {
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees/search', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees/search', {
               params: {
                 drugstoreAdminId: this.user.id,
                 searchText: this.searchText,
@@ -298,7 +298,7 @@
         }, deleteEmployee(event) {
             event.preventDefault();
             if (this.selectedEmployee[0].type == 'Pharmacist') {
-              this.$http.delete("https://mrs-isa-usijani.herokuapp.com//employees/delete/", {params :{ pharmacistEmail: this.selectedEmployee[0].email}})
+              this.$http.delete("https://mrs-isa-usijani.herokuapp.com/employees/delete/", {params :{ pharmacistEmail: this.selectedEmployee[0].email}})
               .then(response => {
                 if (response.data == "Denied") {
                   alert("Pharmacist have scheduled appointments in future so you can't delete him!");
@@ -309,7 +309,7 @@
               })
               .catch(error => console.log(error));
             } else {
-              this.$http.delete("https://mrs-isa-usijani.herokuapp.com//employment/delete", {data : { dermatologistEmail: this.selectedEmployee[0].email, drugstoreId: this.drugstoreId }})
+              this.$http.delete("https://mrs-isa-usijani.herokuapp.com/employment/delete", {data : { dermatologistEmail: this.selectedEmployee[0].email, drugstoreId: this.drugstoreId }})
               .then(response => {
                 if (response.data == "Denied") {
                   alert("Dermatologist have scheduled appointments in future so you can't delete him!");
@@ -325,7 +325,7 @@
             this.$root.$emit('bv::hide::modal', 'deleteConfirmation');
         },
         getAllNotEmployedDermatologists : function() {
-            this.$http.get("https://mrs-isa-usijani.herokuapp.com//employment/dermatologists/notEmployed", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employment/dermatologists/notEmployed", {
                 params: {
                             drugstoreId: this.inputValues.drugstoreId
                         }})
@@ -345,7 +345,7 @@
         },
         hireDermatologistFunction(event) {
           event.preventDefault();
-          this.$http.post("https://mrs-isa-usijani.herokuapp.com//employment/dermatologist/hire", JSON.parse(JSON.stringify(this.hireDermatologistValues)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/employment/dermatologist/hire", JSON.parse(JSON.stringify(this.hireDermatologistValues)))
               .then(response => {
               console.log(response);
               alert("Dermatologist is successfully hired!");
@@ -360,7 +360,7 @@
             this.$root.$emit('bv::hide::modal', 'hireDermatologist');
         },
         getAllDermatologistForThisDrugstore : function() {
-            this.$http.get("https://mrs-isa-usijani.herokuapp.com//employment/dermatologists", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employment/dermatologists", {
                 params: {
                             drugstoreId: this.inputValues.drugstoreId
                         }})
@@ -380,7 +380,7 @@
         },
         addNewApointment(event) {
           event.preventDefault();
-          this.$http.post("https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New appointment is successfully created.");

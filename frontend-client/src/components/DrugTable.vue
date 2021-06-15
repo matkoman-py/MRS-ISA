@@ -484,7 +484,7 @@ export default {
             //alert(this.check)
             this.$http
                 .post(
-                    "https://mrs-isa-usijani.herokuapp.com//drugReservation/saveReservationEmployee",
+                    "https://mrs-isa-usijani.herokuapp.com/drugReservation/saveReservationEmployee",
                     {
                         patientId: this.patientId,
                         drugstoreId: this.drugstoreId,
@@ -506,7 +506,7 @@ export default {
             if (this.user != null) {
                 this.$http
                     .get(
-                        "https://mrs-isa-usijani.herokuapp.com//drugReservation/getPatientReservations",
+                        "https://mrs-isa-usijani.herokuapp.com/drugReservation/getPatientReservations",
                         {
                             params: {
                                 patientId: this.user.id,
@@ -545,7 +545,7 @@ export default {
             this.reserved = 1;
             if (this.passedDrugstoreId == null) {
                 this.$http
-                    .get("https://mrs-isa-usijani.herokuapp.com//drugstores/reserve", {
+                    .get("https://mrs-isa-usijani.herokuapp.com/drugstores/reserve", {
                         params: {
                             drugId: data.id,
                         },
@@ -561,7 +561,7 @@ export default {
                     });
             } else {
                 this.$http
-                    .get("https://mrs-isa-usijani.herokuapp.com//drugstores/reserveEmployee", {
+                    .get("https://mrs-isa-usijani.herokuapp.com/drugstores/reserveEmployee", {
                         params: {
                             drugId: data.id,
                             drugstoreId: this.passedDrugstoreId,
@@ -589,7 +589,7 @@ export default {
         getLength: function() {
             this.$http
                 .post(
-                    `https://mrs-isa-usijani.herokuapp.com//drugs/searchLength`,
+                    `https://mrs-isa-usijani.herokuapp.com/drugs/searchLength`,
                     this.currentSearch
                 )
                 .then((response) => {
@@ -604,7 +604,7 @@ export default {
         getDrugs: function() {
             this.$http
                 .post(
-                    `https://mrs-isa-usijani.herokuapp.com//drugs/search?page=${this
+                    `https://mrs-isa-usijani.herokuapp.com/drugs/search?page=${this
                         .currentPage - 1}&size=3`,
                     this.currentSearch
                 )
@@ -624,7 +624,7 @@ export default {
         },
         getManufacturers: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//manufacturers")
+                .get("https://mrs-isa-usijani.herokuapp.com/manufacturers")
                 .then((response) => {
                     this.manufacturerOptions = response.data.map(
                         (manufacturer) => ({
@@ -637,7 +637,7 @@ export default {
         },
         getDrugTypes: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//drug-types")
+                .get("https://mrs-isa-usijani.herokuapp.com/drug-types")
                 .then((response) => {
                     this.drugTypeOptions = response.data.map((drugType) => ({
                         value: drugType.name,
@@ -648,7 +648,7 @@ export default {
         },
         getIngrediants: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//ingredients")
+                .get("https://mrs-isa-usijani.herokuapp.com/ingredients")
                 .then((response) => {
                     this.ingrediants = response.data;
                 })
@@ -656,7 +656,7 @@ export default {
         },
         getSubstitutionDrugs: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//drugs")
+                .get("https://mrs-isa-usijani.herokuapp.com/drugs")
                 .then((response) => {
                     this.substitutions = response.data;
                 })
@@ -682,7 +682,7 @@ export default {
         getEmployee: function() {
             if (this.user != null) {
                 this.$http
-                    .get("https://mrs-isa-usijani.herokuapp.com//patients/id", {
+                    .get("https://mrs-isa-usijani.herokuapp.com/patients/id", {
                         params: {
                             patientId: this.user.id,
                         },

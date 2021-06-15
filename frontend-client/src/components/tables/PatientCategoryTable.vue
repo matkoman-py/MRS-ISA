@@ -87,7 +87,7 @@ export default {
         edit: function() {
             this.$http
                 .put(
-                    "https://mrs-isa-usijani.herokuapp.com//patient-categories",
+                    "https://mrs-isa-usijani.herokuapp.com/patient-categories",
                     this.editModal.category
                 )
                 .then((response) => {
@@ -101,7 +101,7 @@ export default {
         },
         getCategories: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//patient-categories")
+                .get("https://mrs-isa-usijani.herokuapp.com/patient-categories")
                 .then((response) => {
                     this.categories = response.data;
                 })

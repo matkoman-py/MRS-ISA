@@ -166,7 +166,7 @@ export default {
     methods: {
         endAppointment: function(){
             this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/end-appointment', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/end-appointment', {
                         params: {
                             dermatologistAppointmentId: this.currentAppointment.id,
                             appointmentReport: this.currentAppointment.appointmentReport,
@@ -180,7 +180,7 @@ export default {
         },
         beginAppointment: function(){
             this.currentAppointment.id = this.passedId? this.passedId:"4a73ae19-2001-450a-a050-85f51717ab76";
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/begin-appointment', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/begin-appointment', {
                         params: {
                             dermatologistAppointmentId: this.currentAppointment.id
                         }
@@ -201,7 +201,7 @@ export default {
             
         },
         getAllAppointments: function () {
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/available', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/available', {
                         params: {
                             drugstoreId: this.currentAppointment.drugstore.id,
                             dermatologistId: this.currentAppointment.dermatologist.id
@@ -228,7 +228,7 @@ export default {
           this.inputValues.drugstoreId = this.currentAppointment.drugstore.id;
           this.inputValues.patientId = this.currentAppointment.patient.id;
           this.inputValues.dermatologistId = this.currentAppointment.dermatologist.id;
-          this.$http.post("https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               alert("New appointment is successfully created.");
@@ -237,7 +237,7 @@ export default {
           this.$root.$emit('bv::hide::modal', 'appointmentmodal');
         },
         createReservation :function(item){
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/reserveAppointment', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/reserveAppointment', {
                         params: {
                             drugstoreId : this.currentAppointment.drugstore.id,
                             patientId: this.currentAppointment.patient.id,

@@ -57,7 +57,7 @@
                     this.$emit("success-search-results", this.currentPageData);
                     this.getNextPage(this.currentPage);
                 } else {
-                    this.$http.post("https://mrs-isa-usijani.herokuapp.com//offers/search", 
+                    this.$http.post("https://mrs-isa-usijani.herokuapp.com/offers/search", 
                         {
                             offerStatus: this.currentSearchTerm,
                             supplierId: this.supplierId,
@@ -79,7 +79,7 @@
 
             },
             getNextPage: function (page) {
-                this.$http.post("https://mrs-isa-usijani.herokuapp.com//offers/search", 
+                this.$http.post("https://mrs-isa-usijani.herokuapp.com/offers/search", 
                     {
                         offerStatus: this.currentSearchTerm,
                         supplierId: this.supplierId,

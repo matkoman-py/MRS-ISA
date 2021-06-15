@@ -86,14 +86,14 @@ export default {
     methods: {
         getComplaints: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//complaints/patient/" + this.user.id)
+                .get("https://mrs-isa-usijani.herokuapp.com/complaints/patient/" + this.user.id)
                 .then((response) => {
                     this.complaints = response.data;
                 });
         },
         getReplyForComplaint: function(complaint) {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//complaints/reply/" + complaint.id)
+                .get("https://mrs-isa-usijani.herokuapp.com/complaints/reply/" + complaint.id)
                 .then((response) => {
                     this.selectedComplaintReply = response.data;
                 });

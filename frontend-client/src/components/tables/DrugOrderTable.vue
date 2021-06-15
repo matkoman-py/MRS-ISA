@@ -136,7 +136,7 @@
                     supplierId: this.supplierId,
                 };
                 console.log(this.detailsModal.order);
-                this.$http.post("https://mrs-isa-usijani.herokuapp.com//offers/", postObject)
+                this.$http.post("https://mrs-isa-usijani.herokuapp.com/offers/", postObject)
                     .then(response => {
                         console.log(response);
                         this.$toastr.s("success-offer");

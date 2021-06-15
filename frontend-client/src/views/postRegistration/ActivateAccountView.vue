@@ -29,7 +29,7 @@ export default {
     mounted: function() {
         this.$http
             .get(
-                "https://mrs-isa-usijani.herokuapp.com//register/activate/" +
+                "https://mrs-isa-usijani.herokuapp.com/register/activate/" +
                     this.$route.params.activationCode
             )
             .then((response) => {

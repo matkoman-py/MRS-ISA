@@ -40,7 +40,7 @@ import { mapState } from 'vuex';
         },
         methods: {
             getDrugstores: function () {
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//subscription/patient/${this.patientId}`)
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/subscription/patient/${this.patientId}`)
                     .then(response => {
                             this.drugstores = this.mapDrugstores(response);
                     })

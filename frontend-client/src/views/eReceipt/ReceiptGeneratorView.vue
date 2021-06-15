@@ -356,7 +356,7 @@ export default {
         getDrugs: function() {
             this.$http
                 .post(
-                    `https://mrs-isa-usijani.herokuapp.com//drugs/search?page=${this
+                    `https://mrs-isa-usijani.herokuapp.com/drugs/search?page=${this
                         .currentPage - 1}&size=3`,
                     this.currentSearch
                 )
@@ -373,7 +373,7 @@ export default {
         },
         getManufacturers: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//manufacturers")
+                .get("https://mrs-isa-usijani.herokuapp.com/manufacturers")
                 .then((response) => {
                     this.manufacturerOptions = response.data.map(
                         (manufacturer) => ({
@@ -386,7 +386,7 @@ export default {
         },
         getDrugTypes: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//drug-types")
+                .get("https://mrs-isa-usijani.herokuapp.com/drug-types")
                 .then((response) => {
                     this.drugTypeOptions = response.data.map((drugType) => ({
                         value: drugType.name,
@@ -397,7 +397,7 @@ export default {
         },
         getIngrediants: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//ingredients")
+                .get("https://mrs-isa-usijani.herokuapp.com/ingredients")
                 .then((response) => {
                     this.ingrediants = response.data;
                 })
@@ -405,7 +405,7 @@ export default {
         },
         getSubstitutionDrugs: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//drugs")
+                .get("https://mrs-isa-usijani.herokuapp.com/drugs")
                 .then((response) => {
                     this.substitutions = response.data;
                 })

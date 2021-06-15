@@ -137,7 +137,7 @@
         },
         methods: {
             getProfile: function () {
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugstoreAdmin', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugstoreAdmin', {
                         params: {
                             drugstoreAdminId: this.user.id
                         }
@@ -154,7 +154,7 @@
             handleSubmit: function (event) {
                 event.preventDefault();
                 this.editEnabled = true;
-                this.$http.put("https://mrs-isa-usijani.herokuapp.com//drugstoreAdminUpdate", this.profile)
+                this.$http.put("https://mrs-isa-usijani.herokuapp.com/drugstoreAdminUpdate", this.profile)
                     .then(() => {
                         alert("You succesfully updated your profile informations!")
                     })
@@ -169,7 +169,7 @@
             oldPasswordValidate: function(event){
                 event.preventDefault();
                 var valid = false;
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugstoreAdmin/password', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugstoreAdmin/password', {
                             params: {
                                 drugstoreAdminId: this.user.id,
                                 passwordInput: this.oldPasswordInput
@@ -188,7 +188,7 @@
             changePassword: function(){
                 if(this.validatePassword()){
                     this.profile.password = this.newPasswordInput;
-                    this.$http.put("https://mrs-isa-usijani.herokuapp.com//drugstoreAdmin/updatepassword", this.profile)
+                    this.$http.put("https://mrs-isa-usijani.herokuapp.com/drugstoreAdmin/updatepassword", this.profile)
                     .then(() => {
                         alert("You succesfully updated your password!");
                         this.$root.$emit('bv::hide::modal', 'my-modal');

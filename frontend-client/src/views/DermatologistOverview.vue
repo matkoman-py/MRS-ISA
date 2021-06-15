@@ -63,7 +63,7 @@
     },
     methods: {
         getDermatologists : function(){
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees/dermatologists')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees/dermatologists')
             .then(response => {
             this.dermatologists = response.data.map(dermatologist => 
             (
@@ -78,7 +78,7 @@
             .catch(error => console.log(error));
         },
         getDrugstores : function() {
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugstores')
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugstores')
             .then(response => {
             this.drugstores = response.data.map((drugstore) =>
                 ({
@@ -90,7 +90,7 @@
             .catch(error => console.log(error));
         },
         dermatologistSearchResult : function() {
-            this.$http.get('https://mrs-isa-usijani.herokuapp.com//employees/dermatologists/search', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees/dermatologists/search', {
               params: {
                 name: this.searchName,
                 surname: this.searchSurname,

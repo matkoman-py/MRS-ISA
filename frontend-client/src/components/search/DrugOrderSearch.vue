@@ -56,7 +56,7 @@
                     this.$emit("success-search-results", this.currentPageData);
                     this.getNextPage(this.currentPage);
                 } else {
-                    this.$http.post("https://mrs-isa-usijani.herokuapp.com//drug-orders/search", 
+                    this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-orders/search", 
                         {
                             orderStatus: this.currentSearchTerm,
                             drugstoreId: "",
@@ -78,7 +78,7 @@
 
             },
             getNextPage: function (page) {
-                this.$http.post("https://mrs-isa-usijani.herokuapp.com//drug-orders/search", 
+                this.$http.post("https://mrs-isa-usijani.herokuapp.com/drug-orders/search", 
                     {
                         orderStatus: this.currentSearchTerm,
                         drugstoreId: "",

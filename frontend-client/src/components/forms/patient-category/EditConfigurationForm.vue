@@ -45,7 +45,7 @@ export default {
             event.preventDefault();
             this.$http
                 .put(
-                    "https://mrs-isa-usijani.herokuapp.com//patient-categories/configuration",
+                    "https://mrs-isa-usijani.herokuapp.com/patient-categories/configuration",
                     this.form
                 )
                 .then((response) => {
@@ -56,7 +56,7 @@ export default {
         },
         getConfiguration: function() {
             this.$http
-                .get("https://mrs-isa-usijani.herokuapp.com//patient-categories/configuration")
+                .get("https://mrs-isa-usijani.herokuapp.com/patient-categories/configuration")
                 .then((response) => {
                     this.form = response.data;
                     console.log(response);

@@ -42,14 +42,14 @@ import { mapState } from 'vuex';
         },
         methods: {
             getDrugs: function () {
-                this.$http.get("https://mrs-isa-usijani.herokuapp.com//drugs/")
+                this.$http.get("https://mrs-isa-usijani.herokuapp.com/drugs/")
                     .then(response => {
                         this.drugs = response.data;
                     })
                     .catch(error => this.$toastr.e(error));
             },
             add: function(){
-                this.$http.post("https://mrs-isa-usijani.herokuapp.com//supplier-stocks/", 
+                this.$http.post("https://mrs-isa-usijani.herokuapp.com/supplier-stocks/", 
                 {
                     supplierId: this.supplierId,
                     drugId: this.form.drug.id,

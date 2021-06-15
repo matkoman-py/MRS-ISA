@@ -151,7 +151,7 @@ export default {
       // var prvo = false;
       // var drugo = false;
 
-      this.$http.get('https://mrs-isa-usijani.herokuapp.com//patients/penalty', {
+      this.$http.get('https://mrs-isa-usijani.herokuapp.com/patients/penalty', {
                         params: {
                             patientId: this.selected.extendedProps.patient.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }
@@ -163,7 +163,7 @@ export default {
                     })
                     .catch(error => console.log(error));
       
-      this.$http.get('https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/end-appointment', {
+      this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/end-appointment', {
                         params: {
                             dermatologistAppointmentId: this.selected.id,
                             appointmentReport: "Patient did not show up!",
@@ -215,7 +215,7 @@ export default {
 
     },
     handleEvents: function() {
-      this.$http.get('https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/all-derm-app', {
+      this.$http.get('https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/all-derm-app', {
                         params: {
                             dermatologistId:  this.user.id// 'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }
@@ -243,7 +243,7 @@ export default {
                     
     },
     addEmployment: function() {
-        this.$http.get('https://mrs-isa-usijani.herokuapp.com//employment/employment-for-derm', {
+        this.$http.get('https://mrs-isa-usijani.herokuapp.com/employment/employment-for-derm', {
                         params: {
                             dermatologistId: this.user.id//'da9e4ee3-c67c-4511-ad43-82e34d10ddc2'
                         }

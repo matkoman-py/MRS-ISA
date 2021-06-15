@@ -123,7 +123,7 @@
     methods: {
       makeReservation() {
         if(this.passedDrugstoreId != null){
-                  this.$http.post('https://mrs-isa-usijani.herokuapp.com//drugReservation/saveReservation', {
+                  this.$http.post('https://mrs-isa-usijani.herokuapp.com/drugReservation/saveReservation', {
                     patientId: this.passedPatientId,
                     drugstoreId: this.currentDrugstoreId,
                     drugId: this.selecteddrug,
@@ -137,7 +137,7 @@
                   })
                   .catch(error => console.log(error));
         }else{
-                  this.$http.post('https://mrs-isa-usijani.herokuapp.com//drugReservation/saveReservation', {
+                  this.$http.post('https://mrs-isa-usijani.herokuapp.com/drugReservation/saveReservation', {
                     patientId: this.user.id,
                     drugstoreId: this.currentDrugstoreId,
                     drugId: this.selecteddrug,
@@ -176,7 +176,7 @@
           manufacturerId: this.manufacturer.id,
           receipt: this.receipt,
         })
-        this.$http.post('https://mrs-isa-usijani.herokuapp.com//drugs/search', {
+        this.$http.post('https://mrs-isa-usijani.herokuapp.com/drugs/search', {
             name: this.name,
             type: this.type.name,
             form: this.form,
@@ -198,7 +198,7 @@
           .catch(error => console.log(error));
       },
       getManufacturers: function () {
-        this.$http.get("https://mrs-isa-usijani.herokuapp.com//manufacturers")
+        this.$http.get("https://mrs-isa-usijani.herokuapp.com/manufacturers")
           .then(response => {
             this.manufacturerOptions = response.data.map((manufacturer) =>
               ({
@@ -210,7 +210,7 @@
           .catch(error => console.log(error));
       },
       getDrugTypes: function () {
-        this.$http.get("https://mrs-isa-usijani.herokuapp.com//drug-types")
+        this.$http.get("https://mrs-isa-usijani.herokuapp.com/drug-types")
           .then(response => {
             this.drugTypeOptions = response.data.map((drugType) =>
               ({
@@ -222,21 +222,21 @@
           .catch(error => console.log(error));
       },
       getIngrediants: function () {
-        this.$http.get("https://mrs-isa-usijani.herokuapp.com//ingredients")
+        this.$http.get("https://mrs-isa-usijani.herokuapp.com/ingredients")
           .then(response => {
             this.ingrediants = response.data;
           })
           .catch(error => console.log(error));
       },
       getSubstitutionDrugs: function () {
-        this.$http.get("https://mrs-isa-usijani.herokuapp.com//drugs")
+        this.$http.get("https://mrs-isa-usijani.herokuapp.com/drugs")
           .then(response => {
             this.substitutions = response.data;
           })
           .catch(error => console.log(error));
       },
       getAllDrugsOfDrugstore: function () {
-        this.$http.get('https://mrs-isa-usijani.herokuapp.com//drugs/in-drugstore/' + this.currentDrugstoreId, {
+        this.$http.get('https://mrs-isa-usijani.herokuapp.com/drugs/in-drugstore/' + this.currentDrugstoreId, {
             params: {
               size: 5,
               page: 0
@@ -259,7 +259,7 @@
       getEmployee: function () {
         if(this.user != null){
                 this.$http
-                    .get("https://mrs-isa-usijani.herokuapp.com//patients/id", {
+                    .get("https://mrs-isa-usijani.herokuapp.com/patients/id", {
                         params: {
                             patientId: this.user.id,
                         },

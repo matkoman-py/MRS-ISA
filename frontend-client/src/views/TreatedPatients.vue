@@ -135,7 +135,7 @@
         methods: {
             getAllPatients: function () {
                 if(this.user.type == "Dermatologist"){
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/all-derm-done?page=${this
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/all-derm-done?page=${this
                         .currentPage - 1}&size=5`, {
                         params: {
                             dermatologistId:  this.user.id,
@@ -159,7 +159,7 @@
                      
                 }else{
                 
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/all-pharm-done?page=${this
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/all-pharm-done?page=${this
                         .currentPage - 1}&size=5`, {
                         params: {
                             pharmacistId:  this.user.id,
@@ -202,7 +202,7 @@
             },
             getRows(){
                 if(this.user.type == "Dermatologist"){
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//dermatologist-appointment/all-derm-done-length`, {
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/dermatologist-appointment/all-derm-done-length`, {
                         params: {
                             dermatologistId:  this.user.id
                         }
@@ -212,7 +212,7 @@
                     })
                        
                 }else{
-                this.$http.get(`https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/all-pharm-done-length`, {
+                this.$http.get(`https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/all-pharm-done-length`, {
                         params: {
                             pharmacistId:  this.user.id
                         }

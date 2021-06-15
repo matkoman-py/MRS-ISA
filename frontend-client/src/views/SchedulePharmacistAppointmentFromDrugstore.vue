@@ -83,7 +83,7 @@
                 this.saveData.date = this.inputValues.date;
                 this.saveData.time = this.inputValues.time;
                 this.saveData.patientId = this.user.id;
-                this.$http.post("https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/with-patient", JSON.parse(JSON
+                this.$http.post("https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/with-patient", JSON.parse(JSON
                         .stringify(
                             this.saveData)))
                     .then(response => {
@@ -103,7 +103,7 @@
             },
             getPharmacists: function () {
                 this.searched = 1;
-                this.$http.get('https://mrs-isa-usijani.herokuapp.com//pharmacist-appointment/get-pharmacists', {
+                this.$http.get('https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/get-pharmacists', {
                         params: {
                             drugstoreId: this.drugstoreId,
                             pharmacistAppointmentDate: this.inputValues.date,
