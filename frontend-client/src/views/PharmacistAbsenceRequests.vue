@@ -64,7 +64,7 @@
     },
     methods: {
         getDrugstoreAndEmployees() {
-            this.$http.get("http://localhost:8081/employees/drugstoreForId", {
+            this.$http.get("https://mrs-isa-usijani.herokuapp.com/employees/drugstoreForId", {
               params: {
                 drugstoreAdminId: this.user.id
               }
@@ -76,7 +76,7 @@
               .catch(error => console.log(error));
         },
         getRequests : function(){
-            this.$http.get('http://localhost:8081/employees/pharmacistRequests', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/employees/pharmacistRequests', {
               params: {
                 drugstoreId: this.drugstoreId
             }
@@ -99,7 +99,7 @@
             if (this.selectedRequest.length == 0) {
                 this.$toastr.e("You need to select absence request that you want to accept.")
           } else {
-                this.$http.post('http://localhost:8081/absence-request/approvePharmacist/' + this.selectedRequest[0].requestId)
+                this.$http.post('https://mrs-isa-usijani.herokuapp.com/absence-request/approvePharmacist/' + this.selectedRequest[0].requestId)
                   .then(response => {
                     this.$toastr.s(response.data);
                     this.getRequests();
@@ -114,7 +114,7 @@
                 this.$root.$emit('bv::show::modal', 'rejectConfirmation');
           }
         }, reject() {
-            this.$http.post('http://localhost:8081/absence-request/reject', {
+            this.$http.post('https://mrs-isa-usijani.herokuapp.com/absence-request/reject', {
                     requestId: this.selectedRequest[0].requestId,
                     reasonOfRejection: this.reasonOfRejection
             })

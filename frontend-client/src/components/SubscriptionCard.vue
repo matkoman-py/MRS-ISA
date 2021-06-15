@@ -39,7 +39,7 @@
         methods: {
             unsubscribe: function (event) {
                 event.preventDefault();
-                this.$http.post(`http://localhost:8081/subscription/unsubscribe/`, {
+                this.$http.post(`https://mrs-isa-usijani.herokuapp.com/subscription/unsubscribe/`, {
                         patientId: this.patientId,
                         drugstoreId: this.subscription.id
                     })

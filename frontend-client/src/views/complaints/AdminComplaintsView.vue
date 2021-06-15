@@ -123,14 +123,14 @@ export default {
     methods: {
         getComplaints: function() {
             this.$http
-                .get("http://localhost:8081/complaints")
+                .get("https://mrs-isa-usijani.herokuapp.com/complaints")
                 .then((response) => {
                     this.complaints = response.data;
                 });
         },
         getReplyForComplaint: function(complaint) {
             this.$http
-                .get("http://localhost:8081/complaints/reply/" + complaint.id)
+                .get("https://mrs-isa-usijani.herokuapp.com/complaints/reply/" + complaint.id)
                 .then((response) => {
                     this.selectedComplaintReply = response.data;
                 });
@@ -144,7 +144,7 @@ export default {
         postReplyForComplaint: function() {
             this.$http
                 .post(
-                    "http://localhost:8081/complaints/reply/" +
+                    "https://mrs-isa-usijani.herokuapp.com/complaints/reply/" +
                         this.selectedComplaint.id,
                     this.replyForm
                 )

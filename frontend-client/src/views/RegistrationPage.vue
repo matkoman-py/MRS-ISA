@@ -227,7 +227,7 @@ export default {
         },
         registerUser: function() {
             this.$http
-                .post("http://localhost:8081/register", this.form)
+                .post("https://mrs-isa-usijani.herokuapp.com/register", this.form)
                 .then((response) => {
                     console.log(response);
                     this.$toastr.s("Check your email for further instructions!")

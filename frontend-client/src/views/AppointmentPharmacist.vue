@@ -115,7 +115,7 @@ export default {
     methods: {
         endAppointment: function(){
             this.currentAppointment.id = this.passedId? this.passedId:"2229dbcb-7f36-4e4e-81f5-656ce14a553a";
-            this.$http.get('http://localhost:8081/pharmacist-appointment/end-appointment', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/end-appointment', {
                         params: {
                             pharmacistAppointmentId: this.currentAppointment.id,
                             appointmentReport: this.currentAppointment.appointmentReport,
@@ -129,7 +129,7 @@ export default {
         },
         beginAppointment: function(){
             this.currentAppointment.id = this.passedId? this.passedId:"2229dbcb-7f36-4e4e-81f5-656ce14a553a";
-            this.$http.get('http://localhost:8081/pharmacist-appointment/begin-appointment', {
+            this.$http.get('https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/begin-appointment', {
                         params: {
                             pharmacistAppointmentId: this.currentAppointment.id
                         }
@@ -155,7 +155,7 @@ export default {
           event.preventDefault();
           this.inputValues.patientId = this.currentAppointment.patient.id;
           this.inputValues.pharmacistId = this.currentAppointment.pharmacist.id;
-          this.$http.post("http://localhost:8081/pharmacist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
+          this.$http.post("https://mrs-isa-usijani.herokuapp.com/pharmacist-appointment/with-patient", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
               this.$toastr.s("New appointment is successfully created.")

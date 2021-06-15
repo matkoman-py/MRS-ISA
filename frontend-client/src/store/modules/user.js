@@ -37,7 +37,7 @@ const mutations = {
 
 const actions = {
     login({ commit }, credentials) {
-        VueAxios.post("http://localhost:8081/auth/login", credentials)
+        VueAxios.post("https://mrs-isa-usijani.herokuapp.com/auth/login", credentials)
             .then((response) => {
                 localStorage.setItem("token", response.data.accessToken);
                 commit("setLoggedInUser", response.data.user);

@@ -126,7 +126,7 @@ export default {
             user.type = this.type;
 
             this.$http
-                .post("http://localhost:8081/register/", user)
+                .post("https://mrs-isa-usijani.herokuapp.com/register/", user)
                 .then((response) => {
                     console.log(response);
                     this.$toastr.s("New user successfully added.");
@@ -136,7 +136,7 @@ export default {
         },
         getDrugstores() {
             this.$http
-                .get("http://localhost:8081/drugstores/")
+                .get("https://mrs-isa-usijani.herokuapp.com/drugstores/")
                 .then((response) => {
                     console.log(response.data);
                     this.drugstoreOptions = response.data.map((drugstore) => ({

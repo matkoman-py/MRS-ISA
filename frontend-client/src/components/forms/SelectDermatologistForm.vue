@@ -59,7 +59,7 @@ export default {
     },
     addDermatologist: function(event){
         event.preventDefault();
-        this.$http.post("http://localhost:8081/employees/employement", this.form)
+        this.$http.post("https://mrs-isa-usijani.herokuapp.com/employees/employement", this.form)
           .then(response => {
               let updatedDermatologist = response.data;
               let index = this.dermatologists.findIndex(dermatologist => dermatologist.email == updatedDermatologist.email);
@@ -71,14 +71,14 @@ export default {
           .catch(error => console.log(error));
     },
     getDrugstores: function(){
-        this.$http.get("http://localhost:8081/drugstores")
+        this.$http.get("https://mrs-isa-usijani.herokuapp.com/drugstores")
           .then(response => {
               this.drugstores = response.data;
           })
           .catch(error => console.log(error));
     },
     getDermatologist: function(){
-      this.$http.post("http://localhost:8081/employees/search/dermatologist", this.form)
+      this.$http.post("https://mrs-isa-usijani.herokuapp.com/employees/search/dermatologist", this.form)
           .then(response => {
               this.updateDermatologists(response.data);
           })

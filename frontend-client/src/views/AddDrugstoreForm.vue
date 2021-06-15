@@ -47,7 +47,7 @@ export default {
     methods: {
         submitHandler: function() {
             this.$http
-                .post("http://localhost:8081/drugstores", this.drugstore)
+                .post("https://mrs-isa-usijani.herokuapp.com/drugstores", this.drugstore)
                 .then((response) => {
                     console.log(response);
                     this.$toastr.s("Succesfully added drugstore");

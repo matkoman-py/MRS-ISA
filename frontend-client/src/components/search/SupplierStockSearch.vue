@@ -52,7 +52,7 @@
                     this.$emit("success-search-results", this.currentPageData);
                     this.getNextPage(this.currentPage);
                 } else {
-                    this.$http.post("http://localhost:8081/supplier-stocks/search", 
+                    this.$http.post("https://mrs-isa-usijani.herokuapp.com/supplier-stocks/search", 
                         {
                             drugName: this.currentSearchTerm,
                             supplierId: this.supplierId
@@ -74,7 +74,7 @@
 
             },
             getNextPage: function (page) {
-                this.$http.post("http://localhost:8081/supplier-stocks/search", 
+                this.$http.post("https://mrs-isa-usijani.herokuapp.com/supplier-stocks/search", 
                     {
                         drugName: this.currentSearchTerm,
                         supplierId: this.supplierId

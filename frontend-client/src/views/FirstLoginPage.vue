@@ -51,7 +51,7 @@ import router from "../router";
             changePassword: function(){
                 if(this.validatePassword()){
                     this.dto.id = this.user.id;
-                    this.$http.put("http://localhost:8081/firstLoginPasswordChange", this.dto)
+                    this.$http.put("https://mrs-isa-usijani.herokuapp.com/firstLoginPasswordChange", this.dto)
                     .then(() => {
                         alert("You succesfully updated your password!");
                         this.$root.$emit('bv::hide::modal', 'my-modal');
