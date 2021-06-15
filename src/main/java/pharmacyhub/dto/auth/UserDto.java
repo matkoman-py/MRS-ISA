@@ -9,7 +9,14 @@ public class UserDto {
 	private String email;
 	public Location location;
 	private UserType type;
+	private boolean firstLogin;
 	
+	public boolean isFirstLogin() {
+		return firstLogin;
+	}
+	public void setFirstLogin(boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
 	public String getId() {
 		return id;
 	}
@@ -34,7 +41,5 @@ public class UserDto {
 	public void setType(UserType type) {
 		this.type = type;
 	}
-	
-	
 
 }

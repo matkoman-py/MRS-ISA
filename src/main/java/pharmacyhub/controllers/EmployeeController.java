@@ -100,22 +100,33 @@ public class EmployeeController {
 	public ResponseEntity<Employee> findOne(@RequestParam (value = "employeeId", required=false,  defaultValue = "0") String employeeId) throws Exception {
 		return new ResponseEntity<>(employeeService.findOne(employeeId), HttpStatus.OK);
 	}
+  
 	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SYSTEMADMIN')")
 	@GetMapping(path ="/drugstoreForId",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> findDrugstoreByEmployeeId(@RequestParam (value = "drugstoreAdminId") String drugstoreAdminId) throws Exception {
 		return new ResponseEntity<>(employeeService.findDrugstoreByDrugstoreAdminId(drugstoreAdminId), HttpStatus.OK);
 	}
+  
 	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SYSTEMADMIN')")
 	@DeleteMapping(path="/delete", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> deletePharmacist(@RequestParam (value = "pharmacistEmail") String pharmacistEmail) throws Exception {
 		return new ResponseEntity<>(employeeService.deletePharmacist(pharmacistEmail), HttpStatus.OK);
 	}
-	@PreAuthorize("hasAnyRole('DERMATOLOGIST','PHARMACIST')")
+  
+  @PreAuthorize("hasAnyRole('SYSTEMADMIN')")
+	@DeleteMapping(path="/delete/dermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deleteDermatologist(@RequestParam (value = "dermatologistEmail") String dermatologistEmail) throws Exception {
+		return new ResponseEntity<>(employeeService.deleteDermatologist(dermatologistEmail), HttpStatus.OK);
+	}
+	
+
+  @PreAuthorize("hasAnyRole('DERMATOLOGIST','PHARMACIST')")
 	@GetMapping(path ="/password",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> passwordValid(@RequestParam (value = "employeeId") String employeeId,
 			@RequestParam (value = "passwordInput") String passwordInput) throws Exception {
 		return new ResponseEntity<>(employeeService.passwordValid(employeeId, passwordInput), HttpStatus.OK);
 	}
+  
 	@PreAuthorize("hasAnyRole('DERMATOLOGIST','PHARMACIST')")
 	@PutMapping(path = "/updatepassword",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Employee>> updatePassword(@RequestBody Employee employee) throws Exception {

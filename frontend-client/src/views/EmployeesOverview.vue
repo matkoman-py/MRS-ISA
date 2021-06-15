@@ -22,7 +22,7 @@
                 <b-row align-h="center">   
                   <b-form align="center" inline>
                     <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
-                      <b-label> - </b-label>
+                      <label> - </label>
                     <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
                   </b-form>
               </b-row>
@@ -235,9 +235,8 @@
                         averageRate: employee.averageRate,
                         email: employee.email, 
                         phoneNumber: employee.phoneNumber,
-                        address: employee.location ? employee.location.address : null,//+ ", " + employee.location.city + ", " + employee.location.country: null,
-                        city: employee.location ? employee.location.city : null,
-                        country: employee.location ? employee.location.country : null,
+                        shiftStart: employee.workingHoursFrom,
+                        shiftEnd: employee.workingHoursTo,
                         type: employee.type,
                     }
                 ));
@@ -263,9 +262,8 @@
                         averageRate: employee.averageRate,
                         email: employee.email, 
                         phoneNumber: employee.phoneNumber,
-                        address: employee.location ? employee.location.address : null,
-                        city: employee.location ? employee.location.city : null,
-                        country: employee.location ? employee.location.country : null,
+                        shiftStart: employee.workingHoursFrom,
+                        shiftEnd: employee.workingHoursTo,
                         type: employee.type,
                     }
                 ));

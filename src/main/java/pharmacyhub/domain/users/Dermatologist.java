@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -17,6 +20,8 @@ import pharmacyhub.domain.enums.UserType;
 
 @Entity
 @DiscriminatorValue("Dermatologist")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ? and version = ?")
+@Where(clause = "deleted = false")
 public class Dermatologist extends Employee {
 
 	/**

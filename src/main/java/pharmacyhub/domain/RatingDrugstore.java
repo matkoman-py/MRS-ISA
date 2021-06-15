@@ -10,7 +10,7 @@ import org.hibernate.annotations.Where;
 import pharmacyhub.domain.users.Patient;
 
 @Entity
-@SQLDelete(sql = "UPDATE rating_drugstore SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE rating_drugstore SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class RatingDrugstore extends BaseEntity{
 

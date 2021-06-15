@@ -5,18 +5,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.SystemAdmin;
 import pharmacyhub.domain.users.User;
+import pharmacyhub.dto.FirstPasswordChangeDto;
+import pharmacyhub.repositories.users.DrugstoreAdminRepository;
 import pharmacyhub.repositories.users.UserRepository;
 
 @Service
+@Transactional
 public class UserSerivce {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	DrugstoreAdminRepository drugstoreAdminRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -92,6 +98,19 @@ public class UserSerivce {
 		}		
 		admin.setPassword(passwordEncoder.encode(drugstoreAdmin.getPassword()));
 		userRepository.save(admin);
+		return true;
+	}
+	
+	public boolean firstLoginPasswordChange(FirstPasswordChangeDto firstPasswordChangeDto) {
+		User user = userRepository.findById(firstPasswordChangeDto.getId()).orElse(null);
+		user.setPassword(passwordEncoder.encode(firstPasswordChangeDto.getPassword()));
+		user.setFirstLogin(false);
+		userRepository.save(user);
+		return true;
+	}
+	@Transactional
+	public boolean deleteDrugstoreAdmin(String drugstoreAdminId) {
+		drugstoreAdminRepository.deleteById(drugstoreAdminId);
 		return true;
 	}
 	

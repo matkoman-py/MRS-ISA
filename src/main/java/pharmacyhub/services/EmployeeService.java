@@ -12,11 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pharmacyhub.domain.AbsenceRequest;
+import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Employment;
 import pharmacyhub.domain.PharmacistAppointment;
-import pharmacyhub.domain.RatingDermatologist;
-import pharmacyhub.domain.RatingPharmacist;
 import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Dermatologist;
@@ -30,6 +29,7 @@ import pharmacyhub.dto.PharmacistAbsenceRequestDto;
 import pharmacyhub.dto.PharmacistOverviewDto;
 import pharmacyhub.dto.SearchDermatologistDto;
 import pharmacyhub.repositories.AbsenceRequestRepository;
+import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.EmploymentRepository;
 import pharmacyhub.repositories.LocationRepository;
@@ -67,6 +67,9 @@ public class EmployeeService {
 	
 	@Autowired
 	private PharmacistAppointmentRepository pharmacistAppointmentRepository;
+	
+	@Autowired
+	private DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	
 	@Autowired
 	private AbsenceRequestRepository abensceRequestRepository;
@@ -238,12 +241,12 @@ public class EmployeeService {
 		
 		for (Employee e : pharmacists) {
 			
-			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+			employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Pharmacist"));
 		}
 		for (Employment e : dermatologistEmployments) {
 			
 			
-			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
+			employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Dermatologist"));
 		}
 		return employees;
 	}
@@ -269,7 +272,7 @@ public class EmployeeService {
 			if (checkIfSearchedTextIsIncluded(searchText, e)) {
 				if (minRate <= e.getRating() && maxRate >= e.getRating()) { //ovo treba ispraviti
 					
-					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getLocation(), "Pharmacist"));
+					employees.add(new EmployeeOverviewDto(e.getName(), e.getSurname(), e.getRating(), e.getEmail(), e.getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Pharmacist"));
 				}
 			}
 		}
@@ -277,7 +280,7 @@ public class EmployeeService {
 			if (checkIfSearchedTextIsIncluded(searchText, e.getDermatologist())) {
 				if (minRate <= e.getDermatologist().getRating() && maxRate >= e.getDermatologist().getRating()) { //ovo treba ispraviti
 					
-					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getDermatologist().getLocation(), "Dermatologist"));
+					employees.add(new EmployeeOverviewDto(e.getDermatologist().getName(), e.getDermatologist().getSurname(), e.getDermatologist().getRating(), e.getDermatologist().getEmail(), e.getDermatologist().getPhoneNumber(), e.getWorkingHoursFrom(), e.getWorkingHoursTo(), "Dermatologist"));
 				}
 			}
 		}
@@ -421,6 +424,29 @@ public class EmployeeService {
 	private boolean checkFuturePharmacistAppointments(String pharmacistEmail) {
 		List<PharmacistAppointment> appointments = pharmacistAppointmentRepository.findByPharmacistEmailAndProcessedFalse(pharmacistEmail);
 		for (PharmacistAppointment appointment : appointments) {
+			if (appointment.getDate().after(new Date())) {
+				return true;
+			}
+		}
+		return false;
+		//String pharmacistId = pharmacistRepository.findByEmail(pharmacistEmail).getId();
+		//pharmacistAppointmentRepository.deleteByPharmacist((Pharmacist)pharmacistRepository.findByEmail(pharmacistEmail)); //treba samo one koji predstoje?
+	}
+	
+	
+	public String deleteDermatologist(String dermatologistEmail) throws Exception {
+		if (checkFutureDermatologistAppointments(dermatologistEmail)) {
+			throw new Exception("Can't delete dermatologist!");
+		}
+		
+		employmentRepository.deleteByDermatologistEmail(dermatologistEmail);
+		dermatologistRepository.deleteByEmail(dermatologistEmail);
+		return "Success";
+	}
+
+	private boolean checkFutureDermatologistAppointments(String dermatologistEmail) {
+		List<DermatologistAppointment> appointments = dermatologistAppointmentRepository.findByDermatologistEmailAndProcessedFalse(dermatologistEmail);
+		for (DermatologistAppointment appointment : appointments) {
 			if (appointment.getDate().after(new Date())) {
 				return true;
 			}
