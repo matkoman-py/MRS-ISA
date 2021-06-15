@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import pharmacyhub.domain.LoyaltyConfiguration;
 import pharmacyhub.domain.PatientCategory;
+import pharmacyhub.dto.LoyaltyConfigurationDto;
+import pharmacyhub.dto.PatientCategoryDto;
 import pharmacyhub.services.PatientCategoryService;
 
 @Controller
@@ -34,12 +36,12 @@ public class PatientCategoryController {
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PatientCategory> update(@RequestBody PatientCategory patientCategory) throws Exception {
+	public ResponseEntity<PatientCategory> update(@RequestBody PatientCategoryDto patientCategory) throws Exception {
 		return new ResponseEntity<>(patientCategoryService.updatePatientCategory(patientCategory), HttpStatus.OK);
 	}
 	
 	@PutMapping(path="/configuration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<LoyaltyConfiguration> update(@RequestBody LoyaltyConfiguration loyaltyConfiguration) throws Exception {
+	public ResponseEntity<LoyaltyConfiguration> update(@RequestBody LoyaltyConfigurationDto loyaltyConfiguration) throws Exception {
 		return new ResponseEntity<>(patientCategoryService.updateLoyaltyConfiguration(loyaltyConfiguration), HttpStatus.OK);
 	}
 }
