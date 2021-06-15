@@ -11,5 +11,9 @@ import pharmacyhub.domain.Drugstore;
 public interface DrugstoreRepository extends JpaRepository<Drugstore, String>, JpaSpecificationExecutor<Drugstore>{
 	@Transactional
 	Drugstore findOneById(String id);
+	
+	@Transactional
+	void delete(Drugstore drugstore);
+	
 	List<Drugstore> findByName(String name);
 }

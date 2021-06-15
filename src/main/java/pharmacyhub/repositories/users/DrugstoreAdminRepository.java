@@ -7,5 +7,7 @@ import pharmacyhub.domain.users.DrugstoreAdmin;
 
 @Transactional
 public interface DrugstoreAdminRepository extends AbstractUserRepository<DrugstoreAdmin>{
+	
+	@Transactional
 	void deleteByDrugstore(Drugstore drugstore);
 }

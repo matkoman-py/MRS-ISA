@@ -11,7 +11,7 @@ import pharmacyhub.domain.Drugstore;
 
 @Entity
 @DiscriminatorValue("DrugstoreAdmin")
-@SQLDelete(sql = "UPDATE drug_price SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE drug_price SET deleted = true WHERE id = ? and version = ?")
 public class DrugstoreAdmin extends User{
 	
 	/**
