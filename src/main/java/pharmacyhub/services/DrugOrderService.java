@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
-import javax.persistence.OptimisticLockException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugOrder;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
@@ -26,6 +26,7 @@ import pharmacyhub.dto.DrugOrderOverviewDto;
 import pharmacyhub.dto.SelectedDrugDto;
 import pharmacyhub.dto.drugOrder.DrugOrderDto;
 import pharmacyhub.dto.search.DrugOrderSearchDto;
+import pharmacyhub.dto.supplier.SupplierStockDto;
 import pharmacyhub.repositories.DrugOrderRepository;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugRequestRepository;
@@ -62,6 +63,9 @@ public class DrugOrderService {
 	
 	@Autowired
 	private UserNotificationService userNotificationService;
+	
+	@Autowired
+	private SupplierStockService supplierStockService;
 	
 	private DrugOrderDto getDtoFromEntity(DrugOrder drugOrder) {
 		DrugOrderDto dto = new DrugOrderDto();
@@ -126,7 +130,7 @@ public class DrugOrderService {
 		return true;
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public Boolean orderAccepted(String offerId) throws Exception {
 		
 		Offer offer = offerRepository.findByIdAndStatus(offerId, OfferStatus.Pending);
@@ -145,19 +149,41 @@ public class DrugOrderService {
 			}
 		}
 		
-		for (Offer o : offers) {
-			userNotificationService.notifySupplier(o);
-		}
-		
 		order.setStatus(OrderStatus.Accepted);
+		
 		Drugstore drugstore = order.getDrugstore();
 		for (OrderStock stock : order.getStock()) {
 			updateDrugStockAmount(stock, drugstore);
 			//logicki obrisati requestove za ove lekove koji su naruceni
 			drugRequestRepository.deleteByDrugstoreAndDrug(drugstore, stock.getDrug());	
 		}
+		
 		drugOrderRepository.save(order);
+		
+		for (Offer o : offers) {
+			if(o.getStatus() == OfferStatus.Rejected) 
+			{
+				giveAmountBackToSupplier(o);
+			}
+			userNotificationService.notifySupplier(o);
+		}
+		
 		return true;
+	}
+	
+	@Transactional(readOnly = false)
+	public void giveAmountBackToSupplier(Offer offer) throws Exception {
+		for (OrderStock orderStock : offer.getDrugOrder().getStock()) {
+			Drug drug = orderStock.getDrug();
+			supplierStockService.add(
+				new SupplierStockDto(
+					offer.getSupplier().getId(),
+					drug.getId(),
+					drug.getName(),
+					offer.getId(),
+					orderStock.getAmount()
+					));
+		}
 	}
 	
 	@Transactional(readOnly = false)
