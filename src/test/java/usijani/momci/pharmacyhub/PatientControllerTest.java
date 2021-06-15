@@ -68,9 +68,8 @@ public class PatientControllerTest {
 		}
 		
 		try {
-			mockMvc.perform(put(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isOk())
-			.andExpect(content().contentType(contentType))
-			.andExpect(jsonPath("$.[*].name").value(hasItem("pera")));
+			mockMvc.perform(put(URL_PREFIX).contentType(contentType).content(json)).andExpect(status().isOk());
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
