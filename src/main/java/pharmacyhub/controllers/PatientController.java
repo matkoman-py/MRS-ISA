@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,15 @@ import pharmacyhub.services.PatientService;
 public class PatientController {
 	@Autowired
 	private PatientService patientService;
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
+	@GetMapping(path ="/add-alergen", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> addAlergen(
+			@RequestParam(value = "patientId", required = false) String patientId,
+			@RequestParam(value = "alergenId", required = false) String alergenId
+			) {
+		return new ResponseEntity<>(patientService.addAlergen(patientId,alergenId), HttpStatus.OK);
+	}
+	@PreAuthorize("hasAnyRole('DERMATOLOGIST','PHARMACIST')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Patient>> getGreetings(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -32,7 +41,7 @@ public class PatientController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(patientService.findAll(pageable), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DERMATOLOGIST','PHARMACIST')")
 	@GetMapping(path ="/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Patient>> search(@RequestParam(value = "page", required = false) Integer page,
 													  @RequestParam(value = "size", required = false) Integer size,
@@ -42,7 +51,7 @@ public class PatientController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(patientService.returnPatients(pageable,patientName,patientSurname), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DERMATOLOGIST','PHARMACIST')")
 	@GetMapping(path ="/searchLength", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> searchLength(
 													  @RequestParam(value = "patientNameParam", required=false,  defaultValue = "") String patientName,
@@ -51,7 +60,7 @@ public class PatientController {
 		
 		return new ResponseEntity<>(patientService.returnPatientsLength(patientName,patientSurname), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('PATIENT')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Patient> update(@RequestBody Patient patient) throws Exception {
 		return new ResponseEntity<>(patientService.update(patient), HttpStatus.OK);
@@ -63,7 +72,7 @@ public class PatientController {
 		
 		return new ResponseEntity<>(patientService.returnPatient(patientId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DERMATOLOGIST','PHARMACIST','PATIENT')")
 	@GetMapping(path ="/penalty", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Patient> penalty(@RequestParam(value = "patientId", required=false,  defaultValue = "0") String patientId,
 										   @RequestParam(value = "reservationId", required=false,  defaultValue = "0") String reservationId,

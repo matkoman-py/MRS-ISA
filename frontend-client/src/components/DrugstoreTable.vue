@@ -126,7 +126,7 @@
                         country: drugstore.location.country,
                         city: drugstore.location.city,
                         description: drugstore.decription,
-                        rating: drugstore.averageRating,
+                        rating: drugstore.rating,
                     }));
             },
             getCardDrugstores: function () {

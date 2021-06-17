@@ -11,11 +11,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import pharmacyhub.domain.enums.DrugReservationStatus;
 import pharmacyhub.domain.users.Patient;
 
 @Entity
 @Table(name = "drug_reservation")
-@SQLDelete(sql = "UPDATE drug_reservation SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE drug_reservation SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class DrugReservation extends BaseEntity {
 
@@ -37,7 +38,7 @@ public class DrugReservation extends BaseEntity {
 	@Column
 	private double price;
 	@Column(nullable = false)
-	private boolean issued;
+	private DrugReservationStatus status;
 	@Column
 	private boolean eReceipt;
 
@@ -52,7 +53,7 @@ public class DrugReservation extends BaseEntity {
 		this.amount = amount;
 		this.patient = patient;
 		this.date = date;
-		this.issued = false;
+		this.status = DrugReservationStatus.Pending;
 		this.eReceipt = eReceipt;
 	}
 
@@ -66,7 +67,7 @@ public class DrugReservation extends BaseEntity {
 		this.date = date;
 		this.confirmationCode = confirmationCode;
 		this.price = price;
-		this.issued = false;
+		this.status = DrugReservationStatus.Pending;
 	}
 
 	public boolean iseReceipt() {
@@ -133,13 +134,15 @@ public class DrugReservation extends BaseEntity {
 		this.price = price;
 	}
 
-	public boolean isIssued() {
-		return issued;
+	public DrugReservationStatus getStatus() {
+		return status;
 	}
 
-	public void setIssued(boolean issued) {
-		this.issued = issued;
+	public void setStatus(DrugReservationStatus status) {
+		this.status = status;
 	}
+
+	
 
 	
 }

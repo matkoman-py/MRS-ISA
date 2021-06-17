@@ -36,30 +36,35 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
 		String email;
 		
 		String authToken = tokenUtils.getToken(request);
-		
 		try {
-			
-			if(authToken == null) {
-				filterChain.doFilter(request, response);
-				return;
+
+			if (authToken != null) {
+				
+				// 2. Citanje korisnickog imena iz tokena
+				email = tokenUtils.getUsernameFromToken(authToken);
+				
+				if (email != null) {
+					
+					// 3. Preuzimanje korisnika na osnovu username-a
+					UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+					
+					for (var a : userDetails.getAuthorities()) {
+						System.out.println(a.getAuthority());
+					}
+					
+					
+					// 4. Provera da li je prosledjeni token validan
+					if (tokenUtils.validateToken(authToken, userDetails)) {
+						
+						// 5. Kreiraj autentifikaciju
+						TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
+						authentication.setToken(authToken);
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					}
+				}
 			}
 			
-			email = tokenUtils.getUsernameFromToken(authToken);
-			
-			if (email == null) {
-				filterChain.doFilter(request, response);
-				return;
-			}
-			
-			UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-			
-			if (tokenUtils.validateToken(authToken, userDetails)) {
-				TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
-				authentication.setToken(authToken);
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-			}
-			
-		} catch (ExpiredJwtException ex){
+		}  catch (ExpiredJwtException ex){
 			LOGGER.debug("Token expired!");
 		}
 		

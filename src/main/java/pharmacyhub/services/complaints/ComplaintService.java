@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.DrugReservation;
@@ -14,6 +15,7 @@ import pharmacyhub.domain.PharmacistAppointment;
 import pharmacyhub.domain.complaints.Complaint;
 import pharmacyhub.domain.complaints.Reply;
 import pharmacyhub.domain.enums.ComplaintType;
+import pharmacyhub.domain.enums.DrugReservationStatus;
 import pharmacyhub.domain.enums.UserType;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.User;
@@ -110,7 +112,7 @@ public class ComplaintService {
 	}
 	
 	public boolean patientHasPickedUpDrugInDrugsotre(String patientId, String drugstoreId) {
-		List<DrugReservation> drugReservations = drugReservationRepository.findByDrugstoreIdAndPatientIdAndIssuedTrue(drugstoreId, patientId);
+		List<DrugReservation> drugReservations = drugReservationRepository.findByDrugstoreIdAndPatientIdAndStatus(drugstoreId, patientId,DrugReservationStatus.Issued);
 		return drugReservations.size() > 0;
 	}
 	
@@ -159,21 +161,27 @@ public class ComplaintService {
 		return toComplaintDto(complaint);
 	}
 
-	
 	public ReplyDto getReply(String complaintId) throws Exception {
 		Complaint complaint = complaintRepository.findById(complaintId).orElse(null);
 		
 		if(complaint == null) {
 			throw new Exception("The given complaint doesn't exist!");
 		}
-		Reply reply = replyRepository.findByComplaint(complaint);
+		Reply reply = replyRepository.findByComplaintId(complaint.getId());
 		return (reply != null) ? new ReplyDto(reply) : null;
 	}
 	
+//	@Transactional
+//	private Reply findReplyByComplaintId(Complaint complaint) {
+//		return replyRepository.findByComplaintId(complaint.getId());
+//	}
+	
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
 	public ReplyDto makeReply(MakeReplyDto makeReplyDto) throws Exception {
-		Reply alreadyGivenReply = replyRepository.findById(makeReplyDto.getComplaintId()).orElse(null);
-		Complaint complaint = complaintRepository.findById(makeReplyDto.getComplaintId()).orElse(null);
+		Reply alreadyGivenReply = replyRepository.findByComplaintId(makeReplyDto.getComplaintId());
+		Complaint complaint = complaintRepository.findByIdAndHasReplyFalse(makeReplyDto.getComplaintId());
 		User user = userRepository.findById(makeReplyDto.getAdminId()).orElse(null);
+		System.out.println("pokusam");
 		
 		if(user == null || user.getType() != UserType.SystemAdmin) {
 			throw new Exception("The given system admin doesn't exist!");
@@ -182,15 +190,21 @@ public class ComplaintService {
 		if(complaint == null) {
 			throw new Exception("The given complaint doesn't exist!");
 		}
+		else {
+			System.out.println("Version: " + complaint.getVersion());
+		}
 		
 		if (alreadyGivenReply != null) {
 			throw new Exception("Reply already given!");
 		}
-		complaint.setHasReply(true);
-		complaintRepository.save(complaint);
 		
 		Reply reply = new Reply(complaint, user, makeReplyDto.getText());
+		reply = replyRepository.save(reply);
 		userNotificationService.notifyAboutComplaintReply(complaint, reply);
-		return new ReplyDto(replyRepository.save(reply));
+
+		complaint.setHasReply(true);
+		complaint = complaintRepository.save(complaint);
+		
+		return new ReplyDto(reply);
 	}
 }

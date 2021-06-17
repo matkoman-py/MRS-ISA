@@ -17,7 +17,7 @@ import pharmacyhub.domain.enums.OrderStatus;
 
 @Entity
 @Table(name = "drug_order")
-@SQLDelete(sql = "UPDATE drug_order SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE drug_order SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class DrugOrder extends BaseEntity {
 

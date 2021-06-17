@@ -43,8 +43,8 @@ public class UserNotificationService {
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
-		String emailContent = "Thank you for your registration. In order to use your account, you'll need to activate it. <br><br>Click <a href='http://localhost:8081/register/activate/"
-				+ activationCode + "'>here</a> to activate your account.";
+		String emailContent = "Thank you for your registration. In order to use your account, you'll need to activate it. <br><br>Click "
+				+ activationCode + "here to activate your account.";
 
 		helper = new MimeMessageHelper(message, true);
 		helper.setFrom("notification@pharmacyhub.com");
@@ -93,7 +93,7 @@ public class UserNotificationService {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
 
-		String emailContent = "You have succesfully reserved a drug! <br> Show this code to your pharmacist to claim your drug: "
+		String emailContent = "You have succesfully reserved a drug! <br> Show this code to your pharmacist to claim your drug "
 				+ confirmationCode;
 
 		helper = new MimeMessageHelper(message, true);

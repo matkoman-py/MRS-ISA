@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import pharmacyhub.domain.LoyaltyConfiguration;
 import pharmacyhub.domain.PatientCategory;
 import pharmacyhub.domain.users.Patient;
+import pharmacyhub.dto.LoyaltyConfigurationDto;
+import pharmacyhub.dto.PatientCategoryDto;
 import pharmacyhub.repositories.LoyaltyConfigurationRepository;
 import pharmacyhub.repositories.PatientCategoryRepository;
 import pharmacyhub.repositories.users.PatientRepository;
@@ -82,14 +84,16 @@ public class PatientCategoryService {
 		return priceWithDiscount;
 	}
 
-	public PatientCategory updatePatientCategory(PatientCategory patientCategory) {
+	public PatientCategory updatePatientCategory(PatientCategoryDto patientCategoryDto) {
+		PatientCategory patientCategory = new PatientCategory(patientCategoryDto.getName(),patientCategoryDto.getRequieredPoints(),patientCategoryDto.getDiscount());
+		patientCategory.setId(patientCategoryDto.getId());
 		return patientCategoryRepository.save(patientCategory);
 	}
 
-	public LoyaltyConfiguration updateLoyaltyConfiguration(LoyaltyConfiguration loyaltyConfiguration) {
+	public LoyaltyConfiguration updateLoyaltyConfiguration(LoyaltyConfigurationDto loyaltyConfigurationdto) {
 		LoyaltyConfiguration loyaltyConfigurationToUpdate = loyaltyConfigurationRepository.findById(1).orElse(null);
-		loyaltyConfigurationToUpdate.setDermatologistPointsGained(loyaltyConfiguration.getDermatologistPointsGained());
-		loyaltyConfigurationToUpdate.setPharmacistPointsGained(loyaltyConfiguration.getPharmacistPointsGained());
+		loyaltyConfigurationToUpdate.setDermatologistPointsGained(loyaltyConfigurationdto.getDermatologistPointsGained());
+		loyaltyConfigurationToUpdate.setPharmacistPointsGained(loyaltyConfigurationdto.getPharmacistPointsGained());
 		return loyaltyConfigurationRepository.save(loyaltyConfigurationToUpdate);
 	}
 }

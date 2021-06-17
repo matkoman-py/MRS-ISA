@@ -7,8 +7,8 @@
                     <p style="margin:20px"><b>Name</b>: {{drugstore.name}}</p>
                     <p style="margin:20px"><b>Address</b>: {{drugstore.location.address}}, {{drugstore.location.city}}, {{drugstore.location.country}}</p>
                     <p style="margin:20px"><b>Description</b>: {{drugstore.description}}</p>
-                    <p v-if="averageRate != null" style="margin:20px"><b>Average rating</b>: {{ averageRate.toFixed(2) }} (From {{numberOfRates}} rates)</p>
-                    <p v-if="averageRate == null" style="margin:20px"><b>Average rating</b>: There are currently no rates for your drugstore</p>
+                    <p  style="margin:20px"><b>Average rating</b>: {{ drugstore.rating.toFixed(2) }}</p>
+                    
                     <p style="margin:20px"><b>Working hours</b>: {{drugstore.workingHoursFrom}} - {{drugstore.workingHoursTo}}</p>
                     <p style="margin:20px"><b>Pharmacist appointment price</b>: {{drugstore.pharmacistAppointmentPrice}}</p>
                 </div>
@@ -18,6 +18,11 @@
             <b-col> 
                 <router-link to="/drugstore-reports">
                     <b-button variant="outline-hub" style="margin:20px"> Drugstore reports </b-button> 
+                </router-link>
+            </b-col>
+            <b-col> 
+                <router-link to="/pharmacist-absence-requests">
+                    <b-button variant="outline-hub" style="margin:20px"> Absence requests </b-button>
                 </router-link>
             </b-col>
             <b-col> 
@@ -39,9 +44,22 @@ export default {
     },
     data: function() {
       return {
-        drugstore: {},
-        averageRate:0,
-        numberOfRates:0
+        drugstore: {
+                name: "",
+                location: {
+                    address: "",
+                    city: "",
+                    country: ""
+                },
+                employements: "",
+                drugStock: "",
+                rating: 0,
+                workingHoursFrom: "",
+
+                workingHoursTo: "",
+                pharmacistappointmentPrice: ""
+            },
+       
       }
     },
     methods: {
@@ -53,21 +71,11 @@ export default {
                     })
                     .then(response => {
                         this.drugstore = response.data;
-                        this.getAverageRating();
+                        console.log(response.data)
+                        this.drugstore.workingHoursFrom? this.drugstore.workingHoursFrom.slice(0,5) : this.drugstore.workingHoursFrom;
+                        this.drugstore.workingHoursTo? this.drugstore.workingHoursTo.slice(0,5) : this.drugstore.workingHoursTo;
                     })
                     .catch(error => console.log(error));
-        }, getAverageRating() {
-                this.$http.get("http://localhost:8081/drugstores/averageRate", {
-                    params: {
-                        drugstoreId: this.drugstore.id
-                    }
-                })
-                .then((response) => {
-                    this.averageRate = response.data.numberOfRates > 0 ? response.data.averageRate : null;
-                    this.numberOfRates = response.data.numberOfRates;
-                })
-                .catch((error) => console.log(error));
-
         },
     },
     mounted: function(){

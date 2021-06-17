@@ -8,10 +8,18 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@SQLDelete(sql = "UPDATE drugstore SET deleted = true WHERE id = ? AND version = ?")
+@Where(clause = "deleted = false")
 public class Drugstore extends BaseEntity {
 
 	@Column(nullable = false)
@@ -24,8 +32,9 @@ public class Drugstore extends BaseEntity {
 	@Column(nullable = false)
 	public String description;
 
-	//@Column(name = "average_rating")
-	//public double averageRating;
+	@Column(name = "rating")
+	@ColumnDefault("0")
+	public double rating;
 
 	@OneToMany(mappedBy = "drugstore", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -58,9 +67,17 @@ public class Drugstore extends BaseEntity {
 		this.name = name;
 		this.location = location;
 		this.description = decription;
-		//this.averageRating = averageRating;
 		this.pharmacistAppointmentPrice = pharmacistAppointmentPrice;
 		this.point = point;
+	}
+	
+	
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
 	public Point getPoint() {

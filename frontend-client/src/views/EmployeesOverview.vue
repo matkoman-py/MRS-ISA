@@ -9,10 +9,9 @@
         <router-link to="/addPharmacistForm">
            <b-button style="margin-right:50px" variant="outline-hub">Add pharmacist</b-button>
         </router-link>
-        <router-link to="/addDermatologistForm">
-                <b-button style="margin-left:50px; margin-right:50px" variant="outline-hub">Add dermatologist</b-button>
-        </router-link>
-        <b-button style="margin-left:50px" variant="outline-hub" @click="showModal">Delete employee</b-button>
+        <b-button style="margin-left:50px; margin-right:50px" variant="outline-hub" @click="showHireForm">Hire dermatologist</b-button>
+        <b-button style="margin-left:50px; margin-right:50px" variant="outline-hub" @click="showModal">Delete employee</b-button>
+        <b-button style="margin-left:50px" variant="outline-hub" @click="showForm">Create appointment for deramtologist</b-button>
     </div>
     <b-container style="margin:15px">
         <b-row align-h="center">
@@ -22,9 +21,9 @@
                 <p style="margin-top:20px">Average rate:</p>
                 <b-row align-h="center">   
                   <b-form align="center" inline>
-                    <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
-                      <b-label> - </b-label>
-                    <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
+                    <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
+                      <label> - </label>
+                    <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
                   </b-form>
               </b-row>
                 <p style="margin-top:20px">Filter employees by workplace:</p>
@@ -50,6 +49,111 @@
         </b-row>
       </b-form>
     </b-modal>
+
+    <b-modal id="hireDermatologist" title="Hire dermatologist" hide-footer>
+      <b-form>
+        <b-form-group
+        label="Dermatologists that are not employed in your drugstore"
+        label-for="dermatologist-picker"
+        invalid-feedback="Dermatologist is required">
+            <b-form-select
+                v-model="hireDermatologistValues.dermatologistId"
+                :options="notEmployedDermatologists">
+            </b-form-select>
+        </b-form-group>
+
+        <b-form-group
+        label="Shift start time"
+        label-for="time-picker"
+        invalid-feedback="Shift start time is required">
+            <b-form-timepicker
+            v-model="hireDermatologistValues.workingHoursFrom"
+            locale="en">
+            </b-form-timepicker>
+        </b-form-group>
+
+        <b-form-group
+        label="Shift end time"
+        label-for="time-picker"
+        invalid-feedback="Shift start time is required">
+            <b-form-timepicker
+            v-model="hireDermatologistValues.workingHoursTo"
+            locale="en">
+            </b-form-timepicker>
+        </b-form-group>
+
+        <b-button type="button" variant="outline-hub" @click="hireDermatologistFunction">Hire dermatologist</b-button>
+        <b-button type="button" variant="outline-hub" @click="closeHireModal" >Cancel</b-button>
+
+      </b-form>
+    </b-modal>
+
+    <b-modal id="my-modal" title="Create new appointment" hide-footer>
+      <b-form>
+        <b-form-group
+        label="Choose dermatologist"
+        label-for="dermatologist-picker"
+        invalid-feedback="Dermatologist is required">
+            <b-form-select
+                v-model="inputValues.dermatologist"
+                :options="availableDermatologists">
+            </b-form-select>
+        </b-form-group>
+
+        <b-form-group
+        label="Appointment date"
+        label-for="date-picker"
+        invalid-feedback="Appointment date is required">
+            <b-form-datepicker
+            id="date-input"
+            v-model="inputValues.date"
+            :min="minDate"
+            required >
+            </b-form-datepicker>
+        </b-form-group>
+
+        <b-form-group
+        label="Appointment time"
+        label-for="time-picker"
+        invalid-feedback="Appointment time is required">
+            <b-form-timepicker
+            v-model="inputValues.time"
+            locale="en">
+            </b-form-timepicker>
+        </b-form-group>
+
+        <b-form-group
+        label="Appointment duration(in minutes)"
+        label-for="duration-picker"
+        invalid-feedback="Appointment duration is required">
+            <b-form-input
+            id="duration-input"
+            v-model="inputValues.duration"
+            type="number"
+            min="0"
+            required >
+            </b-form-input>
+        </b-form-group>
+
+        <b-form-group
+        label="Appointment price(in RSD)"
+        label-for="price-picker"
+        invalid-feedback="Appointment price is required">
+            <b-form-input
+            id="price-input"
+            v-model="inputValues.price"
+            type="number"
+            min="0"
+            required >
+            </b-form-input>
+        </b-form-group>
+
+        <b-button type="button" variant="outline-hub" @click="addNewApointment">Save</b-button>
+        <b-button type="button" variant="outline-hub" @click="handleClose" >Cancel</b-button>
+
+      </b-form>
+    </b-modal>
+    {{hireDermatologistValues.dermatologist}}
   </b-container>
 </template>
 
@@ -62,6 +166,9 @@
       }),
     },
     data: function() {
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const minDate = new Date(today)
       return {
         drugstoreId: '',
         selectedEmployee:{},
@@ -69,12 +176,32 @@
         searchText: '',
         selected: 'All_Employees',
         filterRateMin: 0,
-        filterRateMax: 10,
+        filterRateMax: 5,
         options: [
           { value: 'All_Employees', text: 'All Employees' },
           { value: 'Dermatologists', text: 'Dermatologists' },
           { value: 'Pharmacists', text: 'Pharmacists' }
-        ]
+        ],
+
+        notEmployedDermatologists: [],
+        hireDermatologistValues: {
+          drugstoreId: '',
+          dermatologistId: '',
+          workingHoursFrom: '',
+          workingHoursTo: ''
+        },
+
+        appointments: [],
+        minDate: minDate,
+        availableDermatologists: [],
+        inputValues: {
+          dermatologist: '',
+          drugstoreId: '',
+          date: '',
+          time: '',
+          duration: '',
+          price: ''
+        },
       }
     },
     methods: {
@@ -86,6 +213,10 @@
               })
               .then(response => {
               this.drugstoreId = response.data.id;
+              this.inputValues.drugstoreId = response.data.id;
+              this.hireDermatologistValues.drugstoreId = response.data.id;
+              this.getAllDermatologistForThisDrugstore();
+              this.getAllNotEmployedDermatologists();
               })
               .catch(error => console.log(error));
         },
@@ -101,12 +232,11 @@
                     {
                         name: employee.name,
                         surname: employee.surname,
-                        averageRate: employee.numberOfRates > 0 ? employee.averageRate + " (From " + employee.numberOfRates + " rates)" : "No rates",
+                        averageRate: employee.averageRate,
                         email: employee.email, 
                         phoneNumber: employee.phoneNumber,
-                        address: employee.location ? employee.location.address : null,//+ ", " + employee.location.city + ", " + employee.location.country: null,
-                        city: employee.location ? employee.location.city : null,
-                        country: employee.location ? employee.location.country : null,
+                        shiftStart: employee.workingHoursFrom,
+                        shiftEnd: employee.workingHoursTo,
                         type: employee.type,
                     }
                 ));
@@ -132,9 +262,8 @@
                         averageRate: employee.averageRate,
                         email: employee.email, 
                         phoneNumber: employee.phoneNumber,
-                        address: employee.location ? employee.location.address : null,
-                        city: employee.location ? employee.location.city : null,
-                        country: employee.location ? employee.location.country : null,
+                        shiftStart: employee.workingHoursFrom,
+                        shiftEnd: employee.workingHoursTo,
                         type: employee.type,
                     }
                 ));
@@ -150,12 +279,12 @@
             this.searchText = ''
             this.selected = 'All_Employees'
             this.filterRateMin = 0
-            this.filterRateMax = 10
+            this.filterRateMax = 5
         },
         showModal(event) {
           event.preventDefault()
           if (this.selectedEmployee.length == 0) {
-            alert("You need to select employee that you want to delete.")
+            this.$toastr.w("You need to select employee that you want to delete.")
           } else {
             this.$root.$emit('bv::show::modal', 'deleteConfirmation');
           }
@@ -168,20 +297,97 @@
             event.preventDefault();
             if (this.selectedEmployee[0].type == 'Pharmacist') {
               this.$http.delete("http://localhost:8081/employees/delete/", {params :{ pharmacistEmail: this.selectedEmployee[0].email}})
-              .then(() => {
-                alert("Pharmacist is succesfully removed from drugstore!");
+              .then(response => {
+                if (response.data == "Denied") {
+                  this.$toastr.e("Pharmacist have scheduled appointments in future so you can't delete him!")
+                } else {
+                  this.$toastr.s("Pharmacist is succesfully removed from drugstore!")
+                }
                 this.getEmployees();
               })
               .catch(error => console.log(error));
             } else {
               this.$http.delete("http://localhost:8081/employment/delete", {data : { dermatologistEmail: this.selectedEmployee[0].email, drugstoreId: this.drugstoreId }})
-              .then(() => {
-                alert("Dermatologist is succesfully removed from drugstore!");
+              .then(response => {
+                if (response.data == "Denied") {
+                  this.$toastr.e("Dermatologist have scheduled appointments in future so you can't delete him!")
+                } else {
+                  this.$toastr.s("Dermatologist is succesfully removed from drugstore!")
+                  this.getAllNotEmployedDermatologists();
+                  this.getAllDermatologistForThisDrugstore();
+                }
                 this.getEmployees();
               })
               .catch(error => console.log(error));
             }
             this.$root.$emit('bv::hide::modal', 'deleteConfirmation');
+        },
+        getAllNotEmployedDermatologists : function() {
+            this.$http.get("http://localhost:8081/employment/dermatologists/notEmployed", {
+                params: {
+                            drugstoreId: this.inputValues.drugstoreId
+                        }})
+            .then(response => {
+            this.notEmployedDermatologists = response.data.map((dermatologist) =>
+                ({
+                value: dermatologist.id,
+                text: dermatologist.name + " " + dermatologist.surname
+                })
+            );
+            })
+            .catch(error => console.log(error));
+        },
+        showHireForm(event) {
+          event.preventDefault()
+          this.$root.$emit('bv::show::modal', 'hireDermatologist');
+        },
+        hireDermatologistFunction(event) {
+          event.preventDefault();
+          this.$http.post("http://localhost:8081/employment/dermatologist/hire", JSON.parse(JSON.stringify(this.hireDermatologistValues)))
+              .then(response => {
+              console.log(response);
+              this.$toastr.e("Dermatologist is successfully hired!")
+              this.getEmployees();
+              this.getAllNotEmployedDermatologists();
+              this.getAllDermatologistForThisDrugstore();
+              })
+              .catch(error => console.log(error));
+          this.$root.$emit('bv::hide::modal', 'hireDermatologist');
+        },
+        closeHireModal(){
+            this.$root.$emit('bv::hide::modal', 'hireDermatologist');
+        },
+        getAllDermatologistForThisDrugstore : function() {
+            this.$http.get("http://localhost:8081/employment/dermatologists", {
+                params: {
+                            drugstoreId: this.inputValues.drugstoreId
+                        }})
+            .then(response => {
+            this.availableDermatologists = response.data.map((dermatologistDto) =>
+                ({
+                value: dermatologistDto.dermatologist,
+                text: dermatologistDto.dermatologist.name + " (" + dermatologistDto.workingHoursFrom.slice(0,5) + " - " + dermatologistDto.workingHoursTo.slice(0,5) + ")"
+                })
+            );
+            })
+            .catch(error => console.log(error));
+        },
+        showForm(event) {
+          event.preventDefault()
+          this.$root.$emit('bv::show::modal', 'my-modal');
+        },
+        addNewApointment(event) {
+          event.preventDefault();
+          this.$http.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
+              .then(response => {
+              console.log(response);
+              this.$toastr.s("New appointment is successfully created.")
+              })
+              .catch(error => console.log(error));
+          this.$root.$emit('bv::hide::modal', 'my-modal');
+        },
+        handleClose(){
+            this.$root.$emit('bv::hide::modal', 'my-modal');
         }
     },
     mounted: function(){

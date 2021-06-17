@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugOrder;
@@ -19,6 +20,7 @@ import pharmacyhub.domain.OrderStock;
 import pharmacyhub.domain.enums.OrderStatus;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.dto.CreateDrugOrderDto;
+import pharmacyhub.dto.DrugDto;
 import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.dto.search.DrugSearchDto;
 import pharmacyhub.repositories.DrugOrderRepository;
@@ -66,8 +68,11 @@ public class DrugService {
 		return drugRepository.findAll(DrugSpecifications.withSearch(drugSearchDto), pageable).toList();
 	}
 	
-	public Drug save(Drug drug) throws Exception {
-
+	public Drug save(DrugDto drugDto) throws Exception {
+		
+		Drug drug = new Drug(drugDto.getName(),drugDto.getForm(), drugDto.isReceipt(), drugDto.getCode(), drugDto.getDailyDose(), drugDto.getWeight(), drugDto.getType(),
+				drugDto.getManufacturer(), drugDto.getSubstitutions(), drugDto.getIngredients(), drugDto.getDescription(),
+				drugDto.getPoint(),0);
 		if (drug.getIngredients().isEmpty()) {
 			throw new Exception("Empty ingredients list!");
 		}
@@ -99,7 +104,8 @@ public class DrugService {
 		return drugsInDrugstore;
   }
 
- public boolean delete(String id) throws Exception {
+	@Transactional
+	public boolean delete(String id) throws Exception {
 		Drug drug = drugRepository.findById(id).orElse(null);
 		if(drug == null) {
 			throw new Exception("No such drug");
@@ -112,25 +118,37 @@ public class DrugService {
 		return true;
 	}
 
-	public Drug update(Drug drug) throws Exception {
-		// TODO Auto-generated method stub
-		if (drugRepository.findById(drug.getId()) == null) {
+	@Transactional
+	public Drug update(DrugDto drugDto) throws Exception {
+		Drug drug = new Drug(drugDto.getName(),drugDto.getForm(), drugDto.isReceipt(), drugDto.getCode(), drugDto.getDailyDose(), drugDto.getWeight(), drugDto.getType(),
+				drugDto.getManufacturer(), drugDto.getSubstitutions(), drugDto.getIngredients(), drugDto.getDescription(),
+				drugDto.getPoint(),0);
+		drug.setId(drugDto.getId());
+		if (drugRepository.findOneById(drug.getId()) == null) {
 			throw new Exception("Drug doesn't exists");
 		}
-		return save(drug);
+		if (drug.getIngredients().isEmpty()) {
+			throw new Exception("Empty ingredients list!");
+		}
+
+		if (!areIngredientsValid(drug.getIngredients())) {
+			throw new Exception("This ingrediant does not exist");
+		}
+
+		return drugRepository.save(drug);
 	}
 
 	public List<Drug> findAllSubstitutes(String drugId) {
 		Drug drug = drugRepository.findById(drugId).orElse(null);
-		//return drug.getSubstitutions();
-		return drugRepository.findAll();
+		return drug.getSubstitutions();
+		
 	}
 	
 	public List<Drug> findAllSubstitutesDrugstore(String drugId, String drugstoreId, String patientId) {
 		Drug drug = drugRepository.findById(drugId).orElse(null);
-		//List<Drug> drugList =  drug.getSubstitutions();
+		List<Drug> drugList =  drug.getSubstitutions();
 		
-		List<Drug> drugList = drugRepository.findAll();
+		
 
 		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
 		List<DrugStock> drugStockList = drugStockRepository.findByDrugstore(drugstore);
@@ -228,5 +246,11 @@ public class DrugService {
 	public Integer returnDrugsLength(DrugSearchDto searchDto) {
 		return drugRepository.findAll(DrugSpecifications.withSearch(searchDto)).size();
 	}
-
+	
+	public Drug getOne(String id) {
+		return drugRepository.findById(id).orElse(null);
+	}
+	public Drug getOneName(String name) {
+		return drugRepository.findByName(name);
+	}
 }

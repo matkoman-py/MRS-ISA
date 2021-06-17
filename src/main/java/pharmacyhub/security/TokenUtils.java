@@ -16,13 +16,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class TokenUtils {
 
-	@Value("spring-security-example")
+	@Value("pharmacyhub")
 	private String APP_NAME;
 
 	@Value("somesecret")
 	public String SECRET;
 
-	@Value("3600000")
+	@Value("360000")
 	private int EXPIRES_IN;
 
 	@Value("Authorization")
@@ -33,8 +33,14 @@ public class TokenUtils {
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
 	public String generateToken(String username) {
-		return Jwts.builder().setIssuer(APP_NAME).setAudience(AUDIENCE_WEB).setSubject(username).setIssuedAt(new Date())
-				.setExpiration(generateExpirationDate()).signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+		return Jwts.builder()
+				.setIssuer(APP_NAME)
+				.setAudience(AUDIENCE_WEB)
+				.setSubject(username)
+				.setIssuedAt(new Date())
+				.setExpiration(generateExpirationDate())
+				.signWith(SIGNATURE_ALGORITHM, SECRET)
+				.compact();
 	}
 
 	private Date generateExpirationDate() {
@@ -50,6 +56,46 @@ public class TokenUtils {
 		}
 
 		return null;
+	}
+	
+	public Date getIssuedAtDateFromToken(String token) {
+		Date issueAt;
+		try {
+			final Claims claims = this.getAllClaimsFromToken(token);
+			issueAt = claims.getIssuedAt();
+		} catch (ExpiredJwtException ex) {
+			throw ex;
+		} catch (Exception e) {
+			issueAt = null;
+		}
+		return issueAt;
+	}
+	
+	public String getAudienceFromToken(String token) {
+		String audience;
+		try {
+			final Claims claims = this.getAllClaimsFromToken(token);
+			audience = claims.getAudience();
+		} catch (ExpiredJwtException ex) {
+			throw ex;
+		} catch (Exception e) {
+			audience = null;
+		}
+		return audience;
+	}
+	
+	public Date getExpirationDateFromToken(String token) {
+		Date expiration;
+		try {
+			final Claims claims = this.getAllClaimsFromToken(token);
+			expiration = claims.getExpiration();
+		} catch (ExpiredJwtException ex) {
+			throw ex;
+		} catch (Exception e) {
+			expiration = null;
+		}
+		
+		return expiration;
 	}
 
 	public String getUsernameFromToken(String token) {

@@ -4,6 +4,7 @@
             <b-col>
                 <b-card>
                     <qr-code-scanner
+                        ref="qrScanner"
                         v-on:qr-code-scanned="getReceiptData"
                     ></qr-code-scanner>
                 </b-card>
@@ -95,7 +96,10 @@ export default {
         ...mapState({
             user: (state) => state.userModule.loggedInUser,
             email: (state) => state.userModule.loggedInUser.email,
-            role: (state) => state.userModule.loggedInUser.type,
+            role: (state) =>
+                state.userModule.loggedInUser
+                    ? state.userModule.loggedInUser.type
+                    : "",
         }),
     },
 
@@ -182,7 +186,7 @@ export default {
                     this.makeReservationRequestBody()
                 )
                 .then((response) => {
-                    this.$toastr.s("Yay!");
+                    this.$toastr.s("Success!");
                     console.log(response.data);
                 })
                 .catch((error) => console.log(error));
@@ -195,14 +199,12 @@ export default {
                     patientId: this.user.id,
                     drugstoreId: this.drugstoreId,
                     drugId: drug,
+                    amount: this.receipt[drug],
                     date: this.reservationDate,
                 });
                 counter += 1;
                 console.log(counter);
             }
-            console.log(Object.keys(this.receipt));
-            console.log(this.receipt);
-            console.log(requestBodyData);
 
             return requestBodyData;
         },

@@ -106,6 +106,6 @@ public class OfferService {
 
 	public List<Offer> getOffersForOrder(String orderId) {
 		DrugOrder order = drugOrderRepository.findById(orderId).orElse(null);
-		return offerRepository.findByDrugOrder(order);
+		return offerRepository.findByDrugOrderOrderByIdAsc(order);
 	}
 }

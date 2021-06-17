@@ -11,36 +11,30 @@ public class EmployeeOverviewDto {
 	private String name;
 	private String surname;
 	private double averageRate;
-	private int numberOfRates;
+	
 	private String email;
 	private String phoneNumber;
-	private Location location;
+	private String workingHoursFrom;
+	private String workingHoursTo;
 	private String type;
 	
 	public EmployeeOverviewDto() {
 		
 	}
 	
-	public EmployeeOverviewDto(String name, String surname, double averageRate, int numberOfRates, String email, String phoneNumber,
-			Location location, String type) {
+	public EmployeeOverviewDto(String name, String surname, double averageRate,  String email, String phoneNumber,
+			String workingHoursFrom, String workingHoursTo, String type) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.averageRate = averageRate;
-		this.numberOfRates = numberOfRates;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.location = location;
+		this.workingHoursFrom = workingHoursFrom;
+		this.workingHoursTo = workingHoursTo;
 		this.type = type;
 	}
 
-	public int getNumberOfRates() {
-		return numberOfRates;
-	}
-
-	public void setNumberOfRates(int numberOfRates) {
-		this.numberOfRates = numberOfRates;
-	}
 
 	public String getName() {
 		return name;
@@ -82,12 +76,20 @@ public class EmployeeOverviewDto {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Location getLocation() {
-		return location;
+	public String getWorkingHoursFrom() {
+		return workingHoursFrom;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setWorkingHoursFrom(String workingHoursFrom) {
+		this.workingHoursFrom = workingHoursFrom;
+	}
+
+	public String getWorkingHoursTo() {
+		return workingHoursTo;
+	}
+
+	public void setWorkingHoursTo(String workingHoursTo) {
+		this.workingHoursTo = workingHoursTo;
 	}
 
 	public String getType() {

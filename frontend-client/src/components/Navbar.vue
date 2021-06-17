@@ -57,6 +57,26 @@
             <template
                 v-if="!$helpers.isObjectEmpty(user) && role == 'DrugstoreAdmin'"
             >
+                <b-nav-item-dropdown
+                    text="Explore workers"
+                    right
+                    v-if="
+                        !$helpers.isObjectEmpty(user) &&
+                            role == 'DrugstoreAdmin'
+                    "
+                    class="nav-dropdown link-font"
+                >
+                    <b-dropdown-item
+                        v-for="route in userSpecificRoutes[
+                            'DrugstoreAdminExplore'
+                        ]"
+                        :key="route.name"
+                    >
+                        <router-link :to="route.path" class="link-font">{{
+                            route.name
+                        }}</router-link>
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
                 <b-navbar-brand
                     v-for="route in userSpecificRoutes['DrugstoreAdmin']"
                     :key="route.name"
@@ -156,6 +176,11 @@
                         to="/drugstore-administrator-profile"
                         >{{ email }}</router-link
                     >
+                    <router-link
+                        v-else-if="role == 'SystemAdmin'"
+                        to="/system-administrator-profile"
+                        >{{ email }}</router-link
+                    >
                     <router-link v-else to="/">{{ email }}</router-link>
                 </b-navbar-brand>
                 <b-navbar-brand tag="h3" class="nav-link" v-on:click="logout">
@@ -173,7 +198,10 @@ export default {
         ...mapState({
             user: (state) => state.userModule.loggedInUser,
             email: (state) => state.userModule.loggedInUser.email,
-            role: (state) => state.userModule.loggedInUser.type,
+            role: (state) =>
+                state.userModule.loggedInUser
+                    ? state.userModule.loggedInUser.type
+                    : "",
         }),
         // routes: function(){
         // return (this.$helpers.isObjectEmpty(this.user)) ? this.commonRoutes : [...this.commonRoutes, ...this.userSpecificRoutes[this.role]];
@@ -215,8 +243,22 @@ export default {
                         path: "/supplier-offers",
                     },
                 ],
+                DrugstoreAdminExplore: [
+                    {
+                        name: "Employees",
+                        path: "/employeesOverview",
+                    },
+                    {
+                        name: "All dermatologists",
+                        path: "/dermatologist-overview",
+                    },
+                    {
+                        name: "All pharmacists",
+                        path: "/pharmacist-overview",
+                    },
+                ],
                 DrugstoreAdmin: [
-                    { name: "Employees", path: "/employeesOverview" },
+                    //{ name: "Employees", path: "/employeesOverview" },
                     { name: "Drug stock", path: "/drug-stock-overview" },
                     { name: "Orders", path: "/drug-orders-overview" },
                     { name: "Create order", path: "/create-drug-order" },
@@ -229,7 +271,6 @@ export default {
                     { name: "Drug issuing", path: "/drug-issuing" },
                     { name: "Absence", path: "/absence-request" },
                     { name: "Appointments", path: "/appointment-page" },
-
                 ],
                 Dermatologist: [
                     { name: "Schedule", path: "/schedule" },
@@ -239,6 +280,8 @@ export default {
                     { name: "Appointments", path: "/appointment-page" },
                 ],
                 Patient: [
+                    { name: "Dermatologists", path: "/dermatologist-overview" },
+                    { name: "Pharmacists", path: "/pharmacist-overview" },
                     { name: "Subscriptions", path: "/subscriptions" },
                     { name: "eReceipt", path: "/receipt-scanner" },
                     { name: "Complaints", path: "/patient-complaints" },

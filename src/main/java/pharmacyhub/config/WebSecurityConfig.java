@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +26,7 @@ import pharmacyhub.services.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -73,20 +75,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    
 	    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 		.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-		.authorizeRequests()
-		.antMatchers(HttpMethod.POST, "/register").permitAll()
-		.antMatchers(HttpMethod.GET, "/register/activate/**").permitAll()
-		.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-		.antMatchers(HttpMethod.POST, "/drugs/search/**").permitAll()
-		.antMatchers(HttpMethod.POST, "/drugstores/search/**").permitAll()
-		.antMatchers(HttpMethod.GET, "/**").permitAll()
-		.antMatchers(HttpMethod.PUT, "/drugs/**").hasRole("SYSTEMADMIN")
-		.antMatchers(HttpMethod.POST, "/employees/pharmacist").permitAll()
-		.antMatchers(HttpMethod.POST, "/**").permitAll() // dodato
-		.antMatchers(HttpMethod.PUT, "/**").permitAll() // dodato
-		.antMatchers(HttpMethod.DELETE, "/**").permitAll() // dodato
-		.antMatchers(HttpMethod.GET, "/**").permitAll() // dodato
-		.anyRequest().authenticated().and()
+//		.authorizeRequests()
+//		.antMatchers(HttpMethod.POST, "/register").permitAll()
+//		.antMatchers(HttpMethod.GET, "/register/activate/**").permitAll()
+//		.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+//		.antMatchers(HttpMethod.POST, "/drugs/search/**").permitAll()
+//		.antMatchers(HttpMethod.POST, "/drugstores/search/**").permitAll()
+//		.antMatchers(HttpMethod.GET, "/**").permitAll()
+//		.antMatchers(HttpMethod.PUT, "/drugs/**").hasRole("SYSTEMADMIN")
+//		.antMatchers(HttpMethod.POST, "/employees/pharmacist").permitAll()
+//		.antMatchers(HttpMethod.POST, "/**").permitAll() // dodato
+//		.antMatchers(HttpMethod.PUT, "/**").permitAll() // dodato
+//		.antMatchers(HttpMethod.DELETE, "/**").permitAll() // dodato
+//		.antMatchers(HttpMethod.GET, "/**").permitAll() // dodato
+//		.anyRequest().authenticated().and()
 	    .cors()
 	    .and().addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class)
 	    .csrf().disable();

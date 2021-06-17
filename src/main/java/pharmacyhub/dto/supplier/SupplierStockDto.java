@@ -8,6 +8,21 @@ public class SupplierStockDto {
 	private String id;
 	private int amount;
 
+
+
+	public SupplierStockDto() {
+		super();
+	}
+
+	public SupplierStockDto(String supplierId, String drugId, String drugName, String id, int amount) {
+		super();
+		this.supplierId = supplierId;
+		this.drugId = drugId;
+		this.drugName = drugName;
+		this.id = id;
+		this.amount = amount;
+	}
+
 	public String getSupplierId() {
 		return supplierId;
 	}

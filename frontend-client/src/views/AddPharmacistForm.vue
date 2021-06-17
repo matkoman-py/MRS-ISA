@@ -124,7 +124,7 @@
           this.$http.post("http://localhost:8081/employees/pharmacist", JSON.parse(JSON.stringify(this.form)))
               .then(response => {
               console.log(response);
-              alert("New pharmacist successfully added.");
+              this.$toastr.s("New pharmacist succesfully added!");
               this.$router.push('employeesOverview');
               })
               .catch(error => console.log(error));

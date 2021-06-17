@@ -10,6 +10,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import pharmacyhub.domain.Ingredient;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.PatientCategory;
@@ -17,6 +20,8 @@ import pharmacyhub.domain.enums.UserType;
 
 @Entity
 @DiscriminatorValue("Patient")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ? and version = ?")
+@Where(clause = "deleted = false")
 public class Patient extends User {
 
 	/**

@@ -4,26 +4,39 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+import javax.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.DermatologistAppointment;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.PharmacistAppointment;
+import pharmacyhub.domain.RatingDrugstore;
+import pharmacyhub.domain.RatingPharmacist;
+import pharmacyhub.domain.enums.AbsenceRequestStatus;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Pharmacist;
+import pharmacyhub.dto.DrugstoreDto;
+import pharmacyhub.dto.EmployeeOverviewDto;
 import pharmacyhub.dto.PharmacistAppointmentPatientDto;
+import pharmacyhub.dto.PharmacistDto;
+import pharmacyhub.repositories.AbsenceRequestRepository;
 import pharmacyhub.repositories.DermatologistAppointmentRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.PharmacistAppointmentRepository;
+import pharmacyhub.repositories.RatingDrugstoreRepository;
+import pharmacyhub.repositories.RatingPharmacistRepository;
 import pharmacyhub.repositories.users.PatientRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 
 @Service
+@Transactional
 public class PharmacistAppointmentService {
 	
 	@Autowired 
@@ -38,15 +51,23 @@ public class PharmacistAppointmentService {
 	@Autowired 
 	private PatientRepository patientRepository;
 	
+	@Autowired	
+	private RatingPharmacistRepository ratingPharmacistRepository;
+	
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
 	
     @Autowired
 	private UserNotificationService userNotificationService;
     
+    @Autowired
+    private RatingDrugstoreRepository ratingDrugstoreRepository;
+    
 	@Autowired
 	private PatientCategoryService patientCategoryService;
 
+	@Autowired
+	private AbsenceRequestRepository absenceRequestRepository;
 	
     public List<PharmacistAppointment> getAppointments(String patientId, Pageable pageable) {
 		return pharmacistAppointmentRepository.findByPatientId(patientId,pageable);
@@ -56,6 +77,8 @@ public class PharmacistAppointmentService {
 		return pharmacistAppointmentRepository.findByPatientId(patientId).size();
 	}
     
+
+    @Transactional(rollbackFor = Exception.class)
 	public PharmacistAppointment saveWithPatient(PharmacistAppointmentPatientDto pharmacistAppointmentPatientDto) throws Exception {
 		
 		Date vreme = pharmacistAppointmentPatientDto.getDate();
@@ -65,7 +88,16 @@ public class PharmacistAppointmentService {
 		vreme.setMinutes(pharmacistAppointmentPatientDto.getTime().getMinutes()+pharmacistAppointmentPatientDto.getDuration());
 		long vremeKraj = vreme.getTime();
 		
-		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+
+		List<AbsenceRequest> absenceRequests = absenceRequestRepository.findByEmployeeAndStatus(pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null), AbsenceRequestStatus.Approved);
+		for(AbsenceRequest ar : absenceRequests) {
+			if(ar.getStartDate().before(vreme) && ar.getEndDate().after(vreme)) {
+				throw new Exception("Pharmacist is on absence at that time.");
+			}
+		}
+		
+		List<PharmacistAppointment> pharmacistAppointments = pharmacistAppointmentRepository.findByPatientIdOrderById(pharmacistAppointmentPatientDto.getPatientId());
+		System.out.println(pharmacistAppointments.size());
 		for(PharmacistAppointment pa : pharmacistAppointments) {
 			Date pVreme = pa.getDate();
 			pVreme.setHours(pa.getTime().getHours());
@@ -84,7 +116,8 @@ public class PharmacistAppointmentService {
 		}
 		
 		
-		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistId(pharmacistAppointmentPatientDto.getPharmacistId());
+		List<PharmacistAppointment> pharmacistAppointmentsPharm = pharmacistAppointmentRepository.findByPharmacistIdOrderById(pharmacistAppointmentPatientDto.getPharmacistId());
+		
 		for(PharmacistAppointment pa : pharmacistAppointmentsPharm) {
 			System.out.println(pa.getDate());
 			System.out.println(pa.getTime());
@@ -106,6 +139,7 @@ public class PharmacistAppointmentService {
 		
 		
 		List<DermatologistAppointment> dermatologistAppointmentsPatient = dermatologistAppointmentRepository.findByPatientId(pharmacistAppointmentPatientDto.getPatientId());
+		
 		for(DermatologistAppointment da : dermatologistAppointmentsPatient) {
 			Date pVreme = da.getDate();
 			pVreme.setHours(da.getTime().getHours());
@@ -137,11 +171,13 @@ public class PharmacistAppointmentService {
 		int inputTime = hours * 3600;
 		int minutes = pharmacistAppointmentPatientDto.getTime().getMinutes();
 		inputTime += minutes * 60;
-		
+		int inputTimeTo = inputTime + pharmacistAppointmentPatientDto.getDuration()*60;
 		if(inputTime<=workingFrom || inputTime>=workingTo) {
 			throw new Exception("Pharmacist is not working at that time.");
 		}
-		
+		if(inputTimeTo >= workingTo) {
+			throw new Exception("Pharmacist is finishing his shift at that time.");
+		}
 		Pharmacist pharmacist = pharmacistRepository.findById(pharmacistAppointmentPatientDto.getPharmacistId()).orElse(null);
 		Patient patient = patientRepository.findById(pharmacistAppointmentPatientDto.getPatientId()).orElse(null);
 		
@@ -166,6 +202,7 @@ public class PharmacistAppointmentService {
 	public List<Drugstore> findDrugstores(String pharmacistAppointmentTime, String pharmacistAppointmentDate) {
 		List<Pharmacist> allPharmacists = pharmacistRepository.findAll();
 		List<Drugstore>  wantedDrugstores = new ArrayList<>();
+		List<DrugstoreDto> wantedDrugstores1 = new ArrayList<>();
 		
 		String hours = pharmacistAppointmentTime.substring(0,2);
 		int inputTime = Integer.parseInt(hours) * 3600;
@@ -195,13 +232,15 @@ public class PharmacistAppointmentService {
 		return wantedDrugstores;
 	}
 
-	public List<Pharmacist> findPharmacists(String drugstoreId,String pharmacistAppointmentDate,String pharmacistAppointmentTime) {
+	public List<PharmacistDto> findPharmacists(String drugstoreId,String pharmacistAppointmentDate,String pharmacistAppointmentTime) {
 		List<Pharmacist> allPharmacists =  pharmacistRepository.findByDrugstore(drugstoreRepository.findById(drugstoreId).orElse(null));
 		List<Pharmacist> wantedPharmacist = new ArrayList<>();
+		List<PharmacistDto> wantedPharmacist1 = new ArrayList<>();
 		
 		pharmacistAppointmentRepository.findAll();
+		System.out.println(pharmacistAppointmentTime);
 		Time in = new Time(Integer.parseInt(pharmacistAppointmentTime.substring(0,2)),Integer.parseInt(pharmacistAppointmentTime.substring(3,5)),0);
-		long inputTime = in.getTime();
+		long inputTime = (Integer.parseInt(pharmacistAppointmentTime.substring(0,2)) * 3600 + Integer.parseInt(pharmacistAppointmentTime.substring(3,5)) * 60) * 1000;
 		
 		for(Pharmacist ph:allPharmacists) {
 			boolean free = true;
@@ -214,12 +253,34 @@ public class PharmacistAppointmentService {
 					
 					if(inputTime >= busyFrom && inputTime <= busyTo) {
 						free = false;
+						break;
 					}
 				}
 			}
+			
+			String hours1 = ph.getWorkingHoursFrom().substring(0,2);
+			int workingFrom = Integer.parseInt(hours1) * 3600 * 1000;
+			String minutes1 = ph.getWorkingHoursFrom().substring(3,5);
+			workingFrom += Integer.parseInt(minutes1) * 60 * 1000;
+			
+			
+			String hours2 = ph.getWorkingHoursTo().substring(0,2);
+			int workingTo = Integer.parseInt(hours2) * 3600 * 1000;
+			String minutes2 = ph.getWorkingHoursTo().substring(3,5);
+			workingTo += Integer.parseInt(minutes2) * 60 * 1000;
+			
+			System.out.println("Input time " + inputTime + "  wokringfrom: " + workingFrom + "  workingTo: " + workingTo);
+			
+			if(inputTime < workingFrom || inputTime > workingTo) {
+				free = false;
+			}
+			
 			if(free == true) wantedPharmacist.add(ph);
 		}
-		return wantedPharmacist; 
+		for(Pharmacist e:wantedPharmacist) {
+			wantedPharmacist1.add(new PharmacistDto(e.getId(),e.getName(),e.getSurname(),e.getEmail(),e.getRating()));
+		}
+		return wantedPharmacist1; 
   }
    
 	public List<PharmacistAppointment> getAllPharmacistAppointments(String pharmacistId) {

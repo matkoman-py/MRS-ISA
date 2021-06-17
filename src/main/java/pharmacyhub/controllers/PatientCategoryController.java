@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import pharmacyhub.domain.LoyaltyConfiguration;
 import pharmacyhub.domain.PatientCategory;
+import pharmacyhub.dto.LoyaltyConfigurationDto;
+import pharmacyhub.dto.PatientCategoryDto;
 import pharmacyhub.services.PatientCategoryService;
 
 @Controller
@@ -22,24 +25,24 @@ public class PatientCategoryController {
 
 	@Autowired
 	private PatientCategoryService patientCategoryService;
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PatientCategory>> getAll() {
 		return new ResponseEntity<>(patientCategoryService.getAll(), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@GetMapping(path="/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LoyaltyConfiguration> getLoyaltyConfiguration() {
 		return new ResponseEntity<>(patientCategoryService.getLoyaltyConfiguration(), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PatientCategory> update(@RequestBody PatientCategory patientCategory) throws Exception {
+	public ResponseEntity<PatientCategory> update(@RequestBody PatientCategoryDto patientCategory) throws Exception {
 		return new ResponseEntity<>(patientCategoryService.updatePatientCategory(patientCategory), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PutMapping(path="/configuration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<LoyaltyConfiguration> update(@RequestBody LoyaltyConfiguration loyaltyConfiguration) throws Exception {
+	public ResponseEntity<LoyaltyConfiguration> update(@RequestBody LoyaltyConfigurationDto loyaltyConfiguration) throws Exception {
 		return new ResponseEntity<>(patientCategoryService.updateLoyaltyConfiguration(loyaltyConfiguration), HttpStatus.OK);
 	}
 }

@@ -139,7 +139,7 @@
         showModal(event) {
           event.preventDefault()
           if (this.orderAtributtes.selectedDrugs.length == 0) {
-            alert("You need to select at least one drug for which you want to create order!")
+            this.$toastr.w("You need to select at least one drug for which you want to create order!");
           }  else {
             var flag = false;
             var i;
@@ -150,7 +150,7 @@
                 }
             }
             if (flag) {
-                alert("You need first to add drugs that are not currently available in drugstore to create order for them!");
+              this.$toastr.w("You need first to add drugs that are not currently available in drugstore to create order for them!");
             } else {
                 this.$root.$emit('bv::show::modal', 'createOrderModal');
             }
@@ -165,7 +165,7 @@
           this.$http.post("http://localhost:8081/drug-orders/create", JSON.parse(JSON.stringify(this.orderAtributtes)))
               .then(() => {
                 this.$root.$emit('bv::hide::modal', 'createOrderModal');
-                alert("Order successfully created!");
+                this.$toastr.s("Order succesfully created!");
                 // ovde ces trebati da osvezis vrv
               })
               .catch(error => console.log(error));

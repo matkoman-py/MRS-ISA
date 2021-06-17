@@ -1,6 +1,7 @@
 package pharmacyhub.controllers;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
-import pharmacyhub.dto.DrugstoreAverageRatingDto;
+import pharmacyhub.dto.DrugstoreDtoAll;
+import pharmacyhub.dto.ereceipt.DrugstoreAndPriceDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
+import pharmacyhub.dto.ereceipt.SingleDrugstoreEReceiptDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.services.DrugstoreService;
@@ -32,22 +36,22 @@ public class DrugstoreController {
 
 	@Autowired
 	private DrugstoreService drugstoreService;
-
+	
 	@PostMapping(path = "/searchLength", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> searchLength(@RequestBody DrugstoreSearchDto drugstoreSearchDto) throws Exception {
 		return new ResponseEntity<>(drugstoreService.returnDrugStores(drugstoreSearchDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Drugstore> add(@RequestBody Drugstore drugstore) throws Exception {
+	public ResponseEntity<Drugstore> add(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.save(drugstore), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Drugstore> update(@RequestBody Drugstore drugstore) throws Exception {
+	public ResponseEntity<Drugstore> update(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.update(drugstore), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> update(@PathVariable String id) {
 		try {
@@ -74,6 +78,12 @@ public class DrugstoreController {
 			@RequestBody EReceiptSearchDto eReceiptSearchDto) throws Exception {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.eReceiptSearch(eReceiptSearchDto, pageable), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/single-receipt", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DrugstoreAndPriceDto>> searchSingleReceipt(
+			@RequestBody SingleDrugstoreEReceiptDto eReceiptSearchDto) throws Exception {
+		return new ResponseEntity<>(drugstoreService.getSingleReceiptPrices(eReceiptSearchDto), HttpStatus.OK);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -106,19 +116,16 @@ public class DrugstoreController {
 		//Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugstoreService.findDrugstoreEmployee(drugId,drugstoreId/*pageable*/), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@GetMapping(path="/adminsDrugstore", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Drugstore> getAdminsDrugstore(@RequestParam(value = "adminId") String adminId) throws Exception {
 		return new ResponseEntity<>(drugstoreService.getAdminsDrugstore(adminId), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN','DRUGSTOREADMIN')")
 	@PutMapping(path = "/update",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> drugstoreUpdate(@RequestBody Drugstore drugstore) throws Exception {
+	public ResponseEntity<Boolean> drugstoreUpdate(@RequestBody DrugstoreDtoAll drugstore) throws Exception {
 		return new ResponseEntity<>(drugstoreService.drugstoreUpdate(drugstore), HttpStatus.OK);
 	}
 	
-	@GetMapping(path="/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DrugstoreAverageRatingDto> calculateAverageRate(@RequestParam(value = "drugstoreId") String drugstoreId) throws Exception {
-		return new ResponseEntity<>(drugstoreService.calculateAverageRate(drugstoreId), HttpStatus.OK);
-	}
+	
 }

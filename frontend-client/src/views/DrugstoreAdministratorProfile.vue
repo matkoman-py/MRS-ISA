@@ -41,7 +41,7 @@
                                             <label>Email</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <b-form-input :disabled="editEnabled" id="email-input" type="email"
+                                            <b-form-input disabled id="email-input" type="email"
                                                 v-model="profile.email" required></b-form-input>
                                         </div>
                                     </div>
@@ -102,7 +102,7 @@
                               placeholder="Repeat new password"
                 ></b-form-input>
                 <br>
-                <b-button type="submit" variant="outline-hub"  >Save</b-button>
+                <b-button type="submit" variant="outline-hub">Save</b-button>
             </b-form>
             </b-modal> 
         </div>
@@ -156,7 +156,7 @@
                 this.editEnabled = true;
                 this.$http.put("http://localhost:8081/drugstoreAdminUpdate", this.profile)
                     .then(() => {
-                        alert("You succesfully updated your profile informations!")
+                        this.$toastr.s("You succesfully updated your profile information!")
                     })
                     .catch(error => console.log(error));
             },
@@ -180,7 +180,7 @@
                             if(valid){
                                 this.changePassword();
                             }else{
-                                alert("Old password does not match!");
+                                this.$toastr.e("Old password does not match!");
                             }
                         })
                         .catch(error => console.log(error));
@@ -190,7 +190,7 @@
                     this.profile.password = this.newPasswordInput;
                     this.$http.put("http://localhost:8081/drugstoreAdmin/updatepassword", this.profile)
                     .then(() => {
-                        alert("You succesfully updated your password!");
+                        this.$toastr.s("You succesfully updated your password!");
                         this.$root.$emit('bv::hide::modal', 'my-modal');
                     })
                     .catch(error => console.log(error));
@@ -199,8 +199,7 @@
                     this.newPasswordInput= '';
                     this.newPasswordValidateInput= '';
                 }else{
-                    alert("New passwords not ok!");
-
+                    this.$toastr.s("New passwords not ok!");
                 }   
             },
         },

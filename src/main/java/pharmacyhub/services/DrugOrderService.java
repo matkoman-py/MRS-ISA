@@ -11,9 +11,10 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugOrder;
-import pharmacyhub.domain.DrugRequest;
 import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Offer;
@@ -25,6 +26,7 @@ import pharmacyhub.dto.DrugOrderOverviewDto;
 import pharmacyhub.dto.SelectedDrugDto;
 import pharmacyhub.dto.drugOrder.DrugOrderDto;
 import pharmacyhub.dto.search.DrugOrderSearchDto;
+import pharmacyhub.dto.supplier.SupplierStockDto;
 import pharmacyhub.repositories.DrugOrderRepository;
 import pharmacyhub.repositories.DrugRepository;
 import pharmacyhub.repositories.DrugRequestRepository;
@@ -35,6 +37,7 @@ import pharmacyhub.repositories.OrderStockRepository;
 import pharmacyhub.repositories.specifications.drugOrders.DrugOrderSpecifications;
 
 @Service
+@Transactional
 public class DrugOrderService {
 
 	@Autowired
@@ -60,6 +63,9 @@ public class DrugOrderService {
 	
 	@Autowired
 	private UserNotificationService userNotificationService;
+	
+	@Autowired
+	private SupplierStockService supplierStockService;
 	
 	private DrugOrderDto getDtoFromEntity(DrugOrder drugOrder) {
 		DrugOrderDto dto = new DrugOrderDto();
@@ -124,36 +130,97 @@ public class DrugOrderService {
 		return true;
 	}
 
-	public Boolean orderAccepted(String offerId) throws MessagingException {
-		Offer offer = offerRepository.findById(offerId).orElse(null);
-		DrugOrder order = drugOrderRepository.findById(offer.getDrugOrder().getId()).orElse(null);
-		List<Offer> offers = offerRepository.findByDrugOrder(order);
-		for (Offer o : offers) {
-			if (o == offer) {
-				o.setStatus(OfferStatus.Accepted);
-			} else {
-				o.setStatus(OfferStatus.Rejected);
-			}
-			userNotificationService.notifySupplier(o);
-			offerRepository.save(o);
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public Boolean orderAccepted(String offerId) throws Exception {
+		
+		Offer offer = offerRepository.findByIdAndStatus(offerId, OfferStatus.Pending);
+				
+		if(offer == null) {
+			throw new Exception("Offer already processed!");
 		}
+		
+		DrugOrder order = drugOrderRepository.findById(offer.getDrugOrder().getId()).orElse(null);
+		List<Offer> offers = offerRepository.findByDrugOrderOrderByIdAsc(order);
+		for (Offer o : offers) {
+			if(o.getId().equals(offerId)) {
+				changeOfferStatus(o.getId(), OfferStatus.Accepted);
+			}else {
+				changeOfferStatus(o.getId(), OfferStatus.Rejected);
+			}
+		}
+		
 		order.setStatus(OrderStatus.Accepted);
+		
 		Drugstore drugstore = order.getDrugstore();
 		for (OrderStock stock : order.getStock()) {
-			DrugStock drugStock = drugStockRepository.findByDrugAndDrugstore(stock.getDrug(), drugstore);
-			drugStock.setAmount(drugStock.getAmount() + stock.getAmount());
-			drugStockRepository.save(drugStock);
-			
+			updateDrugStockAmount(stock, drugstore);
 			//logicki obrisati requestove za ove lekove koji su naruceni
 			drugRequestRepository.deleteByDrugstoreAndDrug(drugstore, stock.getDrug());	
 		}
+		
 		drugOrderRepository.save(order);
+		
+		for (Offer o : offers) {
+			if(o.getStatus() == OfferStatus.Rejected) 
+			{
+				giveAmountBackToSupplier(o);
+			}
+			userNotificationService.notifySupplier(o);
+		}
+		
 		return true;
+	}
+	
+	@Transactional(readOnly = false)
+	public void giveAmountBackToSupplier(Offer offer) throws Exception {
+		for (OrderStock orderStock : offer.getDrugOrder().getStock()) {
+			Drug drug = orderStock.getDrug();
+			supplierStockService.add(
+				new SupplierStockDto(
+					offer.getSupplier().getId(),
+					drug.getId(),
+					drug.getName(),
+					offer.getId(),
+					orderStock.getAmount()
+					));
+		}
+	}
+	
+	@Transactional(readOnly = false)
+	public void changeOfferStatus(String offerId, OfferStatus offerStatus) {
+		Offer offer = offerRepository.findByIdAndStatus(offerId, OfferStatus.Pending);
+		//System.out.println("Id: " + offerId + " ver: " + offer.getVersion() + ", from " + offer.getStatus() + " to: " + offerStatus);
+		offer.setStatus(offerStatus);
+		offerRepository.save(offer);
+	}
+	
+	public void acceptOffer(String offerId) throws Exception {
+		try {
+			Offer offer = offerRepository.findByIdAndStatus(offerId, OfferStatus.Pending);
+			
+			if(offer == null) {
+				System.out.println("Sacemo videti");
+				throw new Exception("Offer already accepted or rejected");
+			}
+			
+			offer.setStatus(OfferStatus.Accepted);
+			offerRepository.save(offer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Transactional(readOnly = false)
+	public void updateDrugStockAmount(OrderStock stock, Drugstore drugstore) {
+		DrugStock drugStock = drugStockRepository.findByDrugAndDrugstore(stock.getDrug(), drugstore);
+		drugStock.setAmount(drugStock.getAmount() + stock.getAmount());
+		drugStockRepository.save(drugStock);
 	}
 
 	public Boolean orderDeclined(String orderId) throws MessagingException {
-		DrugOrder order = drugOrderRepository.findById(orderId).orElse(null);
-		List<Offer> offers = offerRepository.findByDrugOrder(order);
+		DrugOrder order = drugOrderRepository.findByIdAndStatus(orderId, OrderStatus.Pending);
+		List<Offer> offers = offerRepository.findByDrugOrderOrderByIdAsc(order);
 		for (Offer o : offers) {
 			o.setStatus(OfferStatus.Rejected);
 			offerRepository.save(o);

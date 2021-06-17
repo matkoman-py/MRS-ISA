@@ -11,9 +11,9 @@
         </b-row>
         <b-row style="margin-left:20px" align-h="left">     
             <b-form align="center" style="width:80%" inline>
-                <b-label>Name:</b-label>
+                <label>Name:</label>
                 <b-form-input style="margin:20px;" v-model="searchName" placeholder="Enter name"></b-form-input>
-                <b-label>Surname:</b-label>
+                <label>Surname:</label>
                 <b-form-input style="margin:20px;" v-model="searchSurname" placeholder="Enter surname"></b-form-input>
             </b-form>
         </b-row>
@@ -23,15 +23,15 @@
         </b-row>
         <b-row style="margin-left:20px" align-h="left">         
             <b-form align="center" style="width:80%" inline>
-                <b-label>Average rate:</b-label>
-                <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
-                <b-label> - </b-label>
-                <b-form-input type="number" min="0" max="10" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
+                <label>Average rate:</label>
+                <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMin" placeholder="min"></b-form-input>
+                <label> - </label>
+                <b-form-input type="number" min="0" max="5" style="margin:20px;" v-model="filterRateMax" placeholder="max"></b-form-input>
             </b-form>
         </b-row>
         <b-row style="margin-left:20px" align-h="left">         
             <b-form align="center" style="width:80%" inline>
-            <b-label>Drugstore:</b-label>
+            <label>Drugstore:</label>
             <b-form-select style="margin:20px;" v-model="selected" :options="drugstores" ></b-form-select>
             </b-form>
         </b-row>
@@ -56,7 +56,7 @@
         searchName: '',
         searchSurname: '',
         filterRateMin: 0,
-        filterRateMax: 10,
+        filterRateMax: 5,
         selected:'',
         drugstores: []
       }
@@ -120,7 +120,7 @@
             this.searchName = ''
             this.searchSurname = ''
             this.filterRateMin = 0
-            this.filterRateMax = 10
+            this.filterRateMax = 5
             this.selected = ''
             this.getPharmacists()
         },

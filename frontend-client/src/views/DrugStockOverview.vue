@@ -269,7 +269,7 @@
         newPriceAssign(event) {
           event.preventDefault()
           if (this.selected.length == 0) {
-            alert("You need to select drug for which you want to assign new price.")
+            this.$toastr.w("You need to select drug for which you want to assign new price.")
           } else {
             this.$root.$emit('bv::show::modal', 'newPriceModal');
           }
@@ -277,7 +277,7 @@
         newPromotion(event) {
             event.preventDefault()
             if (this.selected.length == 0) {
-              alert("You need to select drug for which you want to create promotion.")
+              this.$toastr.w("You need to select drug for which you want to create promotion.")
             } else {
               this.$root.$emit('bv::show::modal', 'newPromotionModal');
             }        
@@ -288,7 +288,7 @@
         }, deleteDrug(event) {
           event.preventDefault();
           if (this.selected.length == 0) {
-            alert("You need to select the drug that you want to delete.")
+            this.$toastr.e("You need to select the drug that you want to delete.")
           } else {
             this.$root.$emit('bv::show::modal', 'deleteConfirmation');
           }
@@ -298,7 +298,7 @@
           this.inputValuesForNewPrice.drugName = this.selected[0].drug
           this.$http.post("http://localhost:8081/drug-price/", JSON.parse(JSON.stringify(this.inputValuesForNewPrice)))
               .then(() => {
-                alert("New price for " + this.selected[0].drug + " is successfully added.");
+                this.$toastr.s("New price for " + this.selected[0].drug + " is successfully added.")
                 this.getDrugStockForDrugstore();
               })
               .catch(error => console.log(error));
@@ -309,7 +309,7 @@
           this.inputValuesForNewPromotion.drugName = this.selected[0].drug
           this.$http.post("http://localhost:8081/drug-price/promotion", JSON.parse(JSON.stringify(this.inputValuesForNewPromotion)))
               .then(() => {
-                alert("New promotion for " + this.selected[0].drug + " is successfully added.");
+                this.$toastr.s("New promotion for " + this.selected[0].drug + " is successfully added.")
                 this.getDrugStockForDrugstore();
               })
               .catch(error => console.log(error));
@@ -319,7 +319,7 @@
           event.preventDefault();
           this.$http.post("http://localhost:8081/drug-stock", JSON.parse(JSON.stringify(this.inputValuesForNewDrug)))
               .then(() => {
-                alert("New drug '" + this.inputValuesForNewDrug.selectedDrug.drugName + "' is successfully added to stock.");
+                this.$toastr.s("New drug '" + this.inputValuesForNewDrug.selectedDrug.drugName + "' is successfully added to stock.")
                 this.getDrugStockForDrugstore();
                 this.getDrugsNotOnStock();
               })
@@ -337,7 +337,7 @@
             event.preventDefault();
               this.$http.delete("http://localhost:8081/drug-stock/delete/", {data :{ drugName: this.selected[0].drug, drugStoreId: this.drugstoreId}})
               .then((response) => {
-                alert(response.data)
+                this.$toastr.s(response.data)
                 this.getDrugStockForDrugstore();
                 this.getDrugsNotOnStock();
               }).catch(error => console.log(error));

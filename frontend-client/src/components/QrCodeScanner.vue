@@ -34,79 +34,100 @@
                             @change="onImageChange"
                         ></b-form-file>
                     </b-form-row>
-                    <b-form-row class="mt-3">
-                        <b-button
-                            v-b-toggle.collapse-search
-                            variant="outline-hub"
-                            >Advanced Search</b-button
-                        >
-                    </b-form-row>
-                    <b-collapse id="collapse-search" class="mt-3">
-                        <b-card>
-                            <b-form-row>
-                                <label for="nameInput">Name:</label>
-                                <b-form-input
-                                    id="nameInput"
-                                    v-model="formData.drugstoreName"
-                                    size="sm"
-                                ></b-form-input>
-                            </b-form-row>
-                            <b-form-row class="mt-3">
-                                <label for="cityInput">City:</label>
-                                <b-form-input
-                                    id="cityInput"
-                                    size="sm"
-                                    v-model="formData.drugstoreCity"
-                                ></b-form-input>
-                            </b-form-row>
-                            <b-form-row class="mt-3">
-                                <label for="minimumRatingInput"
-                                    >Minimum Rating:</label
-                                >
-                                <b-form-rating
-                                    size="sm"
-                                    id="minimumRatingInput"
-                                    variant="hub"
-                                    min="0"
-                                    max="10"
-                                    v-model="formData.minimumRating"
-                                    >5</b-form-rating
-                                >
-                            </b-form-row>
-                            <b-form-row class="mt-3">
-                                <label>Price:</label>
-                                <b-col cols="3">
+                    <div v-if="!mode">
+                        <b-form-row class="mt-3">
+                            <b-button
+                                v-b-toggle.collapse-search
+                                variant="outline-hub"
+                                >Advanced Search</b-button
+                            >
+                        </b-form-row>
+
+                        <b-collapse id="collapse-search" class="mt-3">
+                            <b-card>
+                                <b-form-row>
+                                    <label for="nameInput">Name:</label>
                                     <b-form-input
-                                        type="number"
+                                        id="nameInput"
+                                        v-model="formData.drugstoreName"
+                                        size="sm"
+                                    ></b-form-input>
+                                </b-form-row>
+                                <b-form-row class="mt-3">
+                                    <label for="cityInput">City:</label>
+                                    <b-form-input
+                                        id="cityInput"
+                                        size="sm"
+                                        v-model="formData.drugstoreCity"
+                                    ></b-form-input>
+                                </b-form-row>
+                                <b-form-row class="mt-3">
+                                    <label for="minimumRatingInput"
+                                        >Minimum Rating:</label
+                                    >
+                                    <b-col cols="6">
+                                        <b-form-rating
+                                            size="sm"
+                                            id="minimumRatingInput"
+                                            variant="hub"
+                                            min="0"
+                                            max="5"
+                                            v-model="formData.minimumRating"
+                                            >5</b-form-rating
+                                        >
+                                    </b-col>
+                                    <b-col>
+                                        <b-button
+                                            @click="resetValues"
+                                            variant="outline-hub"
+                                            size="sm"
+                                        >
+                                            Reset stars
+                                        </b-button>
+                                    </b-col>
+                                </b-form-row>
+                                <b-form-row class="mt-3">
+                                    <label>Price:</label>
+                                    <b-col cols="3">
+                                        <b-form-input
+                                            type="number"
+                                            class="ml-3"
+                                            id="fromPrice"
+                                            size="sm"
+                                            v-model="formData.fromPrice"
+                                        ></b-form-input>
+                                    </b-col>
+                                    <b-col
+                                        cols="1"
                                         class="ml-3"
-                                        id="fromPrice"
-                                        size="sm"
-                                        v-model="formData.fromPrice"
-                                    ></b-form-input>
-                                </b-col>
-                                <b-col
-                                    cols="1"
-                                    class="ml-3"
-                                    align-self="center"
-                                >
-                                    <label> - </label>
-                                </b-col>
-                                <b-col cols="3">
-                                    <b-form-input
-                                        type="number"
-                                        id="fromPrice"
-                                        size="sm"
-                                        v-model="formData.toPrice"
-                                    ></b-form-input>
-                                </b-col>
-                            </b-form-row>
-                        </b-card>
-                    </b-collapse>
-                    <b-form-row class="mt-3">
-                        <b-button type="submit" variant="outline-hub">
-                            Get Drugstores
-                        </b-button>
-                    </b-form-row>
+                                        align-self="center"
+                                    >
+                                        <label> - </label>
+                                    </b-col>
+                                    <b-col cols="3">
+                                        <b-form-input
+                                            type="number"
+                                            id="fromPrice"
+                                            size="sm"
+                                            v-model="formData.toPrice"
+                                        ></b-form-input>
+                                    </b-col>
+                                </b-form-row>
+                            </b-card>
+                        </b-collapse>
+                        <b-form-row class="mt-3">
+                            <b-button type="submit" variant="outline-hub">
+                                Get Drugstores
+                            </b-button>
+                        </b-form-row>
+                    </div>
+                    <div v-if="mode">
+                        <b-form-row class="mt-3">
+                            <b-button type="submit" variant="outline-hub">
+                                Check
+                            </b-button>
+                        </b-form-row>
+                    </div>
                 </b-col>
             </b-form-row>
         </form>
@@ -122,7 +143,7 @@ export default {
     name: "QrCodeScanner",
     components: {},
     computed: {},
-
+    props: ["mode"],
     data: function() {
         return {
             drugstores: [],
@@ -163,6 +184,9 @@ export default {
                 result[key] = amount;
             }
             return result;
+        },
+        resetValues: function() {
+            this.formData.minimumRating = 0;
         },
     },
 };

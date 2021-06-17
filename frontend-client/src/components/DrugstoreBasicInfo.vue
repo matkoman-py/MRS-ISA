@@ -22,10 +22,10 @@
                         prepend="Working from"
                         class="mt-3"
                     >
-                        <b-form-input
+                        <b-form-timepicker
                             v-model="form.workingHoursFrom"
                             :required="mode == 'add'"
-                        ></b-form-input>
+                        ></b-form-timepicker>
                     </b-input-group>
 
                     <b-input-group
@@ -33,10 +33,10 @@
                         prepend="Working to"
                         class="mt-3"
                     >
-                        <b-form-input
+                        <b-form-timepicker
                             v-model="form.workingHoursTo"
                             :required="mode == 'add'"
-                        ></b-form-input>
+                        ></b-form-timepicker>
                     </b-input-group>
 
                     <b-input-group
@@ -47,6 +47,7 @@
                         <b-form-input
                             type="number"
                             v-model="form.pharmacistAppointmentPrice"
+                            min=0
                             :required="mode == 'add'"
                         ></b-form-input>
                     </b-input-group>
@@ -108,6 +109,8 @@ export default {
         return {
             map:null
         };
+    }, methods : {
+
     },
     mounted: function(){
         this.map = this.$refs["map-container"].olMap;

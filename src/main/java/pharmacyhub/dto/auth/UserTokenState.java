@@ -24,6 +24,7 @@ public class UserTokenState {
         this.user.setLocation(user.getLocation());
         this.user.setEmail(user.getEmail());
         this.user.setType(user.getType());
+        this.user.setFirstLogin(user.isFirstLogin());
     }
 
     public String getAccessToken() {

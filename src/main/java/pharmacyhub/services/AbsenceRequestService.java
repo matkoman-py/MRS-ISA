@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.AbsenceRequest;
 import pharmacyhub.domain.DermatologistAppointment;
@@ -24,6 +25,7 @@ import pharmacyhub.repositories.PharmacistAppointmentRepository;
 import pharmacyhub.repositories.users.UserRepository;
 
 @Service
+@Transactional
 public class AbsenceRequestService {
 	
 	@Autowired
@@ -41,6 +43,7 @@ public class AbsenceRequestService {
 	@Autowired
 	DermatologistAppointmentRepository dermatologistAppointmentRepository;
 	
+
 	public String createNewRequest(AbsenceRequestDto createAbsenceRequestDto) throws ParseException {
 		List<AbsenceRequest> employeeRequests = absenceRequestRepository.findByEmployeeAndStatus(userRepository.findById(createAbsenceRequestDto.getEmployeeId()).orElse(null), AbsenceRequestStatus.Pending);
 		if(employeeRequests.size() > 0) {
@@ -54,6 +57,8 @@ public class AbsenceRequestService {
 		return "Success!";
 	}
 
+
+	@Transactional
 	public String approveRequest(String requestId) throws MessagingException {
 		AbsenceRequest request = absenceRequestRepository.findById(requestId).orElse(null);
 		// otkazi sve preglede u datom terminu i obavesti pacijente o tome
@@ -74,6 +79,8 @@ public class AbsenceRequestService {
 		return "You succesfully approved absence request for " + request.getEmployee().getName() + " " + request.getEmployee().getSurname() + "!";
 	}
 
+
+	@Transactional
 	public String rejectRequest(RequestRejectionDto pharmacistRequestRejectionDto) throws MessagingException {
 		AbsenceRequest request = absenceRequestRepository.findById(pharmacistRequestRejectionDto.getRequestId()).orElse(null);
 		// oznaci kao odbijen
@@ -85,6 +92,8 @@ public class AbsenceRequestService {
 		return "You succesfully rejected absence request for " + request.getEmployee().getName() + " " + request.getEmployee().getSurname() + "!";
 	}
 
+
+	@Transactional
 	public String approveRequestForDermatologist(String requestId) throws MessagingException {
 		AbsenceRequest request = absenceRequestRepository.findById(requestId).orElse(null);
 		// otkazi sve preglede u datom terminu i obavesti pacijente o tome

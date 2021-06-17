@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.domain.DrugRequest;
@@ -13,12 +14,12 @@ import pharmacyhub.domain.DrugStock;
 import pharmacyhub.domain.Drugstore;
 import pharmacyhub.domain.Location;
 import pharmacyhub.domain.Point;
-import pharmacyhub.domain.RatingDrugstore;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.dto.DrugStockPriceDto;
-import pharmacyhub.dto.DrugstoreAverageRatingDto;
+import pharmacyhub.dto.DrugstoreDtoAll;
 import pharmacyhub.dto.ereceipt.DrugstoreAndPriceDto;
 import pharmacyhub.dto.ereceipt.ReceiptSearchResultsDto;
+import pharmacyhub.dto.ereceipt.SingleDrugstoreEReceiptDto;
 import pharmacyhub.dto.search.DrugstoreSearchDto;
 import pharmacyhub.dto.search.EReceiptSearchDto;
 import pharmacyhub.repositories.DrugPriceRepository;
@@ -28,13 +29,13 @@ import pharmacyhub.repositories.DrugStockRepository;
 import pharmacyhub.repositories.DrugstoreRepository;
 import pharmacyhub.repositories.LocationRepository;
 import pharmacyhub.repositories.PointRepository;
-import pharmacyhub.repositories.RatingDrugstoreRepository;
 import pharmacyhub.repositories.specifications.drugstores.DrugstoreSpecifications;
 import pharmacyhub.repositories.users.DrugstoreAdminRepository;
 import pharmacyhub.repositories.users.PharmacistRepository;
 import pharmacyhub.repositories.users.UserRepository;
 
 @Service
+@Transactional
 public class DrugstoreService {
 	
 	@Autowired
@@ -68,39 +69,47 @@ public class DrugstoreService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private RatingDrugstoreRepository ratingDrugstoreRepository;
-	
-	@Autowired
 	private PointRepository pointRepository;
 	
 	public List<Drugstore> findAll() {
 		return drugstoreRepository.findAll();
 	}
 	
-	public Drugstore update(Drugstore drugstore) throws Exception {
+	public Drugstore update(DrugstoreDtoAll drugstoreDto) throws Exception {
 		
-		//TODO: odraditi provere za vreme
-		
-		if(drugstoreRepository.findById(drugstore.getId()) == null) {
+		if(drugstoreRepository.findById(drugstoreDto.getId()) == null) {
 			throw new Exception("No such drugstore");
 		}
 		
-		return save(drugstore);
-	}
-	
-
-	public Drugstore save(Drugstore drugstore) throws Exception {
-
-		if(drugstore.getLocation() != null) {
-			Location location = drugstore.getLocation();
+		if(drugstoreDto.getLocation() != null) {
+			Location location = drugstoreDto.getLocation();
 			locationRepository.save(location);
 		}
 		
-		if(drugstore.getPoint() != null) {
-			Point point = drugstore.getPoint();
+		if(drugstoreDto.getPoint() != null) {
+			Point point = drugstoreDto.getPoint();
 			pointRepository.save(point);
 		}
+		Drugstore drugstore=new Drugstore(drugstoreDto.getName(),drugstoreDto.getLocation(),drugstoreDto.getDescription(), 0,
+			drugstoreDto.getPharmacistAppointmentPrice(), drugstoreDto.getPoint());
+		drugstore.setId(drugstoreDto.getId());
+		return drugstoreRepository.save(drugstore);
+	}
+	
+
+	public Drugstore save(DrugstoreDtoAll drugstoreDto) throws Exception {
+
+		if(drugstoreDto.getLocation() != null) {
+			Location location = drugstoreDto.getLocation();
+			locationRepository.save(location);
+		}
 		
+		if(drugstoreDto.getPoint() != null) {
+			Point point = drugstoreDto.getPoint();
+			pointRepository.save(point);
+		}
+		Drugstore drugstore=new Drugstore(drugstoreDto.getName(),drugstoreDto.getLocation(),drugstoreDto.getDescription(), 0,
+			drugstoreDto.getPharmacistAppointmentPrice(), drugstoreDto.getPoint());
 		return drugstoreRepository.save(drugstore);
 	}
 	
@@ -144,6 +153,36 @@ public class DrugstoreService {
 		return sum;
 	}
 	
+	private double getSumOfDrugPricesAndCheckIfValid(Drugstore drugstore, SingleDrugstoreEReceiptDto eReceiptSearchDto) {
+		double sum = 0;
+		List<DrugStockPriceDto> drugStockPrices = drugstockService.returnDrugStockForDrugstore(drugstore.getId());
+		
+		int hitCounter = 0;
+		
+		for(String drugId : eReceiptSearchDto.getReceiptData().keySet()) {
+			for (DrugStockPriceDto drugStockPrice : drugStockPrices) {
+				if (drugId.equals(drugStockPrice.getDrugId())) {
+					sum += drugStockPrice.getDrugPrice();
+					hitCounter += 1;
+				}
+			}
+		}
+		
+		if(hitCounter != eReceiptSearchDto.getReceiptData().keySet().size()) {
+			return -1;
+		}
+		
+		return sum;
+	}
+	
+	public List<DrugstoreAndPriceDto> getSingleReceiptPrices(SingleDrugstoreEReceiptDto singleDrugstoreDto) {
+		Drugstore drugstore = drugstoreRepository.findById(singleDrugstoreDto.getDrugstoreId()).orElse(null);
+		DrugstoreAndPriceDto drugstoreAndPriceDto = new DrugstoreAndPriceDto(drugstore, getSumOfDrugPricesAndCheckIfValid(drugstore, singleDrugstoreDto));
+		List<DrugstoreAndPriceDto> drugstoresWithPrices = new ArrayList<>();
+		drugstoresWithPrices.add(drugstoreAndPriceDto);
+		return drugstoresWithPrices;
+	}
+	
 	private List<DrugstoreAndPriceDto> getReceiptDrugstoresAndPrices(EReceiptSearchDto eReceiptSearchDto, Pageable pageable) {
 		List<Drugstore> drugstores = drugstoreRepository.findAll(DrugstoreSpecifications.eReceiptSearch(eReceiptSearchDto), pageable).toList();
 		List<DrugstoreAndPriceDto> drugstoresWithPrices = new ArrayList<>();
@@ -182,7 +221,7 @@ public class DrugstoreService {
 		return drugs;
 	}
 	
-	public Drugstore findDrugstore(String drugstoreId) throws Exception {
+	public Drugstore findDrugstore(String drugstoreId) {
 		
 		return drugstoreRepository.findById(drugstoreId).orElse(null);
 	}
@@ -213,8 +252,9 @@ public class DrugstoreService {
 		return admin.getDrugstore();
 	}
 
-	public boolean drugstoreUpdate(Drugstore drugstore) throws Exception {
-		Drugstore d = drugstoreRepository.findById(drugstore.getId()).orElse(null);
+	@Transactional
+	public boolean drugstoreUpdate(DrugstoreDtoAll drugstore) throws Exception {
+		Drugstore d = drugstoreRepository.findOneById(drugstore.getId());
 		if (d == null) {
 			throw new Exception("This drugstore does not exist!");
 		}
@@ -238,26 +278,12 @@ public class DrugstoreService {
 		if (d.getPoint().getLongitude() != 0) point.setLongitude(drugstore.getPoint().getLongitude());
 		
 		d.setPoint(point);
-		
+		d.setId(drugstore.getId());
 		drugstoreRepository.save(d);
 		return true;
 	}
 	
-	public DrugstoreAverageRatingDto calculateAverageRate(String drugstoreId) {
-		Drugstore drugstore = drugstoreRepository.findById(drugstoreId).orElse(null);
-		int ratesScore = 0;
-		int numberOfRates = 0;
-		List<RatingDrugstore> rates = ratingDrugstoreRepository.findByDrugstore(drugstore);
-		for (RatingDrugstore rate : rates) {
-			ratesScore += rate.getRating();
-			numberOfRates++;
-		}
-		double averageRate = 0;
-		if (numberOfRates > 0)
-			averageRate = (double)ratesScore / (double)numberOfRates;
-		System.out.println(numberOfRates);
-		return new DrugstoreAverageRatingDto(averageRate, numberOfRates);
-	}
+	
 
 	public Integer returnDrugStores(DrugstoreSearchDto drugstoreSearchDto) {
 		return drugstoreRepository.findAll(DrugstoreSpecifications.withSearch(drugstoreSearchDto)).size();

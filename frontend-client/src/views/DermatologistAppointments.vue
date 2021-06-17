@@ -13,9 +13,15 @@
 
 
 <script>
-
+    import { mapState } from 'vuex'
     export default {
-
+        computed:{
+        ...mapState({
+        user: state => state.userModule.loggedInUser,
+        //email: state => state.userModule.loggedInUser.email,
+        //role: state => state.userModule.loggedInUser.type
+        }),
+        },
         data: function () {
             return {
                 appointments: [],
@@ -71,7 +77,7 @@
                 this.$http.get('http://localhost:8081/dermatologist-appointment/createReserrvation', {
                         params: {
                             appointmentId : item.appointmentId,
-                            patientId: '8128d806-c29b-4086-aae6-877d17eeb6fa',
+                            patientId: this.user.id,
                             drugstoreId: this.drugstoreId,
                         }
                     })
@@ -87,7 +93,8 @@
                                 patient: appointment.patient ? appointment.patient.name : "Available",
                             }));
                             //this.getAllAppointments();
-                    }).catch(error => console.log(error));
+                    }).then(this.$toastr.s("You have succesfully reserved a dermatologist appointment"))
+                    .catch(error => console.log(error));
             },
         },
         mounted: function () {

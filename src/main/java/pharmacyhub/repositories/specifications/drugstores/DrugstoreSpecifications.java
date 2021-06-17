@@ -48,7 +48,7 @@ public class DrugstoreSpecifications {
 			}
 			
 			if(eReceiptSearchDto.getMinimumRating() != null) {
-				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("averageRating"), eReceiptSearchDto.getMinimumRating()));
+				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), eReceiptSearchDto.getMinimumRating()));
 			}
 			
 			

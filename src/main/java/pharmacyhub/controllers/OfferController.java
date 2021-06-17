@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ import pharmacyhub.services.OfferService;
 public class OfferController {
 	@Autowired
 	private OfferService offerService;
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SYSTEMADMIN')")
 	@PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OfferDto>> search(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -34,12 +35,12 @@ public class OfferController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(offerService.search(offerSearchDto, pageable), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('SUPPLIER')")
 	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<OfferDto> makeOffer(@RequestBody OfferDto offerDto) throws Exception{
 		return new ResponseEntity<>(offerService.makeOffer(offerDto), HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN','SYSTEMADMIN','SUPPLIER')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Offer>> getOffersForOrder(@RequestParam String orderId) throws Exception {
 		return new ResponseEntity<>(offerService.getOffersForOrder(orderId), HttpStatus.OK);

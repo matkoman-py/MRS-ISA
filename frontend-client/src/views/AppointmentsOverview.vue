@@ -1,11 +1,22 @@
 <template>
   <b-container>
-    <h1> Graphic overview of appointments </h1>
-    <div style="margin:40px; height:500px; border-style:solid;">
-        
+    <h1> Create appointment for deramotologist </h1>
+    <!--div align="center">
+    <b-form-group style="width:400px;"
+        label="Choose dermatologist"
+        label-for="dermatologist-picker"
+        invalid-feedback="Dermatologist is required">
+            <b-form-select
+                v-model="inputValues.dermatologist"
+                :options="availableDermatologists">
+            </b-form-select>
+    </b-form-group>
     </div>
+    <div style="margin:40px; height:500px; border-style:solid;">
+        <FullCalendar class='demo-app-calendar'> </FullCalendar>
+    </div-->
     <div>
-        <b-button variant="outline-hub" @click="showForm">Create new appointment</b-button>
+        <b-button style="margin-bottom:40px;" variant="outline-hub" @click="showForm">Create new appointment</b-button>
     </div>
 
     <b-modal id="my-modal" title="Create new appointment" hide-footer>
@@ -79,12 +90,16 @@
 </template>
 
 <script>
+  import FullCalendar from '@fullcalendar/vue'
   import { mapState } from 'vuex'
   export default {
     computed: {
       ...mapState({
         user: state => state.userModule.loggedInUser,
       }),
+    components: {
+      FullCalendar // make the <FullCalendar> tag available
+    },
     },
     data: function() {
       const now = new Date()
@@ -101,7 +116,7 @@
           time: '',
           duration: '',
           price: ''
-        }
+        },
       }
     },
     methods: {
@@ -126,10 +141,10 @@
                             drugstoreId: this.inputValues.drugstoreId
                         }})
             .then(response => {
-            this.availableDermatologists = response.data.map((dermatologist) =>
+            this.availableDermatologists = response.data.map((dermatologistDto) =>
                 ({
-                value: dermatologist,
-                text: dermatologist.name
+                value: dermatologistDto.dermatologist,
+                text: dermatologistDto.dermatologist.name + " (" + dermatologistDto.workingHoursFrom + " - " + dermatologistDto.workingHoursTo + ")"
                 })
             );
             })
@@ -144,7 +159,7 @@
           this.$http.post("http://localhost:8081/dermatologist-appointment/", JSON.parse(JSON.stringify(this.inputValues)))
               .then(response => {
               console.log(response);
-              alert("New appointment is successfully created.");
+              this.$toastr.s("New appointment is successfully created.")
               })
               .catch(error => console.log(error));
           this.$root.$emit('bv::hide::modal', 'my-modal');

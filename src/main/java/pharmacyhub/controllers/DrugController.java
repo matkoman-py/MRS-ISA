@@ -5,9 +5,11 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pharmacyhub.domain.Drug;
 import pharmacyhub.dto.CreateDrugOrderDto;
+import pharmacyhub.dto.DrugDto;
 import pharmacyhub.dto.DrugInDrugstoreDto;
 import pharmacyhub.dto.search.DrugSearchDto;
 import pharmacyhub.services.DrugService;
@@ -36,7 +39,11 @@ public class DrugController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			@RequestBody DrugSearchDto searchDto) {
-		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
+		Sort sortSetting = Sort.by("name");
+		if(searchDto.getSortByField() != null && !searchDto.getSortByField().isBlank()) {
+			sortSetting = (searchDto.getAscending()) ? Sort.by(searchDto.getSortByField()).ascending() : Sort.by(searchDto.getSortByField()).descending();
+		}
+		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size, sortSetting);
 		return new ResponseEntity<>(drugService.returnDrugs(searchDto, pageable), HttpStatus.OK);
 	}
 	
@@ -60,10 +67,10 @@ public class DrugController {
 			@RequestParam(value = "drugstoreId", required = true) String drugstoreId){
 		return new ResponseEntity<>(drugService.getDrugsNotOnStock(drugstoreId), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Drug> add(@RequestBody Drug drug) throws Exception {
-		return new ResponseEntity<>(drugService.save(drug), HttpStatus.OK);
+	public ResponseEntity<Drug> add(@RequestBody DrugDto drugDto) throws Exception {
+		return new ResponseEntity<>(drugService.save(drugDto), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/in-drugstore/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,12 +80,12 @@ public class DrugController {
 		Pageable pageable = (page == null || size == null) ? Pageable.unpaged() : PageRequest.of(page, size);
 		return new ResponseEntity<>(drugService.getDrugsInDrugstore(drugstoreId, pageable), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Drug> update(@RequestBody Drug drug) throws Exception {
-		return new ResponseEntity<>(drugService.update(drug), HttpStatus.OK);
+	public ResponseEntity<Drug> update(@RequestBody DrugDto drugDto) throws Exception {
+		return new ResponseEntity<>(drugService.update(drugDto), HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('SYSTEMADMIN')")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Boolean> deleteDrug(@PathVariable("id") String id) throws Exception {
 		return new ResponseEntity<>(drugService.delete(id), HttpStatus.OK);
@@ -98,6 +105,7 @@ public class DrugController {
 		return new ResponseEntity<>(drugService.findAllSubstitutesDrugstore(drugId,drugstoreId,patientId), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('DRUGSTOREADMIN')")
 	@GetMapping(path = "/createOrderView", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<CreateDrugOrderDto>> getDrugsForCreateOrderView(
 			@RequestParam(value = "drugstoreId", required = true) String drugstoreId,

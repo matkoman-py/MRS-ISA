@@ -7,8 +7,11 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pharmacyhub.domain.Drugstore;
+import pharmacyhub.domain.enums.UserType;
+import pharmacyhub.domain.users.Dermatologist;
 import pharmacyhub.domain.users.DrugstoreAdmin;
 import pharmacyhub.domain.users.Patient;
 import pharmacyhub.domain.users.Role;
@@ -22,6 +25,7 @@ import pharmacyhub.repositories.users.UserRepository;
 import pharmacyhub.utils.RadnomGeneratorUtil;
 
 @Service
+@Transactional
 public class RegistrationService {
 	@Autowired
 	private UserRepository userRepository;
@@ -62,6 +66,9 @@ public class RegistrationService {
 		case SystemAdmin:
 			saveSystemAdmin(requestUser);
 			break;
+		case Dermatologist:
+			saveDermatologist(requestUser);
+			break;
 		default:
 		}
 
@@ -76,6 +83,16 @@ public class RegistrationService {
 		systemAdmin = userRepository.save(systemAdmin);
 
 		userNotificationService.sendEmployeeInitialPassword(systemAdmin.getEmail(), initialPassword);
+	}
+	
+	private void saveDermatologist(UserRegistrationDto requestUser) throws MessagingException {
+		Dermatologist dermatologist = getDermatologistFromUserRegistrationDto(requestUser);
+		String initialPassword = updateUserWithInitialPasswordAndEncode(dermatologist);
+		dermatologist.setType(UserType.Dermatologist);
+		dermatologist.setStatus(true);
+		dermatologist = userRepository.save(dermatologist);
+
+		userNotificationService.sendEmployeeInitialPassword(dermatologist.getEmail(), initialPassword);
 	}
 
 	private void saveDrugstoreAdmin(UserRegistrationDto requestUser) throws Exception {
@@ -103,6 +120,7 @@ public class RegistrationService {
 		return initialPassword;
 	}
 
+	@Transactional
 	private void savePatient(UserRegistrationDto requestUser) throws Exception {
 
 		Patient patient = getPatientFromUserRegistrationDto(requestUser);
@@ -117,7 +135,7 @@ public class RegistrationService {
 		if (!requestUser.getPassword().equals(requestUser.getRepeatedPassword())) {
 			throw new Exception("Passwords do not match");
 		}
-
+		System.out.println("ma ovde sam");
 		userNotificationService.sendActivationCode(patient.getEmail(), activationCode);
 	}
 
@@ -156,6 +174,14 @@ public class RegistrationService {
 		List<Role> roles = roleService.findByName("SystemAdmin");
 		systemAdmin.setRoles(roles);
 		return systemAdmin;
+	}
+	
+	private Dermatologist getDermatologistFromUserRegistrationDto(UserRegistrationDto requestUser) {
+		Dermatologist dermatologist = new Dermatologist();
+		updateUserFromRequestDto(dermatologist, requestUser);
+		List<Role> roles = roleService.findByName("Dermatologist");
+		dermatologist.setRoles(roles);
+		return dermatologist;
 	}
 
 	private void updateUserFromRequestDto(User user, UserRegistrationDto requestUser) {

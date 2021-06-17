@@ -7,7 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@SQLDelete(sql = "UPDATE penalty SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE penalty SET deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "deleted = false")
 public class Penalty extends BaseEntity{
 	

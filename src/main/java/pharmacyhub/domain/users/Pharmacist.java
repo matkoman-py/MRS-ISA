@@ -1,6 +1,5 @@
 package pharmacyhub.domain.users;
 
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -15,7 +14,8 @@ import pharmacyhub.domain.enums.UserType;
 
 @Entity
 @DiscriminatorValue("Pharmacist")
-@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ? and version = ?")
+@Where(clause = "deleted = false")
 public class Pharmacist extends Employee {
 
 	/**
